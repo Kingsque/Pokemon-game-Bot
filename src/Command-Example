@@ -1,0 +1,33 @@
+// Import necessary modules and connection if needed
+// const { Connection } = require('your-command-connection-module');
+
+module.exports = {
+  name: 'commandName',
+  aliases: ['commandAliases'],
+  category: 'commandCategory',
+  exp: commandExp,
+  cool: commandCooldown,
+  react: "commandReaction",
+  description: 'commandDescription',
+  async execute(client, arg, M) {
+    // Implement the command toggle function here if needed
+
+    // Implement the command cooldown system here if needed
+
+    try {
+      // Command logic goes here
+      // the command you want to create 
+
+      // Example command logic:
+      // M.reply('Command executed successfully!');
+    } catch (error) {
+      // Command error catcher
+      console.error('Error executing command:', error);
+
+      // Send error to logs if available
+
+      // Send error message to the channel
+    }
+  }
+};
+//get ideas from other bot commands
