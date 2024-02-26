@@ -1,0 +1,127 @@
+{
+
+   "name":"Bot-Haven",
+
+   "description":"A WhatsApp Bot With Multi Device Supported",
+
+   "keywords":[
+
+      "bot",
+
+      "whatsapp"
+
+   ],
+
+   "website":"https://github.com/Kry9toN/Bot-Haven#readme",
+
+   "repository":"https://github.com/Kingshisui00/Nezuko-chan.git",
+
+   "logo":"https://i.ibb.co/mzcSXdy/koboo.png",
+
+   "success_url":"/",
+
+   "env":{
+
+      "NAME":{
+
+         "description":"Name of your bot",
+         "value":"Aurora",
+         "required":true
+
+      },
+
+      "PREFIX":{
+
+         "description":"Prefix of your bot",
+         "value":":",
+         "required":true
+
+      },
+
+      "MODS":{
+
+         "description":"The phone numbers of the users who you want to be admin for the bot (should be in international format without + and multiple numbers must be separated by a comma \",\")",
+
+         "required":false
+
+      },
+
+      "URL":{
+
+         "description":"A secret String for Mongodb Connection.(Required)",
+         "value":"mongodb+srv://Lucky02:Lucky000@cluster0.zm40ijx.mongodb.net/?retryWrites=true&w=majority",
+         "required":true
+
+      },
+
+      "SESSION":{
+
+         "description": "for me",
+
+         "required": true
+
+      },
+
+      "WRITE_SONIC":{
+
+         "description":"A key used for Write Sonic",
+         "value":"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",
+         "required":true
+
+      },
+
+      "BG_API_KEY":{
+
+         "description":"A key used for www.remove.bg",
+         "value":"mjWeXgKfjodxyjYPgNMztPm",
+         "required":true
+
+      },
+
+       "SESSION_URL": {
+
+        "description" : "for me", 
+        "value":"mongodb+srv://Lucky02:Lucky000@cluster0.zm40ijx.mongodb.net/?retryWrites=true&w=majority",
+        "required" :true
+
+}, 
+
+      "PORT":{
+
+         "description":"A port for your app",
+         "value":"3000",
+         "required":true
+
+      }
+
+   },
+
+   "buildpacks":[
+
+      {
+
+         "url":"heroku/nodejs"
+
+      },
+
+      {
+
+         "url":"https://github.com/PrajjwalDatir/heroku-buildpack-imagemagick.git"
+
+      },
+
+      {
+
+         "url":"https://github.com/clhuang/heroku-buildpack-webp-binaries.git"
+
+      },
+
+      {
+
+         "url":"https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+
+      }
+
+   ]
+
+}

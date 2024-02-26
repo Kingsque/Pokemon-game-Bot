@@ -1,0 +1,4 @@
+language="nodejs"
+run="pm2 start src/haven.js && pm2 save && pm2 logs"
+entrypoint = "src/haven.js"
+hidden = [".config", "package-lock.json"]
