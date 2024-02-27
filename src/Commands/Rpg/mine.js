@@ -1,103 +1,62 @@
+const ms = require('parse-ms');
+
 module.exports = {
   name: 'mine',
   aliases: ['mine'],
   category: 'rpg',
   exp: 5,
+  cool: 4,
   react: '✅',
   description: 'mines items',
   async execute(client, arg, M) {
-    const economy = (await client.DB.get('support')) || [];
+    const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
+        const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.mine`);
 
-    if (!economy.includes(M.from)) return M.reply("This command can only be used in support group");
-
-    const ironaxe = await client.rpg.get(`${M.sender}.ironpickaxe`) || 0;
-    const woodaxe = await client.rpg.get(`${M.sender}.woodpickaxe`) || 0;
-     const goldaxe = await client.rpg.get(`${M.sender}.goldpickaxe`) || 0;
-      const diamondaxe = await client.rpg.get(`${M.sender}.diamondpicaxe`) || 0;
-      const emeraldaxe = await client.rpg.get(`${M.sender}.emeraldpickaxe`) || 0;
-
-    if (arg === 'ironaxe') {
-      if (ironaxe <= 0) return M.reply('you dont have an ironaxe to mine, buy one first');
-      
-      const wood = client.utils.getRandomInt(500, 700);
-      const iron = client.utils.getRandomInt(5000, 9000);
-      const gold = client.utils.getRandomInt(300, 500);
-      const diamond = client.utils.getRandomInt(50, 100);
-      const emerald = client.utils.getRandomInt(0, 50);
-      
-      await client.rpg.add(`${M.sender}.wood`, wood);
-      await client.rpg.add(`${M.sender}.iron`, iron);
-      await client.rpg.add(`${M.sender}.gold`, gold);
-      await client.rpg.add(`${M.sender}.diamond`, diamond); 
-      await client.rpg.add(`${M.sender}.emerald`, emerald);
-      await client.rpg.sub(`${M.sender}.ironpickaxe`, 1);
-      M.reply(`⛏️ *Mine Ended* ⛏️\n🎋 *Wood:* ${wood}\n🔩 *Iron:* ${iron}\n🏅 *Gold:* ${gold}\n💎 *Diamond:* ${diamond}\n🍀 *Emerald:* ${emerald}\nBy mining from ironaxe`);
-    } else if (arg === 'woodaxe') {
-      if (woodaxe <= 0) return M.reply('you dont have a woodaxe to mine, buy one first');
-      
-      const wood1 = client.utils.getRandomInt(5000, 9000);
-      const iron1 = client.utils.getRandomInt(500, 700);
-      const gold1 = client.utils.getRandomInt(300, 500);
-      const diamond1 = client.utils.getRandomInt(50, 100);
-      const emerald1 = client.utils.getRandomInt(0, 50);
-      
-      await client.rpg.add(`${M.sender}.wood`, wood1);
-      await client.rpg.add(`${M.sender}.iron`, iron1);
-      await client.rpg.add(`${M.sender}.gold`, gold1);
-      await client.rpg.add(`${M.sender}.diamond`, diamond1); 
-      await client.rpg.add(`${M.sender}.emerald`, emerald1);
-       await client.rpg.sub(`${M.sender}.woodpickaxe`, 1);
-      M.reply(`⛏️ *Mine Ended* ⛏️\n🎋 *Wood:* ${wood1}\n🔩 *Iron:* ${iron1}\n🏅 *Gold:* ${gold1}\n💎 *Diamond:* ${diamond1}\n🍀 *Emerald:* ${emerald1}\nBy mining from woodaxe`);
-    } else if (arg === 'goldaxe') {
-      if (gold <= 0) return M.reply('you dont have a goldaxe to mine, buy one first');
-      
-      const wood2 = client.utils.getRandomInt(500, 900);
-      const iron2 = client.utils.getRandomInt(500, 700);
-      const gold2 = client.utils.getRandomInt(300, 500);
-      const diamond2 = client.utils.getRandomInt(50, 100);
-      const emerald2 = client.utils.getRandomInt(0, 50);
-      
-      await client.rpg.add(`${M.sender}.wood`, wood2);
-      await client.rpg.add(`${M.sender}.iron`, iron2);
-      await client.rpg.add(`${M.sender}.gold`, gold2);
-      await client.rpg.add(`${M.sender}.diamond`, diamond2); 
-      await client.rpg.add(`${M.sender}.emerald`, emerald2);
-       await client.rpg.sub(`${M.sender}.goldpickaxe`, 1);
-      M.reply(`⛏️ *Mine Ended* ⛏️\n🎋 *Wood:* ${wood2}\n🔩 *Iron:* ${iron2}\n🏅 *Gold:* ${gold2}\n💎 *Diamond:* ${diamond2}\n🍀 *Emerald:* ${emerald2}\nBy mining from goldaxe`);
-    } else if (arg === 'diamondaxe') {
-      if (diamondaxe <= 0) return M.reply('you dont have an diamondaxe to mine, buy one first');
-      
-      const wood3 = client.utils.getRandomInt(500, 700);
-      const iron3 = client.utils.getRandomInt(500, 900);
-      const gold3 = client.utils.getRandomInt(300, 500);
-      const diamond3 = client.utils.getRandomInt(500, 1000);
-      const emerald3 = client.utils.getRandomInt(0, 100);
-      
-      await client.rpg.add(`${M.sender}.wood`, wood3);
-      await client.rpg.add(`${M.sender}.iron`, iron3);
-      await client.rpg.add(`${M.sender}.gold`, gold3);
-      await client.rpg.add(`${M.sender}.diamond`, diamond3); 
-      await client.rpg.add(`${M.sender}.emerald`, emerald3);
-      await client.rpg.sub(`${M.sender}.diamondpickaxe`, 1);
-      M.reply(`⛏️ *Mine Ended* ⛏️\n🎋 *Wood:* ${wood3}\n🔩 *Iron:* ${iron3}\n🏅 *Gold:* ${gold3}\n💎 *Diamond:* ${diamond3}\n🍀 *Emerald:* ${emerald3}\nBy mining from diamondaxe`);
-    } else if (arg === 'emeraldaxe') {
-      if (emeraldaxe <= 0) return M.reply('you dont have a emeraldaxe to mine, buy one first');
-      
-      const wood4 = client.utils.getRandomInt(5000, 9000);
-      const iron4 = client.utils.getRandomInt(5000, 7000);
-      const gold4 = client.utils.getRandomInt(3000, 5000);
-      const diamond4 = client.utils.getRandomInt(1000, 2000);
-      const emerald4 = client.utils.getRandomInt(500, 100);
-      
-      await client.rpg.add(`${M.sender}.wood`, wood4);
-      await client.rpg.add(`${M.sender}.iron`, iron4);
-      await client.rpg.add(`${M.sender}.gold`, gold4);
-      await client.rpg.add(`${M.sender}.diamond`, diamond4); 
-      await client.rpg.add(`${M.sender}.emerald`, emerald4);
-       await client.rpg.sub(`${M.sender}.emeraldpickaxe`, 1);
-      M.reply(`⛏️ *Mine Ended* ⛏️\n🎋 *Wood:* ${wood4}\n🔩 *Iron:* ${iron4}\n🏅 *Gold:* ${gold4}\n💎 *Diamond:* ${diamond4}\n🍀 *Emerald:* ${emerald4}\nBy mining from emerald`);
-    } else {
-       M.reply('you didnt mention any axe, Use :mine (woodaxe/ironaxe/goldaxe/diamondaxe/emeraldaxe)');
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
+    const participant = await client.DB.get('cshop') || [];
+    if (!participant.includes(M.from)) {
+      return M.reply(`To use rpg commands, join the games group by using ${client.prefix}support`);
     }
+
+    const pickaxes = {
+      ironaxe: { type: 'ironpickaxe', wood: 0, iron: [5000, 9000], gold: [300, 500], diamond: [50, 100], emerald: [0, 50] },
+      woodaxe: { type: 'woodpickaxe', wood: [5000, 9000], iron: [500, 700], gold: [300, 500], diamond: [50, 100], emerald: [0, 50] },
+      goldaxe: { type: 'goldpickaxe', wood: [500, 900], iron: [500, 700], gold: [300, 500], diamond: [50, 100], emerald: [0, 50] },
+      diamondaxe: { type: 'diamondpickaxe', wood: [500, 700], iron: [500, 900], gold: [300, 500], diamond: [500, 1000], emerald: [0, 100] },
+      emeraldaxe: { type: 'emeraldpickaxe', wood: [5000, 9000], iron: [5000, 7000], gold: [3000, 5000], diamond: [1000, 2000], emerald: [500, 100] }
+    };
+
+    const pickaxe = pickaxes[arg];
+    if (!pickaxe) return M.reply('you didnt mention any axe, Use :mine (woodaxe/ironaxe/goldaxe/diamondaxe/emeraldaxe)');
+
+    const pickaxeCount = await client.rpg.get(`${M.sender}.${pickaxe.type}`) || 0;
+    if (pickaxeCount <= 0) return M.reply(`you dont have a ${arg} to mine, buy one first`);
+
+    const woodAmount = client.utils.getRandomInt(pickaxe.wood[0], pickaxe.wood[1]);
+    const ironAmount = client.utils.getRandomInt(pickaxe.iron[0], pickaxe.iron[1]);
+    const goldAmount = client.utils.getRandomInt(pickaxe.gold[0], pickaxe.gold[1]);
+    const diamondAmount = client.utils.getRandomInt(pickaxe.diamond[0], pickaxe.diamond[1]);
+    const emeraldAmount = client.utils.getRandomInt(pickaxe.emerald[0], pickaxe.emerald[1]);
+
+    await client.rpg.add(`${M.sender}.wood`, woodAmount);
+    await client.rpg.add(`${M.sender}.iron`, ironAmount);
+    await client.rpg.add(`${M.sender}.gold`, goldAmount);
+    await client.rpg.add(`${M.sender}.diamond`, diamondAmount);
+    await client.rpg.add(`${M.sender}.emerald`, emeraldAmount);
+    await client.rpg.sub(`${M.sender}.${pickaxe.type}`, 1);
+
+    M.reply(`⛏️ *Mine Ended* ⛏️\n🎋 *Wood:* ${woodAmount}\n🔩 *Iron:* ${ironAmount}\n🏅 *Gold:* ${goldAmount}\n💎 *Diamond:* ${diamondAmount}\n🍀 *Emerald:* ${emeraldAmount}\nBy mining from ${arg}`);
+    await client.DB.set(`${M.sender}.shop`, Date.now());
   }
 };
