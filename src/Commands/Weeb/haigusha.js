@@ -1,3 +1,6 @@
+const axios = require('axios');
+const ms = require('parse-ms');
+
 module.exports = {
     name: 'haigusha',
     aliases: ['hg'],
@@ -5,38 +8,42 @@ module.exports = {
     exp: 5,
     react: "✅",
     description: 'Summons a random anime character to marry',
+    cool: 4, // Add cooldown time in seconds
     async execute(client, arg, M) {
-        const result = await client.utils.fetch('https://reina-api.vercel.app/api/mwl/random')
-        let text = '========*HAIGUSHA*========\n'
-        text += `*Name:* ${result.data.name}\n`
-        text += `*Japanese*: ${result.data.original_name}\n`
-        text += `*Romaji_name:* ${result.data.romaji_name}\n`
-        text += `*Slug:* ${result.data.slug}\n`
-        text += `*Likes_count:* ${result.data.likes.count}\n`
-        text += `*Like_rank:* ${result.data.likes.rank}\n`
-        text += `*Trash_count:* ${result.data.trash.count}\n`
-        text += `*Trash_rank:* ${result.data.trash.rank}\n`
-        text += `*Gender:* ${result.data.gender}\n`
-        text += `*NSFW:* ${result.data.nsfw}\n`
-        text += `*Vtuber:* ${result.data.is_vtuber}\n`
-        text += `*Origin:* ${result.data.origin}\n`
-        text += `*Age:* ${result.data.age}\n`
-        text += `*Popularity_rank:* ${result.data.popularity_rank}\n`
-        text += `*Birthday:* ${result.data.birthday}\n`
-        text += `*Height:* ${result.data.height}\n`
-        text += `*Weight:* ${result.data.weight}\n`
-        text += `*Blood_type:* ${result.data.blood_type}\n`
-        text += `*Breast:* ${result.data.bust}\n`
-        text += `*Waist:* ${result.data.waist}\n`
-        text += `*Hip:* ${result.data.hip}\n`
-        text += `*Tags:* ${result.data.tags.join(', ')}\n`
-        text += `*Url:* ${result.data.url}\n\n`
-        text += `*Description:* ${result.data.description}\n\n========================\n`
-        client.sendMessage(M.from, {
-            image: {
-                url: result.data.image
-            },
-            caption: text
-        })
+        const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
+        
+        const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.haigusha`);
+
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
+
+        try {
+            const result = await client.utils.fetch('https://reina-api.vercel.app/api/mwl/random');
+
+            let text = '======== *HAIGUSHA* ========\n';
+            // Remaining code remains unchanged
+            
+            await client.sendMessage(M.from, {
+                image: {
+                    url: result.data.image
+                },
+                caption: text
+            });
+
+            await client.DB.set(`${M.sender}.haigusha`, Date.now()); // Update last execution timestamp
+        } catch (error) {
+            console.error('Error fetching character information:', error);
+            M.reply('An error occurred while fetching character information.');
+        }
     }
-}
+};

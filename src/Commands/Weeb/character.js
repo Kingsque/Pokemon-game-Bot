@@ -1,4 +1,5 @@
-const axios = require('axios')
+const axios = require('axios');
+const ms = require('parse-ms');
 
 module.exports = {
     name: 'character',
@@ -6,24 +7,47 @@ module.exports = {
     category: 'weeb',
     react: "✅",
     exp: 5,
-    description: 'Gives you the info of a character from anime',
+    cool: 4, // Adding cooldown time in seconds
+    description: 'Provides information about a character from anime',
     async execute(client, arg, M) {
-        if (!arg) return M.reply('Sorry you did not give any search term!')
-        const chara = await axios.get(`https://api.jikan.moe/v4/characters?q=${arg}`)
-        if (chara.data.data.length == 0) return M.reply('404 Error could not find the given term')
+        const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
+        
+        const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.character`);
 
-        let text = '====*CHARACTER*====\n\n'
-        text += `*Name:* ${chara.data.data[0].name}\n`
-        text += `*Japanese*: ${chara.data.data[0].name_kanji}\n`
-        text += `*Favorites:* ${chara.data.data[0].favorites}\n`
-        text += `*Mal_ID:* ${chara.data.data[0].mal_id}\n`
-        text += `*Description:* ${chara.data.data[0].about}\n\n========================\n`
-        // M.reply(text);
-        client.sendMessage(M.from, {
-            image: {
-                url: chara.data.data[0].image.jpg.image_url
-            },
-            caption: text
-        })
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
+
+        try {
+            if (!arg) return M.reply('Sorry, you did not provide any search term!');
+            
+            const response = await axios.get(`https://api.jikan.moe/v4/characters?q=${encodeURIComponent(arg)}`);
+            
+            if (response.data.data.length === 0) return M.reply('404 Error: Could not find any characters matching the given term.');
+            
+            const character = response.data.data[0];
+            const text = `==== *CHARACTER INFO* ====\n\n*Name:* ${character.name}\n*Japanese:* ${character.name_kanji}\n*Favorites:* ${character.favorites}\n*Mal_ID:* ${character.mal_id}\n*Description:* ${character.about || 'Not available'}\n\n========================\n`;
+            
+            await client.sendMessage(M.from, {
+                image: {
+                    url: character.image.jpg.image_url
+                },
+                caption: text
+            });
+
+            await client.DB.set(`${M.sender}.character`, Date.now()); // Updating the last execution timestamp
+        } catch (error) {
+            console.error('Error fetching character information:', error);
+            M.reply('An error occurred while fetching character information.');
+        }
     }
-}
+};
