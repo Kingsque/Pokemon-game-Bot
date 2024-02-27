@@ -1,41 +1,72 @@
+const ms = require('parse-ms');
+
 module.exports = {
   name: 'bid',
-  aliases: ['auction-bjd'],
+  aliases: ['auction-bid'],
   category: 'auction',
   exp: 5,
+  cool: 5,
   react: "✅",
-  description: 'bids amount',
+  description: 'Bid an amount on an ongoing auction',
   async execute(client, arg, M) {
-    const auc = await client.DB.get(`${M.from}.auctionInProgress`) || true;
-       if (!auc) return M.reply("A auction is already going on");
+    const commandName = this.name || this.aliases[0];
+    const disabledCommands = await client.DB.get(`disabledCommands`);
+    const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
 
-    const auction = (await client.DB.get('auction')) || [];
+    if (isDisabled) {
+      const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+      return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+    }
 
-    if (!auction.includes(M.from)) return M.reply(`Join the auction group by using ${client.prefix}support`);
-    else if (!arg) return M.reply('Please provide the amount');
-    
-    else {
-      const amount = parseInt(arg);
-  
-      if (isNaN(amount)) return M.reply('Please provide a valid amount');
-  
-      else if (arg.startsWith('-') || arg.startsWith('+')) return M.reply('Please provide a positive amount');
-  
-      const cradits = (await client.cradit.get(`${M.sender}.wallet`)) || 0;
-  
-      const bid = (await client.cradit.get(`{M.from}.bid`)) || 0;
-  
-      if (amount > cradits) return M.reply('You do not have enough credits for this bid');
-  
-      else if (amount < bid) return M.reply("You cannot bid less than the highest bid");
-  
-      else {
-        await client.cradit.set(`${M.from}.bid`, amount);
-        await client.DB.set(`${M.from}.auctionWinner`, M.sender);
-        let Text = `You have placed a bid of ${amount}`;
-  
-        M.reply(Text);
+    try {
+      const winned = await client.DB.get(`${M.from}.winned`);
+      if (winned.includes(M.sender)) {
+        return M.reply('You already won one');
       }
+
+      const auctionInProgress = await client.DB.get(`${M.from}.auctionInProgress`);
+      if (!auctionInProgress) {
+        return M.reply("There is no ongoing auction at the moment.");
+      }
+      const cooldownMs = this.cool * 1000;
+      const lastSlot = await client.DB.get(`${M.sender}.bid`);
+
+      if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+          const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+          return M.reply(`*You have to wait ${remainingCooldown} for another bid*`);
+      }
+
+      const isParticipant = (await client.DB.get('auction')) || [];
+      if (!isParticipant.includes(M.from)) {
+        return M.reply(`To participate in the auction, join the auction group by using ${client.prefix}support`);
+      } else if (!arg) {
+        return M.reply('Please provide the amount you want to bid.');
+      } else {
+        const amount = parseInt(arg);
+        if (isNaN(amount)) {
+          return M.reply('Please provide a valid amount for your bid.');
+        } else if (amount <= 0) {
+          return M.reply('Please provide a positive amount for your bid.');
+        }
+
+        const currentBid = (await client.DB.get(`${M.from}.bid`)) || 0;
+        const credits = (await client.cradit.get(`${M.sender}.wallet`)) || 0;
+
+        if (amount <= currentBid) {
+          return M.reply("Your bid must be higher than the current highest bid.");
+        } else if (amount > credits) {
+          return M.reply('You do not have enough credits for this bid.');
+        } else {
+          await client.DB.set(`${M.from}.bid`, amount);
+          await client.DB.set(`${M.from}.auctionWinner`, M.sender);
+          await client.DB.set(`${M.sender}.bid`, Date.now());
+          const responseText = `You have successfully placed a bid of ${amount} credits.`;
+          return M.reply(responseText);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+      await client.sendMessage(M.from, { image: { url: client.utils.errorChan() }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
     }
   }
-}
+};
