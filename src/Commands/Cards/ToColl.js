@@ -1,58 +1,63 @@
 const axios = require("axios");
 const path = require('path');
+const ms = require('parse-ms');
+
 module.exports = {
   name: "ToColl",
-  aliases: ["t2coll","2coll"],
+  aliases: ["t2coll", "2coll"],
   exp: 0,
+  cool: 4,
   react: "✅",
   category: "card game",
   description: "Transfer a card from your deck to your collection",
   async execute(client, arg, M) {
-
+    const commandName = this.name || this.aliases[0];
+    const disabledCommands = await client.DB.get(`disabledCommands`);
+    const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
     
-    try{
-    
-    const collection = await client.DB.get(`${M.sender}_Collection`) || [];
-    
-    const deck = await client.DB.get(`${M.sender}_Deck`) || [];
-
-    const indexOF = parseInt(arg.split(' ')[0])
-
-    if (!indexOF) {
-      return M.reply("Please provide the index or name of the card you wish to transfer.");
+    if (isDisabled) {
+      const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+      return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
     }
 
-    const position = isNaN(indexOF) ? deck.findIndex((card) => card === indexOF) : parseInt(indexOF, 10) - 1;
-    
-    if (position < 0 || position >= deck.length) {
-      return M.reply("Invalid card index or name.");
+    try {
+      const cooldownMs = this.cool * 1000;
+      const lastSlot = await client.DB.get(`${M.sender}.tocoll`);
+
+      if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+        const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+        return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+      }
+
+      const collection = await client.DB.get(`${M.sender}_Collection`) || [];
+      const deck = await client.DB.get(`${M.sender}_Deck`) || [];
+      const indexOF = parseInt(arg.split(' ')[0]);
+
+      if (!indexOF) {
+        return M.reply("Please provide the index or name of the card you wish to transfer.");
+      }
+
+      const position = isNaN(indexOF) ? deck.findIndex((card) => card === indexOF) : parseInt(indexOF, 10) - 1;
+
+      if (position < 0 || position >= deck.length) {
+        return M.reply("Invalid card index or name.");
+      }
+
+      const card = deck[position];
+      collection.push(card);
+      deck.splice(position, 1);
+
+      await client.DB.set(`${M.sender}_Collection`, collection);
+      await client.DB.set(`${M.sender}_Deck`, deck);
+
+      const cardData = require('../../Handlers/card.json').find((cardData) => cardData.title === card.split("-")[0] && cardData.tier === card.split("-")[1]);
+
+      const replyMsg = cardData ? `Sent "${indexOF}" from your deck to your collection!\n\nCard Details:\nName: ${cardData.title}\nTier: ${cardData.tier}` : `Card transferred from deck to collection.`;
+
+      M.reply(replyMsg);
+      await client.DB.set(`${M.sender}.tocoll`, Date.now());
+    } catch (err) {
+      await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
     }
-
-    const card = deck[position];
-    
-    collection.push(card);
-    
-    deck.splice(position, 1);
-
-    await client.DB.set(`${M.sender}_Collection`, collection);
-    
-    await client.DB.set(`${M.sender}_Deck`, deck);
-
-    const filePath = path.join(__dirname, '../../Handlers/card.json');
-      const data = require(filePath);
-    const cardData = data.find((cardData) => cardData.title === card.split("-")[0] && cardData.tier === card.split("-")[1]);
-    
-    let url = cardData.url
-    
-    const replyMsg = cardData ? `Sent "${indexOF}" from your deck to your collection! 🃏🔀\n\n👉 Card Details:\nName: ${cardData.title}\nTier: ${cardData.tier}` : `Card transferred from deck to collection.`;
-    
-    await client.sendMessage(M.from , {image: {url : url } , caption: replyMsg} , {quoted: M} )
-
-    M.reply(replyMsg);
-
-  }catch(err){
-    await client.sendMessage(M.from , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`})
   }
-  
-  },
 };

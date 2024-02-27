@@ -1,15 +1,32 @@
 const axios = require("axios");
 const path = require('path');
+const ms = require('parse-ms');
 
 module.exports = {
   name: "card-give",
   aliases: ["cg"],
   exp: 0,
+  cool: 4,
   react: "✅",
   category: "card game",
   description: "Give a card to another user",
   async execute(client, arg, M) {
+    const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
     try {
+      const cooldownMs = this.cool * 1000;
+      const lastSlot = await client.DB.get(`${M.sender}.cg`);
+
+      if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+          const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+          return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+      }
       const collection = await client.DB.get(`${M.sender}_Collection`) || [];
       const deck = await client.DB.get(`${M.sender}_Deck`) || [];
 
@@ -59,9 +76,11 @@ module.exports = {
       } else {
         await client.sendMessage(M.from, { image: { url: url }, caption: replyMsg, mentions: [M.mentions[0]] }, { quoted: M });
       }
+      await client.DB.set(`${M.sender}.cg`, Date.now());
       let tr = `@${M.sender.split('@')[0]} gave 🃏 Card *${cardData.title} - ${cardData.tier} to @${M.mentions[0].split('@')[0]}`
-        await client.sendMessage("120363062645637432@g.us", tr);
+      await client.sendMessage("120363062645637432@g.us", tr);
     } catch (err) {
+      console.error(err);
       await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.errText()} Error-Chan Dis\n\nError:\n${err}` });
     }
   },

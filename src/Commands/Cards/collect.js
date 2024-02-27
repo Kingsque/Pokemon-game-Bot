@@ -1,43 +1,52 @@
+const ms = require('parse-ms');
+
 module.exports = {
   name: "collect",
   aliases: ["c"],
   exp: 0,
+  cool: 4,
   react: "✅",
   category: "card game",
-  description: "Claim the card",
+  description: "Claim the card that is spawned",
   async execute(client, arg, M) {
-    const card = await client.cards.get(`${M.from}.card`);
-    const cardPrice = await client.cards.get(`${M.from}.card_price`);
-    const deck = await client.DB.get(`${M.sender}_Deck`) || [];
-    const collection = await client.DB.get(`${M.sender}_Collection`) || [];
-    const wallet = await client.cradit.get(`${M.sender}.wallet`) || 0;
-
-    // Check if the user already has the card in their deck or collection
-    if (deck.includes(card)) {
-      return M.reply(`🛑 You already have the card 🃏 ${title} (Tier ${tier}) in your deck.`);
-    } else if (collection.includes(card)) {
-      return M.reply(`🛑 You already have the card 🃏 ${title} (Tier ${tier}) in your collection.`);
-    }
-
-    // Check if the card has already been claimed by another user
-    const claimedCards = await client.DB.get('claimed-cards') || [];
-    if (claimedCards.includes(card)) {
-      return M.reply("This card has already been claimed by another user.");
-    }
-
+    const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
     try {
+      const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.collect`);
+
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
+      const card = await client.cards.get(`${M.from}.card`);
+      const cardPrice = await client.cards.get(`${M.from}.card_price`);
       if (!card) {
         return M.reply("🙅‍♀️ Sorry, there are currently no available cards to claim!");
       }
 
-      if (wallet === 0) return M.reply("You have an empty wallet");
+      const deck = await client.DB.get(`${M.sender}_Deck`) || [];
+      const collection = await client.DB.get(`${M.sender}_Collection`) || [];
+      const wallet = await client.cradit.get(`${M.sender}.wallet`) || 0;
 
-      if (wallet < cardPrice) return M.reply(`You don't have enough in your wallet ${wallet}`);
+      if (wallet === 0) {
+        return M.reply("You have an empty wallet");
+      }
 
-      const [title, tier] = card.split("-");
+      if (wallet < cardPrice) {
+        return M.reply(`You don't have enough in your wallet. Current balance: ${wallet}`);
+      }
 
       // Deduct the card price from the user's wallet
       await client.cradit.sub(`${M.sender}.wallet`, cardPrice);
+
+      const [title, tier] = card.split("-");
 
       let text = `🃏 ${title} (${tier}) has been safely stored in your deck!`;
 
@@ -52,19 +61,12 @@ module.exports = {
       await client.DB.set(`${M.sender}_Collection`, collection);
 
       await M.reply(
-        '🎉 You have successfully claimed'.concat(
-          ' *',
-          title,
-          ' - ',
-          tier,
-          '* for *',
-          cardPrice,
-          ' Credits* ',
-          text
-        )
+        `🎉 You have successfully claimed *${title} - ${tier}* for *${cardPrice} Credits* ${text}`
       );
+
       await client.cards.delete(`${M.from}.card`);
       await client.cards.delete(`${M.from}.card_price`);
+      await client.DB.set(`${M.sender}.slot`, Date.now());
     } catch (err) {
       await client.sendMessage(M.from, {
         image: { url: `${client.utils.errorChan()}` },

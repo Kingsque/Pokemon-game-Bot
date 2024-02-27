@@ -1,59 +1,63 @@
-const axios = require("axios");
+const ms = require('parse-ms');
 
 module.exports = {
   name: "swap",
   aliases: ["swapcards"],
   exp: 0,
+  cool: 4,
   react: "✅",
   category: "card game",
   description: "Swap two cards in your deck",
   async execute(client, arg, M) {
-    
-    const cardgame = (await client.DB.get('card-game')) || []
-    
-  //  if(!cardgame.includes(M.from)){
-   //   return M.reply("Card game is not enabled here")
-  //  }
-  
-    try{
+    const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
+      try {
+        const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.swap`);
 
-      let pc = await client.DB.get(`${M.sender}_Deck`) || [];
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
 
-    if (!arg[0] || isNaN(arg[0]) || arg[0].includes("-") || arg[0].includes("+") || (pc.length - parseInt(arg[0])) < 0) {
-        M.reply("Please provide a valid first card index.");
-        return;
-    }
+          let pc = await client.DB.get(`${M.sender}_Deck`) || [];
 
-    if (!arg[1] || isNaN(arg[1]) || arg[1].includes("-") || arg[1].includes("+") || (pc.length - parseInt(arg[1])) < 0) {
-        M.reply("Please provide a valid second card index.");
-        return;
-    }
+          if (!arg[0] || isNaN(arg[0]) || arg[0].includes("-") || arg[0].includes("+") || (pc.length - parseInt(arg[0])) < 0) {
+              M.reply("Please provide a valid first card index.");
+              return;
+          }
 
-    const index1 = parseInt(arg.split(' ')[0]) - 1;
-    const index2 = parseInt(arg.split(' ')[1]) - 1 ;
+          if (!arg[1] || isNaN(arg[1]) || arg[1].includes("-") || arg[1].includes("+") || (pc.length - parseInt(arg[1])) < 0) {
+              M.reply("Please provide a valid second card index.");
+              return;
+          }
 
-    if (index1 === index2) {
-        M.reply("The two indices provided cannot be the same.");
-        return;
-    }
+          const index1 = parseInt(arg[0]) - 1;
+          const index2 = parseInt(arg[1]) - 1;
 
-    const newArray = [...pc];
-    const temp = newArray[index1];
-    newArray[index1] = newArray[index2];
-    newArray[index2] = temp;
+          if (index1 === index2) {
+              M.reply("The two indices provided cannot be the same.");
+              return;
+          }
 
-    await client.DB.delete(`${M.sender}_Deck`);
+          const newArray = [...pc];
+          const temp = newArray[index1];
+          newArray[index1] = newArray[index2];
+          newArray[index2] = temp;
 
+          await client.DB.set(`${M.sender}_Deck`, newArray);
 
-    for (let i = 0; i < pc.length; i++) {
-        await client.DB.push(`${M.sender}_Deck`, newArray[i]);
+          M.reply(`Cards at index ${index1} and ${index2} have been swapped.`);
+          await client.DB.set(`${M.sender}.slot`, Date.now());
+      } catch (err) {
+          console.error(err);
+          await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
       }
-      
-
-    M.reply(`Cards at index ${index1} and ${index2} have been swapped.`);
-    
-    }catch(err){
-      await client.sendMessage(M.from , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`})
-    }
   },
 };

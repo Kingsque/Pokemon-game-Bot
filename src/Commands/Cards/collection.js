@@ -1,15 +1,32 @@
 const axios = require("axios");
 const path = require('path');
+const ms = require('parse-ms');
 
 module.exports = {
   name: "collection",
   aliases: ["coll"],
   react: '🎉',
   exp: 0,
+  cool: 4,
   category: "card game",
   description: "View your collected cards",
   async execute(client, arg, M) {
+    const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
     try {
+      const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.coll`);
+
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
       const collection = (await client.DB.get(`${M.sender}_Collection`)) || [];
       if (collection.length === 0) {
         return M.reply("You currently don't have any cards in your collection");
@@ -21,12 +38,9 @@ module.exports = {
         let card = uniqueCards[i].split("-");
         const filePath = path.join(__dirname, '../../Handlers/card.json');
         const data = require(filePath);
-        const newArray = data.filter(function (I) {
-          return I.tier == card[1];
-        });
-        const index = newArray.findIndex((cardData) => cardData.title == card[0]);
-        const obj = newArray[index];
-        tr += `*${i+1})Name: ${card[0]}( Tier: ${obj.tier})*\n\n`;
+        const newArray = data.filter((I) => I.tier == card[1]);
+        const obj = newArray.find((cardData) => cardData.title === card[0]);
+        tr += `*${i+1}) Name: ${card[0]} (Tier: ${obj.tier})*\n\n`;
       }
       if (arg) { 
         const index = parseInt(arg) - 1; // The index in the array is 0-based
@@ -36,11 +50,10 @@ module.exports = {
           const card = collection[index].split('-');
           const filePath = path.join(__dirname, '../../Handlers/card.json');
           const data = require(filePath);
-          const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
-          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
+          const cardData = data.find((cardData) => cardData.title === card[0] && cardData.tier === card[1]);
           const cardUrl = cardData.url;
           let text = `🃏 Total Coll Cards: ${collection.length}\n\n🏮 Username: ${(await client.contact.getContact(M.sender, client)).username}`
-          text += `\n*#${index + 1}*\n🃏 *Name:* ${card[0]}\n`.concat(`🪄 *Tier:* ${card[1]} \n`);
+          text += `\n*#${index + 1}*\n🃏 *Name:* ${card[0]}\n🪄 *Tier:* ${card[1]}\n`;
           
           const file = await client.utils.getBuffer(cardUrl);
           if (cardUrl.endsWith('.gif')) {
@@ -55,24 +68,22 @@ module.exports = {
           }
         }
       } else {
-        const images = [];
         let cardText = "";
         const cardSet = new Set();
         for (let i = 0; i < collection.length; i++) {
           const card = collection[i].split('-');
           const filePath = path.join(__dirname, '../../Handlers/card.json');
           const data = require(filePath);
-          const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
-          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
+          const cardData = data.find((cardData) => cardData.title === card[0] && cardData.tier === card[1]);
           let cardUrl = cardData.url;
           if (!cardSet.has(cardData.title)) {
             cardSet.add(cardData.title);
-            images.push(cardUrl);
           }
           cardText += `🔰Card ${i+1}:\n\n🌟Tier: ${card[1]}\n\n💎Name ${card[0]}\n`;
         }
         await client.sendMessage(M.from, tr);
       }
+      await client.DB.set(`${M.sender}.slot`, Date.now());
     } catch (err) {
       await client.sendMessage(M.from, {image: {url: `${client.utils.errorChan()}`}, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`});
     }

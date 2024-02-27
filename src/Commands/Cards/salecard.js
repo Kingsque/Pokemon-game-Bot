@@ -1,18 +1,35 @@
 const axios = require("axios");
 const path = require('path');
+const ms = require('parse-ms');
 
 module.exports = {
-  name: "sellcard",
+  name: "salecard",
   aliases: ["buycard", "csale"],
   exp: 0,
+  cool: 4,
   react: "✅",
   category: "card game",
   description: "sales/buys or cancels card sales",
   async execute(client, arg, M) {
-    const selling = await client.DB.get(`${M.from}.sellInProgress`) || true;
-    if (!selling) return M.reply("Sale is going on already")
-
+    const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
     try {
+      const cooldownMs = this.cool * 1000;
+      const lastSlot = await client.DB.get(`${M.sender}.sale`);
+
+      if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+          const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+          return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+      }
+      const selling = await client.DB.get(`${M.from}.sellInProgress`) || false;
+      if (selling) return M.reply("Sale is already in progress.");
+
       const command = M.body.split(' ')[0].toLowerCase().slice(client.prefix.length).trim();
       if (command === 'salecard') {
         const seller = M.sender.jid;
@@ -23,7 +40,7 @@ module.exports = {
         const cardIndex = parseInt(splitArgs[0]) - 1;
         const price = splitArgs[1];
         const deck = await client.DB.get(`${M.sender}_Deck`) || [];
-        if (!deck || !deck.length) {
+        if (!deck.length) {
           return M.reply("❗ You do not have any cards in your deck!");
         }
         const cardToSell = deck[cardIndex]?.split('-');
@@ -42,9 +59,9 @@ module.exports = {
         const cardTier = cardData.tier;
         const shopID = client.utils.getRandomInt(10000, 99999);
         const imageUrl = cardUrl;
-        let isGif = imageUrl.endsWith('.gif');
+        const isGif = imageUrl.endsWith('.gif');
         const file = await client.utils.getBuffer(imageUrl);
-        const text = `💎Card on sale💎\n\n🌊 Name: ${cardName}\n\n🌟 Tier: ${cardTier}\n\n📝 Price: ${price}\n\n🎉 ID: ${shopID}\n\n🔰 Use :buycard <saleID> to get the card`;
+        const text = `💎 Card on sale 💎\n\n🌊 Name: ${cardName}\n\n🌟 Tier: ${cardTier}\n\n📝 Price: ${price}\n\n🎉 ID: ${shopID}\n\n🔰 Use :buycard <saleID> to get the card`;
 
         if (isGif) {
           const giffed = await client.utils.gifToMp4(file);
@@ -77,7 +94,7 @@ module.exports = {
         if (!saleData) {
           return M.reply("Sale with that ID does not exist or has expired.");
         }
-        const { seller, cardIndex, price } = saleData; // Removed unnecessary properties
+        const { seller, cardIndex, price } = saleData;
 
         const buyer = M.sender;
         const sellerDeck = await client.DB.get(`${seller}_Deck`) || [];
@@ -97,15 +114,20 @@ module.exports = {
         await client.DB.set(`${M.from}.sellInProgress`, false);
         M.reply(`Sale is done. User ${buyer} paid ${price} to ${seller} and bought the card.`);
       } else if (command === 'csale') {
+        const shopID = parseInt(arg);
+        if (isNaN(shopID)) {
+          return M.reply("Invalid sale ID. Please use a valid sale ID.");
+        }
         const saleData = await client.DB.get(`${M.sender}.sell`, { shopID });
         if (!saleData) {
           return M.reply("Sale with that ID does not exist or has expired.");
         }
         const { seller, cardIndex, price } = saleData;
-        if (M.sender !== seller) return M.reply("You cannot cancel as u didnt started");
+        if (M.sender !== seller) return M.reply("You cannot cancel as you didn't start it.");
         await client.DB.pull(`${M.sender}.sell`, { shopID, seller, cardIndex, price });
-         await client.DB.set(`${M.from}.sellInProgress`, false);
+        await client.DB.set(`${M.from}.sellInProgress`, false);
         M.reply("Sale canceled");
+        await client.DB.set(`${M.sender}.slot`, Date.now());
       }
     } catch (err) {
       console.error(err);
