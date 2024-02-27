@@ -1,9 +1,9 @@
 {
-   "name": "ari-ani",
+   "name": "aurora-private",
    "version": "0.0.1",
-   "description": "krytron based on JavaScript",
-   "author": "Debanjan-San",
-   "main": "src/haven.js",
+   "description": "whatsapp bot based on JavaScript",
+   "author": "Shisui sensei",
+   "main": "src/aurora.js",
    "keywords": [
       "Whatsapp",
       "WhatsApp-Bot",
@@ -13,15 +13,15 @@
    "license": "SEE LICENSE IN LICENSE.md",
    "scripts": {
       "format": "prettier --write --config .prettierrc.json \"src/**/*.js\"",
-      "start": "node --optimize_for_size --max_old_space_size=8192 src/haven.js"
+      "start": "node --optimize_for_size --max_old_space_size=8192 src/aurora.js"
    },
    "bugs": {
-      "url": "https://github.com/Debanjan-San/Bot-Haven/issues"
+      "url": "https://github.com/Kingshisui00/Aurora-Private/issues"
    },
-   "homepage": "https://github.com/Debanjan-San/Bot-Haven",
+   "homepage": "https://github.com/Kingshisui00/Aurora-Private",
    "repository": {
       "type": "git",
-      "url": "https://github.com/Debanjan-San/Bot-Haven.git"
+      "url": "https://github.com/Kingshisui00/Aurora-Private.git"
    },
    "dependencies": {
       "@WhiskeySockets/baileys": "https://github.com/WhiskeySockets/Baileys.git",

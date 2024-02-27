@@ -51,8 +51,8 @@ const start = async () => {
     })
 
     //Config
-    client.name = process.env.NAME || 'Bot-Haven'
-    client.prefix = process.env.PREFIX || '!'
+    client.name = process.env.NAME || 'Aurora-Private'
+    client.prefix = process.env.PREFIX || ':'
     client.writesonicAPI = process.env.WRITE_SONIC || null
     client.bgAPI = process.env.BG_API_KEY || null
     client.mods = ('917903576495,918961331275').split(',')
@@ -82,11 +82,8 @@ const start = async () => {
     //RPG
     client.rpg = client.DB.table('rpg_game')
     
-    //potion
+    //charagame
     client.chara = client.DB.table('chara')
-    
-    //charm
-    client.charm = client.DB.table('charm')
     
     //Commands
     client.cmd = new Collection()
