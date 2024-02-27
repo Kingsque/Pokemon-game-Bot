@@ -1,19 +1,37 @@
+const ms = require('parse-ms');
+
 module.exports = {
     name: 'withdraw',
     aliases: ["wt", "with"],
     category: 'economy',
     exp: 5,
+    cool:4,
     react: "✅",
     description: 'Withdraws golds in your bank',
     async execute(client, arg, M) {
-        if (!arg) return M.reply('Please provide the amount')
+        const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
+        const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.wd`);
+
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
+        if (!arg || isNaN(arg)) return M.reply('Please provide a valid amount')
         const amount = parseInt(arg)
-        if (isNaN(amount)) return M.reply('Please provide the amount')
-        if (arg.startsWith('-') || arg.startsWith('+')) return M.reply('Please provide the amount')
-        const cradits = (await client.cradit.get(`${M.sender}.bank`)) || 0
-        if ((cradits - amount) < 0) return M.reply('You dont have that much in your bank')
-        await client.cradit.add(`${M.sender}.wallet`, amount)
-        await client.cradit.sub(`${M.sender}.bank`, amount)
-        M.reply(`You have successfully deposited ${amount} in your bank`)
+        if (amount <= 0) return M.reply('Please provide a valid amount')
+        const credits = (await client.credits.get(`${M.sender}.bank`)) || 0
+        if (credits < amount) return M.reply('You do not have enough in your bank')
+        await client.credits.add(`${M.sender}.wallet`, amount)
+        await client.credits.sub(`${M.sender}.bank`, amount)
+        M.reply(`You have successfully withdrawn ${amount} from your bank`)
+        await client.DB.set(`${M.sender}.wd`, Date.now());
     }
 }
