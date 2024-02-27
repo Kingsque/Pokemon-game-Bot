@@ -1,3 +1,4 @@
+const ms = require('parse-ms');
 const quizQuestions = [
 {
 question: "Which anime follows the adventures of Monkey D. Luffy and his pirate crew?",
@@ -330,8 +331,31 @@ module.exports = {
   name: 'quiz',
   aliases: ['quiz'],
   category: 'games',
+  react: "✅",
+  exp: 12,
+  cool: 4,
   description: 'Play a quiz against another person',
   async execute(client, arg, M) {
+    const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
+    const participant = await client.DB.get('game') || [];
+      if (!participant.includes(M.from)) {
+        return M.reply(`To use game commands, join the games group by using ${client.prefix}support`);
+      }
+      const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.quiz`);
+
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
+
     const quiz = await client.DB.get(`${M.from}.quizInProgress`) || true;
     let player1, player2;
 
@@ -352,6 +376,7 @@ module.exports = {
       player1 = M.from;
       player2 = M.mentions[0];
       await client.DB.get(`${M.from}.quizInProgress`, true);
+      await client.DB.set(`${M.sender}.quiz`, Date.now());
       M.reply("The quiz has started. Questions will be sent, and you have to answer. Use :quiz next");
     } else if (arg === "next") {
       // Send questions to both players
