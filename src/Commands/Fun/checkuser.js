@@ -1,17 +1,34 @@
 // prettier-ignore
-const checks = ['awesomecheck', 'greatcheck', 'gaycheck', 'cutecheck', 'lesbiancheck', 'hornycheck', 'prettycheck', 'lovelycheck', 'uglycheck', 'beautifulcheck', 'handsomecheck', 'charactercheck']
+const checks = ['awesome', 'great', 'gay', 'cute', 'lesbian', 'horny', 'pretty', 'lovely', 'ugly', 'beautiful', 'handsome', 'character']
+const ms = require('parse-ms');
 
 module.exports = {
     name: 'checkuser',
-    aliases: ['cu', ...checks],
+    aliases: ['cu', ...checks.map(check => `${check}check`)],
     exp: 10,
+    cool: 4,
     react: "✅",
     category: 'fun',
     description: 'Checks on user',
     async execute(client, arg, M) {
+        const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
+        const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.cu`);
+
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
         const text = arg.trim()
         const command = M.body.split(' ')[0].toLowerCase().slice(client.prefix.length).trim()
-        if (command == 'checkuser' || command == 'cu')
+        if (command === 'checkuser' || command === 'cu') {
             if (!text) {
                 const CheckList = `🎃 *Available Checks:*\n\n- ${checks
                     .map((check) => client.utils.capitalize(check))
@@ -20,6 +37,7 @@ module.exports = {
                 }(check) [tag/quote user]\nExample: ${client.prefix}awesomecheck`
                 return await M.reply(CheckList)
             }
+        }
         if (M.quoted?.participant) M.mentions.push(M.quoted.participant)
         if (!M.mentions.length) M.mentions.push(M.sender)
         const types = [
@@ -31,9 +49,9 @@ module.exports = {
             'Good',
             'Simp',
             'Kind-Hearted',
-            'patient',
+            'Patient',
             'UwU',
-            'top, anyway',
+            'Top, anyway',
             'Helpful'
         ]
         const character = types[Math.floor(Math.random() * types.length)]
@@ -52,5 +70,6 @@ module.exports = {
                 quoted: M
             }
         )
+        await client.DB.set(`${M.sender}.cu`, Date.now());
     }
 }
