@@ -1,3 +1,5 @@
+const ms = require('parse-ms');
+
 module.exports = {
     name: 'tagall',
     aliases: ['everyone'],
@@ -6,28 +8,36 @@ module.exports = {
     category: 'moderation',
     description: 'Tag all the users present in the group',
     async execute(client, arg, M) {
+        const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
+        const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.tag`);
+
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
         const groupMetadata = await client.groupMetadata(M.from)
         const groupMembers = groupMetadata?.participants.map((x) => x.id) || []
-        const groupAdmins = groupMetadata.participants.filter((x) => x.admin).map((x) => x.id)
+        const groupAdmins = groupMetadata.participants.filter((x) => x.isAdmin).map((x) => x.id)
 
         let text = `${arg !== '' ? `🧧 *Message: ${arg}*\n\n` : ''}🍀 *Group:* ${
             groupMetadata.subject
         }\n🎈 *Members:* ${groupMetadata.participants.length}\n📣 *Tagger: @${M.sender.split('@')[0]}*\n`
 
-        const admins = []
-        const members = []
+        const admins = groupMembers.filter((jid) => groupAdmins.includes(jid))
+        const members = groupMembers.filter((jid) => !groupAdmins.includes(jid))
 
-        for (const jid of groupMembers) {
-            if (groupAdmins.includes(jid)) {
-                admins.push(jid)
-                continue
-            }
-            members.push(jid)
-        }
-
-        for (let i = 0; i < admins.length; i++) text += `${i === 0 ? '\n\n' : '\n'}🌟 *@${admins[i].split('@')[0]}*`
-        for (let i = 0; i < members.length; i++) text += `${i === 0 ? '\n\n' : '\n'}🎗 *@${members[i].split('@')[0]}*`
+        for (const admin of admins) text += `\n🌟 *@${admin.split('@')[0]}*`
+        for (const member of members) text += `\n🎗 *@${member.split('@')[0]}*`
 
         await client.sendMessage(M.from, { text, mentions: groupMembers }, { quoted: M })
+        await client.DB.set(`${M.sender}.tag`, Date.now());
     }
 }
