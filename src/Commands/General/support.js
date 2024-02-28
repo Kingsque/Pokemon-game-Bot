@@ -1,29 +1,48 @@
-module.exports = {
-    name: 'support',
-    aliases: ['Support'],
-    category: 'general',
-    exp: 5,
-    react: "✅",
-    description: 'Bot faq',
-    async execute(client, arg, M) {
-         let videos = [
-            'https://telegra.ph/file/f0c24da2961de0bede5e1.mp4',
-            'https://telegra.ph/file/f7d87038dc8c486c1a094.mp4',
-            'https://telegra.ph/file/672375c8205e1f126f200.mp4'
-        ]
-        let randomRes = videos[Math.floor(Math.random() * videos.length)]
+const ms = require('parse-ms');
 
-  
-const ariLogo = "https://i.ibb.co/kcz5R14/Whats-App-Image-2023-02-27-at-12-32-54-AM.jpg"
+module.exports = {
+     name: 'support',
+     aliases: ['support'],
+     category: 'general',
+     exp: 5,
+     cool: 4,
+     react: "✅",
+    description: 'Gives links of official gcs',
+     async execute(client, arg, M) {
+          const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
         
-        let supportG = `*━『 Support Group Links 』━*\n\n* [ Aurora Support ] :*\nhttps://chat.whatsapp.com/JCnUvsZL1LF6LaUdVQmtQ1\n* [ Aurora Auction ] :*\nhttps://chat.whatsapp.com/KLa3zKQeSan8cAlRn1RtsY\n* [ Aurora Casino ] :**\nhttps://chat.whatsapp.com/DBeQp2Ni7abJvtMReuvd3l\n\n`
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
+        const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.support`);
+
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
+        const videos = [
+             'https://telegra.ph/file/f0c24da2961de0bede5e1.mp4',
+             'https://telegra.ph/file/f7d87038dc8c486c1a094.mp4',
+             'https://telegra.ph/file/672375c8205e1f126f200.mp4'
+        ];
+        const randomRes = videos[Math.floor(Math.random() * videos.length)];
+         const ariLogo = "https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg"
+
+        let supportG = `*━『 Support Group Links 』━*\n\n* [ Aurora Support ] :*\np\nDescription: This is the main group of our bot, here rpg commands , game commands and card shop commands will work\n* [ Aurora Auction ] :*\np\nDescription: Here every weekend auctions of events auction of event cards takes place and on every nee 100 user a grand auction takes place\n* [ Aurora Casino ] :**\np\nDescription: Here you can do slots and gamble to increase your money\n\n`
         let text = [
-            "Together we rise, together we fall, but always together in this anime world we call home. Welcome to the support group.",
-            "Behind every successful anime lover, there's a great support group. And you just found one.",
+             "Together we rise, together we fall, but always together in this anime world we call home. Welcome to the support group.",
+             "Together we rise, together we fall, but always together in this anime world we call home. Welcome to the support group.",
+             "Behind every successful anime lover, there's a great support group. And you just found one.",
+             "Behind every successful anime lover, there's a great support group. And you just found one.",
             "In this group, we don't just talk about anime, we support each other's passions, goals and dreams. Welcome to the family.",
-            "Life can be tough, but with anime and this support group, we can conquer anything. Are you ready to join the journey?",
+            "In this group, we don't just talk about anime, we support each other's passions, goals, and dreams. Welcome to the family.",
+             "Life can be tough, but with anime and this support group, we can conquer anything. Are you ready to join the journey?",
+             "Life can be tough, but with anime and this support group, we can conquer anything. Are you ready to join the journey?",
             "This group is more than just a chat room. It's a community of people who share the same love and passion for anime. Join us and let's grow together.",
-            "In this world, we all have our own battles to fight. But in this group, we have each other's back. Welcome to the support group.",
             "In this group, we don't judge, we don't discriminate, we don't hate. We support each other through thick and thin. Are you ready to be part of something special?",
             "Welcome to the support group, where the anime never ends and the support is always here.",
             "In this group, we don't just watch anime, we live it. And we're here to support each other through every step of the way.",
@@ -48,15 +67,13 @@ const ariLogo = "https://i.ibb.co/kcz5R14/Whats-App-Image-2023-02-27-at-12-32-54
             "In this support group, we lift each other up and help each other grow.",
             "When you're part of this group, you never have to face your struggles alone.",
             "Our love for anime is what connects us, but our support for each other is what makes us a family.",
-            "If you don\' join the group and be active on it. i will fuck you."
-        ]
-        let ran = text[Math.floor(Math.random() * text.length)]
+        ];
+        const ran = text[Math.floor(Math.random() * text.length)];
 
-        let final = supportG.concat(ran)
-        // await client.sendMessage(M.sender , { video: {url: videos} ,caption: final , gifPlayback: true} , { quoted: M})
-        // await client.sendMessage(M.from , {image: {url: ariLogo} , caption: `Dmed you the group link`})
+        const final = supportG.concat(ran);
 
-        await client.sendMessage(M.from,{video:{url: randomRes}, gifPlayback:true, caption: `*Dmed you the group link*`},{quoted:M})
-  await  client.sendMessage(M.sender,{image:{url:ariLogo},caption:final},{quoted:M})  
+        await client.sendMessage(M.from, { video: { url: randomRes }, gifPlayback: true, caption: `*Dmed you the group link*` }, { quoted: M });
+        await client.sendMessage(M.sender, { image: { url: ariLogo }, caption: final }, { quoted: M });
+        await client.DB.set(`${M.sender}.support`, Date.now());
     }
-}
+};

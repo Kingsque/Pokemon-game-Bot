@@ -1,28 +1,44 @@
 const { getStats } = require('../../lib/stats')
+const ms = require('parse-ms');
 
 module.exports = {
     name: 'profile',
     aliases: ['p'],
     category: 'general',
     exp: 5,
+    cool: 4,
     react: "👀",
     description: 'Gives you your stats',
     async execute(client, arg, M) {
+        const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+        
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        } 
+        const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.profile`);
+
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        }
         const groupMetadata = await client.groupMetadata(M.from)
         const groupMembers = groupMetadata?.participants || []
         const groupAdmins = groupMembers.filter((v) => v.admin).map((v) => v.id)
-        const user = M.quoted?.participant ? M.quoted.participant : M.mentions[0] ? M.mentions[0] : M.sender
-        const collection = (await client.DB.get(`${M.sender}_Collection`)) || []
-        const deck = await client.DB.get(`${M.sender}_Deck`)
-        let bank = await client.cradit.get(`${M.sender}.bank`) || 0
-        let wallet = await client.cradit.get(`${M.sender}.wallet`) || 0;
+        const user = M.quoted?.participant || M.mentions[0] || M.sender
+        const collection = (await client.DB.get(`${user}_Collection`)) || []
+        const deck = await client.DB.get(`${user}_Deck`)
+        let bank = await client.cradit.get(`${user}.bank`) || 0
+        let wallet = await client.cradit.get(`${user}.wallet`) || 0;
         
         let pfp
         try {
             pfp = await client.profilePictureUrl(user, 'image')
         } catch {
-            pfp =
-                'https://w0.peakpx.com/wallpaper/346/996/HD-wallpaper-love-live-sunshine-404-error-love-live-sunshine-anime-girl-anime.jpg'
+            pfp = 'https://w0.peakpx.com/wallpaper/346/996/HD-wallpaper-love-live-sunshine-404-error-love-live-sunshine-anime-girl-anime.jpg'
         }
 
         let bio
@@ -49,11 +65,9 @@ module.exports = {
         text += `✖ *Ban:* ${banned.includes(user) ? 'True' : 'False'}\n\n`
         text += `💰 *Wallet:* ${wallet}\n\n`
         text += `🏦 *Bank:* ${bank}\n\n`
-      //  text += `🃏 *Deck:* ${deck.length}\n\n`
-       // text += `🗃️ *Collection:* ${collection.length}\n\n`
+        text += `🃏 *Deck:* ${deck.length}\n\n`
+         text += `🗃️ *Collection:* ${collection.length}\n\n`
         
-        
-        //user.substring(3, 7)
         client.sendMessage(
             M.from,
             {
@@ -66,5 +80,6 @@ module.exports = {
                 quoted: M
             }
         )
+        await client.DB.set(`${M.sender}.profile`, Date.now());
     }
 }
