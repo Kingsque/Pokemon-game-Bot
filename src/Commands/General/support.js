@@ -33,6 +33,9 @@ module.exports = {
          const ariLogo = "https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg"
 
         let supportG = `*━『 Support Group Links 』━*\n\n* [ Aurora Support ] :*\np\nDescription: This is the main group of our bot, here rpg commands , game commands and card shop commands will work\n* [ Aurora Auction ] :*\np\nDescription: Here every weekend auctions of events auction of event cards takes place and on every nee 100 user a grand auction takes place\n* [ Aurora Casino ] :**\np\nDescription: Here you can do slots and gamble to increase your money\n\n`
+        supportG += `website= `  
+        supportG += `ʏᴏᴜᴛᴜʙᴇ =`  
+        supportG += `ɢᴍᴀɪʟ = `
         let text = [
              "Together we rise, together we fall, but always together in this anime world we call home. Welcome to the support group.",
              "Together we rise, together we fall, but always together in this anime world we call home. Welcome to the support group.",

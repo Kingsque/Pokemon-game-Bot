@@ -37,14 +37,9 @@ module.exports = {
       caption += `*🛡️License: ${result.license.name}*\n`; // Fix typo here
       caption += `⚙️ *Repo Link: comming soon[aurora public]*\n\n`; // Fix typo here
       caption += `Contacts`
-      caption += `ᴛᴇʟᴇɢʀᴀᴍ = `
-      caption += `discord = `
-      caption += `whatsapp = `
       caption += `website= `  
       caption += `ʏᴏᴜᴛᴜʙᴇ =`  
-      caption += `ᴍᴀɪɴ ᴡᴇʙ = `
       caption += `ɢᴍᴀɪʟ = `
-      caption += `instagram = `
 
       
       await client.sendMessage(M.from, { image: { url: image }, caption: caption }, { quoted: M });

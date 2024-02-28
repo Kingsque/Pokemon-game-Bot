@@ -38,14 +38,9 @@ module.exports = {
       text += `CARD SHOP WILL BE RUNNED IN THE MAIN GC THERE YOU CAN USE RPG COMMANDS TO INCREASE YOUR MATERIALS FOR BUYNG CARD FROM SHOP AND THE CARD SHOP COMMAND CAN BE USED ANYTIME BUT THE BUY CARD COMMAND WILL BE ONLY OPENED DURING SATURDAY\n`;
       text += `THE GAMES COMMAND WILL BE OPENED DURING MONDAY TO FRIDAY\n\n`;
       text += `Contacts`
-      text += `ᴛᴇʟᴇɢʀᴀᴍ = `
-      text += `discord = `
-      text += `whatsapp = `
       text += `website= `  
       text += `ʏᴏᴜᴛᴜʙᴇ =`  
-      text += `ᴍᴀɪɴ ᴡᴇʙ = `
       text += `ɢᴍᴀɪʟ = `
-      text += `instagram = `
       
       await client.sendMessage(M.from, { image: { url: image }, caption: text }, { quoted: M });
 await client.DB.set(`${M.sender}.guide`, Date.now());
