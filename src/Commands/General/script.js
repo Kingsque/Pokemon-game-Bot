@@ -37,7 +37,7 @@ module.exports = {
       caption += `*🛡️License: ${result.license.name}*\n`; // Fix typo here
       caption += `⚙️ *Repo Link: comming soon[aurora public]*\n\n`; // Fix typo here
       caption += `Contacts`
-      caption += `website= `  
+      caption += `website= https://kingshisui00.github.io/web-aurora/`  
       caption += `ʏᴏᴜᴛᴜʙᴇ =`  
       caption += `ɢᴍᴀɪʟ = `
 
