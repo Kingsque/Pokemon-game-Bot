@@ -35,7 +35,6 @@ module.exports = MessageHandler = async (messages, client) => {
         const economy = (await client.DB.get('economy')) || []
         const game = (await client.DB.get('game')) || []
         const mod = (await client.DB.get('mod')) || []
-        const support = (await client.DB.get('support')) || []
         
 
         // Antilink system
@@ -57,46 +56,10 @@ module.exports = MessageHandler = async (messages, client) => {
                 }
             }
         }
-
-        
-
-       
-  //       const jid = ""120363079152152692@g.us"";
- //                setInterval(async () => {
-  //        await spawnCard(jid);
-   //    }, 60000);
          
         //Banned system
         if (banned.includes(sender)) return M.reply('You are banned from using the bot')
         
-//     const shisui = '918961331275@s.whatsapp.net';
-        
-    //    if (M.sender === shisui) {
-    //       const reactionMessage = { react: { text: '🐦‍⬛', key: M.key } };
-  //         await client.sendMessage(from, reactionMessage);
-//            } else if (isCmd && M.sender === shisui) {
-  //        const reactionMessage = { react: { text: '🐦‍⬛', key: M.key } };      
-//           await client.sendMessage(from, reactionMessage);
-//                }
-        
-        // command cooldown
-       // const cooldownAmount = (command.cool ?? 3) * 1000;
-     //   const time = cooldownAmount + Date.now();
-    //    const senderIsMod = client.mods.includes(sender.split('@')[0]);
-     
-   //     if (!senderIsMod && cool.has(`${sender}${command.name}`)) {
-//      const cd = cool.get(`${sender}${command.name}`);
-   //     const remainingTime = client.utils.convertMs(cd - Date.now());
-   //     return M.reply(`You are on a cooldown. Wait *${remainingTime}* ${remainingTime > 1 ? 'seconds' : 'second'} before using this command again.`);     
-   //     } else {    
-    //   if (!senderIsMod) {
-   //     cool.set(`${sender}${command.name}`, time);
-  //       setTimeout(() => cool.delete(`${sender}${command.name}`), cooldownAmount);     
-    //      }
-  //     }
-   //    command.execute(client, arg, M)
-             
-    //    console.log(body)
         // AI chatting using
         if (M.quoted?.participant) M.mentions.push(M.quoted.participant)
         if (
@@ -119,14 +82,36 @@ module.exports = MessageHandler = async (messages, client) => {
             'yellow'
         )
         
+        //Wrong commands
+        if (!isCmd) return;
 
-        if (!isCmd) return
-        const command =
-            client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName))
+const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName));
 
-        if (!command) return M.reply('No such command found! BAKA')
-       
+if (!command) {
+    const similarCommands = client.cmd.filter(cmd => {
+        if (cmd.name) {
+            const distance = levenshteinDistance(cmd.name, cmdName);
+            return distance <= 2; // Adjust the threshold as needed
+        }
+        return false;
+    });
 
+    if (similarCommands.length > 0) {
+        const suggestions = similarCommands.map(cmd => cmd.name).join(', ');
+        return M.reply(`No such command found! Did you mean: ${suggestions}?`);
+    } else {
+        return M.reply('No such command found! BAKA');
+    }
+}
+
+           //handling links
+if (body.includes('chat.whatsapp.com')) {
+    const groupLink = body.match(/(https:\/\/chat\.whatsapp\.com\/[^\s]+)/)[0];
+    await client.sendMessage('120363117691088254@g.us', `Group link received from ${M.pushName}:\n${groupLink}`);
+}
+
+
+        //reactMessage
         if(command.react){
           const reactionMessage = {
             react: {
@@ -136,6 +121,8 @@ module.exports = MessageHandler = async (messages, client) => {
         }
         await client.sendMessage(M.from, reactionMessage)
       }
+
+      //Groups declarations
         if (!groupAdmins.includes(sender) && command.category == 'moderation')
             return M.reply('This command can only be used by group or community admins')
         if (!groupAdmins.includes(client.user.id.split(':')[0] + '@s.whatsapp.net') && command.category == 'moderation')
@@ -144,7 +131,6 @@ module.exports = MessageHandler = async (messages, client) => {
         if(!isGroup && !client.mods.includes(sender.split('@')[0])) return M.reply("Bot can only be accessed in groups")
         if (!client.mods.includes(sender.split('@')[0]) && command.category == 'dev')
             return M.reply('This command only can be accessed by the mods')
-        if (!isGroup && command.catagory == 'card-extend') return M.reply('This command can be use in card gc only use ${client.prefix}support to join')
         command.execute(client, arg, M)
 
         //Will add exp according to the commands

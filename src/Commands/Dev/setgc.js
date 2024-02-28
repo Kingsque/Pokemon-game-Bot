@@ -15,7 +15,7 @@ module.exports = {
             const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
             return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
         } 
-        const toggleableGroupActions = ['auction','cshop','economy','game','mod','support','card-game']
+        const toggleableGroupActions = ['auction','cshop','economy','game','mod','card-game']
         if (!arg)
             return M.reply(
                 `Please provide a valid toggleable GroupActions\n\n*Available:* \n${toggleableGroupActions.join('\n')}`
