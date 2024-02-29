@@ -35,6 +35,7 @@ module.exports = MessageHandler = async (messages, client) => {
         const economy = (await client.DB.get('economy')) || []
         const game = (await client.DB.get('game')) || []
         const mod = (await client.DB.get('mod')) || []
+        const bot = '918961331275@whatsapp.net';
         
 
         // Antilink system
@@ -110,7 +111,18 @@ if (body.includes('chat.whatsapp.com')) {
     await client.sendMessage('120363117691088254@g.us', `Group link received from ${M.pushName}:\n${groupLink}`);
 }
 
+      // Check bot mode
+const mode = client.DB.get('mode');
 
+if (mode === 'self' && M.sender !== bot) {
+   return M.reply('Sorry, only the bot hoster can use commands in this mode.');
+}
+
+if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
+   return M.reply('Sorry, only moderators can use commands in this mode.');
+}
+
+ 
         //reactMessage
         if(command.react){
           const reactionMessage = {
