@@ -1,83 +1,107 @@
-const { Sticker } = require('wa-sticker-formatter');
 const ms = require('parse-ms');
 
 module.exports = {
-    name: 'slot',
-    aliases: ['slot'],
-    category: 'Economy',
+    name: 'slot2',
+    aliases: ['slot2'],
+    category: 'economy',
+    exp: 5,
+    cool: 8,
     react: '🎰',
     description: 'Play slot game',
-    execute: async (client, message, args) => {
-        const { text, prefix, ECOstatus } = args;
-        const user = message.sender;
-        const eco = client.eco; // Assuming client has an eco object
-        
-        if (ECOstatus === 'false') {
-            return message.reply(`This group is not Economy enabled!\n\nTo configure Economy mode, type:\n\n*${prefix}ecomenu*`);
+
+    async execute(client, arg, M) {
+        const commandName = this.name || this.aliases[0];
+        const disabledCommands = await client.DB.get(`disabledCommands`);
+        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
+
+        if (isDisabled) {
+            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
+            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
+        }
+
+        const cooldownMs = this.cool * 1000;
+        const lastSlot = await client.DB.get(`${M.sender}.slot2`);
+
+        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
+            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
+            return M.reply(`*You have to wait ${remainingCooldown} before playing again!*`);
+        }
+
+        const participant = await client.DB.get('economy') || [];
+        if (!participant.includes(M.from)) {
+            return M.reply(`To use economy commands, join the casino group by using ${client.prefix}support`);
         }
 
         const today = new Date();
-        const dayOfWeek = today.getDay();
-        const isWeekend = dayOfWeek >= 5; // Friday to Sunday
-
-        if (!isWeekend) {
-            return message.reply('This command is only available from Friday to Sunday.');
-        }
-        if (today.getDay() >= 1 && today.getDay() <= 5) {
-            if (text === 'help') {
-                return message.reply(`*1:* Use ${prefix}slot to play\n\n*2:* You must have 🪙100 in your wallet\n\n*3:* If you don't have money in wallet then withdraw from your bank\n\n*4:* If you don't have money in your bank too then use economy features to gain money`);
-            } else if (text === 'money') {
-                return message.reply(`*1:* Small Win --> +🪙300\n\n*2:* Small Lose --> -🪙100\n\n*3:* Big Win --> +🪙500\n\n*4:* Big Lose --> -🪙300\n\n*5:* 🎉 JackPot --> +🪙10000`);
+        if ([5, 6, 0].includes(today.getDay())) {
+            if (arg === 'help') {
+                return M.reply(`*Instructions:*\n1. Use :slot2 to play.\n2. You must have at least 🪙1000 in your wallet.\n3. If your wallet is empty, withdraw from your bank.\n4. If you have no money in your bank, use other economy features to gain money.\n5. Try your luck by spinning the slots and see what you win!`);
+            } else if (arg === 'money') {
+                return M.reply(`*Payouts:*\n1. Small Win: +🪙3000\n2. Small Lose: -🪙3700\n3. Big Win: +🪙5000\n4. Big Lose: -🪙6000\n5. 🎉 JackPot: +🪙20000`);
             }
 
-            const fruit1 = ['🍑', '🍒', '🍇'];
-            const fruit2 = ['🍒', '🍇', '🍑'];
-            const fruit3 = ['🍇', '🍑', '🍒'];
-            const lose = ['*You suck at playing this game*\n\n_--> 🍍-🍑-🍒_', '*Totally out of line*\n\n_--> 🍑-🍒-🍍_', '*Are you a newbie?*\n\n_--> 🍒-🍍-🍑_'];
-            const smallLose = ['*You cannot harvest coconut 🍑 in a pineapple 🍍 farm*\n\n_--> 🍍>🍑<🍍_', '*Apples and Coconut are not best Combo*\n\n_--> 🍒>🍑<🍒_', '*Coconuts and Apple are not great deal*\n\n_--> 🍑>🍒<🍑_'];
-            const won = ['*You harvested a basket of*\n\n_--> 🍒+🍒+🍒_', '*Impressive, You must be a specialist in plucking coconuts*\n\n_--> 🍑+🍑+🍑_', '*Amazing, you are going to be making pineapple juice for the family*\n\n_--> 🍍+🍍+🍍_'];
-            const near = ['*Wow, you were so close to winning pineapples*\n\n_--> 🍒-🍍+🍍_', '*Hmmm, you were so c lose to winning Apples*\n\n_--> 🍒+🍒-🍍_'];
-            const jack = ['*🥳 JackPot 🤑*\n\n_--> 🍇×🍇×🍇×🍇_', '*🎉 JaaackPooot!*\n\n_--> 🍑×🍑×🍑×🍑_', '*🎊🤤 You Just hit a jackpot worth 🪙10000*'];
+            const fruits = ['🍉', '🍒', '🍈', '🍍', '🥭', '🍇', '🍌', '🍓', '🍏'];
+            const emojis = ['😢', '😩', '😀', '😎', '🤑', '🎉', '🥳'];
 
-            const balance1 = await eco.balance(user, 'cara');
-            const k = 1000;
+            const lose = ['*You suck at playing this game*\n\n_--> 🍍-🍉-🍒_', '*Totally out of line*\n\n_--> 🍉-🍒-🍍_', '*Are you a newbie?*\n\n_--> 🍒-🍍-🍉_'];
+            const smallLose = ['*You cannot harvest watermelon 🍉 in a pineapple 🍍 farm*\n\n_--> 🍍>🍉<🍍_', '*Guava and watermelon are not the best combo*\n\n_--> 🍒>🍉<🍒_', '*Watermelon and guava are not a great deal*\n\n_--> 🍉>🍒<🍉_'];
+            const won = ['*You harvested a basket of*\n\n_--> 🍒+🍒+🍒_', '*Impressive, You must be a specialist in plucking coconuts*\n\n_--> 🍉+🍉+🍉_', '*Amazing, you are going to be making pineapple juice for the family*\n\n_--> 🍍+🍍+🍍_'];
+            const near = ['*Wow, you were so close to winning pineapples*\n\n_--> 🍒-🍍+🍍_', '*Hmmm, you were so close to winning Apples*\n\n_--> 🍒+🍒-🍍_'];
+            const jack = ['*🥳 JackPot 🤑*\n\n_--> 🍈×🍈×🍈×🍈_', '*🎉 JaaackPooot!*\n\n_--> 🍉×🍉×🍉×🍉_', '*🎊🤤 You Just hit a jackpot worth 🪙10000*'];
+            const broke = ['*Oops! You went broke!*', '*No luck this time, try again later!*', '*Better luck next time, mate!*'];
+            const lottery = ['*Congratulations! You won the lottery!*\n_--> 🤑💰💸_', '*You hit the jackpot! Time to celebrate!* 🎉💰', '*Amazing! Youre now a millionaire!* 💸🍾'];
+            const baddyDuo = ['*Oh no! Bad luck strikes twice!*', '*Double trouble! Its not your day!*', '*You got hit twice! Tough luck!*'];
+            const sadStrike = ['*Sad strike! Better luck next time!*', '*Its not your lucky day!*', '*Unfortunate outcome! Keep trying!*'];
+            const rich = ['*Youre on a roll! Keep it up!*', '*Jackpot! The moneys pouring in!*', '*Riches are flowing in! Congrats!*'];
 
-            if (k > balance1.wallet) {
-                return message.reply(`You are going to be spinning on your wallet, you need at least 🪙1000`);
+            const balance = await client.cradit.get(`${M.sender}.wallet`) || 0;
+            const betAmount = 1000;
+
+            if (balance < betAmount) {
+                return M.reply(`You need at least 🪙${betAmount} to play!`);
             }
 
-            const f1 = fruit1[Math.floor(Math.random() * fruit1.length)];
-            const f2 = fruit2[Math.floor(Math.random() * fruit2.length)];
-            const f3 = fruit3[Math.floor(Math.random() * fruit3.length)];
+            await client.DB.set(`${M.sender}.slot2`, Date.now());
+
+            const results = [];
+            for (let i = 0; i < 3; i++) {
+                const randomIndex = Math.floor(Math.random() * fruits.length);
+                results.push(fruits[randomIndex]);
+            }
+
+            const uniqueResults = new Set(results);
+            const emojisIndex = uniqueResults.size - 1;
+
+            const payout = [0, -3700, 3000, 5000, -6000, 20000];
+            const winAmount = payout[uniqueResults.size];
+
+            await client.cradit.add(`${M.sender}.wallet`, winAmount);
+
+            const emoji = emojis[emojisIndex];
+            const message = [
+                `*Spin Results:*\n${results.join(' | ')}\n\n${emoji} ${winAmount >= 0 ? 'Congratulations!' : 'Better luck next time!'} ${emoji}\n${winAmount !== 0 ? `*Payout:* ${winAmount >= 0 ? '+' : ''}🪙${Math.abs(winAmount)}` : ''}`
+            ];
+
+            if (uniqueResults.size === 3) {
+                message.push(`🎊 You got a *Triple Combo*! You might want to try again for the Jackpot! 🎰`);
+            } else if (uniqueResults.size === 1) {
+                message.push(`🎉 *JACKPOT!* You hit the Jackpot! 🤑`);
+            }
+
             const mess1 = lose[Math.floor(Math.random() * lose.length)];
             const mess2 = won[Math.floor(Math.random() * won.length)];
             const mess3 = near[Math.floor(Math.random() * near.length)];
             const mess4 = jack[Math.floor(Math.random() * jack.length)];
             const mess5 = smallLose[Math.floor(Math.random() * smallLose.length)];
+            const mess6 = broke[Math.floor(Math.random() * broke.length)];
+            const mess7 = lottery[Math.floor(Math.random() * lottery.length)];
+            const mess8 = baddyDuo[Math.floor(Math.random() * baddyDuo.length)];
+            const mess9 = sadStrike[Math.floor(Math.random() * sadStrike.length)];
+            const mess10 = rich[Math.floor(Math.random() * rich.length)];
 
-            if (f1 !== f2 && f2 !== f3) {
-                await eco.deduct(user, 'cara', 300);
-                return message.reply(`${mess1}\n\n*Big Lose -->* _🪙300_`);
-            } else if (f1 === f2 && f2 === f3) {
-                await eco.give(user, 'cara', 500);
-                return message.reply(`${mess2}\n*_Big Win -->* _🪙500_`);
-            } else if (f1 === f2 && f2 !== f3) {
-                await eco.give(user, 'cara', 300);
-                return message.reply(`${mess3}\n*Small Win -->* _🪙300_`);
-            } else if (f1 !== f2 && f1 === f3) {
-                await eco.deduct(user, 'cara', 100);
-                return message.reply(`${mess5}\n\n*Small Lose -->* _🪙100_`);
-            } else if (f1 !== f2 && f2 === f3) {
-                await eco.give(user, 'cara', 300);
-                return message.reply(`${mess3}\n\n*Small Win -->* _🪙300_`);
-            } else if (f1 === f2 && f2 === f3 && f3 === f4) {
-                await eco.give(user, 'cara', 10000);
-                return message.reply(`${mess4}\n\n_🍫 JackPot --> _🪙10000_`);
-            } else {
-                return message.reply(`Do you understand what you are doing?`);
-            }
+            return M.reply(message.join('\n'));
         } else {
-            return message.reply(`*You can Now play this game everyday*\n\n*`);
+            return M.reply(`*You can play this game only on Fridays, Saturdays, and Sundays!*`);
         }
     },
 };

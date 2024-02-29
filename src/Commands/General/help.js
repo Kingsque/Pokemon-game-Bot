@@ -59,8 +59,8 @@ module.exports = {
 
         let message = `*${greeting}* ${pushName}. *Konnichiwa Sanpai How Are You..!?\n*𝓐𝓾𝓻𝓸𝓻𝓪 𝓫𝓸𝓽 𝄞*\n\n🎁 ᴍʏ ᴘʀᴇғɪx : [ ${client.prefix} ]\n\n☃️ *ᴛɪᴘs:*\n\n→ ᴛʏᴘᴇ *${client.prefix}ʜᴇʟᴘ* <ᴄᴏᴍᴍᴀɴᴅ-ɴᴀᴍᴇ> ᴛᴏ sᴇᴇ ᴄᴏᴍᴍᴀɴᴅ ᴅᴇsᴄʀɪᴘᴛɪᴏɴ ᴀɴᴅ ᴜsᴀɢᴇ.🐰 ʜᴇʀᴇ's ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛᴇᴅ ʙᴇʟᴏᴡ:\n\n${commands}`;
         message += `© _Team Aurora𝄞 \n\n📒ɴᴏᴛᴇs: \n1. ғᴏʀ ᴏғғɪᴄɪᴀʟ ɢʀᴏᴜᴘ : ᴛʏᴘᴇ *${client.prefix}sᴜᴘᴘᴏʀᴛ*\n\n2. ɪɴғᴏ ᴀʙᴏᴜᴛ ʟᴀᴛᴇsᴛ ᴜᴘᴅᴀᴛᴇ : ᴛʏᴘᴇ *${client.prefix}ɴᴏᴛɪᴄᴇʙᴏᴀʀᴅ*\n\n3. ᴛᴏᴘ ᴘʟᴀʏᴇʀs ɪɴғᴏ : ᴛʏᴘᴇ *${client.prefix}ʟᴇᴀᴅᴇʀʙᴏᴀʀᴅ*\n\n4. ʀᴇᴘᴏʀᴛ ɪssᴜᴇs ᴡɪᴛʜ ᴄᴏᴍᴍᴀɴᴅ : *${client.prefix}ʀᴇᴘᴘʀᴛ <ʏᴏᴜʀ_ᴡᴏʀᴅs>*\n\n ᴘʟᴇᴀsᴇ sʜᴀʀᴇ ᴍᴇ ᴡɪᴛʜ ʏᴏᴜʀ ғʀɪᴇɴᴅs ᴀɴᴅ ʟᴇᴀᴠᴇ ᴀ ʀᴇᴠɪᴇᴡ!!🎐*`;
-        const buffer = await client.utils.getBuffer('https://images5.alphacoders.com/120/1207853.png');
-await client.DB.set(`${M.sender}.help`, Date.now());
+        const buffer = await client.utils.getBuffer('https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg');
+        await client.DB.set(`${M.sender}.help`, Date.now());
 
         await client.sendMessage(
           M.from,
@@ -80,7 +80,7 @@ await client.DB.set(`${M.sender}.help`, Date.now());
 
       if (!command) return M.reply('Command not found');
 
-      const message = `*CMD INFO*\n\n*𒉽 Name:* ${command.name}\n*𒉽 Aliases:* ${command.aliases.join(', ')}\n*𒉽 Desc:* ${command.description}`;
+      const message = `*CMD INFO*\n\n*𒉽 Name:* ${command.name}\n*𒉽 Aliases:* ${command.aliases.join(', ')}\n*𒉽 Desc:* ${command.description}\n*𒉽 Exp:* ${command.exp}\n*𒉽 Col:* ${command.cool}\n*𒉽 Category:* ${command.category}`;
 
       M.reply(message);
     } catch (err) {

@@ -64,6 +64,7 @@ module.exports = {
 
         const credits = (await client.cradit.get(`${M.sender}.wallet`)) || 0;
 
+        if (amount > credits) return M.reply('you dont have sufficiant funds')
         if (amount > 10000) return M.reply('You cannot bet more than 10000 gold in the slot machine');
 
         const machine = new SlotMachine(3, symbols).play();
