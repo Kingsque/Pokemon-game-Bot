@@ -27,8 +27,8 @@
 ---
 
 <h2> 🎐 ᴅᴇᴘʟᴏʏ ᴀɴʏ ᴘʟᴀᴛғᴏʀᴍ 🎐
-</h2>
-<details Close>
+</h2> 
+Click here<details Close>
 
 <summary></summary>
 
@@ -60,34 +60,24 @@
 
 <a><img src="https://i.ibb.co/7Kk6XSg/Rainbow.gif" width="100%">
 
-<p align="center">Need help? please create an contact our devs.</p>
-
 ## Highlights
 
 ---
 
 -   Written with [NodeJS](https://nodejs.org/)
 -   Fully updated whatsapp baileys bot and runs easily on [WHATSAPP](https://www.whatsapp.com/).
--   Easy to maintenace without turning off the bot in githubs editor [CODESPACE](https://github.com/codespaces).
+-   Easy to maintenace without turning off the bot in github editor [CODESPACE](https://github.com/codespaces).
 -   Made with [Baileys](https://github.com/WhiskeySockets/Baileys) - MD (Best Library right now) for whatsapp.
 -   Using mongodb atlas (cluster example is in [app.json](https://github.com/Kingshisui00/Aurora-Private/blob/main/app.json)) (helper [MongoDB_Guide.md](https://github.com/Kingshisui00/Aurora-Private/blob/main/MongoDB_Guide.md))
 -   Suitable for those who want to learn Java Script programming and whatsapp bot programming. 
 
 ---
 
-## Hosting
+## Hosting(deployment)   
+--- 
+<details Close>
 
----
-
-- Host the bot in any server given im the above deployment section.
-- By [HEROKU](https://heroku.com) you create a app of this repo and deploy by providing all necessary values. 
-- You can also deploy the bot in [REPLIT](https://replit.com/) but there if you are free user then your repo can get public. 
-- [KOYEB](https://www.koyeb.com/) and [RAILWAY](https://railway.app/) websites are also available for deployment but not higly recomended but still you can use.
-- You cab use your [CODESPACE](https://github.com/codespaces) or your private server(we will try to provide new deploymrnt servers too) to deploy this bot.
-- In order to make your bot online you may use [uptimeRobot](https://uptimerobot.com/).
-- If you are facing any problem regarding deploying this bot we are trying to upload the video of deploy soon. 
-- Scan from whatsapp by that specific app created by your servers. 
-
+</details>
 ---
 
 ## Getting Started
