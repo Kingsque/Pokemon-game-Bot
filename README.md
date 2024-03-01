@@ -76,12 +76,13 @@ Click here<details Close>
 ## Hosting(deployment)   
 --- 
 <details Close>
-## Deploy aurora on replit-
+  
+## DEPLOY ON REPLIT-
       
 - [Fork Main Repo](https://github.com/Kingshisui00/Aurora-Private/fork)
-- Create a MongoDB URL. Need help? check the MongoDBguide page. 
+- Create a MongoDB URL. Need help? check the [MongoDB_Guide.md](https://github.com/Kingshisui00/Aurora-Private/blob/main/MongoDB_Guide.md).
 - Click on `Deploy to Repl.it` button if you didn't modified that repo.If you have modified the repo then don't forget to change the link of the repo in the readme replit deploying button then click on edit mode and attach `https://github.com/<YourAccountName>/<YourForkedRepoName>` and set it to your readme.
-- After cloning is done in Repl.it go to `Shells` in your Replit and use yarn add dependencies if asked or not. 
+- After cloning is done in Repl.it go to `Shells` in your Replit and use yarn add <package_name> if asked or not. 
 - After installation is done in Repl.it go to `Secrets` in your Repl.it project and put these values (Mandatory).
   
 <br>
@@ -96,7 +97,7 @@ WRITE_SONIC | A write sonic key for your bot ()
 BG_API_KEY | An Api key for remove background feature ()
 OPENAi | An Api key for the chat got feature ()
 MONGODB | Your MongoDB URL ()
-SESSION | Any random value (`EX: gwfdrte5678`) and `keep it copied`.
+SESSION | Any random value and try to keep it copied.
 SESSION_URL | Your Mongo URL will be used here ()
   
 <br>
@@ -111,11 +112,11 @@ SESSION_URL | Your Mongo URL will be used here ()
       
       
       
-## Deploy on heroku(highly recommended)-
+## DEPLOY ON HEROKU(highly recommended)-
       
 - [Fork Main Repo](https://github.com/Kingshisui00/Aurora-Private/fork)
-- Create a MongoDB URL. Need help? check the MongoDBguide page.
-- Click on `Deploy to Repl.it` button if you didn't modified that repo.If you have modified the repo then don't forget to change the link of the repo in the readme replit deploying button then click on edit mode and attach `https://github.com/<YourAccountName>/<YourForkedRepoName>` and set it to your readme and app.json of your bot
+- Create a MongoDB URL. Need help? check the [MongoDB_Guide.md](https://github.com/Kingshisui00/Aurora-Private/blob/main/MongoDB_Guide.md).
+- Click on `Deploy to heroku` button if you didn't modified that repo.If you have modified the repo then don't forget to change the link of the repo in the readme replit deploying button then click on edit mode and attach `https://github.com/<YourAccountName>/<YourForkedRepoName>` and set it to your readme and app.json of your bot
 - Then put these values in environment variables accordint to instructions (Mandatory).
   
 <br>
@@ -130,7 +131,7 @@ WRITE_SONIC | A write sonic key for your bot ()
 BG_API_KEY | An Api key for remove background feature ()
 OPENAi | An Api key for the chat got feature ()
 MONGODB | Your MongoDB URL ()
-SESSION | Any random value (`EX: gwfdrte5678`) and `keep it copied`.
+SESSION | Any random value and try to keep it copied
 SESSION_URL | Your Mongo URL will be used here ()
   
 <br>
@@ -146,58 +147,110 @@ SESSION_URL | Your Mongo URL will be used here ()
       
     
       
-## Deploy on Railway-     
-- [Fork Main Repo](https://github.com/kiddagoat1/faaceless/fork)
-- Create a MongoDB URL. Need help? Watch this short 1 minute [Video Guide](https://youtube.com/shorts/pIHvoXkwmq4?feature=share) for MongoDB URL.
-- Click on `Deploy to Railway` button ( `For those who didn't modified bot.`). If you modified bot and want to deploy your modified version in Railway then that button will not help you. Go to Railway website and deploy github repo from there manually.
+## DEPLOY ON RAILWAY-    
+- [Fork Main Repo](https://github.com/Kingshisui00/Aurora-Private/fork)
+- Create a MongoDB URL. Need help? check the [MongoDB_Guide.md](https://github.com/Kingshisui00/Aurora-Private/blob/main/MongoDB_Guide.md).
+- Click on `Deploy to Railway` button if you didn't modified that repo.If you have modified the repo then don't forget to change the link of the repo in the readme replit deploying button then click on edit mode and attach `https://github.com/<YourAccountName>/<YourForkedRepoName>` and set it to your readme and deploy manually.
 - Those who are deploying through button: Put all necessary details there according to instructions given there.
 - Those who are deploying manually from Railway website put these `Enviroment Variables` before start deploying ( Mandatory).
       
 <br>
-      
-KEY | VALUE
+ENV | VALUES
 -- | --
-MODS | Phone numbers in this format (`2348183329983`,`2348100145944`) without `+` or `SPACE`.
-MONGODB | Your MongoDB URL
-SESSION_ID | Any random value (`EX: gwfdrte5678`) and `keep it copied`.
-PREFIX | Any single special character except `@` (`Ex: . or / or * or , etc.`)
-TENOR_API_KEY | Your tenor API key if you have. Or use this public one: `AIzaSyCyouca1_KKy4W_MG1xsPzuku5oa8W358c`
-  
-<br>      
+NAME | The name of your bot (Aurora-Public) 
+PREFIX | The prefix of your bot can be a symbol (:)
+MODS | Phone numbers in this format (`918961331275`) without `+` or `SPACE` and for more numbers put a "," between them.
+PORT | The port on which your bot will run (3000)
+WRITE_SONIC | A write sonic key for your bot ()
+BG_API_KEY | An Api key for remove background feature ()
+OPENAi | An Api key for the chat got feature ()
+MONGODB | Your MongoDB URL ()
+SESSION | Any random value and try to keep it copied
+SESSION_URL | Your Mongo URL will be used here ()
  
 - 5-6 minutes later when Deploy is completed click on that generated domain to go to QR page.
 - just put your Previously copied `Session ID` and click on `Get QR`.
 - Scan the QR from WhatsApp ---> Linked devices ---> Link a device.
-- If you are having issues follow [Railway Deploy Tutorial](https://youtu.be/Qs6ryWnEtu8).
+- If you are having issues contact us.
       
 <br><br> 
       
       
       
       
-## ❇️ Koyeb Deploy:   
-- [Fork Main Repo](https://github.com/kiddagoat1/faaceless/fork)
-- Create a MongoDB URL. Need help? Watch this short 1 minute [Video Guide](https://youtube.com/shorts/pIHvoXkwmq4?feature=share) for MongoDB URL.
-- Click on `Deploy to Railway` button ( `For those who didn't modified bot.`). If you modified bot and want to deploy your modified version `I'm sorry to say as Koyeb works through Quay.io hosted docker so you can't deploy your modified version in fully 100% working state.` Though you can deploy manually your Github repo in Koyeb but in that case bot's 100% commands will not work.
-- Those who are deploying through button: Put all necessary details there according to instructions given there (Don't forget to change MongoDB URL an put your URL).
+## DEPLOY ON KOYEB-   
+- [Fork Main Repo](https://github.com/Kingshisui00/Aurora-Private/fork)
+- Create a MongoDB URL. Need help? check the [MongoDB_Guide.md](https://github.com/Kingshisui00/Aurora-Private/blob/main/MongoDB_Guide.md).
+- Click on `Deploy to Railway` button if you didn't modified that repo.If you have modified the repo then don't forget to change the link of the repo in the readme replit deploying button then click on edit mode and attach `https://github.com/<YourAccountName>/<YourForkedRepoName>` and set it to your readme and deploy manually.`Note that Koyeb works through Quay.io hosted docker so you can't deploy your modified version in fully 100% working state.` Though you can deploy manually your Github repo in Koyeb but in that case bot's 100% commands will not work.
+- Those who are deploying through button: Put all necessary details there according to instructions given there .
 - Those who are deploying manually from Koyeb website put these `Enviroment Variables` before start deploying ( Mandatory).
       
 <br>
       
-KEY | VALUE
+ENV | VALUES
 -- | --
-MODS | Phone numbers in this format (`2348183329983`,`2348100145944`) without `+` or `SPACE`.
-MONGODB | Your MongoDB URL
-SESSION_ID | Any random value (`EX: gwfdrte5678`) and `keep it copied`.
-PREFIX | Any single special character except `@` (`Ex: . or / or * or , etc.`)
-TENOR_API_KEY | Your tenor API key if you have. Or use this public one: `AIzaSyCyouca1_KKy4W_MG1xsPzuku5oa8W358c`
+NAME | The name of your bot (Aurora-Public) 
+PREFIX | The prefix of your bot can be a symbol (:)
+MODS | Phone numbers in this format (`918961331275`) without `+` or `SPACE` and for more numbers put a "," between them.
+PORT | The port on which your bot will run (3000)
+WRITE_SONIC | A write sonic key for your bot ()
+BG_API_KEY | An Api key for remove background feature ()
+OPENAi | An Api key for the chat got feature ()
+MONGODB | Your MongoDB URL ()
+SESSION | Any random value and try to keep it copied
+SESSION_URL | Your Mongo URL will be used here ()
   
 <br>
       
 - 10 minutes later when Deploy is completed click on that generated weblink to go to QR page.
 - just put your Previously copied `Session ID` and click on `Get QR`.
 - Scan the QR from WhatsApp ---> Linked devices ---> Link a device.
-- If you are having issues follow [Koyeb Deploy Tutorial](https://youtu.be/OvNnpK1Gx6Y).
+- If you are having issues contact us.
+
+<br><br> 
+
+## DEPLOY ON COSDESPACE(github editor)-   
+- [Fork Main Repo](https://github.com/Kingshisui00/Aurora-Private/fork)
+- Create a MongoDB URL. Need help? check the [MongoDB_Guide.md](https://github.com/Kingshisui00/Aurora-Private/blob/main/MongoDB_Guide.md).
+- Click on the green code button under it go to the codespace section and tap on create new codespace.
+- After your codespace is settled up type git clone <Repo_Name>.
+- After its done one the terminal the chechking will start wait for 1-2 minutes.
+- Check the .env file of the bot where this values are must(mandatory) 
+      
+<br>
+      
+ENV | VALUES
+-- | --
+NAME | The name of your bot (Aurora-Public) 
+PREFIX | The prefix of your bot can be a symbol (:)
+MODS | Phone numbers in this format (`918961331275`) without `+` or `SPACE` and for more numbers put a "," between them.
+PORT | The port on which your bot will run (3000)
+WRITE_SONIC | A write sonic key for your bot ()
+BG_API_KEY | An Api key for remove background feature ()
+OPENAi | An Api key for the chat got feature ()
+MONGODB | Your MongoDB URL ()
+SESSION | Any random value and try to keep it copied
+SESSION_URL | Your Mongo URL will be used here ()
+  
+<br>
+      
+- Now type 'yarn start' on the terminal.
+- Incase a error regarding dotenv comes type yarn add dotenv on the terminal although its already added to bot.
+- Then again type yarn start.
+- After some secs the qr will start to come on the terminal window.
+- you can scan from there or you can also scan from the weblink given in the ports section.
+- Scan the QR from WhatsApp ---> Linked devices ---> Link a device.
+- If you are having issues contact us.
+
+<br><br> 
+
+
+
+## HOW TO MAKE MY BOT ALWAYS TURNED ON?
+-> Here is a solution for you the [UptimeRobot](https://uptimerobot.com/) website.
+Create an account there.
+After yoour scan is done and bot is connected comeback copy the link of web from where you scanned(replit, heroku, railway, koyeb or codespace) and paste it as an HTTPS monitor in the web and your job is done. 
+
 </details>
 ---
 
@@ -208,12 +261,10 @@ This project require
 - [NodeJS](https://nodejs.org/en/download/) [v16 or greater](https://nodejs.org/dist/)
 - [FFMPEG](https://ffmpeg.org/download.html)
 - [@whiskeysocketBaileys](https://github.com/WhiskeySockets/Baileys)
-- [API](https://axios-http.com)
-- Yarn build
+- [APIS]()
+- Yarn lock file
 
 ## Install
-<details close>
-<summary> </summary>
 
 
 <section>
@@ -228,7 +279,7 @@ cd Aurora-Public
 ### Install the dependencies:
 
 ```bash
-yarn add
+yarn add <Package_Name>
 ```
 
 ### Setup
@@ -249,17 +300,6 @@ SESSION_URL=same as url
 
 </section>
 
-## Usage
-
-<section>
-
-`Run the Whatsapp bot based on javaScript and baileys`
-
-```bash
-yarn start
-```
-</details>
-
 ## Contributing
 
 <section>
@@ -267,14 +307,14 @@ yarn start
 If you've ever wanted to contribute to our project and want to be our part here is your chance guys!
 
 -   If you had created any new function regarding the bot feel free to test it and if it works contact our DEVLOPERS to add it to the official repo. 
--   Make sure to follow the ESLint Rules while editing the code and run `yarn run format` before opening PRs
+-   Make sure to follow the ESLint Rules while editing the code and run `yarn start format` before opening PRs
 -   If you want to contribute
 
     1. Fork this repository
     2. edit/change what you want, for example you want to add features/fix bugs/creste new features/new updates 
     3. Test it first if its working without any bug or not
     4. You can submit a pull request
-    5. Contact with the debs and shoe them your tested function and let them approve.
+    5. Contact with the devs and show them your tested function and let them approve.
     6. If it accepts then delete the old fork and the new fork if you want to pull the request again.
     7. Help us by providing more features and we will surely dont forget to thank you in our repo.
 
@@ -297,32 +337,48 @@ since **whatsapp-bot** use [baileys](https://github.com/WhiskeySockets/Baileys) 
 <br>
 
 - Fully new updated baileys whatsapp bot running very smoothly by deploying.
-- Fully powered by MongoDb ( 3 or more databases addable ).
-- Self / public / private uses.
+- Fully powered by MongoDb.
+- Self / public / private modes.
 - Single prefix ( ":" ).
 - RPG and Economy added ( More coming soon ).
 - Group Chatbot and AI functions with media category. 
 - Have even section for anime related commands.
 - Highest Commands and Features.
-- User Banning / command toggling function.
+- User / group Banning and command toggling function.
 - Highest Security compared to most other public bots.
+- Major user required command for users.
 
-<h2 align="center">aurora as your Base 〽️
+<h2 align="center">why should you use aurora?
 </h2>
 
 <br>
 
 - aurora is a `fully open source` bot which means `no copyright`.
-- aurora is a `multi database bot` which means you can use 3 or more different databases at the same time.
 - this is the perfect base bot if you want to start your own bot community.
 - aurora has a pre installed chatbot, dependencies updated and api provided which means you should not need update dependencies or create apis by your own. 
 - new weeb section for your otaku friends.
-- aurora has below 100 commands but usefull which means it will not take more space means always online. 
-- aurora has `RPG and Economy` which means you can use it as a `RPG Bot` or `Casino Bot`.
-- aurora has `Command toggling / Group Banning` which means you can use it as a `Anti Spam Bot` or you can disable any command if you want to work on it.
+- aurora has above 100 commands but usefull which means it will not take more space means always online. 
+- aurora has `RPG and Economy and Games` which means you can use it as a `RPG Bot` or `Casino Bot`.
+- aurora has ` User / Group Banning` which means you can use it as a `Anti Spam Bot` to avoid bot number ban.
+- aurora has command toggeling function by that you can disable a command and work on it without turning bot off.
 - aurora is a Folder Type bot which represents `Highest Stability`, `Highest Performance` and `Developer / User friendly`.
 - aurora comes with [MIT](https://github.com/Kingshisui00/Aurora-Private/blob/main/LICENSE.md) License which means you can use it as a `base for your own bot` and can `modify it as you want` and can `add your own features`.
-- we are working on new public features like games and others. 
+- we are working on new public features like charagme and others. 
+
+<br>
+
+<h2 align="center">Main points
+</h2>
+
+<br>
+
+- We are the one of the most stable whatsapp gamebot now.
+- This bot contains the features and some contents of old version of the most famous js bot `Atlas` which is now updated to another function.
+- This bot uses the structure of the old version of krypton bot which now uses a different structure so we had adapted this.
+- This bot contains the economy features.
+- This bot have games function fro m classic type to latest.
+- This bot have a mining style-based rpg game.
+- Overall this is a good base bot to use. 
 
 <br>
 
@@ -331,8 +387,10 @@ since **whatsapp-bot** use [baileys](https://github.com/WhiskeySockets/Baileys) 
 
 <br>
 
-- This bot is not made by WhatsApp.inc so overusing this bot may result in WhatsApp account ban.
-- We will only assist you in `Bot Deployment ( Installation or Hosting )`. No `Bot Development` until you have a conversation with us.
+- This bot is not made by WhatsApp.inc so overusing this bot may result in WhatsApp account ban to avoid this you may avoid spamming of commands.
+- The main running file of this bot aurora.js is prefered to be not edited to avoid whatsapp connecting issues.
+- The package json should and the yarn file should not get affected as it cause to major error.
+- Do not try to do any thing with the databases ( economy, games, rpg or charagame) as it can cause auto-reseting or auto-adding of datas.
 - If you Modify this bot and face any issues, I am not responsible for that because it is not possible for my team and me to help everyone in their own bots yeah we can support you sometimes not everytime so do at your own risk.
 - This bot is made for `Educational / Fun / Group Management` purposes only. I and the team will not be responsible for any misuse of this bot.
 - If you face and issue regarding your own modification try to delete that repo again fork and try again by test or debug if the devs not responding to you.
@@ -347,6 +405,9 @@ since **whatsapp-bot** use [baileys](https://github.com/WhiskeySockets/Baileys) 
 - We don't recommend to change the `Command databases like rpg and economy` that we have added in our bot. `If you do so, you will be responsible for any issues and we will not provide any support if we are busy`.
 - We will not be responsible for any issues caused by any individual hosting this bot and cause any harm to any Group `(So don't make someone Group Admin who you don't know just because they are hosting the Bot)`.
 - We prefer that you should not do anything with the aurora.js as it is the main file of the bot which in return can harm your bot.
+- Always try to avoid command spamming by making it private mode or banning spammers in order to save your bot from ban.
+- Do not add or update any dependencies it is required as every dependencies has its own compability with others.
+- Try to use our official api from our api repo.
 
 <br>
 
@@ -355,17 +416,31 @@ since **whatsapp-bot** use [baileys](https://github.com/WhiskeySockets/Baileys) 
 <h2 align="center">🔰 Meet Team Aurora🔰
 </h2>
 
-| [![Uchiha Wa shisui](https://github.com/Kingshisui00.png)](https://github.com/Kingshisui00) shisui | [![REDZEOX](https://github.com/REDZEOX.png)](https://github.com/REDZEOX) REDZEOX |
-|---|---|
-| [shisui](https://github.com/Kingshisui00) Owner, developer, maintainer, debugger, function developer | [REDZEOX](https://github.com/REDZEOX) Co-owner, designer, font maintainer, style developer |
+| [![Uchiha shisui](https://github.com/Kingshisui00.png)](https://github.com/Kingshisui00) shisui | [![The lost uchiha](https://github.com/GodxMadara.png)](https://github.com/GodxMadara) lucky |
+|--- | --- |
+| [shisui](https://github.com/Kingshisui00) Owner, developer, monthly maintainer,  function developer |  [lucky](https://github.com/Kingshisui00) co-Owner, developer, monthly maintainer,  function developer |
 
 
 ## ᴛʜᴀɴᴋꜱ ᴛᴏ
 * [`Shinei | Whatshell`](https://github.com/LuckyYam/) for his dependensies.
 * [`@WhiskeySocket/baileys`](https://github.com/WhiskeySockets/Baileys) for the whatsaap api.
+* [`Debanjan-San`](https://github.com/Debanjan-San/) for his old bot structure type.
+* [`Fantox`](https://github.com/FantoX/) for his content ideas.
 
-## USER DEPARTMENT
-*This bot is the base bot of our aurora private bot whihch every features are similar and connected with others.if you notice some features there you can also hope to get them here and our team has a mmonthly maintainance until a error occur so if theres any problem you are free to say us in our whatsapp gc. in additional we are looking for more devs in the basis of baileys devloper and api devloper if you are the on dont forget to try*
+## USER DEPARTMENT (some are mandetory)
+- This is the miniature model of our private cardgame bot.
+- visit our website https://kingshisui00.github.io/web-aurora/
+- if you spot any comment statments which starts with // read those either they can be the details of that code or there you will be asked to replace or provide your values.
+- If you want to create commamds there is the command example file in src that will help you.
+- If you are facing problems at anything go through every md in our bot so that might help you.
+- If you are facing issues for the apis that are required dont forget to  check our aurora api repo for help.
+
+## UPDATES
+- Logo maker directory  may come soon.
+- some exclusive commands may come this month
+- bug fixes
+- monthly maintainance
+
 
 <a><img src="https://i.ibb.co/7Kk6XSg/Rainbow.gif" width="100%">
 
