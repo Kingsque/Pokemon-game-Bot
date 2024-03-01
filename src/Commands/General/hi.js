@@ -1,11 +1,9 @@
-const ms = require('parse-ms');
-
 module.exports = {
     name: 'hi',
     aliases: ['hello'],
     category: 'general',
     exp: 0,
-    cool: 4,
+    cool: 4, // Cooldown in seconds
     react: "🍥",
     description: 'says hi to bot',
     async execute(client, arg, M) { 
@@ -17,12 +15,14 @@ module.exports = {
             const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
             return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
         } 
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.hi`);
+        
+        const cooldownSeconds = this.cool;
+        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
+        const now = Math.floor(Date.now() / 1000);
 
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        if (lastSlot !== null && now - lastSlot < cooldownSeconds) {
+            const remainingCooldown = cooldownSeconds - (now - lastSlot);
+            return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
         }
 
         const hello = ['konnichiwa', 'hello', 'hi', 'kya haal?', 'bonjour', 'hola', 'hallo'];
@@ -31,7 +31,7 @@ module.exports = {
         const contact = await client.contact.getContact(M.sender, client);
         const username = contact ? contact.username : 'there';
         
+        await client.DB.set(`${M.sender}.${commandName}`, now); // Update cooldown timestamp
         M.reply(`${hi} ${username}. How are you today?`);
-        await client.DB.set(`${M.sender}.hi`, Date.now());
     }
 }
