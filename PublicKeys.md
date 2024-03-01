@@ -3,13 +3,17 @@
 - Rename `.env.example` to `.env` and fill in the required details in `.env` file(Mandatory).
 
 ```
-MODS=918961331275,917903576495
-MONGODB=mongodb+srv://fantox:xrto71r@cluster0.dnlowts.mongodb.net/?retryWrites=true&w=majority
-SESSION_ID= anyrandomstring
-PREFIX=-
-TENOR_API_KEY=AIzaSyCyouca1_KKy4W_MG1xsPzuku5oa8W358c
-PACKNAME=Celestic 
-AUTHOR=ɳσႦιƚα 
+NAME=Aurora
+PREFIX=:
+MODS=918961331275
+PORT=3000
+WRITE_SONIC=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
+BG_API_KEY=mjWeXgKfjodxyjYPgNMztPm
+openAi=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
+SESSION=Hi
+URL=mongodb+srv://Kingshisui00:shisui001@cluster0.vwjrj53.mongodb.net/?retryWrites=true&w=majority
+SESSION_URL=mongodb+srv://Kingshisui00:shisui001@cluster0.vwjrj53.mongodb.net/?retryWrites=true&w=majority
+
 ```
 
 <br>
