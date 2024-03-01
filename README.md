@@ -76,7 +76,128 @@ Click here<details Close>
 ## Hosting(deployment)   
 --- 
 <details Close>
-
+## Deploy aurora on replit-
+      
+- [Fork Main Repo](https://github.com/Kingshisui00/Aurora-Private/fork)
+- Create a MongoDB URL. Need help? check the MongoDBguide page. 
+- Click on `Deploy to Repl.it` button if you didn't modified that repo.If you have modified the repo then don't forget to change the link of the repo in the readme replit deploying button then click on edit mode and attach `https://github.com/<YourAccountName>/<YourForkedRepoName>` and set it to your readme.
+- After cloning is done in Repl.it go to `Shells` in your Replit and use yarn add dependencies if asked or not. 
+- After installation is done in Repl.it go to `Secrets` in your Repl.it project and put these values (Mandatory).
+  
+<br>
+      
+ENV | VALUES
+-- | --
+NAME | The name of your bot (Aurora-Public) 
+PREFIX | The prefix of your bot can be a symbol (:)
+MODS | Phone numbers in this format (`918961331275`) without `+` or `SPACE` and for more numbers put a "," between them.
+PORT | The port on which your bot will run (3000)
+WRITE_SONIC | A write sonic key for your bot ()
+BG_API_KEY | An Api key for remove background feature ()
+OPENAi | An Api key for the chat got feature ()
+MONGODB | Your MongoDB URL ()
+SESSION | Any random value (`EX: gwfdrte5678`) and `keep it copied`.
+SESSION_URL | Your Mongo URL will be used here ()
+  
+<br>
+      
+- Next click on `Green Run button` in Repl.it to start bot installation.
+- After it's deployed an webpage should appear there the QR will be generated.
+- Scan the QR from WhatsApp ---> Linked devices ---> Link a device.
+- UptimeRobot will prevent Repl.it's auto sleep.
+- If you are having issues contact us. 
+      
+<br><br>
+      
+      
+      
+## Deploy on heroku(highly recommended)-
+      
+- [Fork Main Repo](https://github.com/Kingshisui00/Aurora-Private/fork)
+- Create a MongoDB URL. Need help? check the MongoDBguide page.
+- Click on `Deploy to Repl.it` button if you didn't modified that repo.If you have modified the repo then don't forget to change the link of the repo in the readme replit deploying button then click on edit mode and attach `https://github.com/<YourAccountName>/<YourForkedRepoName>` and set it to your readme and app.json of your bot
+- Then put these values in environment variables accordint to instructions (Mandatory).
+  
+<br>
+      
+ENV | VALUES
+-- | --
+NAME | The name of your bot (Aurora-Public) 
+PREFIX | The prefix of your bot can be a symbol (:)
+MODS | Phone numbers in this format (`918961331275`) without `+` or `SPACE` and for more numbers put a "," between them.
+PORT | The port on which your bot will run (3000)
+WRITE_SONIC | A write sonic key for your bot ()
+BG_API_KEY | An Api key for remove background feature ()
+OPENAi | An Api key for the chat got feature ()
+MONGODB | Your MongoDB URL ()
+SESSION | Any random value (`EX: gwfdrte5678`) and `keep it copied`.
+SESSION_URL | Your Mongo URL will be used here ()
+  
+<br>
+      
+- Next start deploy and wait for 3-4 minutes.
+- After it's done click on `Manage App`.
+- Next on the deploy part connect to your forked repo and turn on automatic deployment on`
+- After that go to More ---> view logs and wait for qr to appear.
+- When you see broken QRs are appearing chick on `Open app` then the we will be generated.
+- Scan the QR from WhatsApp ---> Linked devices ---> Link a device.
+      
+<br><br>      
+      
+    
+      
+## Deploy on Railway-     
+- [Fork Main Repo](https://github.com/kiddagoat1/faaceless/fork)
+- Create a MongoDB URL. Need help? Watch this short 1 minute [Video Guide](https://youtube.com/shorts/pIHvoXkwmq4?feature=share) for MongoDB URL.
+- Click on `Deploy to Railway` button ( `For those who didn't modified bot.`). If you modified bot and want to deploy your modified version in Railway then that button will not help you. Go to Railway website and deploy github repo from there manually.
+- Those who are deploying through button: Put all necessary details there according to instructions given there.
+- Those who are deploying manually from Railway website put these `Enviroment Variables` before start deploying ( Mandatory).
+      
+<br>
+      
+KEY | VALUE
+-- | --
+MODS | Phone numbers in this format (`2348183329983`,`2348100145944`) without `+` or `SPACE`.
+MONGODB | Your MongoDB URL
+SESSION_ID | Any random value (`EX: gwfdrte5678`) and `keep it copied`.
+PREFIX | Any single special character except `@` (`Ex: . or / or * or , etc.`)
+TENOR_API_KEY | Your tenor API key if you have. Or use this public one: `AIzaSyCyouca1_KKy4W_MG1xsPzuku5oa8W358c`
+  
+<br>      
+ 
+- 5-6 minutes later when Deploy is completed click on that generated domain to go to QR page.
+- just put your Previously copied `Session ID` and click on `Get QR`.
+- Scan the QR from WhatsApp ---> Linked devices ---> Link a device.
+- If you are having issues follow [Railway Deploy Tutorial](https://youtu.be/Qs6ryWnEtu8).
+      
+<br><br> 
+      
+      
+      
+      
+## ❇️ Koyeb Deploy:   
+- [Fork Main Repo](https://github.com/kiddagoat1/faaceless/fork)
+- Create a MongoDB URL. Need help? Watch this short 1 minute [Video Guide](https://youtube.com/shorts/pIHvoXkwmq4?feature=share) for MongoDB URL.
+- Click on `Deploy to Railway` button ( `For those who didn't modified bot.`). If you modified bot and want to deploy your modified version `I'm sorry to say as Koyeb works through Quay.io hosted docker so you can't deploy your modified version in fully 100% working state.` Though you can deploy manually your Github repo in Koyeb but in that case bot's 100% commands will not work.
+- Those who are deploying through button: Put all necessary details there according to instructions given there (Don't forget to change MongoDB URL an put your URL).
+- Those who are deploying manually from Koyeb website put these `Enviroment Variables` before start deploying ( Mandatory).
+      
+<br>
+      
+KEY | VALUE
+-- | --
+MODS | Phone numbers in this format (`2348183329983`,`2348100145944`) without `+` or `SPACE`.
+MONGODB | Your MongoDB URL
+SESSION_ID | Any random value (`EX: gwfdrte5678`) and `keep it copied`.
+PREFIX | Any single special character except `@` (`Ex: . or / or * or , etc.`)
+TENOR_API_KEY | Your tenor API key if you have. Or use this public one: `AIzaSyCyouca1_KKy4W_MG1xsPzuku5oa8W358c`
+  
+<br>
+      
+- 10 minutes later when Deploy is completed click on that generated weblink to go to QR page.
+- just put your Previously copied `Session ID` and click on `Get QR`.
+- Scan the QR from WhatsApp ---> Linked devices ---> Link a device.
+- If you are having issues follow [Koyeb Deploy Tutorial](https://youtu.be/OvNnpK1Gx6Y).
 </details>
 ---
 
