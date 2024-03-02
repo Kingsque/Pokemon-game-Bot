@@ -15,7 +15,7 @@ module.exports = CardHandler = async (client, m) => {
                 const sOr6Interval = 10;
                 const sOr6Limit = 15;
 
-                cron.schedule('*/20 * * * *', async () => {
+                cron.schedule('*/1 * * * *', async () => {
                     try {
                         const filePath = path.join(__dirname, './card.json');
                         const data = require(filePath);

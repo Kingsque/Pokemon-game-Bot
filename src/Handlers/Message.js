@@ -122,6 +122,12 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
    return M.reply('Sorry, only moderators can use commands in this mode.');
 }
 
+           //disabled commands handling
+           const disabled = await client.DB.get('disable-commands') || [];
+            if (disabled.includes(cmdName) || cmd.aliases.some(alias => disabled.includes(alias.toLowerCase()))) {
+                return M.reply('This command is currently disabled.');
+            }
+
  
         //reactMessage
         if(command.react){

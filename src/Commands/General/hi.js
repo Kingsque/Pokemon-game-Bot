@@ -8,13 +8,6 @@ module.exports = {
     description: 'Says hi to the bot.',
     async execute(client, arg, M) { 
         try {
-            const disabled = await client.DB.get('disable-commands') || [];
-            const commandName = this.name.toLowerCase();
-
-            if (disabled.includes(commandName) || this.aliases.some(alias => disabled.includes(alias.toLowerCase()))) {
-                return M.reply('This command is currently disabled.');
-            }
-            
             const now = Date.now(); // Get current timestamp
             const cooldownSeconds = this.cool;
             const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);

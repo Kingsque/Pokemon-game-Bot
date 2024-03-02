@@ -8,11 +8,20 @@ module.exports = {
     description: 'Disables a certain command.',
     async execute(client, arg, M) {
         try {
+            if (!arg) {
+                return M.reply('You need to provide the name of the command to disable.');
+            }
+
             const commandName = arg.toLowerCase(); // Ensure case insensitivity
             const disabled = await client.DB.get('disable-commands') || [];
 
             if (disabled.includes(commandName)) {
                 return M.reply('This command is already disabled.');
+            }
+
+            // Check if the command to disable exists
+            if (!client.cmd.has(commandName)) {
+                return M.reply('That command does not exist.');
             }
 
             await client.DB.push('disable-commands', commandName);
