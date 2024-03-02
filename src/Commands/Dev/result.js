@@ -6,14 +6,6 @@ module.exports = {
     cool: 4,
     description: 'Get the result of the vote or list of register',
     async execute(client, arg, M) {
-        const commandName = this.name || this.aliases[0];
-        const disabledCommands = await client.DB.get('disabledCommands');
-        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
-        
-        if (isDisabled) {
-            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
-            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
-        } 
 
         if (arg === 'Votes') {
             const option1Votes = await client.DB.get(`option1vote`) || [];

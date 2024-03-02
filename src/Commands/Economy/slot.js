@@ -10,14 +10,6 @@ module.exports = {
     react: "👍",
     description: 'Bets the given amount of gold in a slot machine',
     async execute(client, arg, M) {
-        const commandName = this.name || this.aliases[0];
-        const disabledCommands = await client.DB.get(`disabledCommands`);
-        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
-        
-        if (isDisabled) {
-            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
-            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
-        } 
        
         const luck = (await client.rpg.get(`${M.sender}.luckpotion`)) || 0;
         const participant = await client.DB.get('economy') || [];

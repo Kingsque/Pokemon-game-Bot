@@ -9,14 +9,6 @@ module.exports = {
   react: "✅",
   description: 'Bid an amount on an ongoing auction',
   async execute(client, arg, M) {
-    const commandName = this.name || this.aliases[0];
-    const disabledCommands = await client.DB.get(`disabledCommands`);
-    const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
-
-    if (isDisabled) {
-      const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
-      return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
-    }
 
     try {
       const winned = await client.DB.get(`${M.from}.winned`);
