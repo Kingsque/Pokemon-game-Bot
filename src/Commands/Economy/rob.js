@@ -11,10 +11,13 @@ module.exports = {
     async execute(client, arg, M) {
         if (!M.mentions.length) return M.reply('*You must mention someone to attempt the robbery*');
 
-        const cooldownTime = 90000; // 90 seconds cooldown
-        const lastRob = await client.cradit.get(`${M.sender}.lastrob`) || 0;
-        if (cooldownTime - (Date.now() - lastRob) > 0) {
-            const timeLeft = ms(cooldownTime - (Date.now() - lastRob));
+        const commandName = this.name.toLowerCase();
+        const now = Date.now(); // Get current timestamp
+        const cooldownSeconds = this.cool;
+        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
+      
+        if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
+            const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
             return M.reply(`You robbed recently. Try again in ${timeLeft.minutes} minute(s), ${timeLeft.seconds} second(s).`);
         }
 

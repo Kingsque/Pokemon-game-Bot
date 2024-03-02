@@ -9,12 +9,14 @@ module.exports = {
     react: "✅",
     description: 'Transfer golds to your friend',
     async execute(client, arg, M) {
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.transfer`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        const commandName = this.name.toLowerCase();
+        const now = Date.now(); // Get current timestamp
+        const cooldownSeconds = this.cool;
+        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
+      
+        if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
+            const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
+            return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
         }
         if (M.mentions.length === 0) return M.reply('*You must mention someone to attend the robbery*');
         const amount = parseInt(arg.split(' ')[0]);

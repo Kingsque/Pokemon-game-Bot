@@ -9,12 +9,14 @@ module.exports = {
     react: "✅",
     description: 'Shows the wallet value',
     async execute(client, arg, M) {
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.wallet`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
+        const commandName = this.name.toLowerCase();
+        const now = Date.now(); // Get current timestamp
+        const cooldownSeconds = this.cool;
+        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
+      
+        if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
+            const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
+            return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
         }
         const wallet = await client.cradit.get(`${M.sender}.wallet`) || 0;
         const contact = await client.contact.getContact(M.sender, client);
