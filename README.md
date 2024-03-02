@@ -215,6 +215,7 @@ SESSION_URL | Your Mongo URL will be used here ()
 - Click on the green code button under it go to the codespace section and tap on create new codespace.
 - After your codespace is settled up type git clone <Repo_Name>.
 - After its done one the terminal the chechking will start wait for 1-2 minutes.
+- Through deploying on codespace will not make your bot highly stable.
 - Check the .env file of the bot where this values are must(mandatory) 
       
 <br>
@@ -235,9 +236,7 @@ SESSION_URL | Your Mongo URL will be used here ()
 <br>
       
 - Now type 'yarn start' on the terminal.
-- Incase a error regarding dotenv comes type yarn add dotenv on the terminal although its already added to bot.
-- Then again type yarn start.
-- After some secs the qr will start to come on the terminal window.
+- After some seconds the qr will start to come on the terminal window.
 - you can scan from there or you can also scan from the weblink given in the ports section.
 - Scan the QR from WhatsApp ---> Linked devices ---> Link a device.
 - If you are having issues contact us.
@@ -373,10 +372,10 @@ since **whatsapp-bot** use [baileys](https://github.com/WhiskeySockets/Baileys) 
 <br>
 
 - We are the one of the most stable whatsapp gamebot now.
-- This bot contains the features and some contents of old version of the most famous js bot `Atlas` which is now updated to another function.
+- This bot contains the features and some contents of old version of the most famous js bot `Atlas` which is now updated to the plugin function.
 - This bot uses the structure of the old version of krypton bot which now uses a different structure so we had adapted this.
 - This bot contains the economy features.
-- This bot have games function fro m classic type to latest.
+- This bot have games function from classic type to latest.
 - This bot have a mining style-based rpg game.
 - Overall this is a good base bot to use. 
 
@@ -418,7 +417,7 @@ since **whatsapp-bot** use [baileys](https://github.com/WhiskeySockets/Baileys) 
 
 | [![Uchiha shisui](https://github.com/Kingshisui00.png)](https://github.com/Kingshisui00) shisui | [![The lost uchiha](https://github.com/GodxMadara.png)](https://github.com/GodxMadara) lucky |
 |--- | --- |
-| [shisui](https://github.com/Kingshisui00) Owner, developer, monthly maintainer,  function developer |  [lucky](https://github.com/Kingshisui00) co-Owner, developer, monthly maintainer,  function developer |
+| [shisui](https://github.com/Kingshisui00) Owner, developer, monthly maintainer,  function developer |  [lucky](https://github.com/Kingshisui00) co-Owner, developer, baileys and dependencies maintainer,  function developer |
 
 
 ## ᴛʜᴀɴᴋꜱ ᴛᴏ
