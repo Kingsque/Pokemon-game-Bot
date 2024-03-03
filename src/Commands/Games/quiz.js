@@ -335,10 +335,6 @@ module.exports = {
   cool: 4,
   description: 'Play a quiz against another person',
   async execute(client, arg, M) {
-    const participant = await client.DB.get('game') || [];
-      if (!participant.includes(M.from)) {
-        return M.reply(`To use game commands, join the games group by using ${client.prefix}support`);
-      }
 
     const quiz = await client.DB.get(`${M.from}.quizInProgress`) || true;
     let player1, player2;

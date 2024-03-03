@@ -7,9 +7,6 @@ module.exports = {
     category: "card shop",
     description: 'To buy cards from card shop',
     async execute(client, arg, M) {
-        const auction = (await client.DB.get('cshop')) || [];
-        if (!auction.includes(M.from)) return M.reply(`Join the official group by using ${client.prefix}support, every saturday card shop commands are turned on`);
-        
         let dime = await client.rpg.get(`${M.sender}.diamond`) || 0;
 
         const cardPrices = {

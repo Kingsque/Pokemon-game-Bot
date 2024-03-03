@@ -7,11 +7,6 @@ module.exports = {
  cool: 4,
  description: 'Play a game of Rock Paper Scissors against the bot',
  async execute(client, arg, M) { 
-
-  const participant = await client.DB.get('game') || [];
-      if (!participant.includes(M.from)) {
-        return M.reply(`To use rpg commands, join the games group by using ${client.prefix}support`);
-      }
    const choices = ['rock', 'paper', 'scissors'];
    const playerChoice = arg.toLowerCase();
    const botChoice = choices[Math.floor(Math.random() * choices.length)];

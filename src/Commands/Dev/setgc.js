@@ -7,7 +7,7 @@ module.exports = {
     category: 'dev',
     description: 'Activate certain features on group-chats',
     async execute(client, arg, M) {
-        const toggleableGroupActions = ['auction','cshop','economy','game','mod','card-game']
+        const toggleableGroupActions = ['auction','cshop','economy','game','card-game']
         if (!arg)
             return M.reply(
                 `Please provide a valid toggleable GroupActions\n\n*Available:* \n${toggleableGroupActions.join('\n')}`

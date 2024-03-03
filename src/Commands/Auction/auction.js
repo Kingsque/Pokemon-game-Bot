@@ -16,10 +16,6 @@ module.exports = {
         return M.reply("An auction is already in progress.");
       }
 
-      const participant = await client.DB.get('auction') || [];
-      if (!participant.includes(M.from)) {
-        return M.reply(`To participate in the auction, join the auction group by using ${client.prefix}support`);
-      }
       const shisui = '918961331275@s.whatsapp.net'
       if (M.sender !== shisui) {
         return M.rply('Hehe! you are not mod') 

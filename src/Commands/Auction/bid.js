@@ -17,11 +17,6 @@ module.exports = {
       const auctionInProgress = await client.DB.get(`${M.from}.auctionInProgress`);
       if (!auctionInProgress) {
         return M.reply("There is no ongoing auction at the moment.");
-      }
-  
-      const isParticipant = (await client.DB.get('auction')) || [];
-      if (!isParticipant.includes(M.from)) {
-        return M.reply(`To participate in the auction, join the auction group by using ${client.prefix}support`);
       } else if (!arg) {
         return M.reply('Please provide the amount you want to bid.');
       } else {

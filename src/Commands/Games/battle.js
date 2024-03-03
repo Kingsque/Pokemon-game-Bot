@@ -8,10 +8,6 @@ module.exports = {
   description: 'Engage in a battle against another person',
   async execute(client, arg, M) {
     
-    const participant = await client.DB.get('game') || [];
-      if (!participant.includes(M.from)) {
-        return M.reply(`To use game commands, join the games group by using ${client.prefix}support`);
-      }
     const battleInProgress = await client.DB.get(`${M.from}.battleInProgress`);
     let player1, player2;
 
