@@ -1,5 +1,4 @@
 const axios = require('axios');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'fact',
@@ -23,7 +22,6 @@ module.exports = {
             const response = await axios.get('https://nekos.life/api/v2/fact');
             const text = `Fact for you: ${response.data.fact}`;
             M.reply(text);
-            await client.DB.set(`${M.sender}.fact`, Date.now());
         } catch (err) {
             console.error('Error fetching fact:', err);
             M.reply('Error fetching fact. Please try again later.');

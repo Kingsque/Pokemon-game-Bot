@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
   name: 'mods',
   aliases: ['mod'],

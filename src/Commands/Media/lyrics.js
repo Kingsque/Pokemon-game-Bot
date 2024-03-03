@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
   name: 'lyrics',
   aliases: ['lyr'],
@@ -8,14 +6,7 @@ module.exports = {
   cool: 4,
   react: "✅",
   description: 'Sends the lyrics of a given song',
-  async execute(client, flag, arg, M) { 
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.lyrics`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
+  async execute(client, arg, M) { 
     if (!arg) return M.reply('🟥 *Provide the name of the song to search the lyrics*');
 
     const term = arg.trim();
@@ -43,7 +34,6 @@ module.exports = {
       } else {
         await client.sendMessage(M.from, caption, { quoted: M });
       }
-      await client.DB.set(`${M.sender}.lyrics`, Date.now());
     } catch (error) {
       console.error(error);
       M.reply('🟥 *An error occurred while fetching lyrics.*');

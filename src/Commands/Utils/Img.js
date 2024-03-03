@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
     name: 'toimg',
     aliases: ['img'],
@@ -9,14 +7,6 @@ module.exports = {
     description: 'Converts sticker to image/gif',
     cool: 4, // Add cooldown time in seconds
     async execute(client, arg, M) {
-        
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.toimg`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
 
         try {
             if (!M.quoted || (M.quoted && M.quoted.mtype !== 'stickerMessage')) {
@@ -42,8 +32,6 @@ module.exports = {
                 },
                 { quoted: M }
             );
-
-            await client.DB.set(`${M.sender}.toimg`, Date.now()); // Update last execution timestamp
         } catch (error) {
             console.error('Error converting sticker to image/gif:', error);
             await M.reply('*Try Again*');

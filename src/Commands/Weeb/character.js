@@ -1,5 +1,4 @@
 const axios = require('axios');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'character',
@@ -10,15 +9,6 @@ module.exports = {
     cool: 4, // Adding cooldown time in seconds
     description: 'Provides information about a character from anime',
     async execute(client, arg, M) {
-        
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.character`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
-
         try {
             if (!arg) return M.reply('Sorry, you did not provide any search term!');
             
@@ -35,8 +25,6 @@ module.exports = {
                 },
                 caption: text
             });
-
-            await client.DB.set(`${M.sender}.character`, Date.now()); // Updating the last execution timestamp
         } catch (error) {
             console.error('Error fetching character information:', error);
             M.reply('An error occurred while fetching character information.');

@@ -1,6 +1,5 @@
 const { Ship } = require('@shineiichijo/canvas-chan');
 const { writeFile } = require('fs-extra');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'ship',
@@ -11,15 +10,6 @@ module.exports = {
     react: "✅",
     description: 'Ship People! ♥',
     async execute(client, arg, M) {
-        const commandName = this.name.toLowerCase();
-        const now = Date.now(); // Get current timestamp
-        const cooldownSeconds = this.cool;
-        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-      
-        if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-            const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-            return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-        }
         const shipArray = [];
         let users = M.mentions;
         if (M.quoted && !users.includes(M.quoted.participant)) users.push(M.quoted.participant);
@@ -68,7 +58,6 @@ module.exports = {
 
         const shipImage = await new Ship(shipArray, percentage, text).build();
         const imageBuffer = Buffer.from(shipImage.split(",")[1], 'base64');
-        await client.DB.set(`${M.sender}.ship`, Date.now());
 
         try {
             await writeFile('shipImage.png', imageBuffer);

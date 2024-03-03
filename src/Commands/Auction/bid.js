@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
   name: 'bid',
   aliases: ['auction-bid'],
@@ -20,16 +18,7 @@ module.exports = {
       if (!auctionInProgress) {
         return M.reply("There is no ongoing auction at the moment.");
       }
-      const commandName = this.name.toLowerCase();
-      const now = Date.now(); // Get current timestamp
-      const cooldownSeconds = this.cool;
-      const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-    
-      if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-          const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-          return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-      }
-
+  
       const isParticipant = (await client.DB.get('auction')) || [];
       if (!isParticipant.includes(M.from)) {
         return M.reply(`To participate in the auction, join the auction group by using ${client.prefix}support`);
@@ -53,7 +42,6 @@ module.exports = {
         } else {
           await client.DB.set(`${M.from}.bid`, amount);
           await client.DB.set(`${M.from}.auctionWinner`, M.sender);
-          await client.DB.set(`${M.sender}.bid`, Date.now());
           const responseText = `You have successfully placed a bid of ${amount} credits.`;
           return M.reply(responseText);
         }

@@ -1,26 +1,12 @@
-const ms = require('parse-ms');
-
 module.exports = {
   name: 'mine',
   aliases: ['mine'],
   category: 'rpg',
-  exp: 5,
+  exp: 8,
   cool: 4,
   react: '✅',
   description: 'mines items',
   async execute(client, arg, M) {
-    
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.mine`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
-    const participant = await client.DB.get('cshop') || [];
-    if (!participant.includes(M.from)) {
-      return M.reply(`To use rpg commands, join the games group by using ${client.prefix}support`);
-    }
 
     const pickaxes = {
       ironaxe: { type: 'ironpickaxe', wood: 0, iron: [5000, 9000], gold: [300, 500], diamond: [50, 100], emerald: [0, 50] },
@@ -50,6 +36,5 @@ module.exports = {
     await client.rpg.sub(`${M.sender}.${pickaxe.type}`, 1);
 
     M.reply(`⛏️ *Mine Ended* ⛏️\n🎋 *Wood:* ${woodAmount}\n🔩 *Iron:* ${ironAmount}\n🏅 *Gold:* ${goldAmount}\n💎 *Diamond:* ${diamondAmount}\n🍀 *Emerald:* ${emeraldAmount}\nBy mining from ${arg}`);
-    await client.DB.set(`${M.sender}.shop`, Date.now());
   }
 };

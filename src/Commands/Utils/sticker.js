@@ -1,5 +1,4 @@
 const { Sticker, StickerTypes } = require('wa-sticker-formatter');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'sticker',
@@ -10,14 +9,6 @@ module.exports = {
     react: "✅",
     description: 'sticker [caption/quote message containing media] <pack> | <author>',
     async execute(client, arg, M) {
-
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.sticker`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
         try {
             const content = JSON.stringify(M.quoted);
             const isMedia = M.type === 'imageMessage' || M.type === 'videoMessage';
@@ -30,7 +21,6 @@ module.exports = {
 
                 // Download the media
                 const buffer = isQuotedMedia ? await M.quoted.download() : await M.download();
-                await client.DB.set(`${M.sender}.sticker`, Date.now());
 
                 // Create a new sticker instance
                 const sticker = new Sticker(buffer, {

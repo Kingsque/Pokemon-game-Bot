@@ -8,16 +8,6 @@ module.exports = {
     description: 'This is noteboard, guide and rules board. You can check here about updates, about guide or about rules.',
     async execute(client, arg, M) {
 
-        const commandName = this.name.toLowerCase();
-        const now = Date.now(); // Get current timestamp
-        const cooldownSeconds = this.cool;
-        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-
-        if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-            const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-            return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-        }
-
         let text = '';
         text += `🔰 *AURORA* 🔰\n`;
         text += `This is our WhatsApp game bot Aurora. Here you can enjoy using our bot and its functions. You can play the anime card game, which is one of the famous games on WhatsApp. If you want any new features in our bot or want to report anything, use the report command. There is also an economy feature in our bot where you can play like a casino. Our bot includes RPG gaming functions too. We also have exclusive games. If you want to know about any command use :help and try those commands.\n\n`;
@@ -33,6 +23,5 @@ module.exports = {
         text += `ɢᴍᴀɪʟ = \n`;
 
         M.reply(text);
-        await client.DB.set(`${M.sender}.guide`, Date.now());
     }
 }

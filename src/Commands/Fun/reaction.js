@@ -7,7 +7,6 @@ const suitableWords = {
 }
 
 const reactions = Object.keys(suitableWords);
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'reaction',
@@ -18,15 +17,6 @@ module.exports = {
     exp: 50,
     cool:4,
     async execute(client, arg, M) {
-        const commandName = this.name.toLowerCase();
-        const now = Date.now(); // Get current timestamp
-        const cooldownSeconds = this.cool;
-        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-      
-        if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-            const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-            return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-        }
 
         const text = arg.trim();
         const command = M.body.split(' ')[0].toLowerCase().slice(client.prefix.length).trim();
@@ -64,7 +54,6 @@ module.exports = {
         const { url } = await client.utils.fetch(`https://api.waifu.pics/sfw/${reaction}`);
         const result = await client.utils.getBuffer(url);
         const buffer = await client.utils.gifToMp4(result);
-        await client.DB.set(`${M.sender}.react`, Date.now());
         
         await client.sendMessage(
             M.from,

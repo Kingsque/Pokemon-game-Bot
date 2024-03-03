@@ -1,4 +1,3 @@
-const ms = require('parse-ms');
 const quizQuestions = [
 {
 question: "Which anime follows the adventures of Monkey D. Luffy and his pirate crew?",
@@ -340,15 +339,6 @@ module.exports = {
       if (!participant.includes(M.from)) {
         return M.reply(`To use game commands, join the games group by using ${client.prefix}support`);
       }
-      const commandName = this.name.toLowerCase();
-      const now = Date.now(); // Get current timestamp
-      const cooldownSeconds = this.cool;
-      const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-    
-      if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-          const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-          return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-      }
 
     const quiz = await client.DB.get(`${M.from}.quizInProgress`) || true;
     let player1, player2;
@@ -370,7 +360,6 @@ module.exports = {
       player1 = M.from;
       player2 = M.mentions[0];
       await client.DB.get(`${M.from}.quizInProgress`, true);
-      await client.DB.set(`${M.sender}.quiz`, Date.now());
       M.reply("The quiz has started. Questions will be sent, and you have to answer. Use :quiz next");
     } else if (arg === "next") {
       // Send questions to both players

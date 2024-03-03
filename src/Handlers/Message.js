@@ -127,7 +127,18 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
             if (disabled.includes(cmdName) || cmd.aliases.some(alias => disabled.includes(alias.toLowerCase()))) {
                 return M.reply('This command is currently disabled.');
             }
-
+             
+            //cooldown handling
+            await client.DB.set(`${M.sender}.${cmdName}`, Date.now());
+            if (command.cool) {
+                const cooldownSeconds = command.cool;
+                const lastUsed = await client.DB.get(`${M.sender}.${cmdName}`);
+    
+                if (lastUsed !== null && now - lastUsed < cooldownSeconds * 1000) {
+                    const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastUsed)) / 1000);
+                    return M.reply(`*You have to wait ${remainingCooldown} seconds for using this command*`);
+                }
+            }
  
         //reactMessage
         if(command.react){

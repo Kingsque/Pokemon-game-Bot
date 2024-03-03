@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
     name: 'promote',
     aliases: ['promo'],
@@ -10,13 +8,6 @@ module.exports = {
     description: 'Promotes the tagged user',
     async execute(client, arg, M) {
     
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.promote`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
         if (!M.mentions.length) return M.reply('You must tag the user before using!')
         const groupMetadata = await client.groupMetadata(M.from)
         const groupMembers = groupMetadata?.participants || []
@@ -30,6 +21,5 @@ module.exports = {
         await client.groupParticipantsUpdate(M.from, usersToPromote, 'promote').then((res) => {
             M.reply(`Done! Promoting ${usersToPromote.length} users`)
         })
-        await client.DB.set(`${M.sender}.promote`, Date.now());
     }
 }

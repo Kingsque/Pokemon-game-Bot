@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
     name: 'activate',
     aliases: ['act'],
@@ -10,13 +8,6 @@ module.exports = {
     description: 'Activate certain features on group-chats',
     async execute(client, arg, M) {
         
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.act`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
         const toggleableGroupActions = ['mod', 'events', 'invitelink', 'chatbot', 'nsfw'];
         if (!arg || !toggleableGroupActions.includes(arg.trim())) {
             return M.reply(
@@ -31,6 +22,5 @@ module.exports = {
 
         await client.DB.push(arg, M.from);
         M.reply(`Successfully activated ${client.utils.capitalize(arg)} in your group`);
-        await client.DB.set(`${M.sender}.act`, Date.now());
     }
 };

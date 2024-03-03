@@ -1,5 +1,4 @@
 const axios = require('axios');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'trendinganime',
@@ -10,15 +9,6 @@ module.exports = {
     description: 'Gives you the list of trending anime',
     cool: 4, // Add cooldown time in seconds
     async execute(client, arg, M) {
-        
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.trendinganime`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
-
         try {
             const res = await axios.get(`https://api.consumet.org/meta/anilist/trending`);
             const trends = res.data.results;
@@ -42,8 +32,6 @@ module.exports = {
                     caption: text
                 });
             }
-
-            await client.DB.set(`${M.sender}.trendinganime`, Date.now()); // Update last execution timestamp
         } catch (error) {
             console.error('Error fetching trending anime:', error);
             M.reply('Failed to fetch trending anime.');

@@ -1,6 +1,5 @@
 const YT = require('../../lib/YT');
 const yts = require('yt-search');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'ytvideo',
@@ -11,14 +10,6 @@ module.exports = {
     react: "✅",
     description: 'Downloads given YouTube Video',
     async execute(client, flag, arg, M) {
-     
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.ytv`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
         try {
             const link = async (term) => {
                 const { videos } = await yts(term.trim());
@@ -70,7 +61,6 @@ module.exports = {
                     quoted: M
                 }
             );
-            await client.DB.set(`${M.sender}.ytv`, Date.now());
         } catch (error) {
             console.error(error);
             M.reply('An error occurred while downloading the YouTube video.');

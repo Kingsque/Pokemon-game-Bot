@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
     name: 'removebg',
     aliases: ['rbg'],
@@ -9,14 +7,6 @@ module.exports = {
     react: "✅",
     description: 'Removes background from the image',
     async execute(client, arg, M) {
-    
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.rbg`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
         try {
             // Check if the background removal API key is provided
             if (!client.bgAPI) {
@@ -37,7 +27,6 @@ module.exports = {
 
             // Remove background from the image
             const removedBackgroundImage = await client.utils.removeBackground(buffer);
-            await client.DB.set(`${M.sender}.rbg`, Date.now());
 
             // Send the image with the removed background
             await client.sendMessage(

@@ -11,22 +11,13 @@ module.exports = {
     description: 'Claims your bonus',
     async execute(client, arg, M) {
 
-        const commandName = this.name.toLowerCase();
-        const now = Date.now(); // Get current timestamp
-        const cooldownSeconds = this.cool;
-        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-      
-        if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-            const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-            return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-        }
         const deck = await client.DB.get(`${M.sender}_Deck`) || [];
         const user = client.DB.get(`users`);
         const filePath = path.join(__dirname, '../../Handlers/card.json');
         const data = require(filePath);
         const bonusTimeout = 31536000000; // 1 year in milliseconds
         const bonusAmount = 50000;
-        const bonus = await client.credit.get(`${M.sender}.bonus`);
+        const bonus = await client.cradit.get(`${M.sender}.bonus`);
         let text = '';
 
         if (bonus !== null && bonusTimeout - (Date.now() - bonus) > 0) {
@@ -47,9 +38,8 @@ module.exports = {
                 text += `You are also one of the first ten users and have received a free random T6 card: ${randomT6}.`;
             } 
 
-            await client.credit.add(`${M.sender}.wallet`, bonusAmount);
-            await client.DB.set(`${M.sender}.bonus`, Date.now());
-            await client.credit.set(`${M.sender}.bonus`, Date.now());
+            await client.cradit.add(`${M.sender}.wallet`, bonusAmount);
+            await client.cradit.set(`${M.sender}.bonus`, Date.now());
         }
 
         M.reply(text);

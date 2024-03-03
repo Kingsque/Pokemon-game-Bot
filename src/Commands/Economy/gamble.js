@@ -1,5 +1,4 @@
 const { Sticker } = require('wa-sticker-formatter');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'gamble',
@@ -51,6 +50,5 @@ module.exports = {
         });
 
         await client.sendMessage(M.from, { sticker: await sticker.build() }, { quoted: M });
-        await client.DB.set(`${M.sender}.gamble`, Date.now());
     }
 };

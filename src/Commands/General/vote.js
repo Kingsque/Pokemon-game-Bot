@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
     name: 'vote',
     aliases: ['vote'],
@@ -9,14 +7,6 @@ module.exports = {
     react: "✅",
     description: 'Get information about vote for auction, feature or decision',
     async execute(client, arg, M) {
-        const commandName = this.name || this.aliases[0];
-        const disabledCommands = await client.DB.get('disabledCommands');
-        const isDisabled = disabledCommands && disabledCommands.some(disabledCmd => disabledCmd.name === commandName);
-        
-        if (isDisabled) {
-            const disabledCommand = disabledCommands.find(cmd => cmd.name === commandName);
-            return M.reply(`This command is disabled for the reason: *${disabledCommand.reason}*`);
-        } 
        
         const now = Date.now(); // Get current timestamp
         const cooldownSeconds = this.cool;
@@ -50,6 +40,5 @@ module.exports = {
         } else {
             M.reply(`VOTING OPTIONS\nOPTION 1 = ${option1}\nOPTION 2 = ${option2}\nOPTION 3 = ${option3}\nOPTION 4 = ${option4}\nTO GIVE VOTE USE :vote (option number)`);
         }
-        await client.DB.set(`${M.sender}.vote`, Date.now());
     }
 };

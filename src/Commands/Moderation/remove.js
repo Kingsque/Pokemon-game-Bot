@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
     name: 'remove',
     aliases: ['rem'],
@@ -10,13 +8,6 @@ module.exports = {
     description: 'Removes the tagged user',
     async execute(client, arg, M) {
     
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.remove`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
         if (!M.mentions.length) return M.reply('You must tag the user before using!')
 
         const groupMetadata = await client.groupMetadata(M.from)
@@ -31,6 +22,5 @@ module.exports = {
         await client.groupParticipantsUpdate(M.from, usersToRemove, 'remove').then((res) => {
             M.reply(`Done! Removing ${usersToRemove.length} users`)
         })
-        await client.DB.set(`${M.sender}.remove`, Date.now());
     }
 }

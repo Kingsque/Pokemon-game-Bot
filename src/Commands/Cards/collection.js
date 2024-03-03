@@ -1,6 +1,5 @@
 const axios = require("axios");
 const path = require('path');
-const ms = require('parse-ms');
 
 module.exports = {
   name: "collection",
@@ -12,15 +11,6 @@ module.exports = {
   description: "View your collected cards",
   async execute(client, arg, M) {
     try {
-      const commandName = this.name.toLowerCase();
-      const now = Date.now(); // Get current timestamp
-      const cooldownSeconds = this.cool;
-      const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-    
-      if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-          const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-          return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-      }
       const collection = (await client.DB.get(`${M.sender}_Collection`)) || [];
       if (collection.length === 0) {
         return M.reply("You currently don't have any cards in your collection");
@@ -76,8 +66,7 @@ module.exports = {
           cardText += `🔰Card ${i+1}:\n\n🌟Tier: ${card[1]}\n\n💎Name ${card[0]}\n`;
         }
         await client.sendMessage(M.from, tr);
-      }
-      await client.DB.set(`${M.sender}.slot`, Date.now());
+    }
     } catch (err) {
       await client.sendMessage(M.from, {image: {url: `${client.utils.errorChan()}`}, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`});
     }

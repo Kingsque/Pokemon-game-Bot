@@ -1,5 +1,5 @@
 const yts = require('yt-search');
-const ms = require('parse-ms');
+const YT = require('../../lib/YT');
 
 module.exports = {
     name: 'ytsearch',
@@ -10,15 +10,6 @@ module.exports = {
     react: "✅",
     description: 'Searches for videos on YouTube based on the given query',
     async execute(client, flag, arg, M) {
-        const commandName = this.name || this.aliases[0];
-    
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.ytsearch`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
         try {
             if (!arg) return M.reply('Sorry, you did not provide any search term!');
             
@@ -36,7 +27,6 @@ module.exports = {
             }
 
             M.reply(text);
-            await client.DB.set(`${M.sender}.ytsearch`, Date.now());
         } catch (error) {
             console.error(error);
             M.reply('An error occurred while searching for videos.');

@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
     name: 'rob',
     aliases: ['attack'],
@@ -10,16 +8,6 @@ module.exports = {
     description: 'Attempt to rob the mentioned user',
     async execute(client, arg, M) {
         if (!M.mentions.length) return M.reply('*You must mention someone to attempt the robbery*');
-
-        const commandName = this.name.toLowerCase();
-        const now = Date.now(); // Get current timestamp
-        const cooldownSeconds = this.cool;
-        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-      
-        if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-            const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-            return M.reply(`You robbed recently. Try again in ${timeLeft.minutes} minute(s), ${timeLeft.seconds} second(s).`);
-        }
 
         const senderCredits = (await client.cradit.get(`${M.sender}.wallet`)) || 0;
         const mentionCredits = (await client.cradit.get(`${M.mentions[0]}.wallet`)) || 0;
@@ -32,7 +20,6 @@ module.exports = {
             return 'caught';
         };
 
-        await client.cradit.set(`${M.sender}.lastrob`, Date.now());
         const result = getResultByProbability(0.1);
 
         let targetAmount = Math.floor(Math.random() * (senderCredits - 250) + 250);

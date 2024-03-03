@@ -1,7 +1,6 @@
 const axios = require('axios');
 const Apikey = 'AIzaSyDMbI3nvmQUrfjoCJYLS69Lej1hSXQjnWI&cx=baf9bdb0c631236e5';
 const cx = 'f07c35702a6a1499c';
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'google',
@@ -13,14 +12,6 @@ module.exports = {
     cool: 4, // Add cooldown time in seconds
     async execute(client, arg, M) {
         
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.google`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
-
         try {
             if (!arg) return M.reply('Sorry, you did not provide any search term!');
 
@@ -40,8 +31,6 @@ module.exports = {
             }
 
             M.reply(text);
-
-            await client.DB.set(`${M.sender}.google`, Date.now()); // Update last execution timestamp
         } catch (error) {
             console.error('Error fetching Google search results:', error);
             M.reply('An error occurred while fetching the search results.');

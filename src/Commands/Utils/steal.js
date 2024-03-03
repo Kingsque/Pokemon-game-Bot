@@ -1,5 +1,4 @@
 const { Sticker, StickerTypes } = require('wa-sticker-formatter');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'steal',
@@ -10,15 +9,6 @@ module.exports = {
     react: "✅",
     description: 'Steal [quote message containing sticker] <pack> | <author>',
     async execute(client, arg, M) {
-        
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.steal`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
-
         try {
             const content = JSON.stringify(M.quoted);
             const isQuotedSticker = M.type === 'extendedTextMessage' && content.includes('stickerMessage');
@@ -38,7 +28,6 @@ module.exports = {
                     categories: ['🤩', '🎉'],
                     quality: 70
                 });
-                await client.DB.set(`${M.sender}.steal`, Date.now());
 
                 // Build and send the sticker
                 await client.sendMessage(

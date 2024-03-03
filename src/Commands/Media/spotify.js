@@ -1,5 +1,4 @@
 const { spotifydl } = require('../../lib/Spotify');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'spotify',
@@ -10,14 +9,6 @@ module.exports = {
     react: "✅",
     description: 'Downloads given Spotify track and sends it as Audio',
     async execute(client, flag, arg, M) {
-    
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.spotify`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
         try {
             const link = M.urls[0];
             if (!link || !link.includes('https://open.spotify.com/track/')) {
@@ -56,7 +47,6 @@ module.exports = {
                 },
                 { quoted: M }
             );
-            await client.DB.set(`${M.sender}.spotify`, Date.now());
         } catch (error) {
             console.error(error);
             M.reply('An error occurred while downloading the Spotify track.');

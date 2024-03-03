@@ -1,6 +1,5 @@
 const { getAudioUrl } = require('google-tts-api');
 const languages = require('bing-translate-api/src/lang.json');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'texttospeech',
@@ -11,20 +10,11 @@ module.exports = {
     react: "✅",
     description: 'Text to speech',
     async execute(client, arg, M) {
-    
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.tts`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
 
         try {
             // Determine the text and language from the argument or quoted message
             const message = M.quoted ? M.quoted.message.conversation : arg;
             const language = arg.split('-')[1] || 'en';
-            await client.DB.set(`${M.sender}.tts`, Date.now());
 
             // Validate the language
             if (!Object.keys(languages).includes(language)) {

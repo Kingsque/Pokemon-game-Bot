@@ -1,5 +1,4 @@
 const axios = require('axios');
-const ms = require('parse-ms');
 
 module.exports = {
     name: 'gpt',
@@ -10,15 +9,7 @@ module.exports = {
     description: 'Let you chat with GPT chat bot',
     cool: 4, // Add cooldown time in seconds
     async execute(client, arg, M) {
-        
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.gpt`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
-
+    
         try {
             // Check if OpenAI API key is provided
             if (!process.env.openAi) {
@@ -61,8 +52,6 @@ module.exports = {
             const response = await client.gpt.chat(context);
             const text = `Q. ${context}\n\nA. ${response.response.trim().replace(/\n\n/, '\n')}`;
             await M.reply(text);
-
-            await client.DB.set(`${M.sender}.gpt`, Date.now()); // Update last execution timestamp
         } catch (error) {
             console.error('Error in gpt command:', error);
             await client.sendMessage(

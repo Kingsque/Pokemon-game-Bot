@@ -74,7 +74,6 @@ module.exports = {
 
       await client.DB.set(`${M.from}.bid`, price);
       await client.DB.set(`${M.from}.auctionInProgress`, true);
-      await client.DB.set(`${M.sender}.auction`, Date.now());
 
       setTimeout(async () => {
         const bid = await client.DB.get(`${M.from}.bid`);

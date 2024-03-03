@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
     name: 'deactivate',
     aliases: ['deact'],
@@ -10,13 +8,6 @@ module.exports = {
     description: 'Deactivate certain features on group-chats',
     async execute(client, arg, M) {
     
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.deact`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
         const toggleableGroupActions = ['mod', 'events', 'cardgame', 'invitelink', 'economy', 'chatbot', 'nsfw', 'card-game', 'auction', 'cshop', 'game', 'support'];
         if (!arg || !toggleableGroupActions.includes(arg.trim())) {
             return M.reply(
@@ -31,6 +22,5 @@ module.exports = {
 
         await client.DB.pull(arg, M.from);
         M.reply(`Successfully deactivated ${client.utils.capitalize(arg)} in your group`);
-        await client.DB.set(`${M.sender}.deact`, Date.now());
     }
 };

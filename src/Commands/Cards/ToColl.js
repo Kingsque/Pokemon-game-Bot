@@ -1,6 +1,5 @@
 const axios = require("axios");
 const path = require('path');
-const ms = require('parse-ms');
 
 module.exports = {
   name: "ToColl",
@@ -12,15 +11,6 @@ module.exports = {
   description: "Transfer a card from your deck to your collection",
   async execute(client, arg, M) {
     try {
-      const commandName = this.name.toLowerCase();
-      const now = Date.now(); // Get current timestamp
-      const cooldownSeconds = this.cool;
-      const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-    
-      if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-          const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-          return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-      }
 
       const collection = await client.DB.get(`${M.sender}_Collection`) || [];
       const deck = await client.DB.get(`${M.sender}_Deck`) || [];
@@ -48,7 +38,6 @@ module.exports = {
       const replyMsg = cardData ? `Sent "${indexOF}" from your deck to your collection!\n\nCard Details:\nName: ${cardData.title}\nTier: ${cardData.tier}` : `Card transferred from deck to collection.`;
 
       M.reply(replyMsg);
-      await client.DB.set(`${M.sender}.tocoll`, Date.now());
     } catch (err) {
       await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
     }

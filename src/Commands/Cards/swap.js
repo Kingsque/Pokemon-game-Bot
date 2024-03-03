@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
   name: "swap",
   aliases: ["swapcards"],
@@ -10,15 +8,6 @@ module.exports = {
   description: "Swap two cards in your deck",
   async execute(client, arg, M) {
       try {
-        const commandName = this.name.toLowerCase();
-        const now = Date.now(); // Get current timestamp
-        const cooldownSeconds = this.cool;
-        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-      
-        if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-            const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-            return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-        }
 
           let pc = await client.DB.get(`${M.sender}_Deck`) || [];
 
@@ -48,7 +37,6 @@ module.exports = {
           await client.DB.set(`${M.sender}_Deck`, newArray);
 
           M.reply(`Cards at index ${index1} and ${index2} have been swapped.`);
-          await client.DB.set(`${M.sender}.slot`, Date.now());
       } catch (err) {
           console.error(err);
           await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });

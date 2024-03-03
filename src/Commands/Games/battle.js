@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
   name: 'battle',
   aliases: ['battle'],
@@ -9,16 +7,7 @@ module.exports = {
   cool: 4,
   description: 'Engage in a battle against another person',
   async execute(client, arg, M) {
-    const commandName = this.name.toLowerCase();
-    const now = Date.now(); // Get current timestamp
-    const cooldownSeconds = this.cool;
-    const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-  
-    if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-        const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-        return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-    }
-
+    
     const participant = await client.DB.get('game') || [];
       if (!participant.includes(M.from)) {
         return M.reply(`To use game commands, join the games group by using ${client.prefix}support`);
@@ -100,7 +89,6 @@ module.exports = {
       await client.DB.set(`${M.from}.battleInProgress`, false);
       await client.DB.set(`${player1}.health`, 100); // Reset health
       await client.DB.set(`${player2}.health`, 100); // Reset health
-      await client.DB.set(`${M.sender}.battle`, Date.now());
 
       M.reply(resultMessage);
     } else {

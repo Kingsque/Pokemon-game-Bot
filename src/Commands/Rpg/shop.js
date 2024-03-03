@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 const items = {
   buy: [
     { iron: 1000 },
@@ -31,14 +29,6 @@ module.exports = {
   react: '✅',
   description: 'Buy or Sell any thing here',
   async execute(client, arg, M) {
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.shop`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
-
     const command = M.body.split(' ')[0].toLowerCase().slice(client.prefix.length).trim();
     if (command === 'shop') {
       const typeEmoji = ['💰', '⚖️'];
@@ -77,6 +67,5 @@ module.exports = {
         M.reply(`*Congratulations 🎉 you have gained ${price * quantity} by selling ${quantity} ${client.utils.capitalize(itemName)}*\n*Now you have _${await client.credits.get(`${M.sender}.wallet`)}_ in your wallet*`);
       }
     }
-    await client.DB.set(`${M.sender}.shop`, Date.now());
   },
 };

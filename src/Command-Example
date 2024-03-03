@@ -10,10 +10,6 @@ module.exports = {
   react: "commandReaction",
   description: 'commandDescription',
   async execute(client, arg, M) {
-    // Implement the command toggle function here if needed
-
-    // Implement the command cooldown system here if needed
-
     try {
       // Command logic goes here
       // the command you want to create 
@@ -23,10 +19,6 @@ module.exports = {
     } catch (error) {
       // Command error catcher
       console.error('Error executing command:', error);
-
-      // Send error to logs if available
-
-      // Send error message to the channel
     }
   }
 };

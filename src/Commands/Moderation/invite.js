@@ -7,16 +7,6 @@ module.exports = {
     category: 'moderation',
     description: 'Get the group link',
     async execute(client, arg, M) {
-    
-
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.invt`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
-
         const code = await client.groupInviteCode(M.from);
         if (!code) {
             return M.reply('Failed to get the group invite link.');
@@ -29,7 +19,5 @@ module.exports = {
         } else {
             M.reply('https://chat.whatsapp.com/' + code);
         }
-
-        await client.DB.set(`${M.sender}.invt`, Date.now());
     }
 };

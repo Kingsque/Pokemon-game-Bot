@@ -1,5 +1,3 @@
-const ms = require('parse-ms');
-
 module.exports = {
     name: 'inventory',
     aliases: ['inv'],
@@ -9,14 +7,6 @@ module.exports = {
     react: "✅",
     description: 'Gives you details about your inventory',
     async execute(client, arg, M) {
-    
-        const cooldownMs = this.cool * 1000;
-        const lastSlot = await client.DB.get(`${M.sender}.inv`);
-
-        if (lastSlot !== null && cooldownMs - (Date.now() - lastSlot) > 0) {
-            const remainingCooldown = ms(cooldownMs - (Date.now() - lastSlot), { long: true });
-            return M.reply(`*You have to wait ${remainingCooldown} for another slot*`);
-        }
 
         const inventory = await client.rpg.get(M.sender)
         if (!inventory) return M.reply('You have no inventory')
@@ -26,6 +16,5 @@ module.exports = {
             text += `> *${key}:* ${typeof value === 'number' ? value : JSON.stringify(value, null, 2)}\n`
         }
         M.reply(text)
-        await client.DB.set(`${M.sender}.inv`, Date.now());
     }
 }
