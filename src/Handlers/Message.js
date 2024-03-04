@@ -158,7 +158,7 @@ module.exports = MessageHandler = async (messages, client) => {
         if(!isGroup && !client.mods.includes(sender.split('@')[0])) return M.reply("Bot can only be accessed in groups")
         if(command.category == 'auction' && !auction.includes(from)) return M.reply("To participate in the auction, join the auction group by using ${client.prefix}support")
         if(command.category == 'game' && !game.includes(from)) return M.reply("To use game commands, join the games group by using ${client.prefix}support")
-        if(command.category == 'cshop' !cshop.includes(from)) return M.reply("Join the official group by using ${client.prefix}support, every saturday card shop commands are turned on")
+        if(command.category == 'cshop' && !cshop.includes(from)) return M.reply("Join the official group by using ${client.prefix}support, every saturday card shop commands are turned on")
         if (!client.mods.includes(sender.split('@')[0]) && command.category == 'dev')
             return M.reply('This command only can be accessed by the mods')
         command.execute(client, arg, M)
