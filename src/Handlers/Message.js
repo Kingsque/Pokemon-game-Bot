@@ -85,24 +85,19 @@ module.exports = MessageHandler = async (messages, client) => {
    // Wrong commands
         if (!isCmd) return;
 
-        const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName));
+const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName));
 
-        if (!command) {
-            const similarCommands = client.cmd.filter(cmd => {
-                if (cmd.name) {
-                    const distance = levenshteinDistance(cmd.name, cmdName);
-                    return distance <= 2; // Adjust the threshold as needed
-                }
-                return false;
-            });
+if (!command) {
+    // Find similar commands
+    const similarCommands = client.cmd.filter(cmd => cmd.name.includes(cmdName) || (cmd.aliases && cmd.aliases.includes(cmdName)));
 
-            if (similarCommands.length > 0) {
-                const suggestions = similarCommands.map(cmd => cmd.name).join(', ');
-                return M.reply(`No such command found! Did you mean: ${suggestions}?`);
-            } else {
-                return M.reply('No such command found! BAKA');
-            }
-        }
+    if (similarCommands.size > 0) {
+        const similarCommandsList = similarCommands.map(cmd => cmd.name).join(', ');
+        return M.reply(`No such command found! Did you mean: ${similarCommandsList}`);
+    } else {
+        return M.reply('No such command found! BAKA');
+    }
+}
 
         // Handling links
         if (body.includes('chat.whatsapp.com')) {
