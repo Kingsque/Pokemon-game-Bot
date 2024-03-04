@@ -1,4 +1,4 @@
 language="nodejs"
-run="pm2 start src/aurora.js && pm2 save && pm2 logs"
+run="yarn start && pm2 save && pm2 logs"
 entrypoint = "src/aurora.js"
-hidden = [".config", "package-lock.json"]
+hidden = [".config", "yarn.lock"]
