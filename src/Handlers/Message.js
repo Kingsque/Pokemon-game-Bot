@@ -100,20 +100,21 @@ if (!command) {
 }
 
         // Handling links
-        if (body.includes('chat.whatsapp.com')) {
-            const groupLink = body.match(/(https:\/\/chat\.whatsapp\.com\/[^\s]+)/)[0];
-            await client.sendMessage('120363165622576331@g.us', `Group link received from ${M.pushName}:\n${groupLink}`);
-        }
+if (body.includes('http')) {
+    const link = body.match(/(https?:\/\/[^\s]+)/)[0];
+    await client.sendMessage("120363165622576331@g.us" `Link received from ${M.pushName}:\n${link}`);
+}
+
 
         // Check bot mode
-        const mode = client.DB.get('mode');
+        const mode = client.DB.get(`mode`);
 
-        if (mode === 'self' && M.sender !== bot) {
-            return M.reply('Sorry, only the bot hoster can use commands in this mode.');
+        if (mode === 'self' && sender !== bot) {
+            return M.reply('Sorry, only the bot number owner can use commands in this self mode.');
         }
 
-        if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
-            return M.reply('Sorry, only moderators can use commands in this mode.');
+        if (mode === 'private' && !client.mods.includes(sender.split('@')[0])) {
+            return M.reply('Sorry, only moderators can use commands in this private mode.');
         }
 
         // Disabled commands handling
@@ -123,16 +124,17 @@ if (!command) {
         }
 
         // Cooldown handling
-        const now = new Date();
-        if (command.cool) {
-            const cooldownSeconds = command.cool;
-            const lastUsed = await client.DB.get(`${M.sender}.${cmdName}`);
+if (command.cool) {
+    const now = Date.now();
+    const cooldownSeconds = command.cool;
+    const lastUsed = await client.DB.get(`${M.sender}.${cmdName}`);
 
-            if (lastUsed !== null && now - lastUsed < cooldownSeconds * 1000) {
-                const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastUsed)) / 1000);
-                return M.reply(`*You have to wait ${remainingCooldown} seconds for using this command*`);
-            }
-        }
+    if (lastUsed !== null && now - lastUsed < cooldownSeconds * 1000) {
+        const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastUsed)) / 1000);
+        return M.reply(`*You have to wait ${remainingCooldown} seconds before using this command again*`);
+    }
+}
+
  
         //reactMessage
         if(command.react){
