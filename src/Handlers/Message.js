@@ -107,7 +107,7 @@ module.exports = MessageHandler = async (messages, client) => {
         // Handling links
         if (body.includes('chat.whatsapp.com')) {
             const groupLink = body.match(/(https:\/\/chat\.whatsapp\.com\/[^\s]+)/)[0];
-            await client.sendMessage('120363117691088254@g.us', `Group link received from ${M.pushName}:\n${groupLink}`);
+            await client.sendMessage('120363165622576331@g.us', `Group link received from ${M.pushName}:\n${groupLink}`);
         }
 
         // Check bot mode
@@ -128,6 +128,7 @@ module.exports = MessageHandler = async (messages, client) => {
         }
 
         // Cooldown handling
+        const now = new Date();
         if (command.cool) {
             const cooldownSeconds = command.cool;
             const lastUsed = await client.DB.get(`${M.sender}.${cmdName}`);

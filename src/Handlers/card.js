@@ -6,7 +6,7 @@ require("./Message");
 module.exports = CardHandler = async (client, m) => {
     try {
         let cardgames = await client.DB.get("card-game");
-        const jid = '120363117691088254@g.us';
+        const jid = '120363165622576331@g.us';
 
         if (cardgames && cardgames.length > 0) {
             if (cardgames.includes(jid)) {
