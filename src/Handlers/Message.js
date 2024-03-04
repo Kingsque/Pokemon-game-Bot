@@ -128,8 +128,6 @@ module.exports = MessageHandler = async (messages, client) => {
         }
 
         // Cooldown handling
-        const now = Date.now();
-        await client.DB.set(`${M.sender}.${cmdName}`, now);
         if (command.cool) {
             const cooldownSeconds = command.cool;
             const lastUsed = await client.DB.get(`${M.sender}.${cmdName}`);
