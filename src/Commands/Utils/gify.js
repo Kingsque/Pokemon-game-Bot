@@ -1,4 +1,5 @@
 const axios = require('axios');
+const key = 'LIVDSRZULELA';
 
 module.exports = {
     name: 'getgif',
@@ -13,7 +14,7 @@ module.exports = {
         try {
             if (!arg) return M.reply('Sorry, you did not provide any search term!');
             
-            const response = await axios.get(`https://g.tenor.com/v1/search?q=${arg}&key=LIVDSRZULELA&limit=8`);
+            const response = await axios.get(`https://g.tenor.com/v1/search?q=${arg}&key=${key}&limit=8`);
             
             if (!response.data || !response.data.results || response.data.results.length === 0) {
                 return M.reply('No gifs found.');
