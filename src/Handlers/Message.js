@@ -82,62 +82,63 @@ module.exports = MessageHandler = async (messages, client) => {
             'yellow'
         )
         
-        //Wrong commands
+   // Wrong commands
         if (!isCmd) return;
 
-const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName));
+        const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName));
 
-if (!command) {
-    const similarCommands = client.cmd.filter(cmd => {
-        if (command.name) {
-            const distance = levenshteinDistance(command.name, cmdName);
-            return distance <= 2; // Adjust the threshold as needed
-        }
-        return false;
-    });
-
-    if (similarCommands.length > 0) {
-        const suggestions = similarCommands.map(cmd => command.name).join(', ');
-        return M.reply(`No such command found! Did you mean: ${suggestions}?`);
-    } else {
-        return M.reply('No such command found! BAKA');
-    }
-}
-
-           //handling links
-if (body.includes('chat.whatsapp.com')) {
-    const groupLink = body.match(/(https:\/\/chat\.whatsapp\.com\/[^\s]+)/)[0];
-    await client.sendMessage('120363117691088254@g.us', `Group link received from ${M.pushName}:\n${groupLink}`);
-}
-
-      // Check bot mode
-const mode = client.DB.get('mode');
-
-if (mode === 'self' && M.sender !== bot) {
-   return M.reply('Sorry, only the bot hoster can use commands in this mode.');
-}
-
-if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
-   return M.reply('Sorry, only moderators can use commands in this mode.');
-}
-
-           //disabled commands handling
-           const disabled = await client.DB.get('disable-commands') || [];
-            if (disabled.includes(cmdName) || cmd.aliases.some(alias => disabled.includes(alias.toLowerCase()))) {
-                return M.reply('This command is currently disabled.');
-            }
-             
-            //cooldown handling
-            await client.DB.set(`${M.sender}.${cmdName}`, Date.now());
-            if (command.cool) {
-                const cooldownSeconds = command.cool;
-                const lastUsed = await client.DB.get(`${M.sender}.${cmdName}`);
-    
-                if (lastUsed !== null && now - lastUsed < cooldownSeconds * 1000) {
-                    const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastUsed)) / 1000);
-                    return M.reply(`*You have to wait ${remainingCooldown} seconds for using this command*`);
+        if (!command) {
+            const similarCommands = client.cmd.filter(cmd => {
+                if (cmd.name) {
+                    const distance = levenshteinDistance(cmd.name, cmdName);
+                    return distance <= 2; // Adjust the threshold as needed
                 }
+                return false;
+            });
+
+            if (similarCommands.length > 0) {
+                const suggestions = similarCommands.map(cmd => cmd.name).join(', ');
+                return M.reply(`No such command found! Did you mean: ${suggestions}?`);
+            } else {
+                return M.reply('No such command found! BAKA');
             }
+        }
+
+        // Handling links
+        if (body.includes('chat.whatsapp.com')) {
+            const groupLink = body.match(/(https:\/\/chat\.whatsapp\.com\/[^\s]+)/)[0];
+            await client.sendMessage('120363117691088254@g.us', `Group link received from ${M.pushName}:\n${groupLink}`);
+        }
+
+        // Check bot mode
+        const mode = client.DB.get('mode');
+
+        if (mode === 'self' && M.sender !== bot) {
+            return M.reply('Sorry, only the bot hoster can use commands in this mode.');
+        }
+
+        if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
+            return M.reply('Sorry, only moderators can use commands in this mode.');
+        }
+
+        // Disabled commands handling
+        const disabled = await client.DB.get('disable-commands') || [];
+        if (disabled.includes(cmdName) || command.aliases.some(alias => disabled.includes(alias.toLowerCase()))) {
+            return M.reply('This command is currently disabled.');
+        }
+
+        // Cooldown handling
+        const now = Date.now();
+        await client.DB.set(`${M.sender}.${cmdName}`, now);
+        if (command.cool) {
+            const cooldownSeconds = command.cool;
+            const lastUsed = await client.DB.get(`${M.sender}.${cmdName}`);
+
+            if (lastUsed !== null && now - lastUsed < cooldownSeconds * 1000) {
+                const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastUsed)) / 1000);
+                return M.reply(`*You have to wait ${remainingCooldown} seconds for using this command*`);
+            }
+        }
  
         //reactMessage
         if(command.react){
