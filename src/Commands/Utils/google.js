@@ -1,5 +1,5 @@
 const axios = require('axios');
-const Apikey = 'AIzaSyDMbI3nvmQUrfjoCJYLS69Lej1hSXQjnWI&cx=baf9bdb0c631236e5';
+const Apikey = 'AIzaSyDMbI3nvmQUrfjoCJYLS69Lej1hSXQjnWI';
 const cx = 'f07c35702a6a1499c';
 
 module.exports = {
