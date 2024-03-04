@@ -10,7 +10,7 @@ module.exports = {
     description: 'Sends random quotes',
     async execute(client, arg, M) {
         await axios
-            .get(`https://animechan.vercel.app/api/random`)
+            .get(`https://api.quotable.io/quotes/random`)
             .then((response) => {
                 const text = `[${response.data.character}]: ${response.data.quote}`
                 M.reply(text)
