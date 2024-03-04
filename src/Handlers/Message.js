@@ -89,15 +89,15 @@ const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases 
 
 if (!command) {
     const similarCommands = client.cmd.filter(cmd => {
-        if (cmd.name) {
-            const distance = levenshteinDistance(cmd.name, cmdName);
+        if (command.name) {
+            const distance = levenshteinDistance(command.name, cmdName);
             return distance <= 2; // Adjust the threshold as needed
         }
         return false;
     });
 
     if (similarCommands.length > 0) {
-        const suggestions = similarCommands.map(cmd => cmd.name).join(', ');
+        const suggestions = similarCommands.map(cmd => command.name).join(', ');
         return M.reply(`No such command found! Did you mean: ${suggestions}?`);
     } else {
         return M.reply('No such command found! BAKA');
