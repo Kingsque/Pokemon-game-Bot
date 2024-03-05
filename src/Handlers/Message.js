@@ -88,7 +88,6 @@ module.exports = MessageHandler = async (messages, client) => {
 const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName));
 
 if (!command) {
-    // Find similar commands
     const similarCommands = client.cmd.filter(cmd => cmd.name.includes(cmdName) || (cmd.aliases && cmd.aliases.includes(cmdName)));
 
     if (similarCommands.size > 0) {
@@ -123,6 +122,7 @@ if (body.includes('http')) {
             return M.reply('This command is currently disabled.');
         }
 
+        await client.DB.set(`{M.sender}.${cmdName}`);
         // Cooldown handling
 if (command.cool) {
     const now = Date.now();
