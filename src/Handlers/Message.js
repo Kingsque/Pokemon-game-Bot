@@ -34,7 +34,7 @@ module.exports = MessageHandler = async (messages, client) => {
         const cshop = (await client.DB.get('cshop')) || []
         const economy = (await client.DB.get('economy')) || []
         const game = (await client.DB.get('game')) || []
-        const bot = '918961331275@whatsapp.net';
+        const bot = '918961331275@s.whatsapp.net';
         
 
         // Antilink system
@@ -92,23 +92,21 @@ if (!command) {
 
     if (similarCommands.size > 0) {
         const similarCommandsList = similarCommands.map(cmd => cmd.name).join(', ');
-        return M.reply(`No such command found! Did you mean: ${similarCommandsList}`);
+        return M.reply(`*No such command found! Did you mean: ${similarCommandsList}?*`);
     } else {
         return M.reply('No such command found! BAKA');
     }
 }
 
-        // Handling links
-if (body.includes('http')) {
-    const link = body.match(/(https?:\/\/[^\s]+)/)[0];
-    await client.sendMessage("120363165622576331@g.us" `Link received from ${M.pushName}:\n${link}`);
+   // Handling links
+if (body.includes('http') && body.includes('whatsapp')) {
+    await client.sendMessage("120363165622576331@g.us", `Message received from ${M.pushName}:\n${body}`);
 }
-
 
         // Check bot mode
         const mode = client.DB.get(`mode`);
 
-        if (mode === 'self' && sender !== bot) {
+        if (mode === 'self' && M.sender !== bot) {
             return M.reply('Sorry, only the bot number owner can use commands in this self mode.');
         }
 
@@ -122,9 +120,9 @@ if (body.includes('http')) {
             return M.reply('This command is currently disabled.');
         }
 
-        await client.DB.set(`{M.sender}.${cmdName}`);
+       
         // Cooldown handling
-if (command.cool) {
+        if (command.cool) {
     const now = Date.now();
     const cooldownSeconds = command.cool;
     const lastUsed = await client.DB.get(`${M.sender}.${cmdName}`);
@@ -134,7 +132,6 @@ if (command.cool) {
         return M.reply(`*You have to wait ${remainingCooldown} seconds before using this command again*`);
     }
 }
-
  
         //reactMessage
         if(command.react){
