@@ -155,6 +155,7 @@ SESSION_URL | Your Mongo URL will be used here ()
 - Those who are deploying manually from Railway website put these `Enviroment Variables` before start deploying ( Mandatory).
       
 <br>
+
 ENV | VALUES
 -- | --
 NAME | The name of your bot (Aurora-Public) 
