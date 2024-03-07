@@ -21,19 +21,19 @@ module.exports = {
                 return M.reply('The mode is already self');
             }
             await client.DB.set(`mode`, 'self');
-            return M.reply('Now only host of this bot can use command');
+            return M.reply('Now only the host of this bot can use commands');
         } else if (requestedMode === 'private') {
             if (mode === 'private') {
                 return M.reply('The mode is already private');
             }
             await client.DB.set(`mode`, 'private');
-            return M.reply('Now only mods of this bot can use command');
+            return M.reply('Now only mods of this bot can use commands');
         } else if (requestedMode === 'public') {
             if (mode === 'public') {
                 return M.reply('The mode is already public');
             }
             await client.DB.set(`mode`, 'public');
-            return M.reply('Now everyone on this this bot can use command');
+            return M.reply('Now everyone on this bot can use commands');
         }
     }
 };

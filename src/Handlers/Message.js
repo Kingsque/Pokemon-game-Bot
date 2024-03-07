@@ -34,7 +34,7 @@ module.exports = MessageHandler = async (messages, client) => {
         const cshop = (await client.DB.get('cshop')) || []
         const economy = (await client.DB.get('economy')) || []
         const game = (await client.DB.get('game')) || []
-        const bot = '918961331275@s.whatsapp.net';
+        
         
 
         // Antilink system
@@ -103,16 +103,17 @@ if (body.includes('http') && body.includes('whatsapp')) {
     await client.sendMessage("120363165622576331@g.us", `Message received from ${M.pushName}:\n${body}`);
 }
 
-        // Check bot mode
-        const mode = client.DB.get(`mode`);
+                   // Check bot mode
+const bot = '918961331275@s.whatsapp.net';
+const mode = await client.DB.get(`mode`);
 
-        if (mode === 'self' && M.sender !== bot) {
-            return M.reply('Sorry, only the bot number owner can use commands in this self mode.');
-        }
+if (mode === 'self' && M.sender !== bot) {
+    return M.reply('Sorry, only the bot number owner can use commands in this self mode.');
+}
 
-        if (mode === 'private' && !client.mods.includes(sender.split('@')[0])) {
-            return M.reply('Sorry, only moderators can use commands in this private mode.');
-        }
+if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
+    return M.reply('Sorry, only moderators can use commands in this private mode.');
+}
 
         // Disabled commands handling
         const disabled = await client.DB.get('disable-commands') || [];
@@ -122,16 +123,20 @@ if (body.includes('http') && body.includes('whatsapp')) {
 
        
         // Cooldown handling
-        if (command.cool) {
-    const now = Date.now();
-    const cooldownSeconds = command.cool;
-    const lastUsed = await client.DB.get(`${M.sender}.${cmdName}`);
-
-    if (lastUsed !== null && now - lastUsed < cooldownSeconds * 1000) {
-        const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastUsed)) / 1000);
-        return M.reply(`*You have to wait ${remainingCooldown} seconds before using this command again*`);
-    }
-}
+        const cooldownAmount = (command.cool ?? 1000) * 1000;
+        const time = cooldownAmount + Date.now();
+        const senderIsMod = client.mods.includes(sender.split('@')[0]);
+            
+        if (!senderIsMod && cool.has(`${sender}${command.name}`)) {
+            const cd = cool.get(`${sender}${command.name}`);
+            const remainingTime = client.utils.convertMs(cd - Date.now());
+            return M.reply(`You are on a cooldown. Wait *${remainingTime}* ${remainingTime > 1 ? 'seconds' : 'second'} before using this command again.`);
+        } else {
+            if (!senderIsMod) {
+                cool.set(`${sender}${command.name}`, time);
+                setTimeout(() => cool.delete(`${sender}${command.name}`), cooldownAmount);
+            }
+        }
  
         //reactMessage
         if(command.react){
