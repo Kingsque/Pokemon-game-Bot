@@ -309,7 +309,7 @@ const term = (param) =>
     })
 
 const restart = () => {
-    exec('pm2 start src/haven.js', (err, stdout, stderr) => {
+    exec('pm2 start src/aurora.js', (err, stdout, stderr) => {
         if (err) {
             console.log(err)
             return
