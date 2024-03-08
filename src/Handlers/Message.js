@@ -6,6 +6,8 @@ const chalk = require('chalk')
 const emojiStrip = require('emoji-strip')
 const axios = require('axios')
 const cron = require("node-cron")
+const { Collection } = require('discord.js')
+const cool=new Collection()
 
 module.exports = MessageHandler = async (messages, client) => {
     try {
@@ -16,7 +18,7 @@ module.exports = MessageHandler = async (messages, client) => {
         if (M.type === 'protocolMessage' || M.type === 'senderKeyDistributionMessage' || !M.type || M.type === '')
             return
 
-        const { isGroup, sender, from, body } = M
+        const { isGroup, isSelf, sender, from, body } = M
         const gcMeta = isGroup ? await client.groupMetadata(from) : ''
         const gcName = isGroup ? gcMeta.subject : ''
         const args = body.trim().split(/ +/).slice(1)
@@ -104,10 +106,9 @@ if (body.includes('http') && body.includes('whatsapp')) {
 }
 
                    // Check bot mode
-const bot = '918961331275@s.whatsapp.net';
 const mode = await client.DB.get(`mode`);
 
-if (mode === 'self' && M.sender !== bot) {
+if (mode === 'self' && !isSelf) {
     return M.reply('Sorry, only the bot number owner can use commands in this self mode.');
 }
 
@@ -122,8 +123,8 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
         }
 
        
-        // Cooldown handling
-        const cooldownAmount = (command.cool ?? 1000) * 1000;
+    // Cooldown handling
+    const cooldownAmount = (command.cool ?? 5) * 1000;
         const time = cooldownAmount + Date.now();
         const senderIsMod = client.mods.includes(sender.split('@')[0]);
             

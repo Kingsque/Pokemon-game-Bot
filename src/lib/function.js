@@ -318,6 +318,41 @@ const restart = () => {
         console.log(`stderr: ${stderr}`)
     })
 }
+const convertMs = (ms, to = 'seconds') => {
+    let seconds = parseInt(
+        Math.floor(ms / 1000)
+            .toString()
+            .split('.')[0]
+    )
+    let minutes = parseInt(
+        Math.floor(seconds / 60)
+            .toString()
+            .split('.')[0]
+    )
+    let hours = parseInt(
+        Math.floor(minutes / 60)
+            .toString()
+            .split('.')[0]
+    )
+    let days = parseInt(
+        Math.floor(hours / 24)
+            .toString()
+            .split('.')[0]
+    )
+    if (to === 'seconds') return seconds
+    if (to === 'minutes') return minutes
+    if (to === 'hours') return hours
+    if (to === 'days') return days
+    seconds = parseInt((seconds % 60).toString().split('.')[0])
+    minutes = parseInt((minutes % 60).toString().split('.')[0])
+    hours = parseInt((hours % 24).toString().split('.')[0])
+    return {
+        days,
+        seconds,
+        minutes,
+        hours
+    }
+}
 
 module.exports = {
     calculatePing,
@@ -341,5 +376,6 @@ module.exports = {
     getRandomInt,
     getFormattedUrl,
     search,
+    convertMs,
     gpt
 }
