@@ -99,12 +99,6 @@ if (!command) {
         return M.reply('No such command found! BAKA');
     }
 }
-
-   // Handling links
-if (body.includes('http') && body.includes('whatsapp')) {
-    await client.sendMessage("120363165622576331@g.us", `Message received from ${M.pushName}:\n${body}`);
-}
-
                    // Check bot mode
 const mode = await client.DB.get(`mode`);
 
