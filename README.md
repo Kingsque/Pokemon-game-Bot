@@ -373,8 +373,6 @@ since **whatsapp-bot** use [baileys](https://github.com/WhiskeySockets/Baileys) 
 <br>
 
 - We are the one of the most stable whatsapp gamebot now.
-- This bot contains the features and some contents of old version of the most famous js bot `Atlas` which is now updated to the plugin function.
-- This bot uses the structure of the old version of krypton bot which now uses a different structure so we had adapted this.
 - This bot contains the economy features.
 - This bot have games function from classic type to latest.
 - This bot have a mining style-based rpg game.
