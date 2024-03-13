@@ -20,9 +20,10 @@ module.exports = {
         };
         const uptime = formatTime(process.uptime());
         const usersCount = Object.values(await client.contactDB.all()).length;
+       const modCount = client.mods.length;
         
         M.reply(
-            `(¬‿¬) *${process.env.NAME}'s info*\n\n🚦 *UPTIME:* ${uptime}\n📛 *USERS:* ${usersCount}\n🔰 *COMMANDS:* ${client.cmd.size}\n*👥 Groups:* ${groupCount}\n*👑 Users:* ${userCount}`
+            `(¬‿¬) *${process.env.NAME}'s info*\n\n🚦 *UPTIME:* ${uptime}\n📛 *USERS:* ${usersCount}\n🔰 *COMMANDS:* ${client.cmd.size}\n*👥 Groups:* ${groupCount}\n*👑 Mods:* ${modCount}`
         );
     }
 };

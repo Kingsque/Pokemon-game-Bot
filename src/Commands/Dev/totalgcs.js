@@ -14,7 +14,7 @@ module.exports = {
         const groupInfo = groups.map(group => {
             return {
                 name: group.name,
-                members: group.members.length,
+                members: group.members,
                 gclink: group.gclink
             };
         });

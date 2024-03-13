@@ -76,7 +76,7 @@ module.exports = {
         const canvasHeight = 1800;
         const canvas = createCanvas(canvasWidth, canvasHeight);
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         const imageWidth = 350;
         const imageHeight = 450;

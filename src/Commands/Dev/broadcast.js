@@ -8,43 +8,33 @@ module.exports = {
     description: 'Will make a broadcast for groups where the bot is in. Can be used to make announcements',
     async execute(client, arg, M) {
         try {
-            if (!arg) {
-                return M.reply('🚫 Oops! It seems like you forgot to provide a query for the broadcast. Please enter a message or query to proceed.');
+            if (!arg) return M.reply('🟥 *No query provided!*');
+
+            let group = true;
+            let results = await client.getAllGroups();
+
+            if (arg.includes('--users')) {
+                arg = arg.replace('--users', '');
+                group = false;
+                results = await client.getAllUsers();
             }
 
-            const groups = await client.getChats();
+            for (const result of results) {
+                const text = `*「 ${client.name.toUpperCase()} BROADCAST 」*\n\n${arg}\n\n`;
+                await client.sendMessage(result, {
+                    text,
+                    mentions: group ? (await client.groupMetadata(result)).participants.map((x) => x.id) : []
+                });
+            }
 
-            const groupPromises = groups.filter(chat => chat.isGroup).map(async chat => {
-                try {
-                    const groupMetadata = await client.groupMetadata(chat.id);
-                    const groupMembers = groupMetadata.participants.map(participant => participant.id);
-                    const text = `🔰*「 ${client.name.toUpperCase()} BROADCAST 」*🔰\n\n🏮 Message: ${arg}\n\n🌺 *Regards:* @${M.sender.split("@")[0]} by AURORA`;
-
-                    await client.sendMessage(chat.id, {
-                        image: {
-                            url: 'https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg'
-                        },
-                        mentions: groupMembers,
-                        caption: `${text}`,
-                    });
-
-                    return chat.id;
-                } catch (error) {
-                    console.error(`Error broadcasting to group ${chat.id}: ${error}`);
-                    return null;
-                }
-            });
-
-            const groupIds = (await Promise.all(groupPromises)).filter(id => id !== null);
-            const successMessage = `✅ Broadcast Message sent to *${groupIds.length} groups*.`;
-
+            const successMessage = `🟩 Successfully Broadcast in ${results.length} ${group ? 'groups' : 'DMs'}`;
             M.reply(successMessage);
-        } catch (err) {
-            console.error(err);
-            await client.sendMessage(M.from, {
-                image: { url: `${client.utils.errorChan()}` },
-                caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`
-            });
-        }
-    }
-};
+                } catch (err) {
+                    console.error(err);
+                    await client.sendMessage(M.from, {
+                        image: { url: `${client.utils.errorChan()}` },
+                        caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`
+                    });
+                }
+            }
+        }       

@@ -55,7 +55,7 @@ const start = async () => {
     client.prefix = process.env.PREFIX || ':'
     client.writesonicAPI = process.env.WRITE_SONIC || null
     client.bgAPI = process.env.BG_API_KEY || null
-    client.mods = ('917903576495,918961331275').split(',')
+    client.mods = ('917903576495,918961331275,918013909204').split(',')
 
     //Database
     client.DB = new QuickDB({
@@ -96,6 +96,16 @@ const start = async () => {
 
     //YT gif
     client.YT = YT;
+
+    //groups
+    client.getAllGroups = async () => Object.keys(await client.groupFetchAllParticipating())
+
+    //user
+    client.getAllUsers = async () => {
+        const data = (await client.contactDB.all()).map((x) => x.id)
+        const users = data.filter((element) => /^\d+@s$/.test(element)).map((element) => `${element}.whatsapp.net`)
+        return users
+    }
 
     //Colourful
     client.log = (text, color = 'green') =>
