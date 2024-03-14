@@ -9,11 +9,6 @@ module.exports = {
   async execute(client, arg, M) {
 
     try {
-      const winned = await client.DB.get(`${M.from}.winned`);
-      if (winned.includes(M.sender)) {
-        return M.reply('You already won one');
-      }
-
       const auctionInProgress = await client.DB.get(`${M.from}.auctionInProgress`);
       if (!auctionInProgress) {
         return M.reply("There is no ongoing auction at the moment.");

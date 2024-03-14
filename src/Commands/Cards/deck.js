@@ -76,8 +76,8 @@ module.exports = {
         const canvasHeight = 1800;
         const canvas = createCanvas(canvasWidth, canvasHeight);
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        const backgroundImage = await loadImage('https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg');
+        ctx.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
         const imageWidth = 350;
         const imageHeight = 450;
         const imagePadding = 10;
