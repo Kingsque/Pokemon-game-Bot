@@ -7,7 +7,7 @@ module.exports = {
     exp: 5,
     cool: 8,
     react: "✅",
-    description: 'Gambles your money and increase',
+    description: 'Gambles your credits to decrease and increase',
     async execute(client, arg, M) {
         const participant = await client.DB.get('economy') || [];
         if (!participant.includes(M.from)) {
@@ -19,12 +19,12 @@ module.exports = {
         if (!amount || !directions.includes(direction)) return M.reply('Please provide a valid amount and direction.');
         if (!(/^\d+$/).test(amount)) return M.reply('Please provide a valid amount.');
         
-        const credits = (await client.cradit.get(`${M.sender}.wallet`)) || 0;
+        const credits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
         if ((credits - amount) < 0) return M.reply('You don\'t have that much in your wallet.');
         if (amount > 20000) return M.reply('You cannot gamble more than 20000.');
 
         const result = Math.random() < 0.5 ? 'left' : 'right';
-        await client.cradit.add(`${M.sender}.wallet`, result === direction ? amount : -amount);
+        await client.credit.add(`${M.sender}.wallet`, result === direction ? amount : -amount);
         M.reply(result === direction ? `🎉 You won ${amount}` : `🥀 You lost ${amount}`);
 
         const stickerUrl = result === 'right'
@@ -32,8 +32,8 @@ module.exports = {
             : 'https://bestanimations.com/media/left/365059883left-arrow-18.gif';
         
         const sticker = new Sticker(stickerUrl, {
-            pack: ' ',
-            author: ' ',
+            pack: 'Aurora',
+            author: 'By Aurora',
             quality: 90,
             type: 'full',
             background: '#0000ffff'

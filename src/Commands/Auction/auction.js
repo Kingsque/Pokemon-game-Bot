@@ -68,23 +68,23 @@ module.exports = {
         await client.sendMessage(M.from, { image: file, caption: text }, { quoted: M });
       }
 
-      await client.DB.set(`${M.from}.bid`, price);
+      await client.credit.set(`${M.from}.bid`, price);
       await client.DB.set(`${M.from}.auctionInProgress`, true);
 
       setTimeout(async () => {
-        const bid = await client.DB.get(`${M.from}.bid`);
+        const bid = await client.credit.get(`${M.from}.bid`);
         const winner = await client.DB.get(`${M.from}.auctionWinner`);
         if (!winner) {
           return M.reply('No one bid, so the auction is won by mods.');
         } else {
-          await client.cradit.sub(`${winner}.wallet`, bid);
+          await client.credit.sub(`${winner}.wallet`, bid);
           await client.DB.push(`${winner}_Collection`, `${cardData.title}-${cardData.tier}`);
           await client.DB.delete(`${M.from}.auctionWinner`);
-          await client.DB.delete(`${M.from}.bid`);
+          await client.credit.delete(`${M.from}.bid`);
           await client.DB.delete(`${M.from}.auctionInProgress`);
           M.reply(`The card ${cardData.title} of tier ${cardData.tier} is won by ${winner} with a bid of ${bid}. It has been added to your collection.`);
         }
-      }, 15 * 60 * 1000); // 15 minutes in milliseconds
+      }, 15 * 60 * 1000); 
     } catch (err) {
       console.log(err);
       await client.sendMessage(M.from, { image: { url: client.utils.errorChan() }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });

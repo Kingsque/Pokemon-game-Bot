@@ -64,7 +64,6 @@ module.exports = {
         await client.DB.push(`${M.sender}.sell`, { shopID, seller, cardIndex, price });
         await client.DB.set(`${M.from}.sellInProgress`, true);
 
-        // Set a timeout to delete the sale after 10 minutes (600,000 milliseconds)
         setTimeout(async () => {
           await client.DB.pull(`${M.sender}.sell`, { shopID, seller, cardIndex, price });
           M.reply(`Sale with ID ${shopID} has expired and is now deleted.`);
@@ -83,14 +82,14 @@ module.exports = {
         const buyer = M.sender;
         const sellerDeck = await client.DB.get(`${seller}_Deck`) || [];
         const buyerDeck = await client.DB.get(`${buyer}_Deck`) || [];
-        const wallet = await client.DB.get(`${buyer}.wallet`) || 0;
+        const wallet = await client.credit.get(`${buyer}.wallet`) || 0;
 
         if (wallet < price) {
           return M.reply("Not enough funds to make the purchase.");
         }
 
-        await client.DB.add(`${seller}.wallet`, price);
-        await client.DB.subtract(`${buyer}.wallet`, price);
+        await client.credit.add(`${seller}.wallet`, price);
+        await client.credit.subtract(`${buyer}.wallet`, price);
 
         buyerDeck.push(`${cardName}-${cardTier}`);
         sellerDeck.splice(cardIndex, 1);

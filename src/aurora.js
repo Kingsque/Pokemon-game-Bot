@@ -76,14 +76,14 @@ const start = async () => {
     //Cards
     client.cards = client.DB.table('cards')
 
-    //Cradits
-    client.cradit = client.DB.table('cradit')
+    //Credits
+    client.credit = client.DB.table('credit')
 
     //RPG
     client.rpg = client.DB.table('rpg_game')
     
-    //charagame
-    client.chara = client.DB.table('chara')
+    //backgroungs
+    client.bg = client.DB.table('bg')
     
     //Commands
     client.cmd = new Collection()

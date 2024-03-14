@@ -15,8 +15,8 @@ module.exports = {
         const user = M.quoted?.participant || M.mentions[0] || M.sender;
         const collection = (await client.DB.get(`${user}_Collection`)) || [];
         const deck = await client.DB.get(`${user}_Deck`);
-        let bank = await client.DB.get(`${user}.bank`) || 0;
-        let wallet = await client.DB.get(`${user}.wallet`) || 0;
+        let bank = await client.credit.get(`${user}.bank`) || 0;
+        let wallet = await client.credit.get(`${user}.wallet`) || 0;
 
         let pfp;
         try {
@@ -39,18 +39,18 @@ module.exports = {
         const banned = (await client.DB.get('banned')) || [];
 
         let text = '';
-        text += `🏮 *Username:* ${username}#${user.substring(3, 7)}\n\n`;
-        text += `🎫 *Bio:* ${bio}\n\n`;
-        text += `🍀 *Level:* ${level}\n\n`;
-        text += `💈 *Number:* wa.me/${user.split('@')[0]}\n\n`;
-        text += `🌟 *XP:* ${experience}\n\n`;
-        text += `🥇 *Rank:* ${stats.rank}\n\n`;
-        text += `👑 *Admin:* ${groupAdmins.includes(user) ? 'True' : 'False'}\n\n`;
-        text += `✖ *Ban:* ${banned.includes(user) ? 'True' : 'False'}\n\n`;
-        text += `💰 *Wallet:* ${wallet}\n\n`;
-        text += `🏦 *Bank:* ${bank}\n\n`;
-        text += `🃏 *Deck:* ${deck.length}\n\n`;
-        text += `🗃️ *Collection:* ${collection.length}\n\n`;
+        text += `🏮 *Username:* ${username}#${user.substring(3, 7)}\n`;
+        text += `🎫 *Bio:* ${bio}\n`;
+        text += `🍀 *Level:* ${level}\n`;
+        text += `💈 *Number:* wa.me/${user.split('@')[0]}\n`;
+        text += `🌟 *XP:* ${experience}\n`;
+        text += `🥇 *Rank:* ${stats.rank}\n`;
+        text += `👑 *Admin:* ${groupAdmins.includes(user) ? 'True' : 'False'}\n`;
+        text += `✖ *Ban:* ${banned.includes(user) ? 'True' : 'False'}\n`;
+        text += `💰 *Wallet:* ${wallet}\n`;
+        text += `🏦 *Bank:* ${bank}\n`;
+        text += `🃏 *Deck:* ${deck ? deck.length : 0}\n`; // Check if deck is empty
+        text += `🗃️ *Collection:* ${collection ? collection.length : 0}\n`; // Check if collection is empty
 
         client.sendMessage(
             M.from,

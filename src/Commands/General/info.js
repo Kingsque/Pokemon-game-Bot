@@ -5,7 +5,7 @@ module.exports = {
     exp: 0,
     cool: 4,
     react: "✅",
-    description: 'Get information bot information',
+    description: 'Get bot information',
     async execute(client, arg, M) {
 
         const getGroups = await client.groupFetchAllParticipating();
@@ -20,10 +20,17 @@ module.exports = {
         };
         const uptime = formatTime(process.uptime());
         const usersCount = Object.values(await client.contactDB.all()).length;
-       const modCount = client.mods.length;
+        const modCount = client.mods.length;
+        const website = 'https://kingshisui00.github.io/Aurora-web/';
         
-        M.reply(
-            `(¬‿¬) *${process.env.NAME}'s info*\n\n🚦 *UPTIME:* ${uptime}\n📛 *USERS:* ${usersCount}\n🔰 *COMMANDS:* ${client.cmd.size}\n*👥 Groups:* ${groupCount}\n*👑 Mods:* ${modCount}`
-        );
+        let text = `(¬‿¬) *${process.env.NAME}'s info*\n\n`;
+        text += `• *UPTIME:* ${uptime}\n`;
+        text += `• *USERS:* ${usersCount}\n`;
+        text += `• *COMMANDS:* ${client.cmd.size}\n`;
+        text += `• *Groups:* ${groupCount}\n`;
+        text += `• *Mods:* ${modCount}\n`;
+        text += `• *Website:* ${website}`;
+
+        M.reply(text);
     }
-};
+}; 

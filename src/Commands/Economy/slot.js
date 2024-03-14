@@ -7,10 +7,8 @@ module.exports = {
     exp: 5,
     cool: 8,
     react: "👍",
-    description: 'Bets the given amount of gold in a slot machine',
+    description: 'Bets the given amount of credits in a slot machine',
     async execute(client, arg, M) {
-       
-        const luck = (await client.rpg.get(`${M.sender}.luckpotion`)) || 0;
         const participant = await client.DB.get('economy') || [];
         if (!participant.includes(M.from)) {
             return M.reply(`To use economy commands, join the casino group by using ${client.prefix}support`);
@@ -20,22 +18,22 @@ module.exports = {
             new SlotSymbol('a', {
                 display: '🍂',
                 points: 1,
-                weight: 20, // 20% chance of winning
+                weight: 20,
             }),
             new SlotSymbol('b', {
                 display: '🌱',
                 points: 2,
-                weight: 20, // 20% chance of winning
+                weight: 20,
             }),
             new SlotSymbol('c', {
                 display: '🍁',
                 points: 0,
-                weight: 20, // 20% chance of winning
+                weight: 20,
             }),
             new SlotSymbol('d', {
                 display: '🌾',
                 points: 2,
-                weight: 20, // 40% chance of winning
+                weight: 10,
             }),
         ];
 
@@ -45,9 +43,9 @@ module.exports = {
         if (isNaN(amount)) return M.reply('Please provide a valid amount');
         if (arg.startsWith('-') || arg.startsWith('+')) return M.reply('Please provide a valid amount');
 
-        const credits = (await client.cradit.get(`${M.sender}.wallet`)) || 0;
+        const credits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
 
-        if (amount > credits) return M.reply('you dont have sufficiant funds')
+        if (amount > credits) return M.reply('You don\'t have sufficient funds');
         if (amount > 10000) return M.reply('You cannot bet more than 10000 gold in the slot machine');
 
         const machine = new SlotMachine(3, symbols).play();
@@ -56,19 +54,26 @@ module.exports = {
 
         let resultAmount = points <= 0 ? -amount : amount * points;
 
-        if (luck > 0) {
-            // Increase the winning rate by 20% and deduct 1 luck point
-            resultAmount = resultAmount * 1.2;
-            await client.rpg.subtract(`${M.sender}.luckpotion`, 1);
+        const jackpotChance = Math.random();
+        if (jackpotChance <= 0.01) {
+            const jackpotWin = amount * 10;
+            resultAmount += jackpotWin;
+            M.reply(`🎉 Congratulations! You hit the jackpot and won ${jackpotWin} credit!`);
         }
 
-        await client.cradit.add(`${M.sender}.wallet`, resultAmount);
+        const luck = (await client.rpg.get(`${M.sender}.luckpotion`)) || 0;
+        const luckFactor = 1 + (Math.random() * luck) / 10; 
+        resultAmount *= luckFactor;
+
+        await client.credit.add(`${M.sender}.wallet`, resultAmount);
 
         let text = '🎰 *SLOT MACHINE* 🎰\n\n';
         text += machine.visualize();
         text += points <= 0 ? `\n\n📉 You lost ${amount} gold` : `\n\n📈 You won ${resultAmount} gold`;
 
-        if (luck > 0) text += `\nYou get an additional 20% from luck potion and 1 luck point has been deducted.`;
+        if (luckFactor > 1) text += `\nYou got lucky and your winnings were boosted by ${Math.round((luckFactor - 1) * 100)}%!`;
+
+        await client.DB.set(`${M.sender}.lastSlotPlayed`, currentTime);
 
         M.reply(text);
     },

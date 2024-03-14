@@ -15,9 +15,9 @@ module.exports = {
         const user = client.DB.get(`users`);
         const filePath = path.join(__dirname, '../../Handlers/card.json');
         const data = require(filePath);
-        const bonusTimeout = 31536000000; // 1 year in milliseconds
+        const bonusTimeout = 31536000000; 
         const bonusAmount = 50000;
-        const bonus = await client.cradit.get(`${M.sender}.bonus`);
+        const bonus = await client.credit.get(`${M.sender}.bonus`);
         let text = '';
 
         if (bonus !== null && bonusTimeout - (Date.now() - bonus) > 0) {
@@ -26,10 +26,8 @@ module.exports = {
         } else {
             text += `*Welcome to our Celestic family! We are really happy to have you as our member. You have claimed your bonus reward 🎉: ${bonusAmount}.*`;
 
-            // Check if user is among the first ten
             const firstTenUsers = Object.values(await client.contactDB.all());
             if (firstTenUsers.length < 10) {
-                // Give a random T6 card
                 const randomT6Index = Math.floor(Math.random() * data.t6.length);
                 const randomT6 = data.t6[randomT6Index];
                 deck.push(randomT6);
@@ -38,8 +36,8 @@ module.exports = {
                 text += `You are also one of the first ten users and have received a free random T6 card: ${randomT6}.`;
             } 
 
-            await client.cradit.add(`${M.sender}.wallet`, bonusAmount);
-            await client.cradit.set(`${M.sender}.bonus`, Date.now());
+            await client.credit.add(`${M.sender}.wallet`, bonusAmount);
+            await client.credit.set(`${M.sender}.bonus`, Date.now());
         }
 
         M.reply(text);

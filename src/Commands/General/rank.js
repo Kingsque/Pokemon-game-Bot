@@ -49,7 +49,7 @@ module.exports = {
             M.from,
             {
                 image: card,
-                caption: `@${user.split("@")[0]}#${user.substring(3, 7)}'s rank card\n\n🎯 Exp: ${experience}/${requiredXpToLevelUp}\n❤️ Level: ${level}\n🔮 Role: ${rank}`,
+                caption: `@${user.split("@")[0]}#${user.substring(3, 7)}'s rank card\n\n🎯 Exp: ${experience}/${requiredXpToLevelUp}\n❤️ Level: ${level}\n🔮 Rank: ${rank}`,
                 mentions: [user]
             },
             {

@@ -27,15 +27,15 @@ module.exports = {
           return M.reply('Please provide a positive amount for your bid.');
         }
 
-        const currentBid = (await client.DB.get(`${M.from}.bid`)) || 0;
-        const credits = (await client.cradit.get(`${M.sender}.wallet`)) || 0;
+        const currentBid = (await client.credit.get(`${M.from}.bid`)) || 0;
+        const credits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
 
         if (amount <= currentBid) {
           return M.reply("Your bid must be higher than the current highest bid.");
         } else if (amount > credits) {
           return M.reply('You do not have enough credits for this bid.');
         } else {
-          await client.DB.set(`${M.from}.bid`, amount);
+          await client.credit.set(`${M.from}.bid`, amount);
           await client.DB.set(`${M.from}.auctionWinner`, M.sender);
           const responseText = `You have successfully placed a bid of ${amount} credits.`;
           return M.reply(responseText);
