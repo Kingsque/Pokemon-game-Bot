@@ -1,6 +1,6 @@
 module.exports = {
-    name: 'information',
-    aliases: ['info'],
+    name: 'info',
+    aliases: ['information'],
     category: 'general',
     exp: 0,
     cool: 4,
@@ -24,12 +24,12 @@ module.exports = {
         const website = 'https://kingshisui00.github.io/Aurora-web/';
         
         let text = `(¬‿¬) *${process.env.NAME}'s info*\n\n`;
-        text += `• *UPTIME:* ${uptime}\n`;
-        text += `• *USERS:* ${usersCount}\n`;
-        text += `• *COMMANDS:* ${client.cmd.size}\n`;
-        text += `• *Groups:* ${groupCount}\n`;
-        text += `• *Mods:* ${modCount}\n`;
-        text += `• *Website:* ${website}`;
+        text += `💠 *UPTIME:* ${uptime}\n`;
+        text += `💠 *USERS:* ${usersCount}\n`;
+        text += `💠 *COMMANDS:* ${client.cmd.size}\n`;
+        text += `💠 *Groups:* ${groupCount}\n`;
+        text += `💠 *Mods:* ${modCount}\n`;
+        text += `💠 *Website:* ${website}`;
 
         M.reply(text);
     }
