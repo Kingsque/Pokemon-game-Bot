@@ -76,7 +76,7 @@ module.exports = {
         const canvasHeight = 1800;
         const canvas = createCanvas(canvasWidth, canvasHeight);
         const ctx = canvas.getContext('2d');
-        const backgroundImage = await loadImage('https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg');
+        const backgroundImage = await loadImage('https://img.freepik.com/free-vector/white-abstract-background_23-2148817571.jpg');
         ctx.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
         const imageWidth = 350;
         const imageHeight = 450;
