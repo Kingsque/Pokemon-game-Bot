@@ -33,7 +33,7 @@ module.exports = {
       await client.DB.set(`${M.sender}_Collection`, collection);
       await client.DB.set(`${M.sender}_Deck`, deck);
 
-      const cardData = require('../../Handlers/card.json').find((cardData) => cardData.title === card.split("-")[0] && cardData.tier === card.split("-")[1]);
+      const cardData = require('../../storages/card.json').find((cardData) => cardData.title === card.split("-")[0] && cardData.tier === card.split("-")[1]);
 
       const replyMsg = cardData ? `Sent "${indexOF}" from your deck to your collection!\n\nCard Details:\nName: ${cardData.title}\nTier: ${cardData.tier}` : `Card transferred from deck to collection.`;
 

@@ -33,7 +33,7 @@ module.exports = {
           M.reply(`Invalid card index. Your deck has ${deck.length} cards.`);
         } else {
           const card = deck[index].split('-');
-          const filePath = path.join(__dirname, '../../Handlers/card.json');
+          const filePath = path.join(__dirname, '../../storages/card.json');
           const data = require(filePath);
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
@@ -58,7 +58,7 @@ module.exports = {
         const cardMap = new Map(); // Map to store card titles and their counts
         for (let i = 0; i < deck.length; i++) {
           const card = deck[i].split('-');
-          const filePath =  path.join(__dirname, '../../Handlers/card.json');
+          const filePath =  path.join(__dirname, '../../storages/card.json');
           const data = require(filePath);
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
@@ -76,7 +76,7 @@ module.exports = {
         const canvasHeight = 1800;
         const canvas = createCanvas(canvasWidth, canvasHeight);
         const ctx = canvas.getContext('2d');
-        const backgroundImage = await loadImage('https://img.freepik.com/free-vector/white-abstract-background_23-2148817571.jpg');
+        const backgroundImage = await loadImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjhqepor4DIU0nVdnVG5ttVRj6iGwtwPyVsQ&usqp=CAU');
         ctx.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
         const imageWidth = 350;
         const imageHeight = 450;

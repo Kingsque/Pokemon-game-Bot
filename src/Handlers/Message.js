@@ -1,7 +1,7 @@
 const { getBinaryNodeChild } = require('@WhiskeySockets/baileys')
-const { serialize } = require('../lib/WAclient')
+const { serialize } = require('../Structures/WAclient')
 const { response } = require('express')
-const { getStats, ranks } = require('../lib/stats')
+const { getStats, ranks } = require('../Helpers/Stats')
 const chalk = require('chalk')
 const emojiStrip = require('emoji-strip')
 const axios = require('axios')
@@ -30,12 +30,6 @@ module.exports = MessageHandler = async (messages, client) => {
         const ActivateMod = (await client.DB.get('mod')) || []
         const ActivateChatBot = (await client.DB.get('chatbot')) || []
         const banned = (await client.DB.get('banned')) || []
-        const getCard = (await client.DB.get('cards')) || []
-        const cardgame = (await client.DB.get('card-game')) || []
-        const auction = (await client.DB.get('auction')) || []
-        const cshop = (await client.DB.get('cshop')) || []
-        const economy = (await client.DB.get('economy')) || []
-        const game = (await client.DB.get('game')) || []
         
         
 
@@ -151,9 +145,6 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
             return M.reply('This command can only be used when bot is admin')
         if (!isGroup && command.category == 'moderation') return M.reply('This command is ment to use in groups')
         if(!isGroup && !client.mods.includes(sender.split('@')[0])) return M.reply("Bot can only be accessed in groups")
-        if(command.category == 'auction' && !auction.includes(from)) return M.reply("To participate in the auction, join the auction group by using ${client.prefix}support")
-        if(command.category == 'game' && !game.includes(from)) return M.reply("To use game commands, join the games group by using ${client.prefix}support")
-        if(command.category == 'cshop' && !cshop.includes(from)) return M.reply("Join the official group by using ${client.prefix}support, every saturday card shop commands are turned on")
         if (!client.mods.includes(sender.split('@')[0]) && command.category == 'dev')
             return M.reply('This command only can be accessed by the mods')
         command.execute(client, arg, M)

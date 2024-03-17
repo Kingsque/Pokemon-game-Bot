@@ -10,16 +10,16 @@ const {
 const { QuickDB } = require('quick.db')
 const { MongoDriver } = require('quickmongo')
 const { Collection } = require('discord.js')
-const auth = require("./Handlers/auth")
+const auth = require("./Structures/Auth")
+//handlers
 const MessageHandler = require('./Handlers/Message')
 const CardHandler = require('./Handlers/card')
+const EventsHandler = require('./Handlers/Events')
    // call the summon function
 const jid = "120363138194549275@g.us";
 
-const EventsHandler = require('./Handlers/Events')
-const contact = require('./lib/contacts')
-const gpt = require('./lib/gpt')
-const utils = require('./lib/function')
+const contact = require('./Structures/Contact')
+const utils = require('./Structures/Functions')
 const YT = require('./lib/YT')
 const AI_lib = require('./lib/AI_lib')
 const express = require("express");
@@ -57,6 +57,13 @@ const start = async () => {
     client.bgAPI = process.env.BG_API_KEY || null
     client.mods = ('917903576495,918961331275,918013909204').split(',')
 
+    //grouos
+    client.groups = {
+        casinoGroup: '120363079152152692@g.us',
+        adminsGroup: '120363152573548472@g.us',
+        supportGroup: '120363079152152692@g.us'
+    };
+
     //Database
     client.DB = new QuickDB({
         driver
@@ -90,9 +97,6 @@ const start = async () => {
 
     //Utils
     client.utils = utils
-
-    //GPT
-    client.gpt = gpt
 
     //YT gif
     client.YT = YT;

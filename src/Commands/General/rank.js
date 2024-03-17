@@ -1,4 +1,4 @@
-const { getStats } = require('../../lib/stats');
+const { getStats } = require('../../Helpers/Stats');
 const cx = require('canvacord');
 
 module.exports = {

@@ -377,6 +377,5 @@ module.exports = {
     getFormattedUrl,
     search,
     convertMs,
-    extractUrls,
-    gpt
+    extractUrls
 }

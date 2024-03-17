@@ -7,18 +7,13 @@ module.exports = {
   exp: 0,
   cool: 5,
   react: "✅",
-  category: "auction",
+  category: "card game",
   description: "Starts card auction",
   async execute(client, arg, M) {
     try {
       const auctionInProgress = await client.DB.get(`${M.from}.auctionInProgress`);
       if (auctionInProgress) {
         return M.reply("An auction is already in progress.");
-      }
-
-      const shisui = '918961331275@s.whatsapp.net'
-      if (M.sender !== shisui) {
-        return M.rply('Hehe! you are not mod') 
       }
 
       const splitArgs = arg.split('|');
@@ -47,7 +42,7 @@ module.exports = {
       }
 
       const cardToSell = deck[cardIndex].split('-');
-      const filePath = path.join(__dirname, '../../Handlers/card.json');
+      const filePath = path.join(__dirname, '../../storages/card.json');
       const cardDataJson = require(filePath);
       const cardsInTier = cardDataJson.filter((card) => card.tier === cardToSell[1]);
       const cardData = cardsInTier.find((card) => card.title === cardToSell[0]);

@@ -44,7 +44,7 @@ module.exports = {
       await client.DB.set(`${M.sender}_Deck`, deck);
       await client.DB.set(`${M.mentions[0]}_Deck`, mentionedUserDeck);
 
-      const filePath = path.join(__dirname, '../../Handlers/card.json');
+      const filePath = path.join(__dirname, '../../storages/card.json');
       const data = require(filePath);
       const cardData = data.find((cardData) => cardData.title === card.split("-")[0] && cardData.tier === card.split("-")[1]);
 

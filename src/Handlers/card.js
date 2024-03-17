@@ -17,7 +17,7 @@ module.exports = CardHandler = async (client, m) => {
 
                 cron.schedule('*/1 * * * *', async () => {
                     try {
-                        const filePath = path.join(__dirname, './card.json');
+                        const filePath = path.join(__dirname, '../../storages/card.json');
                         const data = require(filePath);
                         const index = Math.floor(Math.random() * data.length);
                         let obj, price;
