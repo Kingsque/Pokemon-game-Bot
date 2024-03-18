@@ -1,7 +1,7 @@
 module.exports = {
     name: 'card-shop',
     aliases: ['cshop'],
-    category: 'card shop',
+    category: 'card game',
     exp: 5,
     cool: 4,
     react: "✅",

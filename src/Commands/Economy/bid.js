@@ -1,7 +1,7 @@
 module.exports = {
     name: 'bid',
     aliases: ['auction-bid'],
-    category: 'card game',
+    category: 'economy',
     exp: 5,
     cool: 5,
     react: "✅",

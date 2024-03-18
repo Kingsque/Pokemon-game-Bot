@@ -86,6 +86,9 @@ const start = async () => {
     
     //backgroungs
     client.bg = client.DB.table('bg')
+
+    //evets
+    client.event = client.DB.table('event')
     
     //Commands
     client.cmd = new Collection()

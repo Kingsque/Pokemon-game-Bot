@@ -4,7 +4,7 @@ module.exports = {
     exp: 0,
     cool: 4,
     react: "✅",
-    category: "card shop",
+    category: "card game",
     description: 'To buy cards from card shop',
     async execute(client, arg, M) {
         let dime = await client.rpg.get(`${M.sender}.diamond`) || 0;
