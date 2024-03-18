@@ -110,7 +110,6 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
             return M.reply('This command is currently disabled.');
         }
 
-       
     // Cooldown handling
     const cooldownAmount = (command.cool ?? 5) * 1000;
         const time = cooldownAmount + Date.now();

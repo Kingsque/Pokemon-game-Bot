@@ -13,7 +13,7 @@ module.exports = {
 
         const deck = await client.DB.get(`${M.sender}_Deck`) || [];
         const user = client.DB.get(`users`);
-        const filePath = path.join(__dirname, '../../Handlers/card.json');
+        const filePath = path.join(__dirname, '../../storages/card.json');
         const data = require(filePath);
         const bonusTimeout = 31536000000; 
         const bonusAmount = 50000;

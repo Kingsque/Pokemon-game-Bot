@@ -76,8 +76,8 @@ module.exports = {
         const canvasHeight = 1800;
         const canvas = createCanvas(canvasWidth, canvasHeight);
         const ctx = canvas.getContext('2d');
-        const backgroundImage = await loadImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjhqepor4DIU0nVdnVG5ttVRj6iGwtwPyVsQ&usqp=CAU');
-        ctx.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
+        const backgroundImage = await loadImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmru1INQycEtNqouDSnB0XU7_CS3MzEpORvw&usqp=CAU');
+        ctx.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight)
         const imageWidth = 350;
         const imageHeight = 450;
         const imagePadding = 10;

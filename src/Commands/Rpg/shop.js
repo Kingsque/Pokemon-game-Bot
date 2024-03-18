@@ -50,14 +50,14 @@ module.exports = {
       const actionItems = Object.keys(Object.assign({}, ...items[command]));
       const itemName = term[0].toLowerCase();
       if (!actionItems.includes(itemName)) return M.reply('Please give a valid item name');
-      const credits = (await client.credits.get(`${M.sender}.wallet`)) || 0;
+      const credits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
       const price = parseInt(Object.values(items[command][actionItems.indexOf(itemName)]));
       const quantity = parseInt(term[1]) || 1;
       
       if (command === 'buy') {
         if ((credits - price * quantity) < 0) return M.reply(`You don't have enough in your wallet to buy ${itemName}`);
         await client.rpg.add(`${M.sender}.${itemName}`, quantity);
-        await client.credits.sub(`${M.sender}.wallet`, price * quantity);
+        await client.credit.sub(`${M.sender}.wallet`, price * quantity);
         M.reply(`*Thank you 🎉 for your purchase*\n*Now you have _${client.utils.capitalize(itemName)}: ${(await client.rpg.get(`${M.sender}.${itemName}`)) || 0}_*`);
       } else {
         const itemQuantity = await client.rpg.get(`${M.sender}.${itemName}`);
