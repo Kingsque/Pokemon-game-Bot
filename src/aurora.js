@@ -15,8 +15,7 @@ const auth = require("./Structures/Auth")
 const MessageHandler = require('./Handlers/Message')
 const CardHandler = require('./Handlers/card')
 const EventsHandler = require('./Handlers/Events')
-   // call the summon function
-const jid = "120363138194549275@g.us";
+const { groups } = require('./Handlers/Mods')
 
 const contact = require('./Structures/Contact')
 const utils = require('./Structures/Functions')
@@ -36,7 +35,7 @@ const driver = new MongoDriver(process.env.URL)
 const chalk = require('chalk')
 
 const start = async () => {
-    await mongoose.connect(process.env.SESSION_URL);
+    await mongoose.connect(process.env.URL);
 
   const { useAuthFromDatabase } = new auth(process.env.SESSION);
 
@@ -58,11 +57,7 @@ const start = async () => {
     client.mods = ('917903576495,918961331275,918013909204').split(',')
 
     //grouos
-    client.groups = {
-        casinoGroup: '120363079152152692@g.us',
-        adminsGroup: '120363152573548472@g.us',
-        supportGroup: '120363079152152692@g.us'
-    };
+    client.groups = groups()
 
     //Database
     client.DB = new QuickDB({
