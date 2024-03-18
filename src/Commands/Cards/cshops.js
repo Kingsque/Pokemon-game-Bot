@@ -1,3 +1,16 @@
+const cardData = [
+    { name: "Madara", tier: 6, price: 50000, source: "Naruto" },
+    { name: "Goku", tier: 6, price: 40000, source: "Dragon Ball" },
+    { name: "Yuji Itadori and Sukuna", tier: 6, price: 45000, source: "Jujutsu Kaisen" },
+    { name: "Tanjiro", tier: 6, price: 60000, source: "Demon Slayer" },
+    { name: "Genos", tier: 6, price: 40000, source: "One Punch Man" },
+    { name: "Allen Walker", tier: 6, price: 55000, source: "D.gray Man" },
+    { name: "Yae Miko", tier: 6, price: 65000, source: "Genshin Impact" },
+    { name: "Broly", tier: 6, price: 50000, source: "Dragon Ball" },
+    { name: "Hayase Nagatoro", tier: 6, price: 45000, source: "Unknown" },
+    { name: "Ace x Sabo x Luffy", tier: 6, price: 70000, source: "One Piece" }
+];
+
 module.exports = {
     name: 'card-shop',
     aliases: ['cshop'],
@@ -7,7 +20,13 @@ module.exports = {
     react: "✅",
     description: 'Shows available card shop items',
     async execute(client, arg, M) {
-        let shop =  `⛺ *|------< CARD SHOP >-------|* ⛺\n\n🎉 *Welcome to our card shop. Here are the list of available cards:* 🎉\n\n*#1*\n🔥 *Name:* Madara\n🔩Tier: 6\n💰 *Price:* 50000 diamonds\n🛠️ *Source:* Naruto\n\n*#2*\n🔥 *Name:* Goku\n🔩Tier: 6\n💰 *Price:* 40000 diamonds\n🛠️ *Source:* Dragon Ball\n\n*#3*\n🔥 *Name:* Yuji Itadori and Sukuna\n🔩Tier: 6\n💰 *Price:* 45000 diamonds\n🛠️ *Source:* Jujutsu Kaisen\n\n*#4*\n🔥 *Name:* Tanjiro\n🔩Tier: 6\n💰 *Price:* 60000 diamonds\n🛠️ *Source:* Demon Slayer\n\n*#5*\n🔥 *Name:* Genos\n🔩Tier: 6\n💰 *Price:* 40000 diamonds\n🛠️ *Source:* One Punch Man\n\n*#6*\n🔥 *Name:* Allen Walker\n🔩Tier: 6\n💰 *Price:* 55000 diamonds\n🛠️ *Source:* D.gray Man\n\n*#7*\n🔥 *Name:* Yae Miko\n🔩Tier: 6\n💰 *Price:* 65000 diamonds\n🛠️ *Source:* Genshin Impact\n\n*#8*\n🔥 *Name:* Broly\n🔩Tier: 6\n💰 *Price:* 50000 diamonds\n🛠️ *Source:* Dragon Ball\n\n*#9*\n🔥 *Name:* Hayase Nagatoro\n🔩Tier: 6\n💰 *Price:*  45000 diamonds\n🛠️ *Source:* Unknown\n\n*#10*\n🔥 *Name:* Ace x Sabo x Luffy\n🔩Tier: 6\n💰 *Price:* 70000 diamonds\n🛠️ *Source:* One Piece\n\n🔰 *Note:* *Use :buy-card <Index_Number> to select your card.*\nEvery week, this list will be updated.`;
+        let shop =  `⛺ *|------< CARD SHOP >-------|* ⛺\n\n🎉 *Welcome to our card shop. Here are the list of available cards:* 🎉\n\n`;
+
+        cardData.forEach((card, index) => {
+            shop += `*#${index + 1}*\n🔥 *Name:* ${card.name}\n🔩 *Tier:* ${card.tier}\n💰 *Price:* ${card.price} diamonds\n🛠️ *Source:* ${card.source}\n\n`;
+        });
+
+        shop += `🔰 *Note:* *Use :buy-card <Index_Number> to select your card.*\nEvery week, this list will be updated.`;
         M.reply(shop); 
     }
 };
