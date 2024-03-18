@@ -1,3 +1,16 @@
+const cardData = [
+    { name: "Madara", tier: 6, price: 50000, source: "Naruto" },
+    { name: "Goku", tier: 6, price: 40000, source: "Dragon Ball" },
+    { name: "Yuji Itadori and Sukuna", tier: 6, price: 45000, source: "Jujutsu Kaisen" },
+    { name: "Tanjiro", tier: 6, price: 60000, source: "Demon Slayer" },
+    { name: "Genos", tier: 6, price: 40000, source: "One Punch Man" },
+    { name: "Allen Walker", tier: 6, price: 55000, source: "D.gray Man" },
+    { name: "Yae Miko", tier: 6, price: 65000, source: "Genshin Impact" },
+    { name: "Broly", tier: 6, price: 50000, source: "Dragon Ball" },
+    { name: "Hayase Nagatoro", tier: 6, price: 45000, source: "Unknown" },
+    { name: "Ace x Sabo x Luffy", tier: 6, price: 70000, source: "One Piece" }
+];
+
 module.exports = {
     name: "buy-card",
     aliases: ["b-c"],
@@ -7,40 +20,21 @@ module.exports = {
     category: "card game",
     description: 'To buy cards from card shop',
     async execute(client, arg, M) {
+        const index = parseInt(arg);
+        
+        if (isNaN(index) || index < 1 || index > cardData.length) {
+            return M.reply("Invalid card number.");
+        }
+
+        const card = cardData[index - 1];
         let dime = await client.rpg.get(`${M.sender}.diamond`) || 0;
 
-        const cardPrices = {
-            "1": 50000,
-            "2": 40000,
-            "3": 45000,
-            "4": 60000,
-            "5": 40000,
-            "6": 55000,
-            "7": 65000,
-            "8": 50000,
-            "9": 45000,
-            "10": 70000
-        };
+        if (dime < card.price) {
+            return M.reply("You don't have enough diamonds.");
+        }
 
-        const cardNames = {
-            "1": "Madara",
-            "2": "Goku",
-            "3": "Yuji Itadori and Sukuna",
-            "4": "Tanjiro",
-            "5": "Genos",
-            "6": "Allen Walker",
-            "7": "Yae Miko",
-            "8": "Broly",
-            "9": "Hayase Nagatoro",
-            "10": "Ace x Sabo x Luffy"
-        };
-
-        if (!cardPrices[arg]) return M.reply("Invalid card number.");
-
-        if (dime < cardPrices[arg]) return M.reply("You don't have enough diamonds.");
-
-        await client.DB.push(`${M.sender}_Collection`, `${cardNames[arg]}-6`);
-        await client.rpg.sub(`${M.sender}.diamond`, cardPrices[arg]);
-        M.reply(`You have successfully purchased ${cardNames[arg]}. It's in your collection.`);
+        await client.DB.push(`${M.sender}_Collection`, `${card.name}-6`);
+        await client.rpg.sub(`${M.sender}.diamond`, card.price);
+        M.reply(`You have successfully purchased ${card.name}. It's in your collection.`);
     }
 };
