@@ -33,6 +33,7 @@ const { readdirSync, writeFileSync, unlink } = require('fs-extra')
 const port = process.env.PORT || 3000
 const driver = new MongoDriver(process.env.URL)
 const chalk = require('chalk')
+const { gpt } = require('./lib/gpt')
 
 const start = async () => {
     await mongoose.connect(process.env.URL);
@@ -99,6 +100,9 @@ const start = async () => {
     //YT gif
     client.YT = YT;
 
+    //gpt
+     client.gpt = gpt
+    
     //groups
     client.getAllGroups = async () => Object.keys(await client.groupFetchAllParticipating())
 
