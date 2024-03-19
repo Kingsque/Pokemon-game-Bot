@@ -11,7 +11,7 @@ module.exports = {
     async execute(client, arg, M) {
         try {
             // Check if arg is an array, if not, convert it to an array
-           yar
+            arg = Array.isArray(arg) ? arg : [arg];
 
             const uid = encodeURIComponent(M.sender.jid); // Encode user's JID
             const msg = encodeURIComponent(arg.join('')); // Encode user's message

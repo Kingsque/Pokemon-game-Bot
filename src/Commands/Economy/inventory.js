@@ -1,7 +1,7 @@
 module.exports = {
     name: 'inventory',
     aliases: ['inv'],
-    category: 'rpg',
+    category: 'economy',
     exp: 7,
     cool: 4,
     react: "✅",
