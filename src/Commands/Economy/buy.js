@@ -13,7 +13,7 @@ const items = {
 module.exports = {
     name: 'buy',
     aliases: [],
-    category: 'rpg',
+    category: 'economy',
     exp: 10,
     cool: 4,
     react: '✅',

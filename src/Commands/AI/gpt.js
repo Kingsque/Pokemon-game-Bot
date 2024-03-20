@@ -26,14 +26,17 @@ module.exports = {
 
             async function generateResponse(prompt, retries = 2) {
                 try {
-                    const completion = await openai.createChatCompletion({
-                        model: "gpt-3.5-turbo",
-                        messages: [{ role: "user", content: prompt }],
+                    const completion = await openai.createCompletion({
+                        model: "text-davinci-003",
+                        prompt: `${prompt}`,
+                        temperature: 0,
+                        max_tokens: 3000,
+                        top_p: 1,
+                        frequency_penalty: 0.5,
+                        presence_penalty: 0
                     });
 
-                    console.log("API Key:", process.env.OpenAi);
-
-                    return completion.data.choices[0].message.content.trim();
+                    return completion.data.choices[0].text.trim();
                 } catch (error) {
                     if (error.response && error.response.status === 429 && retries > 0) {
                         const retryAfter = error.response.headers["retry-after"] * 1000 || 5000;
@@ -55,36 +58,3 @@ module.exports = {
         }
     }
 };
-
-//const axios = require('axios');
-
-//module.exports = {
-  //  name: 'ai',
-   // aliases: ['learn'],
-   // category: 'Ai',
-   // exp: 0,
-   // cool: 4,
-   // react: "✅",
-    //description: 'Let you get interacted with the 3.5 version GPT in whatsapp',
-  //  async execute(client, arg, M) {
-    //    arg = Array.isArray(arg) ? arg : [arg];
-   //     const query = arg.join(' ');
-//
-  //      try {
-          // Fetch information from Wikipedia API
-           // const response = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(query)}`);
-////
-    //        if (response.data.extract) {
-      //          // If information is available, send it as a reply
-        //        M.reply(response.data.extract);
-          //  } else {
-              // If no information is found, send a message indicating it
-             //   M.reply(`Sorry, I couldn't find information about "${query}"`);
-           // }
-    //    } catch (error) {
-      //      // If an error occurs during the request, send an error message
-        //    console.error('Error:', error.message);
-          //  M.reply(`Error: Unable to fetch information about "${query}"`);
-        //}
-   // }
-//};
