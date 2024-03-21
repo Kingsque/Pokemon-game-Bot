@@ -9,6 +9,7 @@ module.exports = {
   description: "Search for a card by name in your deck and collection.",
   async execute(client, arg, M) {
     try {
+       arg = Array.isArray(arg) ? arg : [arg];
       const deck = await client.DB.get(`${M.sender}_Deck`) || [];
       const collection = await client.DB.get(`${M.sender}_Collection`) || [];
 
