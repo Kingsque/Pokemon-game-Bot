@@ -17,29 +17,29 @@ module.exports = {
     const used = await client.DB.get(`codes`) || [];
     if (used.includes(arg)) return M.reply('This code was a single-use code and it is already used');
 
-    const uses =  await client.DB.push(`${M.sender}.codes`) || [];
-     if (uses.includes(arg)) return M.reply('You can only use a code once where its single or multi use and it is already used');
+    const uses = await client.DB.get(`${M.sender}.codes`) || []; // Corrected this line
+    if (uses.includes(arg)) return M.reply('You can only use a code once whether it is single-use or multi-use, and it is already used');
 
     const codeData = data.find((code) => code.code === arg);
     if (!codeData) return M.reply('This is not a valid code.');
 
-    const name = codeData.name;
+    const name = codeData.Name; // Adjusted the property name to match JSON
     const type = codeData.type;
     const item = codeData.item;
     const use = codeData.save;
 
     if (type === 'credit') {
-      await client.credit.add(`${M.sender}.wallet`, item);
+      await client.credit.add(`${M.sender}.wallet`, parseInt(item)); // Converted item to integer
       await client.DB.push(`${M.sender}.codes`, arg);
     } else if (type === 'card') {
       await client.DB.push(`${M.sender}_Deck`, item);
-       await client.DB.push(`${M.sender}.codes`, arg)
+      await client.DB.push(`${M.sender}.codes`, arg);
     } else if (type === 'bg') {
-      await client.bg.push(`${M.sender}_BG`, item);
-       await client.DB.push(`${M.sender}.codes`, arg)
+      await client.DB.push(`${M.sender}_BG`, item);
+      await client.DB.push(`${M.sender}.codes`, arg);
     } else if (type === 'event') {
-      await client.event.add(`${M.sender}.ewallet`, item);
-       await client.DB.push(`${M.sender}.codes`, arg)
+      await client.event.add(`${M.sender}.ewallet`, parseInt(item)); // Converted item to integer
+      await client.DB.push(`${M.sender}.codes`, arg);
     }
 
     if (use === 'Yes') {
