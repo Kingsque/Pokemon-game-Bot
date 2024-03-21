@@ -12,10 +12,10 @@ module.exports = {
     const filePath = path.join(__dirname, '../../Helpers/Codes.json');
     const data = require(filePath);
     
-    const used = await client.DB.get(`codes`);
+    const used = await client.DB.get(`codes`) || [];
     if (used.includes(arg)) return M.reply('This code was a single-use code and it is already used');
 
-    const uses =  await client.DB.push(`${M.sender}.codes`)
+    const uses =  await client.DB.push(`${M.sender}.codes`) || [];
      if (uses.includes(arg)) return M.reply('You can only use a code once where its single or multi use and it is already used');
 
     const codeData = data.find((code) => code.code === arg);
