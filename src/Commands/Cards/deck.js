@@ -33,7 +33,7 @@ module.exports = {
           M.reply(`Invalid card index. Your deck has ${deck.length} cards.`);
         } else {
           const card = deck[index].split('-');
-          const filePath = path.join(__dirname, '../../storages/card.json');
+          const filePath = path.join(__dirname, '../../Helpers/card.json');
           const data = require(filePath);
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
@@ -58,7 +58,7 @@ module.exports = {
         const cardMap = new Map(); // Map to store card titles and their counts
         for (let i = 0; i < deck.length; i++) {
           const card = deck[i].split('-');
-          const filePath =  path.join(__dirname, '../../storages/card.json');
+          const filePath =  path.join(__dirname, '../../Helpers/card.json');
           const data = require(filePath);
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
