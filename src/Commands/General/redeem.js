@@ -11,6 +11,8 @@ module.exports = {
   async execute(client, arg, M) {
     const filePath = path.join(__dirname, '../../Helpers/Codes.json');
     const data = require(filePath);
+
+    if (!arg) return M.reply('Provide the code');
     
     const used = await client.DB.get(`codes`) || [];
     if (used.includes(arg)) return M.reply('This code was a single-use code and it is already used');
