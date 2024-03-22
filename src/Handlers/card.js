@@ -98,8 +98,8 @@ module.exports = CardHandler = async (client, m) => {
     }
   
     cron.schedule('*/5 * * * *', () => {
-      client.cards.delete(`${jid}.card`);
-      client.cards.delete(`${jid}.card_price`);
+     await client.cards.delete(`${jid}.card`);
+    await client.cards.delete(`${jid}.card_price`);
       console.log(`Card deleted after 5minutes`)
   
     })
