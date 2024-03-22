@@ -56,7 +56,7 @@ module.exports = {
       // Randomize cards 
       const index = Math.floor(Math.random() * uniqueCards.length);
       const card = uniqueCards[index].split("-");
-      const filePath = path.join(__dirname, '../../storages/card.json');
+      const filePath = path.join(__dirname, '../../Helpers/card.json');
       const data = require(filePath);
       const newArray = data.filter(function (I) {
         return I.tier == card[1];
