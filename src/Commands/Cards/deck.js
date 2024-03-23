@@ -3,7 +3,6 @@ const { createCanvas, loadImage } = require('canvas');
 const fs = require('fs');
 const path = require('path');
 const { createDeflate } = require('zlib');
-const ms = require('parse-ms');
 
 module.exports = {
   name: 'deck',
@@ -14,11 +13,9 @@ module.exports = {
   category: 'card game',
   description: 'Claim the card',
   async execute(client, arg, M) {
-
     const deck = await client.DB.get(`${M.sender}_Deck`);
     if (!deck || deck.length === 0) {
-      M.reply('No Deck Found');
-      return;
+      M.reply('No Deck Founded');
     } 
     try{
       const maxCardsInDeck = 12;
@@ -40,8 +37,8 @@ module.exports = {
           const cardUrl = cardData.url;
           let text = `🃏 Total Deck Cards: ${deck.length}\n\n🏮 Username: ${(await client.contact.getContact(M.sender, client)).username}` 
           text += `\n*#${index + 1}*\n🃏 *Name:* ${card[0]}\n`.concat(`🪄 *Tier:* ${card[1]} \n`)
-          const file = await client.utils.getBuffer(cardUrl)
-          if(cardUrl.endsWith('.gif')) {
+	  const file = await client.utils.getBuffer(cardUrl)
+           if(cardUrl.endsWith('.gif')) {
             const giffed = await client.utils.gifToMp4(file);
             await client.sendMessage(M.from, {
               video: giffed,
@@ -54,24 +51,21 @@ module.exports = {
         }
       } else {
         const images = [];
-        const cardText = "";
-        const cardMap = new Map(); // Map to store card titles and their counts
+        let cardText = "";
+        const cardSet = new Set();
         for (let i = 0; i < deck.length; i++) {
           const card = deck[i].split('-');
           const filePath =  path.join(__dirname, '../../Helpers/card.json');
-          const data = require(filePath);
+	  const data = require(filePath);
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-          const cardUrl = cardData.url;
-          // Add card image to the images array
-          images.push(cardUrl);
-          // Update card count in the map
-          const cardTitle = `${card[0]}-${card[1]}`;
-          cardMap.set(cardTitle, (cardMap.get(cardTitle) || 0) + 1);
+          let cardUrl = cardData.url;
+          if (!cardSet.has(cardData.title)) {
+            cardSet.add(cardData.title);
+            images.push(cardUrl);
+          }
+          cardText += `🔰Card ${i+1}:\n\n🌟Tier: ${card[1]}\n\n💎Name ${card[0]}\n`;
         }
-        // Filter out duplicate cards from the images array
-        const uniqueImages = Array.from(new Set(images));
-        
         const canvasWidth = 1050;
         const canvasHeight = 1800;
         const canvas = createCanvas(canvasWidth, canvasHeight);
@@ -85,8 +79,8 @@ module.exports = {
         const rows = 4;
         const xStart = (canvasWidth - (imageWidth * imagesPerRow + imagePadding * (imagesPerRow - 1))) / 2;
         const yStart = (canvasHeight - (imageHeight * rows + imagePadding * (rows - 1))) / 2;
-        for (let i = 0; i < uniqueImages.length; i++) {
-          const image = await loadImage(uniqueImages[i]);
+        for (let i = 0; i < images.length; i++) {
+          const image = await loadImage(images[i]);
           const x = xStart + (i % imagesPerRow) * (imageWidth + imagePadding);
           const y = yStart + Math.floor(i / imagesPerRow) * (imageHeight + imagePadding);
           ctx.drawImage(image, x, y, imageWidth, imageHeight);
@@ -95,7 +89,7 @@ module.exports = {
         const filePath = path.join(directory, 'collage.png');
         const buffer = canvas.toBuffer('image/png');
         fs.writeFileSync(filePath, buffer);
-        const caption = `${(await client.contact.getContact(M.sender, client)).username}'s Deck\n\n Total Cards: ${deck.length}\n${cardText}`;
+        const caption = `${(await client.contact.getContact(M.sender, client)).username}\'s Deck\n\n Total Cards: ${deck.length}\n${cardText}`;
         client.sendMessage(M.from, {
           image: {url: filePath},
           caption: caption
