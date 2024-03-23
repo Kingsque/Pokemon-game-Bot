@@ -2,7 +2,7 @@ const cardData = [
     { name: "Madara", tier: 6, price: 50000, source: "Naruto" },
     { name: "Goku", tier: 6, price: 40000, source: "Dragon Ball" },
     { name: "Gojo Saturo", tier: 6, price: 45000, source: "Jujutsu Kaisen" },
-    { name: "Tanjiro", tier: 6, price: 60000, source: "Demon Slayer" },
+    { name: "Tanjiro Kamado", tier: 6, price: 60000, source: "Demon Slayer" },
     { name: "Genos", tier: 6, price: 40000, source: "One Punch Man" },
     { name: "Allen Walker", tier: 6, price: 55000, source: "D.gray Man" },
     { name: "Yae Miko", tier: 6, price: 65000, source: "Genshin Impact" },
