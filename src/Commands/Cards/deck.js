@@ -53,19 +53,21 @@ module.exports = {
         const images = [];
         let cardText = "";
         const cardSet = new Set();
-        for (let i = 0; i < deck.length; i++) {
-          const card = deck[i].split('-');
-          const filePath =  path.join(__dirname, '../../Helpers/card.json');
-	  const data = require(filePath);
-          const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
-          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-          let cardUrl = cardData.url;
-          if (!cardSet.has(cardData.title)) {
-            cardSet.add(cardData.title);
-            images.push(cardUrl);
-          }
-          cardText += `🔰Card ${i+1}:\n\n🌟Tier: ${card[1]}\n\n💎Name ${card[0]}\n`;
-        }
+for (let i = 0; i < deck.length; i++) {
+  const card = deck[i].split('-');
+  const filePath = path.join(__dirname, '../../Helpers/card.json');
+  const data = require(filePath);
+  const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
+  const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
+  const cardKey = `${cardData.title}-${card[1]}`; // Concatenating title and tier
+  let cardUrl = cardData.url;
+  if (!cardSet.has(cardKey)) {
+    cardSet.add(cardKey);
+    images.push(cardUrl);
+  }
+  cardText += `🔰Card ${i+1}:\n\n🌟Tier: ${card[1]}\n\n💎Name ${card[0]}\n`;
+}
+	      
         const canvasWidth = 1050;
         const canvasHeight = 1800;
         const canvas = createCanvas(canvasWidth, canvasHeight);
