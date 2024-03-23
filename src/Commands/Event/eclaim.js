@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'eredeem',
+  name: 'eredeembg',
   aliases: ['ebuy'],
   exp: 0,
   cool: 4,
