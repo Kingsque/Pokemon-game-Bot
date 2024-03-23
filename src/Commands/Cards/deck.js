@@ -31,9 +31,9 @@ module.exports = {
       let backgroundImageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmru1INQycEtNqouDSnB0XU7_CS3MzEpORvw&usqp=CAU';
 
       if (backgroundTitle) {
-        const background = bgData.find(bg => bg.title === backgroundTitle);
+        const background = bgData.find(bg => bg.Name === backgroundTitle);
         if (background) {
-          backgroundImageUrl = background.url;
+          backgroundImageUrl = background.Url;
         }
       }
 
@@ -118,4 +118,4 @@ module.exports = {
     }
   },
 };
-      
+          
