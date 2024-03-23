@@ -1,7 +1,7 @@
 module.exports = {
     name: 'flip',
     aliases: ['flip'],
-    category: 'games',
+    category: 'fun',
     react: "✅",
     exp: 12,
     cool: 4,
