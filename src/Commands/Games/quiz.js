@@ -336,66 +336,70 @@ module.exports = {
   description: 'Play a quiz against another person',
   async execute(client, arg, M) {
 
-    const quiz = await client.DB.get(`${M.from}.quizInProgress`) || true;
-    let player1, player2;
+    const quizInProgress = await client.DB.get(`${M.from}.quizInProgress`);
+    let quizPlayers = await client.DB.get(`${M.from}.quizPlayers`) || [];
+    let currentQuestionIndex = await client.DB.get(`${M.from}.quizQuestionIndex`) || 0;
 
-    if (!quiz) return M.reply("A quiz is already in progress.");
+    if (!quizInProgress) {
+      if (!M.mentions.length) return M.reply("You must mention someone to challenge in a quiz.");
+      const challenger = M.sender;
+      const opponent = M.mentions[0];
+      quizPlayers = [challenger, opponent];
+      await client.DB.set(`${M.from}.quizInProgress`, true);
+      await client.DB.set(`${M.from}.quizPlayers`, quizPlayers);
+      await client.DB.set(`${M.from}.quizQuestionIndex`, 0);
+      return M.reply(`User @${challenger.split("@")[0]} has challenged @${opponent.split("@")[0]}. Use :quiz accept or reject.`);
+    }
 
-    if (!M.mentions.length) return M.reply("You must mention someone to challenge in a quiz.");
-    if (!arg) return M.reply("Use :quiz challenge to challenge someone.");
+    if (arg === "accept") {
+      return M.reply("The quiz has started. Questions will be sent, and you have to answer. Use :quiz answer <your answer>");
+    }
 
-    if (arg === "challenge") {
-      player1 = M.sender;
-      player2 = M.mentions[0];
-      await client.DB.get(`${M.from}.quizInProgress`, true);
-      M.reply(`User @${player1.split("@")[0]} has challenged @${player2.split("@")[0]}. Use :quiz accept or reject.`);
-    } else if (arg === "reject") {
-      await client.DB.get(`${M.from}.quizInProgress`, false);
-      M.reply("Challenge rejected successfully.");
-    } else if (arg === "accept") {
-      player1 = M.from;
-      player2 = M.mentions[0];
-      await client.DB.get(`${M.from}.quizInProgress`, true);
-      M.reply("The quiz has started. Questions will be sent, and you have to answer. Use :quiz next");
-    } else if (arg === "next") {
-      // Send questions to both players
-      for (const questionData of quizQuestions) {
-        const question = questionData.question;
-        const options = questionData.options.join(', '); // Join options into a string
-        M.reply(`@${player1.split("@")[0]} and @${player2.split("@")[0]}, here's your question: ${question}\nOptions: ${options}, use :quiz answer your answer`);
-      }
-    } else if (arg.startsWith("answer")) {
-      const choose = arg.split(" ")[1];
-      const currentQuestion = quizQuestions[quiz - 1];
-
-      if (!currentQuestion) {
-        return M.reply("There are no more questions.");
-      }
-
-      if (choose !== currentQuestion.answer) {
-        return M.reply("Wrong answer, better luck next time");
-      } else if (choose === currentQuestion.answer) {
-        await client.DB.add(`${M.sender}.point`, 1);
-        await client.cradit.add(`${M.sender}.wallet`, 100000);
-        M.reply("Your answer is correct! You get one point and some gold.");
-      }
-    } else if (arg === "result") {
-      const point1 = await client.DB.get(`${player1}.point`) || 0;
-      const point2 = await client.DB.get(`${player2}.point`) || 0;
-
-      let resultMessage = "";
-
-      if (point1 > point2) {
-        resultMessage = `@${player1.split("@")[0]} wins with ${point1} points!`;
-      } else if (point2 > point1) {
-        resultMessage = `@${player2.split("@")[0]} wins with ${point2} points!`;
+    if (arg.startsWith("answer")) {
+      const answer = arg.split(" ").slice(1).join(" ").trim();
+      const currentQuestion = quizQuestions[currentQuestionIndex];
+      if (!currentQuestion) return M.reply("No more questions.");
+      const { answer: correctAnswer } = currentQuestion;
+      if (answer.toLowerCase() === correctAnswer.toLowerCase()) {
+        const answerer = M.sender;
+        await client.DB.add(`${answerer}.quizScore`, 1);
+        return M.reply("Your answer is correct!");
       } else {
-        resultMessage = "It's a tie!";
+        return M.reply("Wrong answer, better luck next time");
       }
-      await client.DB.get(`${M.from}.quizInProgress`, false);
-      M.reply(`Point Board\n@${player1.split("@")[0]} points = ${point1}\n@${player2.split("@")[0]} points = ${point2}\n${resultMessage}`);
+    }
+
+    if (arg === "result") {
+      const scores = await Promise.all(quizPlayers.map(async player => ({
+        player: player.split("@")[0],
+        score: await client.DB.get(`${player}.quizScore`) || 0
+      })));
+      const sortedScores = scores.sort((a, b) => b.score - a.score);
+      const winner = sortedScores[0];
+      await client.DB.set(`${M.from}.quizInProgress`, false);
+      await client.DB.delete(`${M.from}.quizPlayers`);
+      await client.DB.delete(`${M.from}.quizQuestionIndex`);
+      await Promise.all(quizPlayers.map(player => client.DB.delete(`${player}.quizScore`)));
+      return M.reply(`Quiz finished! ${winner.player} wins with ${winner.score} points!`);
+    }
+
+    if (arg === "reject") {
+      await client.DB.set(`${M.from}.quizInProgress`, false);
+      await client.DB.delete(`${M.from}.quizPlayers`);
+      await client.DB.delete(`${M.from}.quizQuestionIndex`);
+      return M.reply("Challenge rejected successfully.");
+    }
+
+    // If it's not a command, assume it's a new question
+    if (currentQuestionIndex < quizQuestions.length) {
+      const currentQuestion = quizQuestions[currentQuestionIndex];
+      const { question, options } = currentQuestion;
+      await client.DB.add(`${M.from}.quizQuestionIndex`, 1);
+      for (const player of quizPlayers) {
+        await M.reply(`@${player.split("@")[0]}, here's your question: ${question}\nOptions: ${options.join(', ')}`);
+      }
     } else {
-      M.reply("Invalid command.");
+      return M.reply("No more questions.");
     }
   },
 };
