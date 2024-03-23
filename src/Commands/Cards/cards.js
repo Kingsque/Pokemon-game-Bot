@@ -10,7 +10,6 @@ module.exports = {
   category: "card game",
   description: "View your all cards, by numbers or by tiers",
   async execute(client, arg, M) {
-
     const collection = await client.DB.get(`${M.sender}_Collection`) || [];
     const deck = await client.DB.get(`${M.sender}_Deck`) || [];
     
@@ -36,22 +35,22 @@ module.exports = {
       }
 
       tr += "*🎴 Your Collection:*\n";
-      const sortedCollection = uniqueCards.sort((a, b) => a.split("-")[1] - b.split("-")[1]);
-      
-      // Check if --tier is provided in the argument
+      let sortedCollection = uniqueCards.sort((a, b) => a.localeCompare(b)); // Sort alphabetically by default
+
       if (arg && arg.includes("--tier")) {
-        const tierArg = arg.split("--tier")[1].trim();
-        const tierFilteredCollection = sortedCollection.filter(card => card.split("-")[1] === tierArg);
-        tierFilteredCollection.forEach((card, index) => {
-          const [name, tier] = card.split("-");
-          tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
-        });
-      } else {
-        sortedCollection.forEach((card, index) => {
-          const [name, tier] = card.split("-");
-          tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
+        sortedCollection = uniqueCards.sort((a, b) => a.split("-")[1] - b.split("-")[1]); // Sort by tier
+      } else if (arg && arg.includes("--name")) {
+        sortedCollection = uniqueCards.sort((a, b) => {
+          const nameA = a.split("-")[0];
+          const nameB = b.split("-")[0];
+          return nameA.localeCompare(nameB); // Sort by name
         });
       }
+
+      sortedCollection.forEach((card, index) => {
+        const [name, tier] = card.split("-");
+        tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
+      });
       
       // Randomize cards 
       const index = Math.floor(Math.random() * uniqueCards.length);
