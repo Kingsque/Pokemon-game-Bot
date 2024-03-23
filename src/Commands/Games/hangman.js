@@ -5,21 +5,29 @@ module.exports = {
   exp: 8,
   cool: 4,
   react: '✅',
-  description: 'Play hangman with another player',
+  description: 'Play hangman alone',
   async execute(client, arg, M) {
-    if (!arg) return M.reply("You need to mention another player to start a game of hangman.");
-
-    const opponent = M.mentions[0];
-    if (!opponent) return M.reply("You need to mention another player to start a game of hangman.");
-
     const wordPicker = M.sender;
-    const wordGuesser = opponent;
 
-    let word = ""; // Word to guess
-    let guessedWord = ""; // Partially guessed word
+    const wordList = [
+      "HELLO",
+      "WORLD",
+      "JAVASCRIPT",
+      "NODEJS",
+      "GITHUB",
+      "OPENAI",
+      "COMPUTER",
+      "PROGRAMMING",
+      "HANGMAN"
+    ];
+
+    // Choose a random word from the word list
+    const word = wordList[Math.floor(Math.random() * wordList.length)];
+
+    let guessedWord = "_".repeat(word.length); // Partially guessed word
     let incorrectGuesses = 0; // Incorrect guesses
-    let maxIncorrectGuesses = 6; // Maximum incorrect guesses allowed
-    let guessedLetters = []; // Guessed letters
+    const maxIncorrectGuesses = 6; // Maximum incorrect guesses allowed
+    const guessedLetters = []; // Guessed letters
 
     const displayHangman = () => {
       const hangmanStages = [
@@ -99,14 +107,10 @@ module.exports = {
 
     const displayWord = () => {
       let display = "";
-      for (let letter of word) {
-        if (guessedLetters.includes(letter)) {
-          display += letter + " ";
-        } else {
-          display += "_ ";
-        }
+      for (let letter of guessedWord) {
+        display += letter + " ";
       }
-      return display;
+      return display.trim();
     };
 
     const isGameOver = () => {
@@ -114,7 +118,14 @@ module.exports = {
     };
 
     const updateGuessedWord = () => {
-      guessedWord = displayWord();
+      guessedWord = "";
+      for (let i = 0; i < word.length; i++) {
+        if (guessedLetters.includes(word[i])) {
+          guessedWord += word[i];
+        } else {
+          guessedWord += "_";
+        }
+      }
     };
 
     const guessLetter = (letter) => {
@@ -127,22 +138,22 @@ module.exports = {
       }
     };
 
-    await M.reply(`${wordPicker.split("@")[0]} vs ${wordGuesser.split("@")[0]} - Hangman\n${displayHangman()}\n${displayWord()}\n${wordGuesser.split("@")[0]}, guess a letter.`);
+    await M.reply(`Hangman\n${displayHangman()}\n${displayWord()}\nGuess a letter.`);
 
-    // Logic to start the game and handle guesses
+    // Logic to play the game and handle guesses
     while (!isGameOver()) {
       const guess = await M.next();
       if (guess && guess.length === 1 && guess.match(/[a-zA-Z]/)) {
         guessLetter(guess.toUpperCase());
-        await M.reply(`${displayHangman()}\n${guessedWord}`);
+        await M.reply(`${displayHangman()}\n${displayWord()}`);
         if (isGameOver()) {
           if (!guessedWord.includes("_")) {
-            await M.reply(`${wordGuesser.split("@")[0]} wins! The word was "${word}".`);
+            await M.reply(`You win! The word was "${word}".`);
           } else {
-            await M.reply(`${wordPicker.split("@")[0]} wins! The word was "${word}".`);
+            await M.reply(`You lose! The word was "${word}".`);
           }
         } else {
-          await M.reply(`${wordGuesser.split("@")[0]}, guess another letter.`);
+          await M.reply(`Guess another letter.`);
         }
       } else {
         await M.reply("Invalid guess. Please enter a single letter.");
