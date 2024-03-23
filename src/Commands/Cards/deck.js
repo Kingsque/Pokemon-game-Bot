@@ -52,7 +52,7 @@ module.exports = {
       } else {
         const images = [];
         let cardText = "";
-        const cardCounts = {}; // Object to store the count of each card
+        const cardSet = new Set()
 for (let i = 0; i < deck.length; i++) {
   const card = deck[i].split('-');
   const filePath = path.join(__dirname, '../../Helpers/card.json');
@@ -61,9 +61,10 @@ for (let i = 0; i < deck.length; i++) {
   const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
   const cardKey = `${cardData.title}-${card[1]}-${cardData.url}`; // Concatenating title, tier, and image URL
   let cardUrl = cardData.url;
-  // Increment the count of the card
-  cardCounts[cardKey] = (cardCounts[cardKey] || 0) + 1;
-  images.push({ url: cardUrl, count: cardCounts[cardKey] }); // Add card with count to images array
+  if (!cardSet.has(cardKey)) {
+    cardSet.add(cardKey);
+    images.push(cardUrl);
+  }
   cardText += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
 }
 	      
