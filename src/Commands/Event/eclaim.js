@@ -1,6 +1,6 @@
 module.exports = {
-  name: 'eclaim',
-  aliases: ['eclaim'],
+  name: 'eredeem',
+  aliases: ['ebuy'],
   exp: 0,
   cool: 4,
   react: "✅",
