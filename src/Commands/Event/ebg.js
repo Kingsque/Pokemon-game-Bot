@@ -1,3 +1,9 @@
+const axios = require('axios');
+const { createCanvas, loadImage } = require('canvas');
+const fs = require('fs');
+const path = require('path');
+const { createDeflate } = require('zlib');
+
 module.exports = {
   name: 'ebackground',
   aliases: ['ebgs'],
