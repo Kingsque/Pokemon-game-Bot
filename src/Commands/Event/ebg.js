@@ -5,7 +5,7 @@ const path = require('path');
 const { createDeflate } = require('zlib');
 
 module.exports = {
-  name: 'ebackground',
+  name: 'ebgstore',
   aliases: ['ebgs'],
   exp: 0,
   cool: 4,
