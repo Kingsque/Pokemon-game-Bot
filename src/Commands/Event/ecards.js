@@ -5,7 +5,7 @@ const path = require('path');
 const { createDeflate } = require('zlib');
 
 module.exports = {
-  name: 'ecards',
+  name: 'ecardstore',
   aliases: ['ecards'],
   exp: 0,
   cool: 4,
