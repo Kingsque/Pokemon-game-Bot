@@ -10,7 +10,7 @@ module.exports = {
   exp: 0,
   cool: 4,
   react: "✅",
-  category: 'card game',
+  category: 'event',
   description: 'Claim the card',
   async execute(client, arg, M) {
   const mode = await client.event.get(`EVENTS`);
