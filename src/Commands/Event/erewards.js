@@ -1,6 +1,6 @@
  module.exports = {
-    name: 'erewards',
-    aliases: ['erewards'],
+    name: 'eclaim',
+    aliases: ['eclaim'],
     category: 'event',
     exp: 5,
     cool: 4,
