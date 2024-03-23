@@ -16,7 +16,6 @@ module.exports = {
     const deck = await client.DB.get(`${M.sender}_Deck`);
     if (!deck || deck.length === 0) {
       M.reply('No Deck Found');
-      return;
     } 
     try {
       const maxCardsInDeck = 12;
@@ -52,24 +51,23 @@ module.exports = {
           }
         }
       } else {
-        const uniqueCards = new Set();
-        let cardText = "";
         const images = [];
-        
-        for (let i = 0; i < deck.length; i++) {
-          const card = deck[i].split('-');
-          const filePath = path.join(__dirname, '../../Helpers/card.json');
-          const data = require(filePath);
-          const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
-          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-          const cardKey = `${cardData.title}-${card[1]}-${cardData.url}`; // Concatenating title, tier, and image URL
-          
-          if (!uniqueCards.has(cardKey)) {
-            uniqueCards.add(cardKey);
-            images.push(cardData.url);
-            cardText += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
-          }
-        }
+        let cardText = "";
+        const cardSet = new Set()
+for (let i = 0; i < deck.length; i++) {
+  const card = deck[i].split('-');
+  const filePath = path.join(__dirname, '../../Helpers/card.json');
+  const data = require(filePath);
+  const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
+  const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
+  const cardKey = `${cardData.title}-${card[1]}`;
+  let cardUrl = cardData.url;
+  if (!cardSet.has(cardKey)) {
+    cardSet.add(cardKey);
+    images.push(cardUrl);
+  }
+  cardText += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
+}
         
         const canvasWidth = 1050;
         const canvasHeight = 1800;
