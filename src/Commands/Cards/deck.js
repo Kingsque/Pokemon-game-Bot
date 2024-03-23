@@ -59,14 +59,15 @@ for (let i = 0; i < deck.length; i++) {
   const data = require(filePath);
   const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
   const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-  const cardKey = `${cardData.title}-${card[1]}`; // Concatenating title and tier
+  const cardKey = `${cardData.title}-${card[1]}-${cardData.url}`; // Concatenating title, tier, and image URL
   let cardUrl = cardData.url;
   if (!cardSet.has(cardKey)) {
     cardSet.add(cardKey);
     images.push(cardUrl);
   }
-  cardText += `🔰Card ${i+1}:\n\n🌟Tier: ${card[1]}\n\n💎Name ${card[0]}\n`;
+  cardText += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
 }
+	      
 	      
         const canvasWidth = 1050;
         const canvasHeight = 1800;
