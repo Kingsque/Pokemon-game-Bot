@@ -67,6 +67,7 @@ for (let i = 0; i < deck.length; i++) {
     images.push(cardUrl);
   }
   cardText += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
+  cardText += `use :buy-card <card_index> to purchase a card.`
 }
         
         const canvasWidth = 1050;
