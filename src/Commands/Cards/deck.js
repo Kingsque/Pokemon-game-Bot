@@ -24,7 +24,19 @@ module.exports = {
       const collection = await client.DB.get(`${M.sender}_Collection`) || [];
       await client.DB.set(`${M.sender}_Collection`, [...collection, ...cardsToMove]);
       await client.DB.set(`${M.sender}_Deck`, cardsToKeep);
-      
+      const bgPath = path.join(__dirname, '../../Helpers/bg.json');
+      const bgData = require(bgPath);
+      const backgroundTitle = await client.DB.get(`${M.sender}_BG`);
+
+      let backgroundImageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmru1INQycEtNqouDSnB0XU7_CS3MzEpORvw&usqp=CAU';
+
+      if (backgroundTitle) {
+        const background = bgData.find(bg => bg.title === backgroundTitle);
+        if (background) {
+          backgroundImageUrl = background.url;
+        }
+      }
+
       if (arg) { 
         const index = parseInt(arg) - 1; // The index in the array is 0-based
         if (isNaN(index) || index < 0 || index >= deck.length) {
@@ -54,26 +66,26 @@ module.exports = {
         const images = [];
         let cardText = "";
         const cardSet = new Set()
-for (let i = 0; i < deck.length; i++) {
-  const card = deck[i].split('-');
-  const filePath = path.join(__dirname, '../../Helpers/card.json');
-  const data = require(filePath);
-  const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
-  const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-  const cardKey = `${cardData.title}-${card[1]}`;
-  let cardUrl = cardData.url;
-  if (!cardSet.has(cardKey)) {
-    cardSet.add(cardKey);
-    images.push(cardUrl);
-  }
-  cardText += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
-}
+        for (let i = 0; i < deck.length; i++) {
+          const card = deck[i].split('-');
+          const filePath = path.join(__dirname, '../../Helpers/card.json');
+          const data = require(filePath);
+          const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
+          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
+          const cardKey = `${cardData.title}-${card[1]}`;
+          let cardUrl = cardData.url;
+          if (!cardSet.has(cardKey)) {
+            cardSet.add(cardKey);
+            images.push(cardUrl);
+          }
+          cardText += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
+        }
         
         const canvasWidth = 1050;
         const canvasHeight = 1800;
         const canvas = createCanvas(canvasWidth, canvasHeight);
         const ctx = canvas.getContext('2d');
-        const backgroundImage = await loadImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmru1INQycEtNqouDSnB0XU7_CS3MzEpORvw&usqp=CAU');
+        const backgroundImage = await loadImage(backgroundImageUrl);
         ctx.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
         const imageWidth = 350;
         const imageHeight = 450;
@@ -106,3 +118,4 @@ for (let i = 0; i < deck.length; i++) {
     }
   },
 };
+      
