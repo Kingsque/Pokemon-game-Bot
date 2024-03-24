@@ -11,11 +11,11 @@ module.exports = {
     async execute(client, arg, M) {
         try {
             const configuration = new Configuration({
-                apiKey: ${process.env.openAI},
+                apiKey: process.env.openAI,
             });
             const openai = new OpenAIApi(configuration);
 
-            if (!process.env.openAiKey) {
+            if (!process.env.openAI) {
                 return M.reply("Our AI API is not working now, please wait!");
             }
             if (!arg) {
@@ -31,7 +31,7 @@ module.exports = {
                         messages: [{ role: "user", content: prompt }],
                     });
 
-                    console.log("API Key:", ${process.env.openAI});
+                    console.log("API Key:", process.env.openAI);
 
                     return completion.data.choices[0].message.content.trim();
                 } catch (error) {
