@@ -106,7 +106,7 @@ module.exports = {
         const filePath = path.join(directory, 'collage.png');
         const buffer = canvas.toBuffer('image/png');
         fs.writeFileSync(filePath, buffer);
-        const caption = `${(await client.contact.getContact(M.sender, client)).username}'s Deck\n\n Total Cards: ${deck.length}\n${cardText}`;
+        const caption = ``@${user.split("@")[0]} Deck\n\n Total Cards: ${deck.length}\n${cardText}`;
         client.sendMessage(M.from, {
           image: {url: filePath},
           caption: caption
