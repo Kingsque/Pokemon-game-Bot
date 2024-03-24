@@ -40,7 +40,7 @@ module.exports = {
                             by: 'totalCards',
                             order: 'desc',
                             computed: {
-                                totalCards: (x) => x.deck.length + x.collection.length
+                                totalCards: (x) => (x.deck ? x.deck.length : 0) + (x.collection ? x.collection.length : 0)
                             }
                         })
                         : sortArray(allUsers, {
@@ -67,7 +67,7 @@ module.exports = {
                 text += `🏮 *Username: ${username}*#${leaderboard[i].user.substring(3, 7)}\n`;
                 text += `〽️ *Level: ${level}*\n🎡 *Rank: ${rank}*\n`;
                 text += `💰 *Credit: ${leaderboard[i].credit + leaderboard[i].bank}*\n`;
-                text += `🃏 *Cards: ${leaderboard[i].deck.length + leaderboard[i].collection.length || 0}*\n`;
+                text += `🃏 *Cards: ${(leaderboard[i].deck ? leaderboard[i].deck.length : 0) + (leaderboard[i].collection ? leaderboard[i].collection.length : 0)}*\n`;
                 text += `⭐ *Exp: ${experience}*\n\n🍥 *RequiredXpToLevelUp: ${requiredXpToLevelUp} exp required*`;
             }
             client.sendMessage(
@@ -88,3 +88,4 @@ module.exports = {
         }
     }
 };
+                                      
