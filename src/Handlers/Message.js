@@ -128,7 +128,7 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
 
         //cards
         cron.schedule('*/5 * * * *', async () => {
-            await client.sendMessage(M.from, `:spawn`)
+            await client.sendMessage("120363236615391329@g.us", `:spawn`)
         });
  
         //reactMessage
