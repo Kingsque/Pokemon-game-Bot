@@ -11,7 +11,7 @@ module.exports = {
   description: "Starts card auction",
   async execute(client, arg, M) {
     try {
-      const endAuction = async () => {
+      const endAuction = async (cardData) => {
         const bid = await client.credit.get(`${M.from}.bid`);
         const winner = await client.DB.get(`${M.from}.auctionWinner`);
         if (!winner) {
@@ -87,7 +87,7 @@ module.exports = {
       await client.DB.set(`${M.from}.auctionInProgress`, true);
 
       setTimeout(async () => {
-        await endAuction();
+        await endAuction(cardData);
       }, 15 * 60 * 1000); 
 
     } catch (err) {
@@ -96,3 +96,4 @@ module.exports = {
     }
   }
 };
+                                 
