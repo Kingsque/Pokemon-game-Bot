@@ -125,6 +125,11 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
                 setTimeout(() => cool.delete(`${sender}${command.name}`), cooldownAmount);
             }
         }
+
+        //cards
+        cron.schedule('*/5 * * * *', async () => {
+ await client.sendMessage(M.from, `:spawn`)
+        }
  
         //reactMessage
         if(command.react){
