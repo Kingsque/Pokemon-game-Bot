@@ -11,7 +11,7 @@ module.exports = {
     async execute(client, arg, M) {
         try {
             const configuration = new Configuration({
-                apiKey: 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,
+                apiKey: ${process.env.oprnAI},
             });
             const openai = new OpenAIApi(configuration);
 
@@ -31,7 +31,7 @@ module.exports = {
                         messages: [{ role: "user", content: prompt }],
                     });
 
-                    console.log("API Key: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");
+                    console.log("API Key:", ${process.env.openAI});
 
                     return completion.data.choices[0].message.content.trim();
                 } catch (error) {
