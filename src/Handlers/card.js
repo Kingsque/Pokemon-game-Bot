@@ -4,7 +4,7 @@ const path = require('path')
 require("./Message");
 module.exports = CardHandler = async (client, m) => {
   try {
-    let cardgames = await client.DB.get("card-game");
+    let cardgames = await client.DB.get('card-game');
     const cardgame = cardgames || [];
     // const jid = '120363117691088254@g.us'; //send group
     // const jid = '120363129950930721@g.us'
