@@ -42,7 +42,7 @@ module.exports = {
       }
 
       const cardToSell = deck[cardIndex].split('-');
-      const filePath = path.join(__dirname, '../../storages/card.json');
+      const filePath = path.join(__dirname, '../../Helpers/card.json');
       const cardDataJson = require(filePath);
       const cardsInTier = cardDataJson.filter((card) => card.tier === cardToSell[1]);
       const cardData = cardsInTier.find((card) => card.title === cardToSell[0]);
