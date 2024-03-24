@@ -10,17 +10,17 @@ module.exports = {
     cool: 4, // Add cooldown time in seconds
     async execute(client, arg, M) {
         try {
-            const configuration = new Configuration({
-                apiKey: process.env.openAI,
-            });
-            const openai = new OpenAIApi(configuration);
-
             if (!process.env.openAI) {
                 return M.reply("Our AI API is not working now, please wait!");
             }
             if (!arg) {
                 return M.reply('Provide a query!');
             }
+
+            const configuration = new Configuration({
+                apiKey: process.env.openAI,
+            });
+            const openai = new OpenAIApi(configuration);
 
             const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
