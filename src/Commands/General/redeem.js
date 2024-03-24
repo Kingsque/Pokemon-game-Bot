@@ -35,7 +35,7 @@ module.exports = {
       await client.DB.push(`${M.sender}_Deck`, item);
       await client.DB.push(`${M.sender}.codes`, arg);
     } else if (type === 'bg') {
-      await client.DB.push(`${M.sender}_BG`, item);
+      await client.DB.push(`${M.sender}_Backgrounds`, item);
       await client.DB.push(`${M.sender}.codes`, arg);
     } else if (type === 'event') {
       await client.event.add(`${M.sender}.ewallet`, parseInt(item)); // Converted item to integer
