@@ -48,7 +48,7 @@ module.exports = {
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
           const cardUrl = cardData.url;
-          let text = `🃏 Total Deck Cards: ${deck.length}\n\n🏮 Username: ${(await client.contact.getContact(M.sender, client)).username}` 
+          let text = `🃏 Total Deck Cards: ${deck.length}\n\n🏮 Username: `@${user.split("@")[0]}` 
           text += `\n*#${index + 1}*\n🃏 *Name:* ${card[0]}\n`.concat(`🪄 *Tier:* ${card[1]} \n`)
           const file = await client.utils.getBuffer(cardUrl);
           if (cardUrl.endsWith('.gif')) {
@@ -106,7 +106,7 @@ module.exports = {
         const filePath = path.join(directory, 'collage.png');
         const buffer = canvas.toBuffer('image/png');
         fs.writeFileSync(filePath, buffer);
-        const caption = ``@${user.split("@")[0]} Deck\n\n Total Cards: ${deck.length}\n${cardText}`;
+        const caption = `@${user.split("@")[0]}'s Deck\n\n Total Cards: ${deck.length}\n${cardText}`;
         client.sendMessage(M.from, {
           image: {url: filePath},
           caption: caption
