@@ -26,14 +26,14 @@ module.exports = {
         }
       };
 
-      const auctionInProgress = await client.DB.get(`${M.from}.auctionInProgress`);
-      if (auctionInProgress) {
-        return M.reply("An auction is already in progress.");
-      }
-
       if (arg === 'end') {
         await endAuction();
         return;
+      }
+      
+      const auctionInProgress = await client.DB.get(`${M.from}.auctionInProgress`);
+      if (auctionInProgress) {
+        return M.reply("An auction is already in progress.");
       }
 
       const splitArgs = arg.split('|');
