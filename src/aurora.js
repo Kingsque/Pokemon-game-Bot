@@ -141,28 +141,30 @@ const start = async () => {
             client.log(`Scan the QR code above | You can also authenicate in http://localhost:${port}`, 'blue')
             client.QR = imageSync(update.qr)
         }
-        if (connection === 'close') {
-            const { statusCode } = new Boom(lastDisconnect?.error).output
-            if (statusCode !== DisconnectReason.loggedOut) {
-                console.log('Connecting...')
-                setTimeout(() => start(), 3000)
-            } else {
-                client.log('Disconnected.', 'red')
-                await remove('session')
-                console.log('Starting...')
-                setTimeout(() => start(), 3000)
-            }
-        }
         if (connection === 'connecting') {
             client.state = 'connecting'
             console.log('Connecting to WhatsApp...')
         }
+       
         if (connection === 'open') {
             client.state = 'open'
             loadCommands()
             client.log('Connected to WhatsApp')
             client.log('Total Mods: ' + client.mods.length)
         }
+        if (connection === 'close') {
+            const { statusCode } = new Boom(lastDisconnect?.error).output
+            if (statusCode !== DisconnectReason.loggedOut) {
+                console.log('Connecting...')
+                setTimeout(() => start(), 3000)
+        } else {
+                client.log('Disconnected.', 'red')
+                await remove('session')
+                console.log('Starting...')
+                setTimeout(() => start(), 3000)
+            }
+        }
+     
     })
 
     app.get('/', (req, res) => {
