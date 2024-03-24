@@ -11,7 +11,7 @@ module.exports = {
     async execute(client, arg, M) {
         try {
             const configuration = new Configuration({
-                apiKey: ${process.env.oprnAI},
+                apiKey: ${process.env.openAI},
             });
             const openai = new OpenAIApi(configuration);
 
