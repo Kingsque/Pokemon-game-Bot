@@ -11,57 +11,48 @@ module.exports = {
     description: "Displays global's or group's leaderboard of a specific field\nEx: lb gold gc",
     async execute(client, arg, M) {
         try {
-            const field = arg[0] || '';
-            const subfield = arg[1] || '';
-            let allUsers = [];
+            const allUsers =
+                (arg[1] ?? arg[0]) === '--credit'
+                    ? Object.values(await client.credit.all()).map((x) => ({
+                        user: x.id,
+                        credit: x.value.credit || 0,
+                        bank: x.value.bank || 0,
+                    }))
+                    : (arg[1] ?? arg[0]) === '--cards'
+                        ? Object.values(await client.DB.all()).map((x) => ({
+                            user: x.id,
+                            deck: x.value.deck || [],
+                            collection: x.value.collection || []
+                        }))
+                        : Object.values(await client.exp.all()).map((x) => ({ user: x.id, xp: x.value })) || [];
 
-            if (field === '--credit') {
-                allUsers = Object.values(await client.credit.all()).map(x => ({
-                    user: x.id,
-                    credit: x.value.credit || 0,
-                    bank: x.value.bank || 0,
-                }));
-            } else if (field === '--cards') {
-                allUsers = Object.values(await client.DB.all()).map(x => ({
-                    user: x.id,
-                    deck: x.value.deck || [],
-                    collection: x.value.collection || []
-                }));
-            } else {
-                allUsers = Object.values(await client.exp.all()).map(x => ({
-                    user: x.id,
-                    xp: x.value
-                })) || [];
-            }
+            const leaderboard =
+                (arg[1] ?? arg[0]) === '--credit'
+                    ? sortArray(allUsers, {
+                        by: 'total',
+                        order: 'desc',
+                        computed: {
+                            total: (x) => x.credit + x.bank
+                        }
+                    })
+                    : (arg[1] ?? arg[0]) === '--cards'
+                        ? sortArray(allUsers, {
+                            by: 'totalCards',
+                            order: 'desc',
+                            computed: {
+                                totalCards: (x) => x.deck.length + x.collection.length
+                            }
+                        })
+                        : sortArray(allUsers, {
+                            by: 'xp',
+                            order: 'desc'
+                        });
 
-            if (allUsers.length === 0) {
+            if (leaderboard.length < 10) {
                 return M.reply('🟥 *Sorry, there are not enough users to create a leaderboard*');
             }
 
-            const leaderboard = (field === '--credit' || subfield === '--credit')
-                ? sortArray(allUsers, {
-                    by: 'total',
-                    order: 'desc',
-                    computed: {
-                        total: (x) => x.credit + x.bank
-                    }
-                })
-                : (field === '--cards' || subfield === '--cards')
-                    ? sortArray(allUsers, {
-                        by: 'totalCards',
-                        order: 'desc',
-                        computed: {
-                            totalCards: (x) => x.deck.length + x.collection.length
-                        }
-                    })
-                    : sortArray(allUsers, {
-                        by: 'xp',
-                        order: 'desc'
-                    });
-
-            const senderId = M.sender.split('.whatsapp.net')[0];
-            const myPosition = leaderboard.findIndex(x => x.user === senderId);
-
+            const myPosition = leaderboard.findIndex((x) => x.user === M.sender.split('.whatsapp.net')[0]);
             let text = `☆☆💥 LEADERBOARD 💥☆☆\n\n*${
                 (await client.contact.getContact(M.sender, client)).username
             }'s Position is ${myPosition + 1}*`;
@@ -76,10 +67,9 @@ module.exports = {
                 text += `🏮 *Username: ${username}*#${leaderboard[i].user.substring(3, 7)}\n`;
                 text += `〽️ *Level: ${level}*\n🎡 *Rank: ${rank}*\n`;
                 text += `💰 *Credit: ${leaderboard[i].credit + leaderboard[i].bank}*\n`;
-                text += `🃏 *Cards: ${leaderboard[i].deck.length + leaderboard[i].collection.length}*\n`;
+                text += `🃏 *Cards: ${leaderboard[i].deck.length + leaderboard[i].collection.length || 0}*\n`;
                 text += `⭐ *Exp: ${experience}*\n\n🍥 *RequiredXpToLevelUp: ${requiredXpToLevelUp} exp required*`;
             }
-
             client.sendMessage(
                 M.from,
                 {
