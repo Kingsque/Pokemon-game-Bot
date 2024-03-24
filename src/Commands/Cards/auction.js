@@ -11,31 +11,8 @@ module.exports = {
   description: "Starts card auction",
   async execute(client, arg, M) {
     try {
-      const endAuction = async (cardData) => {
-        if (!cardData) {
-          return M.reply("There was an error ending the auction. Please try again.");
-        }
-        const bid = await client.credit.get(`${M.from}.bid`);
-        const winner = await client.DB.get(`${M.from}.auctionWinner`);
-        if (!winner) {
-          return M.reply('No one bid, so the auction is won by mods.');
-        } else {
-          await client.credit.sub(`${winner}.wallet`, bid);
-          await client.DB.push(`${winner}_Collection`, `${cardData.title}-${cardData.tier}`);
-          await client.DB.delete(`${M.from}.auctionWinner`);
-          await client.credit.delete(`${M.from}.bid`);
-          await client.DB.delete(`${M.from}.auctionInProgress`);
-          M.reply(`The card ${cardData.title} of tier ${cardData.tier} is won by ${winner} with a bid of ${bid}. It has been added to your collection.`);
-        }
-      };
-
-      if (arg === 'end') {
-        await endAuction();
-        return;
-      }
-      
       const auctionInProgress = await client.DB.get(`${M.from}.auctionInProgress`);
-      if (auctionInProgress) {
+      if (auctionInProgress && arg == 'end') {
         return M.reply("An auction is already in progress.");
       }
 
@@ -89,9 +66,29 @@ module.exports = {
       await client.credit.set(`${M.from}.bid`, price);
       await client.DB.set(`${M.from}.auctionInProgress`, true);
 
+      const endAuction = async () => {
+        const bid = await client.credit.get(`${M.from}.bid`);
+        const winner = await client.DB.get(`${M.from}.auctionWinner`);
+        if (!winner) {
+          return M.reply('No one bid, so the auction is won by mods.');
+        } else {
+          await client.credit.sub(`${winner}.wallet`, bid);
+          await client.DB.push(`${winner}_Collection`, `${cardData.title}-${cardData.tier}`);
+          await client.DB.delete(`${M.from}.auctionWinner`);
+          await client.credit.delete(`${M.from}.bid`);
+          await client.DB.delete(`${M.from}.auctionInProgress`);
+          M.reply(`The card ${cardData.title} of tier ${cardData.tier} is won by ${winner} with a bid of ${bid}. It has been added to your collection.`);
+        }
+      };
+
+      if (arg === 'end') {
+        await endAuction();
+        return;
+      }
+
       setTimeout(async () => {
-        await endAuction(cardData);
-      }, 15 * 60 * 1000); 
+        await endAuction();
+      }, 15 * 60 * 1000);
 
     } catch (err) {
       console.log(err);
@@ -99,4 +96,4 @@ module.exports = {
     }
   }
 };
-          
+        
