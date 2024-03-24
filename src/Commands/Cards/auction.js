@@ -12,6 +12,9 @@ module.exports = {
   async execute(client, arg, M) {
     try {
       const endAuction = async (cardData) => {
+        if (!cardData) {
+          return M.reply("There was an error ending the auction. Please try again.");
+        }
         const bid = await client.credit.get(`${M.from}.bid`);
         const winner = await client.DB.get(`${M.from}.auctionWinner`);
         if (!winner) {
@@ -96,4 +99,4 @@ module.exports = {
     }
   }
 };
-                                 
+          
