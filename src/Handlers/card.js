@@ -1,46 +1,43 @@
-const axios = require('axios');
 const path = require('path');
-require("./Message");
+const cron = require("node-cron");
+const axios = require('axios');
 
-module.exports = CardHandler = async (client, m) => {
+module.exports = async (client) => {
   try {
-    let cardgames = await client.DB.get('card-game');
-    const cardgame = cardgames || [];
+    const cardgame = await client.DB.get('card-game') || [];
 
     for (let i = 0; i < cardgame.length; i++) {
       const jid = cardgame[i];
+      console.log(jid);
 
       if (cardgame.includes(jid)) {
         let count = 0;
         let sOr6Counter = 0;
-        const sOr6Interval = 10;
-        const sOr6Limit = 15;
+        const sOr6Interval = 20;
+        const sOr6Limit = 2;
 
-        // Replace cron.schedule with setInterval
-        setInterval(async () => {
+        cron.schedule('*/10 * * * *', async () => {
           try {
-            const filePath = path.join(__dirname, '../../Helpers/card.json');
-            const data = require(filePath);
-
-            const index = Math.floor(Math.random() * data.length);
+            const { data } = await axios.get("https://raw.githubusercontent.com/Kingshisui00/Aurora-Private/main/src/Helpers/card.json?token=GHSAT0AAAAAACPV6EDTBPANOBYFCBTPWFZIZQBUIQA");
             let obj, price;
 
+            const index = Math.floor(Math.random() * data.length);
             obj = data[index];
             switch (obj.tier) {
               case "1":
-                price = client.utils.getRandomInt(1000, 2000);
+                price = client.utils.getRandomInt(500, 900);
                 break;
               case "2":
-                price = client.utils.getRandomInt(2000, 3000);
+                price = client.utils.getRandomInt(1000, 3000);
                 break;
               case "3":
-                price = client.utils.getRandomInt(3000, 5000);
+                price = client.utils.getRandomInt(3000, 4000);
                 break;
               case "4":
                 price = client.utils.getRandomInt(5000, 8000);
                 break;
               case "5":
-                price = client.utils.getRandomInt(15000, 20000);
+                price = client.utils.getRandomInt(10000, 14000);
                 break;
             }
             count++;
@@ -52,15 +49,15 @@ module.exports = CardHandler = async (client, m) => {
               obj = filteredData[index];
               switch (obj.tier) {
                 case "6":
-                  price = client.utils.getRandomInt(30000, 60000);
+                  price = client.utils.getRandomInt(15000, 30000);
                   break;
                 case "S":
-                  price = client.utils.getRandomInt(60000, 100000);
+                  price = client.utils.getRandomInt(50000, 100000);
                   break;
               }
             }
 
-            console.log(`Sent: ${obj.tier} Name: ${obj.title} For ${price} in ${jid}`);
+            console.log(`Sended:${obj.tier + "  Name:" + obj.title + "  For " + price + " in " + jid}`);
             await client.cards.set(`${jid}.card`, `${obj.title}-${obj.tier}`);
             await client.cards.set(`${jid}.card_price`, price);
 
@@ -69,7 +66,7 @@ module.exports = CardHandler = async (client, m) => {
               const cgif = await client.utils.gifToMp4(giif);
               return client.sendMessage(jid, {
                 video: cgif,
-                caption: `🎴 *━『 Woah a rare card spawn 』━* 🎴\n\n🧧 Name: ${obj.title}\n\n🎐 Tier: ${obj.tier}\n\n🪩 Price: ${price}\n\n📤 *Info:* This cards are originally owned by *https://shoob.gg* we are using it with all the required permissions.\n\n🔖 [ Use *${process.env.PREFIX}collect* to claim the card, *${process.env.PREFIX}collection* to see your *Cards* ]`,
+                caption: `🎴 *━『 ANIME-CARD 』━* 🎴\n\n💮 Name: ${obj.title}\n\n💠 Tier: ${obj.tier}\n\n🏮 Price: ${price}\n\n📤 *Info:* This cards are originally owned by *https://shoob.gg* we are using it with all the required permissions.\n\n🔖 [ Use *${process.env.PREFIX}collect* to claim the card, *${process.env.PREFIX}collection* to see your *Cards* ]`,
                 gifPlayback: true,
               });
             } else {
@@ -77,25 +74,26 @@ module.exports = CardHandler = async (client, m) => {
                 image: {
                   url: obj.url,
                 },
-                caption: `🎴 *━『 ANIME-CARD 』━* 🎴\n\n Name: ${obj.title}\n\n🎐 Tier: ${obj.tier}\n\n🪩 Price: ${price}\n\n📤 *Info:* This cards are originally owned by *https://shoob.gg* we are using it with all the required permissions.\n\n🔖 [ Use *${process.env.PREFIX}collect* to claim the card, *${process.env.PREFIX}collection* to see your *Cards* ]`,
+                caption: `🎴 *━『 ANIME-CARD 』━* 🎴\n\n💮 Name: ${obj.title}\n\n💠 Tier: ${obj.tier}\n\n🏮 Price: ${price}\n\n📤 *Info:* This cards are originally owned by *https://shoob.gg* we are using it with all the required permissions.\n\n🔖 [ Use *${process.env.PREFIX}collect* to claim the card, *${process.env.PREFIX}collection* to see your *Cards* ]`,
               });
             }
+
           } catch (err) {
             console.log(err);
-            await client.sendMessage(jid, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand error:\n${err}` });
+            await client.sendMessage(jid, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}` });
           }
-        }, 10 * 60000); // Convert minutes to milliseconds
+        });
 
-        // Cron job for deleting card after 5 minutes
-        setInterval(async () => {
+        cron.schedule('*/4 * * * *', async () => {
           await client.cards.delete(`${jid}.card`);
           await client.cards.delete(`${jid}.card_price`);
-          console.log(`Card deleted after 5 minutes`);
-        }, 5 * 60000); // 5 minutes in milliseconds
+          console.log(`Card deleted after 4minutes`);
+        });
       }
     }
+
   } catch (error) {
     console.log(error);
   }
 };
-                                       
+              
