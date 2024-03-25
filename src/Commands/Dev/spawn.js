@@ -1,5 +1,4 @@
 const path = require('path');
-const axios = require('axios');
 
 module.exports = {
   name: 'spawn',
@@ -22,7 +21,8 @@ module.exports = {
         const sOr6Interval = 10;
         const sOr6Limit = 15;
 
-        const { data } = await axios.get("https://raw.githubusercontent.com/Kingshisui00/Aurora-Private/main/src/Helpers/card.json?token=GHSAT0AAAAAACPV6EDTBPANOBYFCBTPWFZIZQBUIQA");
+        const filePath = path.join(__dirname, '../../Helpers/card.json');
+        const data = require(filePath);
         const index = Math.floor(Math.random() * data.length);
         let obj, price;
         obj = data[index];
@@ -90,4 +90,4 @@ module.exports = {
       await client.sendMessage(M.from, {image: {url: `${client.utils.errorChan()}`}, caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}`});
     }
   }
-      }
+            }
