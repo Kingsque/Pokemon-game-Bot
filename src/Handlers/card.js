@@ -2,7 +2,7 @@ const cron = require("node-cron")
 const axios = require('axios')
 const path = require('path')
 require("./Message");
-module.exports = CardHandler = async (client, m) => {
+module.exports = CardHandler = async (client, M) => {
   try {
     let cardgames = await client.DB.get('card-game');
     const cardgame = cardgames || [];
@@ -25,7 +25,7 @@ module.exports = CardHandler = async (client, m) => {
         const sOr6Interval = 10;
         const sOr6Limit = 15;
   
-        cron.schedule('*/10 * * * *', async () => {
+        cron.schedule('*/2 * * * *', async () => {
           try {
              const filePath = path.join(__dirname, './card.json');
 	     const data = require(filePath);
@@ -97,7 +97,7 @@ module.exports = CardHandler = async (client, m) => {
       await client.sendMessage(jid , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}`})
     }
   
-    cron.schedule('*/5 * * * *', async () => {
+    cron.schedule('*/1 * * * *', async () => {
      await client.cards.delete(`${jid}.card`);
     await client.cards.delete(`${jid}.card_price`);
       console.log(`Card deleted after 5minutes`)
