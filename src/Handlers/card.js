@@ -27,7 +27,7 @@ module.exports = CardHandler = async (client, M) => {
   
         cron.schedule('*/2 * * * *', async () => {
           try {
-             const filePath = path.join(__dirname, './card.json');
+             const filePath = path.join(__dirname, '../../Helpers/bg.json');
 	     const data = require(filePath);
 
 	     const index = Math.floor(Math.random() * data.length);
