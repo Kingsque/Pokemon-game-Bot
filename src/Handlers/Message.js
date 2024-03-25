@@ -126,14 +126,10 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
             }
         }
 
-        // Define a function to send the message
-const sendSpawnMessage = () => { client.sendMessage(M.from, `hi`);
-
-  
-    setTimeout(sendSpawnMessage, 2 * 60 * 1000); 
-};
-
-sendSpawnMessage();
+        setTimeout(async () => {
+        const text = `:spawn`
+        await client.sendMessage(M.from, text)
+      }, 2 * 60 * 1000);
         
         //reactMessage
         if(command.react){
