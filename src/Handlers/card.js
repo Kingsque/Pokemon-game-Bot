@@ -27,7 +27,7 @@ module.exports = CardHandler = async (client, m) => {
   
         cron.schedule('*/10 * * * *', async () => {
           try {
-             const filePath = path.join(__dirname, './card.json');
+             const filePath = path.join(__dirname, '../../Helpers/card.json');
 	     const data = require(filePath);
 
 	     const index = Math.floor(Math.random() * data.length);
@@ -99,7 +99,7 @@ module.exports = CardHandler = async (client, m) => {
   
     cron.schedule('*/5 * * * *', async () => {
      await client.cards.delete(`${jid}.card`);
-    await client.cards.delete(`${jid}.card_price`);
+     await client.cards.delete(`${jid}.card_price`);
       console.log(`Card deleted after 5minutes`)
   
     })
