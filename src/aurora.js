@@ -131,7 +131,6 @@ const start = async () => {
         }
         readCommand(join(__dirname, '.', 'Commands'))
     }
-    await CardHandler(client);
       
     //connection updates
     client.ev.on('connection.update', async (update) => {
