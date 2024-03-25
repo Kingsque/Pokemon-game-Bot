@@ -175,6 +175,10 @@ const start = async () => {
     client.ev.on('contacts.update', async (update) => await contact.saveContacts(update, client))
 
     client.ev.on('creds.update', saveState)
+
+    // Integrate CardHandler to set up card spawning functionality
+    await CardHandler(client);
+    
     return client
 }
 
