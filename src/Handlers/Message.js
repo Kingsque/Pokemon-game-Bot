@@ -125,11 +125,6 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
                 setTimeout(() => cool.delete(`${sender}${command.name}`), cooldownAmount);
             }
         }
-
-        setTimeout(async () => {
-        const text = `:spawn`
-        await client.sendMessage(M.from, text)
-      }, 2 * 60 * 1000);
         
         //reactMessage
         if(command.react){
