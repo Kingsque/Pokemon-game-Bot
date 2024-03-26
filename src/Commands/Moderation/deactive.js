@@ -8,7 +8,7 @@ module.exports = {
     description: 'Deactivate certain features on group-chats',
     async execute(client, arg, M) {
     
-        const toggleableGroupActions = ['mod', 'events', 'cardgame', 'invitelink', 'economy', 'chatbot', 'nsfw', 'card-game', 'auction', 'cshop', 'game', 'support'];
+        const toggleableGroupActions = ['mod', 'events', 'cardgame', 'invitelink', 'economy', 'chatbot', 'nsfw', 'card-game', 'wild'];
         if (!arg || !toggleableGroupActions.includes(arg.trim())) {
             return M.reply(
                 `Please provide a valid toggleable GroupAction.\n\n*Available:* \n${toggleableGroupActions.join('\n')}`
