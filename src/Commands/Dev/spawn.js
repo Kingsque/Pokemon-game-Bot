@@ -10,7 +10,7 @@ module.exports = {
   description: 'spawns cards',
   async execute(client, arg, M) {
     try {
-      let cardgames = await client.DB.get('card-game');
+      let cardgames = await client.DB.get('wild');
       const cardgame = cardgames || [];
 
       for (let i = 0; i < cardgame.length; i++) {
@@ -60,8 +60,8 @@ module.exports = {
           }
 
           setTimeout(() => {
-            client.cards.delete(`${M.from}.card`);
-            client.cards.delete(`${M.from}.card_price`);
+            client.cards.delete(`${jid}.card`);
+            client.cards.delete(`${jid}.card_price`);
             console.log('card deleted');
           }, 3000);
         }
@@ -71,4 +71,5 @@ module.exports = {
       await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}` });
     }
   }
-}
+                                                      }
+              
