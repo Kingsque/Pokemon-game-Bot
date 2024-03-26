@@ -43,14 +43,12 @@ module.exports = {
 
             const message = `🌟 *━『 Wild Pokémon Spawn 』━* 🌟\n\n🔥 Name: ${pokemon.name}\n\n💥 Type(s): ${pokemon.types.map(type => type.type.name).join(', ')}\n\n💪 Level: ${pokemon.base_experience}\n\n💰 Price: ${price} coins\n\n🔖 To catch, use command *:catch ${pokemon.name}*`;
 
-            const imageMessage = {
-              url: pokemon.sprites.front_default,
-              caption: message
-            };
-
-            await client.sendMessage(jid, {
-              image: imageMessage
-            });
+           await client.sendMessage(jid, {
+          image: {
+            url: pokemon.sprites.font_default,
+          },
+          captier: message,
+        });
 
           } catch (err) {
             console.log(err);
