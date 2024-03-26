@@ -97,11 +97,11 @@ if (!command) {
 const mode = await client.DB.get(`mode`);
 
 if (mode === 'self' && !isSelf) {
-    return M.reply('Sorry, only the bot number owner can use commands in this self mode.');
+    return;
 }
 
 if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
-    return M.reply('Sorry, only moderators can use commands in this private mode.');
+    return;
 }
 
         // Disabled commands handling
