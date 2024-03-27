@@ -61,8 +61,17 @@ module.exports = {
         } else {
           images.push(cardUrl);
         }
+
+        // Send single card
+        if (cardUrl.endsWith('.gif')) {
+          const imageBuffer = await client.utils.webpToMp4(await client.utils.getBuffer(cardUrl));
+          await client.sendMessage(M.from, { video: imageBuffer, gifPlayback: true, caption: cardText });
+        } else {
+          await client.sendMessage(M.from, { image: { url: cardUrl }, caption: cardText });
+        }
       } else {
         for (let i = 0; i < deck.length; i++) {
+          let text = "";
           const card = deck[i].split('-');
           const filePath = path.join(__dirname, '../../Helpers/card.json');
           const data = require(filePath);
@@ -79,54 +88,52 @@ module.exports = {
 
           if (!cardSet.has(cardKey)) {
             cardSet.add(cardKey);
-            cardText += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
+            text += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
           }
         }
-      }
 
-      // Convert GIF cards to images
-      for (const gifCardUrl of gifCards) {
-        const imageBuffer = await client.utils.webpToMp4(await client.utils.getBuffer(gifCardUrl));
+        // Convert GIF cards to images
+        for (const gifCardUrl of gifCards) {
+          const imageBuffer = await client.utils.webpToMp4(await client.utils.getBuffer(gifCardUrl));
+          const directory = require('os').tmpdir();
+          const filePath = path.join(directory, `gif_card_${gifCards.indexOf(gifCardUrl)}.png`);
+          fs.writeFileSync(filePath, imageBuffer);
+          images.push(filePath);
+        }
+
+        // Send collage
+        const canvasWidth = 1050;
+        const canvasHeight = 1800;
+        const canvas = createCanvas(canvasWidth, canvasHeight);
+        const ctx = canvas.getContext('2d');
+        const backgroundImage = await loadImage(backgroundImageUrl);
+        ctx.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
+        const imageWidth = 350;
+        const imageHeight = 450;
+        const imagePadding = 10;
+        const imagesPerRow = 3;
+        const rows = 4;
+        const xStart = (canvasWidth - (imageWidth * imagesPerRow + imagePadding * (imagesPerRow - 1))) / 2;
+        const yStart = (canvasHeight - (imageHeight * rows + imagePadding * (rows - 1))) / 2;
+
+        for (let i = 0; i < images.length; i++) {
+          const image = await loadImage(images[i]);
+          const x = xStart + (i % imagesPerRow) * (imageWidth + imagePadding);
+          const y = yStart + Math.floor(i / imagesPerRow) * (imageHeight + imagePadding);
+          ctx.drawImage(image, x, y, imageWidth, imageHeight);
+        }
+
         const directory = require('os').tmpdir();
-        const filePath = path.join(directory, `gif_card_${gifCards.indexOf(gifCardUrl)}.png`);
-        fs.writeFileSync(filePath, imageBuffer);
-        images.push(filePath);
+        const filePath = path.join(directory, 'collage.png');
+        const buffer = canvas.toBuffer('image/png');
+        fs.writeFileSync(filePath, buffer);
+        const caption = `${(await client.contact.getContact(M.sender, client)).username}'s Deck\n\n Total Cards: ${deck.length}\n${text}`;
+        await client.sendMessage(M.from, { image: { url: filePath }, caption: caption });
       }
-
-      const canvasWidth = 1050;
-      const canvasHeight = 1800;
-      const canvas = createCanvas(canvasWidth, canvasHeight);
-      const ctx = canvas.getContext('2d');
-      const backgroundImage = await loadImage(backgroundImageUrl);
-      ctx.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
-      const imageWidth = 350;
-      const imageHeight = 450;
-      const imagePadding = 10;
-      const imagesPerRow = 3;
-      const rows = 4;
-      const xStart = (canvasWidth - (imageWidth * imagesPerRow + imagePadding * (imagesPerRow - 1))) / 2;
-      const yStart = (canvasHeight - (imageHeight * rows + imagePadding * (rows - 1))) / 2;
-
-      for (let i = 0; i < images.length; i++) {
-        const image = await loadImage(images[i]);
-        const x = xStart + (i % imagesPerRow) * (imageWidth + imagePadding);
-        const y = yStart + Math.floor(i / imagesPerRow) * (imageHeight + imagePadding);
-        ctx.drawImage(image, x, y, imageWidth, imageHeight);
-      }
-
-      const directory = require('os').tmpdir();
-      const filePath = path.join(directory, 'collage.png');
-      const buffer = canvas.toBuffer('image/png');
-      fs.writeFileSync(filePath, buffer);
-      const caption = `${(await client.contact.getContact(M.sender, client)).username}'s Deck\n\n Total Cards: ${deck.length}\n${cardText}`;
-      client.sendMessage(M.from, {
-        image: { url: filePath },
-        caption: caption
-      });
     } catch(err) {
       console.log(err);
       await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
     }
   },
 };
-
+             
