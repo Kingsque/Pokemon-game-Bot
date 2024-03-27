@@ -43,7 +43,7 @@ module.exports = {
 
       const messageContent = `**Name:** ${name}\n**Types:** ${types.join(', ')}\n**Abilities:** ${abilities.join(', ')}\n**Height:** ${height} dm\n**Weight:** ${weight} hg\n**Stats:**\n${stats.join('\n')}\n**Flavor Text:**\n${flavorText}\n${evolutionDetails}`;
 
-      await client.sendMessage(message.jid, {
+      await client.sendMessage(M.from, {
         image: {
           url: image,
         },
