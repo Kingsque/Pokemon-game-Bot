@@ -10,7 +10,7 @@ module.exports = {
     description: 'Provides news about anime',
     async execute(client, arg, M) {
         try {
-            const news = await NEWS.ANN.fetchNewsFeeds(); // Updated fetch method
+            const news = await new NEWS.ANN().fetchNewsFeeds(); // Updated fetch method
             for (let i = 0; i < 5 && i < news.length; i++) { // Added condition to avoid errors if less than 5 news articles are available
                 const article = news[i];
                 const topics = article.topics.join('\n'); // Improved formatting for topics
