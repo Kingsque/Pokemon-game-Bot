@@ -1,11 +1,10 @@
-const cron = require("node-cron");
-const axios = require('axios');
-const path = require('path');
+const cron = require("node-cron")
+const axios = require('axios')
+const path = require('path')
 require("./Message");
-
 module.exports = CardHandler = async (client, m) => {
   try {
-    let wilds = await client.DB.get('wild');
+      let wilds = await client.DB.get('wild');
     const wild = wilds || [];
 
     for (let i = 0; i < wild.length; i++) {
@@ -34,22 +33,27 @@ module.exports = CardHandler = async (client, m) => {
               },
               caption: message,
             });
-
           } catch (err) {
             console.log(err);
             await client.sendMessage(jid, {
               text: `Error occurred while spawning Pokémon.`
             });
-          }
-        });
-
-        cron.schedule('*/5 * * * *', async () => {
-          await client.DB.delete(`${jid}.pokemon`);
-          console.log(`Pokemon deleted after 5 minutes`);
-        });
-      }
-    }
-  } catch (error) {
-    console.log(error);
+          }      
+  
+    cron.schedule('*/5 * * * *', async () => {
+     await client.DB.delete(`${jid}.pokemon`);
+      console.log(`Pokemon deleted after 5minutes`)
+  
+    })
+  
+  });
+  
   }
-};
+    }
+    
+    } catch(error){
+        console.log(error)
+    }
+
+              }
+                  
