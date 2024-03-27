@@ -51,7 +51,7 @@ module.exports = {
       });
     } catch (error) {
       console.error('Error fetching Pokémon data:', error);
-      message.channel.send('Error fetching Pokémon data. Please try again later.');
+      M.reply('Error fetching Pokémon data. Please try again later.');
     }
   },
 };
