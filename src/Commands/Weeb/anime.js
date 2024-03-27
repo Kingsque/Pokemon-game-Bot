@@ -1,4 +1,5 @@
-const axios = require('axios')
+const axios = require('axios');
+const { Anime } = require('@shineiichijo/marika');
 
 module.exports = {
     name: 'anime',
@@ -9,60 +10,54 @@ module.exports = {
     react: "✅",
     description: 'Gives you the info of the anime',
     async execute(client, arg, M) {
-        if (!arg) return M.reply('Sorry you did not give any search term!')
         try {
-            if (arg.split('/')[0] == 'https:' && arg.split('/')[2] == 'yugen.to' && arg.split('/')[3] == 'anime' && arg.split('/')[6] == 'watch') {
-                const res = await axios.get(`https://api.jikan.moe/v4/anime?q=${arg}`)
-                if (!res.data) return M.reply('404 Error could not find the given term')
-                let text = '========*ANIME*========\n\n'
-                text += `*Name:* ${res.data.name}\n`
-                text += `*Native:* ${res.data.native}\n`
-                text += `*Studio:* ${res.data.studio}\n`
-                text += `*Format:* ${res.data.format}\n`
-                text += `*Status:* ${res.data.status}\n`
-                text += `*Premired:* ${res.data.premired}\n`
-                text += `*Genres:* ${res.data.genres}\n`
-                text += `*Desc:* ${res.data.about}\n\n========*EPISORDS*========\n`
+            const { context } = arg;
+            if (!context) return M.reply('Provide a query for the search, Baka!');
+            const query = context.trim();
+            const { data } = await new Anime().searchAnime(query);
+            const result = data[0];
+            let text = '';
+            text += `🎀 *Title:* ${result.title}\n`;
+            text += `🎋 *Format:* ${result.type}\n`;
+            text += `📈 *Status:* ${result.status.replace(/\_/g, ' ')}\n`;
+            text += `🍥 *Total episodes:* ${result.episodes}\n`;
+            text += `🎈 *Duration:* ${result.duration}\n`;
+            text += `🧧 *Genres:* ${result.genres.map((genre) => genre.name).join(', ')}\n`;
+            text += `✨ *Based on:* ${result.source}\n`;
+            text += `📍 *Studios:* ${result.studios.map((studio) => studio.name).join(', ')}\n`;
+            text += `🎴 *Producers:* ${result.producers.map((producer) => producer.name).join(', ')}\n`;
+            text += `💫 *Premiered on:* ${result.aired.from}\n`;
+            text += `🎗 *Ended on:* ${result.aired.to}\n`;
+            text += `🎐 *Popularity:* ${result.popularity}\n`;
+            text += `🎏 *Favorites:* ${result.favorites}\n`;
+            text += `🎇 *Rating:* ${result.rating}\n`;
+            text += `🏅 *Rank:* ${result.rank}\n\n`;
+            if (result.background !== null) text += `🎆 *Background:* ${result.background}\n\n`;
+            text += `❄ *Description:* ${result.synopsis}`;
 
-                res.data.episodes.forEach(element => {
-                    text += `*EP:* ${element.id}\n`
-                    text += `*Title:* ${element.ep_title}\n`
-                    text += `*Link:* ${client.prefix}anime ${element.link}\n`
-                });
+            const image = await axios.get(result.images.jpg.large_image_url, { responseType: 'arraybuffer' });
 
-                client.sendMessage(M.from, {
-                    image: {
-                        url: res.data.image.coverimage
-                    },
-                    caption: text
-                })
-            } else if (arg.split('/')[0] == 'https:' && arg.split('/')[2] == 'yugen.to' && arg.split('/')[3] == 'watch') {
-                const res = await axios.get(`https://api.jikan.moe/v4/anime?q=${arg}`)
-                if (!res.data) return M.reply('404 Error')
-                M.reply(`
-            *Stream:* ${res.data.stream}\n
-            *Episodes:* ${res.data.download}\n
-            `)
-            } else {
-                const res = await axios.get(`https://api.jikan.moe/v4/anime?q=${arg}`)
-                if (res.data.length == 0) return M.reply('404 Error')
-
-                let text = '========*ANIME*========\n\n'
-                for (let i = 0; i < res.data.length; i++) {
-                    text += `*Name:* ${res.data[i].name}\n`
-                    text += `*Link*: ${res.data[i].link}\n`
-                    text += `${client.prefix}anime ${res.data[i].link}\n\n========================\n`
+            await client.sendMessage(
+                M.from,
+                {
+                    image: Buffer.from(image.data, 'binary'),
+                    caption: text,
+                    contextInfo: {
+                        externalAdReply: {
+                            title: result.title,
+                            mediaType: 1,
+                            thumbnail: Buffer.from(image.data, 'binary'),
+                            sourceUrl: result.url
+                        }
+                    }
+                },
+                {
+                    quoted: M.message
                 }
-                client.sendMessage(M.from, {
-                    image: {
-                        url: res.data[0].image
-                    },
-                    caption: text
-                })
-            }
+            );
         } catch (err) {
-            console.error(err)
-            return M.reply('error')
+            console.error(err);
+            return M.reply('Error occurred while fetching anime information.');
         }
     }
-}
+};
