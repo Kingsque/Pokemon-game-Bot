@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { Character } = require('@shineiichijo/marika');
 
 module.exports = {
     name: 'character',
@@ -10,21 +11,46 @@ module.exports = {
     description: 'Provides information about a character from anime',
     async execute(client, arg, M) {
         try {
-            if (!arg) return M.reply('Sorry, you did not provide any search term!');
-            
-            const response = await axios.get(`https://api.jikan.moe/v4/characters?q=${encodeURIComponent(arg)}`);
-            
-            if (response.data.data.length === 0) return M.reply('404 Error: Could not find any characters matching the given term.');
-            
-            const character = response.data.data[0];
-            const text = `==== *CHARACTER INFO* ====\n\n*Name:* ${character.name}\n*Japanese:* ${character.name_kanji}\n*Favorites:* ${character.favorites}\n*Mal_ID:* ${character.mal_id}\n*Description:* ${character.about || 'Not available'}\n\n========================\n`;
-            
-            await client.sendMessage(M.from, {
-                image: {
-                    url: character.image.jpg.image_url
+            const context = arg;
+            if (!context) return M.reply('Provide a query for the search, Baka!');
+            const query = context.trim();
+            const { data } = await new Character().searchCharacter(query);
+            const chara = data[0];
+            let source = '';
+            try {
+                const animeRes = await new Character().getCharacterAnime(chara.mal_id);
+                source = animeRes.data[0].anime.title;
+            } catch {
+                try {
+                    const mangaRes = await new Character().getCharacterManga(chara.mal_id);
+                    source = mangaRes.data[0].manga.title;
+                } catch {
+                    source = '';
+                }
+            }
+            let text = `💙 *Name:* ${chara.name}\n`;
+            if (chara.nicknames.length > 0) text += `💚 *Nicknames:* ${chara.nicknames.join(', ')}\n`;
+            text += `💛 *Source:* ${source}`;
+            if (chara.about !== null) text += `\n\n❤ *Description:* ${chara.about}`;
+            const image = await client.utils.getBuffer(chara.images.jpg.image_url);
+            await client.sendMessage(
+                M.from,
+                {
+                    image,
+                    caption: text,
+                    contextInfo: {
+                        externalAdReply: {
+                            title: chara.name,
+                            mediaType: 1,
+                            thumbnail: image,
+                            sourceUrl: chara.url
+                        }
+                    }
                 },
-                caption: text
-            });
+                {
+                    quoted: M.message
+                }
+            );
         } catch (error) {
             console.error('Error fetching character information:', error);
             M.reply('An error occurred while fetching character information.');
