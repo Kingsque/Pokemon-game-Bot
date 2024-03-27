@@ -13,7 +13,7 @@ module.exports = {
   category: 'card game',
   description: 'Claim the card',
   async execute(client, arg, M) {
-    const user = M.sender
+    const user = M.sender;
     const deck = await client.DB.get(`${M.sender}_Deck`);
     if (!deck || deck.length === 0) {
       M.reply('No Deck Found');
@@ -50,7 +50,7 @@ module.exports = {
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
           const cardUrl = cardData.url;
-          let text = `🃏 Total Deck Cards: ${deck.length}\n\n🏮 Username: @${user.split("@")[0]} \n*#${index + 1}*\n🃏 *Name:* ${card[0]}\n🪄 *Tier:* ${card[1]} \n`;
+          let text = `🃏 Total Deck Cards: ${deck.length}\n\n🏮 Username: ${user}\n*#${index + 1}*\n🃏 *Name:* ${card[0]}\n🪄 *Tier:* ${card[1]} \n`;
           const file = await client.utils.getBuffer(cardUrl);
           if (cardUrl.endsWith('.gif')) {
             const giffed = await client.utils.gifToMp4(file);
@@ -107,7 +107,7 @@ module.exports = {
         const filePath = path.join(directory, 'collage.png');
         const buffer = canvas.toBuffer('image/png');
         fs.writeFileSync(filePath, buffer);
-        const caption = `@${user.split("@")[0]} 's Deck\n\n Total Cards: ${deck.length}\n${cardText}`;
+        const caption = `${user}'s Deck\n\n Total Cards: ${deck.length}\n${cardText}`;
         client.sendMessage(M.from, {
           image: {url: filePath},
           caption: caption
@@ -119,4 +119,4 @@ module.exports = {
     }
   },
 };
-            
+          
