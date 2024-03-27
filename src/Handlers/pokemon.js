@@ -25,7 +25,7 @@ module.exports = PokeHandler = async (client, m) => {
                         console.log(`Spawned: ${pokemon.name} in ${jid}`);
                         await client.DB.set(`${jid}.pokemon`, `${pokemon.name}`);
 
-                        const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Type(s): ${types.join(', ')}* \n\n *🀄ʟevel = 「 ${level} 」* \n\n *ᴛʏᴘᴇ ${clientprefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >* \n\n *「 ɢᴇᴛ ᴛʜɪꜱ ᴘᴏᴋᴇᴍᴏɴ ɪɴ ʏᴏᴜʀ ᴅᴇꭗ 」*`;
+                        const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Type(s): ${types.join(', ')}* \n\n *🀄ʟevel = 「 ${level} 」* \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >* \n\n *「 ɢᴇᴛ ᴛʜɪꜱ ᴘᴏᴋᴇᴍᴏɴ ɪɴ ʏᴏᴜʀ ᴅᴇꭗ 」*`;
 
                         await client.sendMessage(jid, {
                             image: {
