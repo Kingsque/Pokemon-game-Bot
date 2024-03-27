@@ -56,8 +56,8 @@ module.exports = {
                 }
             );
         } catch (err) {
-            console.error(err);
-            return M.reply('Error occurred while fetching anime information.');
+            console.error('Error fetching anime information:', err);
+            M.reply('An error occurred while fetching anime information.');
         }
     }
 };
