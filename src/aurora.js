@@ -14,6 +14,7 @@ const auth = require("./Structures/Auth")
 //handlers
 const MessageHandler = require('./Handlers/Message')
 const CardHandler = require('./Handlers/card')
+const PokeHandler = require('./Handlers/pokemon')
 const EventsHandler = require('./Handlers/Events')
 const { groups } = require('./Handlers/Mods')
 
@@ -178,6 +179,8 @@ const start = async () => {
 
     // Integrate CardHandler to set up card spawning functionality
     await CardHandler(client);
+
+    await PokeHandler(client);
     
     return client
 }
