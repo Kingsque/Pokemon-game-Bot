@@ -8,13 +8,13 @@ module.exports = {
   react: "📋",
   category: "pokemon",
   description: "View Pokémon details",
-  async execute(client, args, message) {
+  async execute(client, arg, M) {
     try {
-      if (!args.length) {
+      if (!arg) {
         return M.reply('Please provide the name or ID of the Pokémon you want to search for.');
       }
 
-      const pokemonName = args[0].toLowerCase();
+      const pokemonName = arg[0].toLowerCase();
 
       const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
       const speciesResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
