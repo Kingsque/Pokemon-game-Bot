@@ -11,7 +11,7 @@ module.exports = {
   async execute(client, args, message) {
     try {
       if (!args.length) {
-        return message.channel.send('Please provide the name or ID of the Pokémon you want to search for.');
+        return M.reply('Please provide the name or ID of the Pokémon you want to search for.');
       }
 
       const pokemonName = args[0].toLowerCase();
