@@ -10,7 +10,7 @@ module.exports = {
     description: 'Downloads given Spotify track and sends it as Audio',
     async execute(client, arg, M) {
         try {
-            let { context } = arg
+            let context = arg.includes('https://open.spotify.com/')
         if (!context) return M.reply('Where is the url of spotify?')
         const spotify = new Spotify(context)
         const info = await spotify.getInfo()
