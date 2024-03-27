@@ -16,7 +16,7 @@ module.exports = {
 
       const deck = await client.DB.get(`${M.sender}_Deck`) || [];
       const collection = await client.DB.get(`${M.sender}_Collection`) || [];
-      const wallet = await client.cradit.get(`${M.sender}.wallet`) || 0;
+      const wallet = await client.credit.get(`${M.sender}.wallet`) || 0;
 
       if (wallet === 0) {
         return M.reply("You have an empty wallet");
@@ -27,7 +27,7 @@ module.exports = {
       }
 
       // Deduct the card price from the user's wallet
-      await client.cradit.sub(`${M.sender}.wallet`, cardPrice);
+      await client.credit.sub(`${M.sender}.wallet`, cardPrice);
 
       const [title, tier] = card.split("-");
 
