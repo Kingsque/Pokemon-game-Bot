@@ -22,7 +22,7 @@ module.exports = {
                     image: {
                         url: article.thumbnail
                     },
-                    caption: `*❯─『 ANIME NEWS 』─❮*\n*Title*: ${article.title}\n*ID*: ${article.id}\n*Topics*: ${topics}\n*Uploaded At*: ${article.uploadedAt}\n*Preview*:-\n\n*Intro*: ${previewIntro}\n\n*Description*: ${previewFull}\n*Link*: ${article.url}\n\n${footerText}`
+                    caption: `*❯─『 ANIME NEWS 』─❮*\n*Title*: ${article.title}\n*ID*: ${article.id}\n*Topics*: ${topics}\n*Uploaded At*: ${article.uploadedAt}\n*Preview*:-\n\n*Intro*: ${previewIntro}\n\n*Description*: ${previewFull}\n*Link*: ${article.url}`
                 });
             }
         } catch (err) {
