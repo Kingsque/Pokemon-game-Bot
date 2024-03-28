@@ -1,10 +1,11 @@
 module.exports = {
     name: 'toimg',
-    aliases: ['img'],
+    aliases: ['inimg'],
     category: 'utils',
     exp: 10,
     react: "✅",
-    description: 'Converts sticker to image/gif',
+    usage: 'Use :toimg attached or quoted to the sticker',
+    description: 'Converts sticker to image/gif as its media type',
     cool: 4, // Add cooldown time in seconds
     async execute(client, arg, M) {
 
