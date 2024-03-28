@@ -29,7 +29,6 @@ module.exports = {
             text += `🏅 *Rank:* ${result.rank}\n\n`;
             if (result.background !== null) text += `🎆 *Background:* ${result.background}*\n\n`;
             text += `❄ *Description:* ${result.synopsis}\n\n`;
-            text += `© _Team Aurora𝄞`;
             const image = result.images.jpg.large_image_url;
 
             await client.sendMessage(M.from, {
