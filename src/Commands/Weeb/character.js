@@ -32,7 +32,6 @@ module.exports = {
             if (chara.nicknames.length > 0) text += `💚 *Nicknames:* ${chara.nicknames.join(', ')}\n`;
             text += `💛 *Source:* ${source}`;
             if (chara.about !== null) text += `\n\n❤ *Description:* ${chara.about}\n\n`;
-            text += `© _Team Aurora𝄞`
             
             // Fetching image buffer
             const image = chara.images.jpg.image_url
