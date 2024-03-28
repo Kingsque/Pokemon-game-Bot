@@ -3,11 +3,12 @@ const Apikey = 'AIzaSyDMbI3nvmQUrfjoCJYLS69Lej1hSXQjnWI';
 const cx = 'f07c35702a6a1499c';
 
 module.exports = {
-    name: 'imagesearch',
-    aliases: ['imgs'],
+    name: 'getimg',
+    aliases: ['searchimg'],
     category: 'utils',
     exp: 7,
     react: "✅",
+    usage: 'Use :getimg <context>',
     description: 'Searches image from google.com',
     cool: 4, // Add cooldown time in seconds
     async execute(client, arg, M) {
@@ -25,13 +26,15 @@ module.exports = {
             
             // Get the URL of the first image
             const imageUrl = response.data.items[0].link;
+
+            M.reply('Searching for the image from the web');
             
             // Send the image URL as a message
             client.sendMessage(M.from, {
                 image: {
                     url: imageUrl
                 },
-                caption: 'Here you go'
+                caption: `Here is the result for your searched image (${arg})`
             });
         } catch (error) {
             console.error('Error searching for images:', error);
