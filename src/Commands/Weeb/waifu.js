@@ -6,6 +6,7 @@ module.exports = {
     category: 'weeb',
     exp: 7,
     react: "✅",
+    usage: 'Use :waifu',
     description: 'Sends an image of a random waifu',
     cool: 4, // Add cooldown time in seconds
     async execute(client, arg, M) { 
@@ -18,7 +19,7 @@ module.exports = {
             }
             
             const waifuImage = response.data.images[0];
-            const caption = `Waifu from ${waifuImage.source}`;
+            const caption = `Waifu sewrched from the web..\n\n© _Team Aurora𝄞`;
 
             await client.sendMessage(M.from, {
                 image: {
