@@ -7,6 +7,7 @@ module.exports = {
     exp: 10,
     cool: 4,
     react: "✅",
+    usage: 'Use :neko',
     description: 'Sends an image of a random neko',
     async execute(client, arg, M) {
         try {
@@ -18,7 +19,7 @@ module.exports = {
                 image: {
                     url: res.data.url
                 },
-                caption: '_Neko Neko Ni~_'
+                caption: '_Neko Neko Ni~_ \n\n © _Team Aurora𝄞'
             });
         } catch (err) {
             console.error('Error fetching neko image:', err);
