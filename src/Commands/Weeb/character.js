@@ -8,6 +8,7 @@ module.exports = {
     react: "✅",
     exp: 5,
     cool: 4, // Adding cooldown time in seconds
+    usage: 'Use :character <command_name>',
     description: 'Provides information about a character from anime',
     async execute(client, arg, M) {
         try {
@@ -30,7 +31,8 @@ module.exports = {
             let text = `💙 *Name:* ${chara.name}\n`;
             if (chara.nicknames.length > 0) text += `💚 *Nicknames:* ${chara.nicknames.join(', ')}\n`;
             text += `💛 *Source:* ${source}`;
-            if (chara.about !== null) text += `\n\n❤ *Description:* ${chara.about}`;
+            if (chara.about !== null) text += `\n\n❤ *Description:* ${chara.about}\n\n`;
+            text += `© _Team Aurora𝄞`
             
             // Fetching image buffer
             const image = chara.images.jpg.image_url
