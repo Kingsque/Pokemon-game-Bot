@@ -11,9 +11,8 @@ module.exports = {
     description: 'Provides information about a character from anime',
     async execute(client, arg, M) {
         try {
-            const context = arg;
-            if (!context) return M.reply('Provide a query for the search, Baka!');
-            const query = context.trim();
+            if (!arg) return M.reply('Provide a query for the search, Baka!');
+            const query = arg.trim();
             const { data } = await new Character().searchCharacter(query);
             const chara = data[0];
             let source = '';
