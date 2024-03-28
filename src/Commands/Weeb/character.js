@@ -31,10 +31,14 @@ module.exports = {
             if (chara.nicknames.length > 0) text += `💚 *Nicknames:* ${chara.nicknames.join(', ')}\n`;
             text += `💛 *Source:* ${source}`;
             if (chara.about !== null) text += `\n\n❤ *Description:* ${chara.about}`;
-            const image = await client.utils.getBuffer(chara.images.jpg.image_url);
+            
+            // Fetching image buffer
+            const imageResponse = await axios.get(chara.images.jpg.image_url, { responseType: 'arraybuffer' });
+            const imageBuffer = Buffer.from(imageResponse.data, 'binary');
+
             await client.sendMessage(M.from, {
                 image: {
-                    url: image,
+                    url: imageBuffer,
                 },
                 caption: text,
             });
