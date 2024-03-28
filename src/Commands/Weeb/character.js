@@ -8,7 +8,7 @@ module.exports = {
     react: "✅",
     exp: 5,
     cool: 4, // Adding cooldown time in seconds
-    usage: 'Use :character <command_name>',
+    usage: 'Use :character <AnimeCharacter_name>',
     description: 'Provides information about a character from anime',
     async execute(client, arg, M) {
         try {
