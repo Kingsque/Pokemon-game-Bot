@@ -3,11 +3,12 @@ const key = 'LIVDSRZULELA';
 
 module.exports = {
     name: 'getgif',
-    aliases: ['gify'],
+    aliases: ['searchgif'],
     category: 'utils',
     exp: 7,
     react: "✅",
-    description: 'Searches for a gif',
+    usage: 'Use :getgif <search_content>',
+    description: 'Searches for a gif from the web',
     cool: 4, // Add cooldown time in seconds
     async execute(client, arg, M) {
         
@@ -26,6 +27,7 @@ module.exports = {
             if (!gifUrl) {
                 return M.reply('Failed to retrieve gif URL.');
             }
+            M.reply('Searching gif from web....');
 
             client.sendMessage(
                 M.from,
@@ -33,7 +35,7 @@ module.exports = {
                     video: {
                         url: gifUrl
                     },
-                    caption: 'Here you go',
+                    caption: 'Here is the search result for your gif search...',
                     gifPlayback: true
                 },
                 {
