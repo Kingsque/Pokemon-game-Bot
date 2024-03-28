@@ -37,8 +37,7 @@ module.exports = {
             text += `🎇 *Rating:* ${result.rating}\n`;
             text += `🏅 *Rank:* ${result.rank}\n\n`;
             if (result.background !== null) text += `🎆 *Background:* ${result.background}*\n\n`;
-            text += `❄ *Description:* ${result.synopsis}\n\n`;
-            text += `© _Team Aurora𝄞`;
+            text += `❄ *Description:* ${result.synopsis}`;
             
             const image = result.images.jpg.large_image_url; // Use URL directly
             
