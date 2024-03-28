@@ -35,7 +35,7 @@ module.exports = {
                     video: {
                         url: gifUrl
                     },
-                    caption: 'Here is the search result for your gif search...',
+                    caption: `Here is the search result for your gif search (${arg})`,
                     gifPlayback: true
                 },
                 {
