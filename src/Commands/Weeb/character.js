@@ -32,24 +32,12 @@ module.exports = {
             text += `💛 *Source:* ${source}`;
             if (chara.about !== null) text += `\n\n❤ *Description:* ${chara.about}`;
             const image = await client.utils.getBuffer(chara.images.jpg.image_url);
-            await client.sendMessage(
-                M.from,
-                {
-                    image,
-                    caption: text,
-                    contextInfo: {
-                        externalAdReply: {
-                            title: chara.name,
-                            mediaType: 1,
-                            thumbnail: image,
-                            sourceUrl: chara.url
-                        }
-                    }
+            await client.sendMessage(M.from, {
+                image: {
+                    url: image,
                 },
-                {
-                    quoted: M.message
-                }
-            );
+                caption: text,
+            });
         } catch (error) {
             console.error('Error fetching character information:', error);
             M.reply('An error occurred while fetching character information.');
