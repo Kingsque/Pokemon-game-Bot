@@ -35,8 +35,7 @@ module.exports = {
                 if (result.background !== null) text += `🎆 *Background:* ${result.background}*\n\n`
                 text += `❄ *Description:* ${result.synopsis}`
                 const image = await client.utils.getBuffer(result.images.jpg.large_image_url)
-                return (await this.client.sendMessage(
-                    M.from,
+                return (await client.sendMessage(M.from,
                     {
                         image,
                         caption: text,
