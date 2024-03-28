@@ -41,18 +41,10 @@ module.exports = {
             const image = await client.utils.getBuffer(result.images.jpg.large_image_url);
             
             await client.sendMessage(M.from, {
-                image,
-                caption: text,
-                contextInfo: {
-                    externalAdReply: {
-                        title: result.title,
-                        mediaType: 1,
-                        thumbnail: image,
-                        sourceUrl: result.url
-                    }
-                }
-            }, {
-                quoted: M.message
+              image: {
+                url: image,
+              },
+              caption: text,
             });
         } catch (err) {
             console.error('Error fetching anime information:', err);
