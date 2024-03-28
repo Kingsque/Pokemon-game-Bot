@@ -29,7 +29,7 @@
       "@consumet/extensions": "^1.5.6",
       "@hapi/boom": "^10.0.0",
       "@shineiichijo/canvas-chan": "^1.0.1",
-      "@shineiichijo/marika": "^3.0.1",
+      "@shineiichijo/marika": "^2.0.6",
       "@wylie39/image-collage": "^0.1.0",
       "@yimura/scraper": "^1.2.4",
       "anime-quiz": "^3.0.0",

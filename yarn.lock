@@ -1336,13 +1336,12 @@
     gifencoder "^2.0.1"
     path "^0.12.7"
 
-"@shineiichijo/marika@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@shineiichijo/marika/-/marika-3.0.1.tgz#f34573a83cc238a767344446b462392b79a3f980"
-  integrity sha512-j5+N9zgb0Mf3zJ4TJq+hFnXBrtWht+wU4HacNOkCeWFUlpc7PXDyj1tLDxDyc7k8yTvJWso8n9r3P4Twfkj8GQ==
+"@shineiichijo/marika@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@shineiichijo/marika/-/marika-2.0.6.tgz#2da914f374da07d1b426315db978e00a11c69b5d"
+  integrity sha512-ZTHGVobLzMhYDMjadzHjjHmfRqLt2bHd+nHk+hyc5aTddUUoqPaB62/MGpWwpoOP9bzmXt0YI8VxNV0iGIQ33g==
   dependencies:
-    axios "^1.5.0"
-    axios-cache-interceptor "^1.3.0"
+    axios "^0.27.2"
 
 "@sindresorhus/is@^4.0.0":
   version "4.6.0"
@@ -2292,15 +2291,6 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.12.0.tgz#ce1c9d143389679e253b314241ea9aa5cec980d3"
   integrity sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==
 
-axios-cache-interceptor@^1.3.0:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/axios-cache-interceptor/-/axios-cache-interceptor-1.5.1.tgz#fe4095f74262011fd8b7576b0a0e8c8026e301c5"
-  integrity sha512-1p/rTi7DSqUghJ5Ck8GKNt47X6f3IB8XnJ+TM4PwIdhimmCgh0jEQiwI8mBvf2kIMIl4Kz5idwbf/ouK75nEHA==
-  dependencies:
-    cache-parser "1.2.4"
-    fast-defer "1.1.8"
-    object-code "1.3.2"
-
 axios@^0.21.0, axios@^0.21.1:
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
@@ -2330,7 +2320,7 @@ axios@^0.27.2:
     follow-redirects "^1.14.9"
     form-data "^4.0.0"
 
-axios@^1.1.3, axios@^1.5.0:
+axios@^1.1.3:
   version "1.6.8"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
   integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
@@ -2529,11 +2519,6 @@ cache-manager@4.0.1:
     async "3.2.3"
     lodash.clonedeep "^4.5.0"
     lru-cache "^7.10.1"
-
-cache-parser@1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/cache-parser/-/cache-parser-1.2.4.tgz#60975135ef2330e6a1d60895279d7237a2a9b398"
-  integrity sha512-O0KwuHuJnbHUrghHi2kGp0SxnWSIBXTYt7M8WVhW0kbPRUNUKoE/Of6e1rRD6AAxmfxFunKnt90yEK09D+sc5g==
 
 cacheable-lookup@^5.0.3:
   version "5.0.4"
@@ -3574,11 +3559,6 @@ fast-deep-equal@3.1.3, fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
   integrity sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==
-
-fast-defer@1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/fast-defer/-/fast-defer-1.1.8.tgz#940ef9597b2ea51c4cd08e99d0f2a8978fa49ba2"
-  integrity sha512-lEJeOH5VL5R09j6AA0D4Uvq7AgsHw0dAImQQ+F3iSyHZuAxyQfWobsagGpTcOPvJr3urmKRHrs+Gs9hV+/Qm/Q==
 
 fast-glob@^3.2.12:
   version "3.3.2"
@@ -5356,11 +5336,6 @@ object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==
-
-object-code@1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/object-code/-/object-code-1.3.2.tgz#f0c0fd71b16aed45a58c306b831f2249806dffd5"
-  integrity sha512-3CVDmQiru7YYVr+4OpCGrqkVE7GogmWinDcgfno1fXlKgIhtW9FhgHTiV98gMPUjQwWuWvijQDCY8sGnqKrhTw==
 
 object-inspect@^1.13.1:
   version "1.13.1"

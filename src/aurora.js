@@ -21,7 +21,6 @@ const { groups } = require('./Handlers/Mods')
 const contact = require('./Structures/Contact')
 const utils = require('./Structures/Functions')
 const YT = require('./lib/YT')
-const AI_lib = require('./lib/AI_lib')
 const express = require("express");
 const app = express();
 const { imageSync }= require('qr-image')
@@ -34,7 +33,6 @@ const { readdirSync, writeFileSync, unlink } = require('fs-extra')
 const port = process.env.PORT || 3000
 const driver = new MongoDriver(process.env.URL)
 const chalk = require('chalk')
-const gpt = require('./lib/gpt')
 
 const start = async () => {
     await mongoose.connect(process.env.URL);
@@ -54,8 +52,6 @@ const start = async () => {
     //Config
     client.name = process.env.NAME || 'Aurora-Private'
     client.prefix = process.env.PREFIX || ':'
-    client.writesonicAPI = process.env.WRITE_SONIC || null
-    client.bgAPI = process.env.BG_API_KEY || null
     client.mods = ('917903576495,918961331275,917980329866').split(',')
 
     //grouos
@@ -70,9 +66,6 @@ const start = async () => {
 
     //Contacts
     client.contact = contact
-
-    //Open AI
-    client.AI = AI_lib
 
     //Experience
     client.exp = client.DB.table('experience')
@@ -100,9 +93,6 @@ const start = async () => {
 
     //YT gif
     client.YT = YT;
-
-   //GPT
-   client.gpt = gpt
     
     //groups
     client.getAllGroups = async () => Object.keys(await client.groupFetchAllParticipating())

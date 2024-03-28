@@ -84,20 +84,6 @@ const getRandomInt = (min, max) => {
  * @returns {Promise<Buffer>}
  */
 
-const removeBG = async (input) => {
-    try {
-        const response = await removeBackgroundFromImageBase64({
-            base64img: input.toString('base64'),
-            apiKey: process.env.BG_API_KEY,
-            size: 'auto',
-            type: 'auto'
-        })
-        return Buffer.from(response.base64img, 'base64')
-    } catch (error) {
-        throw error
-    }
-}
-
 /**
  * Generates an image of a credit card with the given card name and expiry date.
  * @param {string} cardName - The name on the credit card.
@@ -361,7 +347,6 @@ module.exports = {
     extractNumbers,
     fetch,
     formatSize,
-    removeBG,
     generateCreditCardImage,
     generateRandomHex,
     getBuffer,
