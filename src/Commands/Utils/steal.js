@@ -7,7 +7,8 @@ module.exports = {
     exp: 10,
     cool: 4,
     react: "✅",
-    description: 'Steal [quote message containing sticker] <pack> | <author>',
+    usage: 'Usage :steal attached or quoted to a sticker <pack_name>|<author_name>',
+    description: 'Used for stealing stickers',
     async execute(client, arg, M) {
         try {
             const content = JSON.stringify(M.quoted);
