@@ -7,7 +7,8 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
-    description: 'Gives you the info of the anime',
+    usage: 'Use :manga <manga_name>',
+    description: 'Gives you the info about he manga that you provided',
     async execute(client, arg, M) {
         if (!arg) return void M.reply('Provide a query for the search, Baka!');
         const query = arg.trim();
@@ -27,7 +28,8 @@ module.exports = {
             text += `🎏 *Favorites:* ${result.favorites}\n`;
             text += `🏅 *Rank:* ${result.rank}\n\n`;
             if (result.background !== null) text += `🎆 *Background:* ${result.background}*\n\n`;
-            text += `❄ *Description:* ${result.synopsis}`;
+            text += `❄ *Description:* ${result.synopsis}\n\n`;
+            text += `© _Team Aurora𝄞`;
             const image = result.images.jpg.large_image_url;
 
             await client.sendMessage(M.from, {
