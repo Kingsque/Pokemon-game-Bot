@@ -33,12 +33,11 @@ module.exports = {
             if (chara.about !== null) text += `\n\n❤ *Description:* ${chara.about}`;
             
             // Fetching image buffer
-            const imageResponse = await axios.get(chara.images.jpg.image_url, { responseType: 'arraybuffer' });
-            const imageBuffer = Buffer.from(imageResponse.data, 'binary');
-
+            const image = chara.images.jpg.image_url
+    
             await client.sendMessage(M.from, {
                 image: {
-                    url: imageBuffer,
+                    url: image,
                 },
                 caption: text,
             });
