@@ -1,4 +1,4 @@
-function generateImage(prompt: string): string | null {
+function generateImage(prompt) {
   // Generate the image URL based on the prompt
   return 'Simulated_Image_URL';
 }
