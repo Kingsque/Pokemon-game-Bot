@@ -13,7 +13,7 @@ module.exports = {
             let context = arg.includes('https://open.spotify.com/')
         if (!context) return M.reply('Where is the url of spotify?')
         const spotify = new Spotify(context)
-        const info = await spotify.getInfo()
+        const info = await Spotify.getInfo()
         if (info.error) return M.reply('Provide a valid spotify track URL, Baka!')
         const { name, artists, album_name, release_date, cover_url } = info
         const details = `🎧 *Title:* ${name || ''}\n🎤 *Artists:* ${(artists || []).join(
