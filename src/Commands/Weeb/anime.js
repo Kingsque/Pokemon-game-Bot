@@ -7,7 +7,8 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
-    description: 'Gives you the info of the anime',
+    usage: 'Use :anime <commmd_name>',
+    description: 'Gives you the info of the anime that you provided',
     async execute(client, arg, M) {
         try {
             if (!arg) return M.reply('Provide a query for the search, Baka!');
@@ -36,7 +37,8 @@ module.exports = {
             text += `🎇 *Rating:* ${result.rating}\n`;
             text += `🏅 *Rank:* ${result.rank}\n\n`;
             if (result.background !== null) text += `🎆 *Background:* ${result.background}*\n\n`;
-            text += `❄ *Description:* ${result.synopsis}`;
+            text += `❄ *Description:* ${result.synopsis}\n\n`;
+            text += `© _Team Aurora𝄞`;
             
             const image = result.images.jpg.large_image_url; // Use URL directly
             
