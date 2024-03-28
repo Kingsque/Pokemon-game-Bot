@@ -1,8 +1,8 @@
 const { Manga } = require('@shineiichijo/marika');
 
 module.exports = {
-    name: 'anime',
-    aliases: ['ani'],
+    name: 'manga',
+    aliases: ['manga'],
     category: 'weeb',
     exp: 5,
     cool: 4,
