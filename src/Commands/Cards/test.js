@@ -92,14 +92,14 @@ module.exports = {
           }
         }
 
-        // Convert GIF cards to MP4 videos
-        for (const gifCardUrl of gifCards) {
-          const mp4Buffer = await client.utils.gifToMp4(await client.utils.getBuffer(gifCardUrl));
-          const directory = require('os').tmpdir();
-          const filePath = path.join(directory, `gif_card_${gifCards.indexOf(gifCardUrl)}.mp4`);
-          fs.writeFileSync(filePath, mp4Buffer);
-          images.push(filePath);
-        }
+        // Convert GIF cards to static images
+for (const gifCardUrl of gifCards) {
+  const imageBuffer = await client.utils.getBuffer(gifCardUrl);
+  const directory = require('os').tmpdir();
+  const filePath = path.join(directory, `gif_card_${gifCards.indexOf(gifCardUrl)}.png`);
+  fs.writeFileSync(filePath, imageBuffer);
+  images.push(filePath);
+}
 
         // Send collage
         const canvasWidth = 1050;
