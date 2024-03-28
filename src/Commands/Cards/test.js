@@ -5,8 +5,8 @@ const path = require('path');
 const zlib = require('zlib');
 
 module.exports = {
-  name: 'test',
-  aliases: ['testt'],
+  name: 't',
+  aliases: ['tt'],
   exp: 0,
   cool: 4,
   react: "✅",
@@ -42,6 +42,7 @@ module.exports = {
       const images = [];
       let cardText = "";
       const cardSet = new Set();
+      let text = ""; // Initialize text variable
       
       if (arg) {
         const index = parseInt(arg) - 1;
@@ -64,14 +65,13 @@ module.exports = {
 
         // Send single card
         if (cardUrl.endsWith('.gif')) {
-          const imageBuffer = await client.utils.gifToMp4(await client.utils.getBuffer(cardUrl));
+          const imageBuffer = await client.utils.webpToMp4(await client.utils.getBuffer(cardUrl));
           await client.sendMessage(M.from, { video: imageBuffer, gifPlayback: true, caption: cardText });
         } else {
           await client.sendMessage(M.from, { image: { url: cardUrl }, caption: cardText });
         }
       } else {
         for (let i = 0; i < deck.length; i++) {
-          let text = "";
           const card = deck[i].split('-');
           const filePath = path.join(__dirname, '../../Helpers/card.json');
           const data = require(filePath);
@@ -92,14 +92,14 @@ module.exports = {
           }
         }
 
-        // Convert GIF cards to static images
-for (const gifCardUrl of gifCards) {
-  const imageBuffer = await client.utils.getBuffer(gifCardUrl);
-  const directory = require('os').tmpdir();
-  const filePath = path.join(directory, `gif_card_${gifCards.indexOf(gifCardUrl)}.png`);
-  fs.writeFileSync(filePath, imageBuffer);
-  images.push(filePath);
-}
+        // Convert GIF cards to images
+        for (const gifCardUrl of gifCards) {
+          const imageBuffer = await client.utils.getBuffer(gifCardUrl);
+          const directory = require('os').tmpdir();
+          const filePath = path.join(directory, `gif_card_${gifCards.indexOf(gifCardUrl)}.png`);
+          fs.writeFileSync(filePath, imageBuffer);
+          images.push(filePath);
+        }
 
         // Send collage
         const canvasWidth = 1050;
