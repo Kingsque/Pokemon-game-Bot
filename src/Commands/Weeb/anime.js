@@ -38,13 +38,13 @@ module.exports = {
             if (result.background !== null) text += `🎆 *Background:* ${result.background}*\n\n`;
             text += `❄ *Description:* ${result.synopsis}`;
             
-            const image = await client.utils.getBuffer(result.images.jpg.large_image_url);
+            const image = result.images.jpg.large_image_url; // Use URL directly
             
             await client.sendMessage(M.from, {
-              image: {
-                url: image,
-              },
-              caption: text,
+                image: {
+                    url: image,
+                },
+                caption: text,
             });
         } catch (err) {
             console.error('Error fetching anime information:', err);
