@@ -8,6 +8,7 @@ module.exports = {
     exp: 0,
     cool: 4,
     react: "✅",
+    usage: 'Use :translate <text> (text should be in th particular language)',
     description: 'Translates a text to a specific language',
     async execute(client, arg, M) {
 
