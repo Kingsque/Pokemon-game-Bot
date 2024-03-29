@@ -2,16 +2,18 @@ const cron = require("node-cron")
 const axios = require('axios')
 const path = require('path')
 require("./Message");
-module.exports = CardHandler = async (client, m) => {
+module.exports = PokeHandler = async (client, m) => {
   try {
       let wilds = await client.DB.get('wild');
     const wild = wilds || [];
 
-    for (let i = 0; i < wild.length; i++) {
-      const jid = wild[i];
+    if (cardgame.length > 0) {
+      const randomIndex = Math.floor(Math.random() * wild.length);
+      const randomJid = wild[randomIndex];
+      let jid = randomJid;
 
       if (wild.includes(jid)) {
-        cron.schedule('*/10 * * * *', async () => {
+        cron.schedule('*/15 * * * *', async () => {
           try {
             const id = Math.floor(Math.random() * 1025);
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -25,7 +27,7 @@ module.exports = CardHandler = async (client, m) => {
             console.log(`Spawned: ${pokemon.name} in ${jid}`);
             await client.DB.set(`${jid}.pokemon`, `${pokemon.name}`);
 
-            const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Type(s): ${types.join(', ')}* \n\n *🀄ʟevel = 「 ${level} 」* \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >* \n\n *「 ɢᴇᴛ ᴛʜɪꜱ ᴘᴏᴋᴇᴍᴏɴ ɪɴ ʏᴏᴜʀ ᴅᴇꭗ 」*`;
+            const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Type:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
 
             await client.sendMessage(jid, {
               image: {
