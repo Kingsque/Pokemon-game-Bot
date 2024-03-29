@@ -23,7 +23,7 @@ module.exports = CardHandler = async (client, m) => {
         const tsLimit = 15;
         const t6Limit = 10; // Different limit for t6
 
-        cron.schedule('*/10 * * * *', async () => {
+        cron.schedule('*/20 * * * *', async () => {
           try {
             const filePath = path.join(__dirname, '../Helpers/card.json');
             const data = require(filePath);
@@ -98,7 +98,7 @@ module.exports = CardHandler = async (client, m) => {
           }
         });
 
-        cron.schedule('*/5 * * * *', async () => {
+        cron.schedule('*/15 * * * *', async () => {
           await client.cards.delete(`${jid}.card`);
           await client.cards.delete(`${jid}.card_price`);
           console.log(`Card deleted after 5 minutes`);
