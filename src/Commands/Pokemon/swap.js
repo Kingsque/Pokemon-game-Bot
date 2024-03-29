@@ -5,31 +5,27 @@ module.exports = {
   cool: 4,
   react: "🔄",
   category: "pokemon",
-  description: "Swap positions of two Pokémon in your party",
+  description: "Swap the positions of two Pokémon in your party",
   async execute(client, arg, M) {
     try {
       const party = await client.DB.get(`${M.sender}_Party`) || [];
 
-      // Check if the party has less than two Pokémon
       if (party.length < 2) {
-        return M.reply("🚫 Your party must have at least two Pokémon to swap!");
+        return M.reply("⚠️ You need at least two Pokémon in your party to swap positions!");
       }
 
-      // Parse arguments: swap <index1> <index2>
-      const [index1, index2] = arg.trim().split(/\s+/).map(Number);
+      const [index1, index2] = arg.split(",").map(Number);
 
-      // Check if arguments are valid indices
-      if (isNaN(index1) || isNaN(index2) || index1 < 1 || index2 < 1 || index1 > party.length || index2 > party.length || index1 === index2) {
-        return M.reply("🚫 Please provide two valid indices to swap the positions of Pokémon in your party!");
+      if (!Number.isInteger(index1) || !Number.isInteger(index2) || index1 < 1 || index2 < 1 || index1 > party.length || index2 > party.length) {
+        return M.reply("⚠️ Please provide valid positions to swap!");
       }
 
-      // Swap the positions of the Pokémon
-      [party[index1 - 1], party[index2 - 1]] = [party[index2 - 1], party[index1 - 1]];
+      const temp = party[index1 - 1];
+      party[index1 - 1] = party[index2 - 1];
+      party[index2 - 1] = temp;
 
-      // Update the party in the database
       await client.DB.set(`${M.sender}_Party`, party);
-
-      await M.reply(`🔄 Swapped positions of Pokémon ${index1} and ${index2} in your party successfully!`);
+      await M.reply("✅ Pokémon positions swapped successfully!");
     } catch (err) {
       await client.sendMessage(M.from, {
         image: { url: `${client.utils.errorChan()}` },
