@@ -8,32 +8,35 @@ module.exports = {
     description: "Catch the spawned Pokémon",
     async execute(client, arg, M) {
         try {
-            const pokemonData = await client.DB.get(`${M.from}.pokemon`); // Retrieve spawned Pokémon data
-            if (!pokemonData) {
+            const pokemon = await client.DB.get(`${M.from}.pokemon`); // Retrieve spawned Pokémon
+            if (!pokemon) {
                 return M.reply("🙅‍♂️ Sorry, there are currently no Pokémon available to catch!");
             }
 
-            const { name, level, exp } = pokemonData; // Destructure Pokémon data
+            // Check if the user has space in their party
+            const party = await client.DB.get(`${M.sender}_Party`) || [];
+            if (party.length < 6) {
+                // If party has space, add Pokémon to party
+                party.push(pokemon); // Add Pokémon to Party
+                await client.DB.set(`${M.sender}_Party`, party);
 
-            // Check if the argument matches the spawned Pokémon name
-            if (arg.toLowerCase() === name.toLowerCase()) {
-                // Proceed to catch the Pokémon
+                await M.reply(`🎉 You have successfully caught ${pokemon.name} (Level: ${pokemon.level}) and stored it in your Party!`);
+            } else {
+                // If party is full, add Pokémon to PC
                 const pc = await client.DB.get(`${M.sender}_PC`) || [];
-                pc.push({ name: name, level: level, exp: exp }); // Add Pokémon data to PC
+                pc.push(pokemon); // Add Pokémon to PC
                 await client.DB.set(`${M.sender}_PC`, pc);
 
-                await M.reply(`🎉 You have successfully caught ${name} (Level: ${level}) and stored it in your PC!`);
-                
-                // Delete the spawned Pokémon data from the database
-                await client.DB.delete(`${M.from}.pokemon`);
-            } else {
-                // If the argument does not match the spawned Pokémon name
-                await M.reply("❌ The Pokémon you tried to catch does not match the spawned Pokémon!");
+                await M.reply(`🎉 You have successfully caught ${pokemon.name} (Level: ${pokemon.level}) and stored it in your PC!`);
             }
+
+            // Delete the spawned Pokémon from the database
+            await client.DB.delete(`${M.from}.pokemon`);
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
-                text: "An error occurred while catching the Pokémon."
+                image: { url: `${client.utils.errorChan()}` },
+                caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`
             });
         }
     },
