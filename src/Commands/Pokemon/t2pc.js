@@ -1,4 +1,3 @@
-// t2pc command
 module.exports = {
   name: "t2pc",
   aliases: ["t2pc"],
@@ -6,29 +5,29 @@ module.exports = {
   cool: 4,
   react: "🔄",
   category: "pokemon",
-  description: "Move a Pokémon from Party to PC",
+  description: "Transfer a Pokémon from your party to your PC",
   async execute(client, arg, M) {
     try {
-      const pc = await client.DB.get(`${M.sender}_PC`) || [];
       const party = await client.DB.get(`${M.sender}_Party`) || [];
 
-      if (pc.length >= 30) {
-        return M.reply("🚫 Your PC is already full! You cannot add more Pokémon.");
+      if (party.length === 0) {
+        return M.reply("⚠️ Your party is empty!");
       }
 
-      const pokemonName = arg.toLowerCase();
-      const pokemonIndex = party.findIndex(p => p.toLowerCase() === pokemonName);
-      if (pokemonIndex === -1) {
-        return M.reply(`🚫 Pokémon '${arg}' not found in your party!`);
+      const index = parseInt(arg) - 1;
+
+      if (isNaN(index) || index < 0 || index >= party.length) {
+        return M.reply("⚠️ Please provide a valid position of the Pokémon in your party to transfer!");
       }
 
-      const movedPokemon = party.splice(pokemonIndex, 1)[0];
-      pc.push(movedPokemon);
+      const pokemon = party[index];
+      const pc = await client.DB.get(`${M.sender}_PC`) || [];
+      pc.push(pokemon);
+      party.splice(index, 1);
 
       await client.DB.set(`${M.sender}_PC`, pc);
       await client.DB.set(`${M.sender}_Party`, party);
-
-      await M.reply(`🔄 Moved ${movedPokemon} from your party to PC successfully!`);
+      await M.reply(`✅ ${pokemon} transferred from party to PC successfully!`);
     } catch (err) {
       await client.sendMessage(M.from, {
         image: { url: `${client.utils.errorChan()}` },
