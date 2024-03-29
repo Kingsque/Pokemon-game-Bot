@@ -9,13 +9,12 @@ module.exports = CardHandler = async (client, m) => {
     // const jid = '120363117691088254@g.us'; //send group
     // const jid = '120363129950930721@g.us'
 
-    // if (cardgame.length > 0) {
-    //   const randomIndex = Math.floor(Math.random() * cardgame.length)
-    //   const randomJid = cardgame[randomIndex]
-    //   let jid = randomJid
-    //   console.log(jid)
-    for (let i = 0; i < cardgame.length; i++) {
-      const jid = cardgame[i]
+    //for (let i = 0; i < cardgame.length; i++) {
+      //const jid = cardgame[i]
+	  if (cardgame.length > 0) {
+       const randomIndex = Math.floor(Math.random() * cardgame.length)
+    const randomJid = cardgame[randomIndex]
+       let jid = randomJid
    console.log(jid)
 
       if (cardgame.includes(jid)) {
