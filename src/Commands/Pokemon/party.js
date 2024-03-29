@@ -5,7 +5,7 @@ module.exports = {
   cool: 4,
   react: "📋",
   category: "pokemon",
-  description: "View your catched Pokémon in your party",
+  description: "View your caught Pokémon in your party along with their levels",
   async execute(client, arg, M) {
     try {
       const party = await client.DB.get(`${M.sender}_Party`) || [];
@@ -15,7 +15,8 @@ module.exports = {
 
       let response = "📋 Your Party:\n";
       party.forEach((pokemon, index) => {
-        response += `${index + 1}. ${pokemon}\n`;
+        const [name, level] = pokemon.split("-");
+        response += `${index + 1})Name: ${name}\nLevel: ${level}\n\n`;
       });
 
       await M.reply(response);
