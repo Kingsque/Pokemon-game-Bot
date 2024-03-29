@@ -25,7 +25,7 @@ module.exports = PokeHandler = async (client, m) => {
             const level = Math.floor(Math.random() * (30 - 15) + 15);
 
             console.log(`Spawned: ${pokemon.name} in ${jid}`);
-            await client.DB.set(`${jid}.pokemon`, `${pokemon.name}`);
+            await client.DB.set(`${jid}.pokemon`, `${pokemon.name}-${level}`);
 
             const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Type:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
 
