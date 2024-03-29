@@ -1,5 +1,5 @@
 module.exports = {
-  name: "swap",
+  name: "cswap",
   aliases: ["swapcards"],
   exp: 0,
   cool: 4,
