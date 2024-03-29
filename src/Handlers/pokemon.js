@@ -7,7 +7,7 @@ module.exports = PokeHandler = async (client, m) => {
       let wilds = await client.DB.get('wild');
     const wild = wilds || [];
 
-    if (cardgame.length > 0) {
+    if (wild.length > 0) {
       const randomIndex = Math.floor(Math.random() * wild.length);
       const randomJid = wild[randomIndex];
       let jid = randomJid;
@@ -42,7 +42,7 @@ module.exports = PokeHandler = async (client, m) => {
             });
           }      
   
-    cron.schedule('*/5 * * * *', async () => {
+    cron.schedule('*/10 * * * *', async () => {
      await client.DB.delete(`${jid}.pokemon`);
       console.log(`Pokemon deleted after 5minutes`)
   
