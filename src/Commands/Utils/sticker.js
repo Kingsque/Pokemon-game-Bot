@@ -7,7 +7,8 @@ module.exports = {
     exp: 15,
     cool: 4,
     react: "✅",
-    description: 'sticker [caption/quote message containing media] <pack> | <author>',
+    usage: 'Use :sticker by quoting a image/gif <pack_name>|<author_name>',
+    description: 'sticker command helps you to convert images or gifs to an sticker',
     async execute(client, arg, M) {
         try {
             const content = JSON.stringify(M.quoted);
@@ -21,6 +22,8 @@ module.exports = {
 
                 // Download the media
                 const buffer = isQuotedMedia ? await M.quoted.download() : await M.download();
+
+                M.reply('Processing.....');
 
                 // Create a new sticker instance
                 const sticker = new Sticker(buffer, {
