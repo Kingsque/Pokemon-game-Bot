@@ -8,6 +8,7 @@ module.exports = {
     cool: 4,
     react: "✅",
     category: 'fun',
+    usage: 'Use :<Your_Check>check',
     description: 'Checks on user',
     async execute(client, arg, M) {
         const text = arg.trim()
