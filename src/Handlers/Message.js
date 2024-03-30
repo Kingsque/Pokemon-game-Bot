@@ -56,17 +56,6 @@ module.exports = MessageHandler = async (messages, client) => {
         //Banned system
         if (banned.includes(sender)) return M.reply('You are banned from using the bot')
         
-        // AI chatting using
-        if (M.quoted?.participant) M.mentions.push(M.quoted.participant)
-        if (
-            M.mentions.includes(client.user.id.split(':')[0] + '@s.whatsapp.net') &&
-            !isCmd &&
-            isGroup &&
-            ActivateChatBot.includes(from)
-        ) {
-            const text = await axios.get(`https://api.simsimi.net/v2/?text=${emojiStrip(body)}&lc=en&cf=true`)
-            M.reply(body == 'hi' ? `Hey ${M.pushName} whats up?` : text.data.messages[0].text)
-        }
 
         // Logging Message
         client.log(
