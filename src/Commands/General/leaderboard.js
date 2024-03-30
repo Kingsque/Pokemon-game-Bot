@@ -9,7 +9,7 @@ module.exports = {
     cool: 4,
     react: "✅",
     usage: 'Use :lb --credit/--cards',
-    description: "Displays global's or group's leaderboard of a specific field\nEx: lb gold gc",
+    description: "Displays global leaderboard of aurora bot in various types",
     async execute(client, arg, M) {
         try {
             const allUsers =
