@@ -8,7 +8,8 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
-    description: 'Gives you your rank',
+    usage: 'Use :rank',
+    description: 'Gives you your rank card',
     async execute(client, arg, M) {
 
         const user = M.quoted?.participant ? M.quoted.participant : M.mentions[0] ? M.mentions[0] : M.sender;
