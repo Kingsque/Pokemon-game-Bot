@@ -18,10 +18,10 @@ module.exports = CardHandler = async (client, m) => {
         let count = 0;
         let tsCounter = 0;
         let t6Counter = 0;
-        const tsInterval = 10;
-        const t6Interval = 5; // Different interval for t6
-        const tsLimit = 15;
-        const t6Limit = 10; // Different limit for t6
+        const tsInterval = 4;
+        const t6Interval = 2; // Different interval for t6
+        const tsLimit = 100;
+        const t6Limit = 1000; // Different limit for t6
 
         cron.schedule('*/5 * * * *', async () => {
           try {
