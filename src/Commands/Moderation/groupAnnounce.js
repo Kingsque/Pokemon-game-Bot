@@ -5,6 +5,7 @@ module.exports = {
     cool: 4,
     react: "✅",
     category: 'moderation',
+    usage: 'Use :group close/open
     description: 'Closes or opens the group',
     async execute(client, arg, M) {
     
