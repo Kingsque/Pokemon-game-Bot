@@ -48,9 +48,7 @@ module.exports = {
         text += `👑 *Admin:* ${groupAdmins.includes(user) ? 'True' : 'False'}\n`;
         text += `✖ *Ban:* ${banned.includes(user) ? 'True' : 'False'}\n`;
         text += `💰 *Wallet:* ${wallet}\n`;
-        text += `🏦 *Bank:* ${bank}\n`;
         text += `🃏 *Deck:* ${deck ? deck.length : 0}\n`; // Check if deck is empty
-        text += `🗃️ *Collection:* ${collection ? collection.length : 0}\n`; // Check if collection is empty
 
         client.sendMessage(
             M.from,
