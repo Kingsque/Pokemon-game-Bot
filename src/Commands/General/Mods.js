@@ -12,9 +12,8 @@ module.exports = {
     let mo = "*Aurora MODS*\n";
 
     for (let i = 0; i < mods.length; i++) {
-      let hmm = mods[i];
-      const um = (await client.contact.getContact(hmm, client)).username;
-      mo += `\n#${i + 1}\n*Contact:* ${um}\n`; // Added "@" symbol before the username
+        let hmm = mods[i];
+        mo += `\n#${i + 1}\n*Contact:* ${hmm}\n`; // Displaying the number directly
     }
 
     M.reply(mo);
