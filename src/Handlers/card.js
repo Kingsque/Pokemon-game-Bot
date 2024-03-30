@@ -5,7 +5,7 @@ require("./Message");
 
 module.exports = CardHandler = async (client, m) => {
   try {
-    let cardgames = await client.DB.get('card-game');
+    let cardgames = await client.DB.get('cards');
     const cardgame = cardgames || [];
 
     if (cardgame.length > 0) {
