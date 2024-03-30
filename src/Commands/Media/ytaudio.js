@@ -54,7 +54,7 @@ module.exports = {
             await client.sendMessage(
                 M.from,
                 {
-                    document: audioBuffer,
+                    audio: audioBuffer,
                     mimetype: 'audio/mpeg',
                     fileName: `${videoDetails.title}.mp3`
                 },
