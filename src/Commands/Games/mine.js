@@ -5,6 +5,7 @@ module.exports = {
     exp: 8,
     cool: 4,
     react: '✅',
+    usage: 'Use :mine',
     description: 'mines items',
     async execute(client, arg, M) {
   
