@@ -8,8 +8,9 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
+    usage: 'Use :ytvideo <video_link>',
     description: 'Downloads given YouTube Video',
-    async execute(client, flag, arg, M) {
+    async execute(client, arg, M) {
         try {
             const link = async (term) => {
                 const { videos } = await yts(term.trim());
