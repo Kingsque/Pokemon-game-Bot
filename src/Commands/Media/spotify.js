@@ -5,18 +5,20 @@ module.exports = {
     aliases: ['sp'],
     category: 'media',
     exp: 5,
-    description: 'Downloads given spotify track and sends it as Audio',
+    react: "✅",
+    usage: 'Use :spotify <Link>',
+    description: 'Downloads given Spotify track and sends it as audio with an image and caption',
     async execute(client, arg, M) {
         const link = arg
         if (!link.includes('https://open.spotify.com/track/'))
-            return M.reply('Please use command with a valid youtube.com link')
+            return M.reply('Please use the command with a valid Spotify link')
         const audioSpotify = await spotifydl(link.trim()).catch((err) => {
             return M.reply(err.toString())
             client.log(err, 'red')
         })
 
-        if (spotifydl.error) return M.reply(`Error Fetching: ${link.trim()}. Check if the url is valid and try again`)
-        M.reply('Downloading has started please have some pesence')
+        if (audioSpotify.error) return M.reply(`Error Fetching: ${link.trim()}. Check if the URL is valid and try again`)
+        M.reply('Downloading has started, please wait.')
 
         const caption = `🎧 *Title:* ${audioSpotify.data.name || ''}\n🎤 *Artists:* ${(
             audioSpotify.data.artists || []
@@ -24,22 +26,14 @@ module.exports = {
             audioSpotify.data.release_date || ''
         }`
 
-        client.sendMessage(
-            M.from,
-            {
-                image: audioSpotify.coverimage,
-                caption: caption
-            },
-            {
-                quoted: M
-            }
-        )
         await client.sendMessage(
             M.from,
             {
-                document: audioSpotify.audio,
-                mimetype: 'audio/mpeg',
-                fileName: audioSpotify.data.name + '.mp3'
+                image: audioSpotify.coverimage,
+                caption: caption,
+                audio: audioSpotify.audio, // Add audio here
+                mimetype: 'audio/mpeg', // Correct mimetype for audio
+                fileName: audioSpotify.data.name + '.mp3',
             },
             {
                 quoted: M
@@ -47,4 +41,3 @@ module.exports = {
         )
     }
 }
-//M.quoted.mtype === 'imageMessage',
