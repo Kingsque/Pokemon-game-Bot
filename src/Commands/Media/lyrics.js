@@ -5,6 +5,7 @@ module.exports = {
   exp: 5,
   cool: 4,
   react: "✅",
+  usage: 'Use :lyrics <song_name>',
   description: 'Sends the lyrics of a given song',
   async execute(client, arg, M) { 
     if (!arg) return M.reply('🟥 *Provide the name of the song to search the lyrics*');
