@@ -5,6 +5,7 @@ module.exports = {
      exp: 5,
      cool: 4,
      react: "✅",
+     usage: 'Use :support',
      description: 'Gives links of official gcs',
      async execute(client, arg, M) {
        try {
@@ -17,11 +18,6 @@ module.exports = {
          const ariLogo = "https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg";
    
          let supportG = `*━『 Support Group Links 』━*\n\n* [ Aurora Support ] :*\np\nDescription: This is the main group of our bot, here RPG commands, game commands, and card shop commands will work\n* [ Aurora Auction ] :*\np\nDescription: Here every weekend auctions of events auction of event cards takes place and on every nee 100 user a grand auction takes place\n* [ Aurora Casino ] :**\np\nDescription: Here you can do slots and gamble to increase your money\n\n`;
-   
-         // Add your website, YouTube, Gmail, etc., links here
-         supportG += `Website: [Your Website Link Here]\n`;
-         supportG += `YouTube: [Your YouTube Channel Link Here]\n`;
-         supportG += `Gmail: [Your Gmail Address Here]\n`;
    
          let text = [
            "Together we rise, together we fall, but always together in this anime world we call home. Welcome to the support group.",
