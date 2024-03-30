@@ -11,7 +11,7 @@ module.exports = {
         const toggleableGroupActions = {
             'mod': 'This features helps to auto remove a member from the group if he/she have sended a different group link also delete the link.',
             'events': 'This helps to turn on events where if any member joins, leaves, promoted or demoted eill be shown.',
-            'cardgame': 'This function enables card spawning in your group.',
+            'cards': 'This function enables card spawning in your group.',
             'wild': 'This feature enable wild pokemon encounters.'
         };
 
