@@ -12,7 +12,6 @@ module.exports = {
             'mod': 'This features helps to auto remove a member from the group if he/she have sended a different group link also delete the link.',
             'events': 'This helps to turn on events where if any member joins, leaves, promoted or demoted eill be shown.',
             'cardgame': 'This function enables card spawning in your group.',
-            'chatbot': 'This enable chat bot in your group so that you can inteeract eith chatbot',
             'wild': 'This feature enable wild pokemon encounters.'
         };
 
