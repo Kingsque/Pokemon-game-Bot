@@ -14,7 +14,7 @@ module.exports = {
     for (let i = 0; i < mods.length; i++) {
       let hmm = mods[i];
       const um = (await client.contact.getContact(hmm, client)).username;
-      mo += `\n#${i + 1}\n*Contact:* @${um}\n`; // Added "@" symbol before the username
+      mo += `\n#${i + 1}\n*Contact:* ${um}\n`; // Added "@" symbol before the username
     }
 
     M.reply(mo);
