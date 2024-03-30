@@ -19,7 +19,7 @@ module.exports = {
                     caption: `${res.data.title}`
                 });
             } else {
-                throw new Error('Failed to fetch meme.');
+                M.reply('Failed to fetch meme.');
             }
         } catch (err) {
             console.error(err);
