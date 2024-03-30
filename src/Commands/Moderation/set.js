@@ -5,6 +5,7 @@ module.exports = {
     cool: 4,
     react: "✅",
     category: 'moderation',
+    usage: 'Use :set --<toggleable_function>=[enble/disable]',
     description: 'Enable or disable certain features on group-chats',
     async execute(client, arg, M) {
         const toggleableGroupActions = {
