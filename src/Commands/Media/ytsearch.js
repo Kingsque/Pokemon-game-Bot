@@ -8,8 +8,9 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
+    usage: 'Use :ytsearch <query>',
     description: 'Searches for videos on YouTube based on the given query',
-    async execute(client, flag, arg, M) {
+    async execute(client, arg, M) {
         try {
             if (!arg) return M.reply('Sorry, you did not provide any search term!');
             
