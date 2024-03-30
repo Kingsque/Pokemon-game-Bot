@@ -7,6 +7,7 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "👀",
+    usage: 'Use :p to get your profile',
     description: 'Gives you your stats',
     async execute(client, arg, M) {
         const groupMetadata = await client.groupMetadata(M.from);
@@ -42,7 +43,6 @@ module.exports = {
         text += `🏮 *Username:* ${username}#${user.substring(3, 7)}\n`;
         text += `🎫 *Bio:* ${bio}\n`;
         text += `🍀 *Level:* ${level}\n`;
-        text += `💈 *Number:* wa.me/${user.split('@')[0]}\n`;
         text += `🌟 *XP:* ${experience}\n`;
         text += `🥇 *Rank:* ${stats.rank}\n`;
         text += `👑 *Admin:* ${groupAdmins.includes(user) ? 'True' : 'False'}\n`;
