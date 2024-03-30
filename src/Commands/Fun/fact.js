@@ -7,6 +7,7 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
+    usage: 'Use :fact',
     description: 'Sends random facts',
     async execute(client, arg, M) { 
         try {
