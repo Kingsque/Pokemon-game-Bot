@@ -3,10 +3,12 @@ const { writeFile } = require('fs-extra')
 
 module.exports = {
     name: 'ship',
-    aliases: ['shipper'],
+    aliases: ['ship'],
     category: 'fun',
     exp: 5,
+    cool: 5,
     react: "✅",
+    usage: 'Use :ship @tag @tag',
     description: 'Ship People! ♥',
     async execute(client, arg, M) {
         const shipArray = []
