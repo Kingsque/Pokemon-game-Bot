@@ -20,7 +20,7 @@ module.exports = {
       let tr = `*Name:* ${(await client.contact.getContact(M.sender, client)).username}\n*🏷️ Tag:* #${tag}\n\n *🔖 Total claimed Cards in Collection:* ${uniqueCards.length}↯\n\n`;
       for (let i = 0; i < uniqueCards.length; i++) {
         let card = uniqueCards[i].split("-");
-        const filePath = path.join(__dirname, '../../Handlers/card.json');
+        const filePath = path.join(__dirname, '../../Helpers/card.json');
         const data = require(filePath);
         const newArray = data.filter((I) => I.tier == card[1]);
         const obj = newArray.find((cardData) => cardData.title === card[0]);
