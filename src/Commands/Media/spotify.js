@@ -6,8 +6,8 @@ module.exports = {
     category: 'media',
     exp: 5,
     description: 'Downloads given spotify track and sends it as Audio',
-    async execute(client, flag, arg, M) {
-        const link = M.urls[0]
+    async execute(client, arg, M) {
+        const link = arg
         if (!link.includes('https://open.spotify.com/track/'))
             return M.reply('Please use command with a valid youtube.com link')
         const audioSpotify = await spotifydl(link.trim()).catch((err) => {
