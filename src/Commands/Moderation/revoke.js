@@ -2,6 +2,7 @@ module.exports = {
     name: 'revoke',
     aliases: ['reset'],
     exp: 10,
+    cool: 5,
     react: "✅",
     category: 'moderation',
     usage: 'Use :revoke',
