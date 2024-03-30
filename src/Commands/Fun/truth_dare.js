@@ -7,7 +7,7 @@ module.exports = {
     exp: 9,
     cool: 4,
     react: "✅",
-    usage: 'Use :truth or :dare',
+    usage: 'Use :td truth or dare',
     description: 'Gives you truth or dare.',
     async execute(client, arg, message) {
         if (!arg) return message.reply('Please specify "truth" or "dare"!');
