@@ -1,46 +1,50 @@
-const Spotify = require('../../lib/Spotify');
+const { spotifydl } = require('../../lib/Spotify')
 
 module.exports = {
     name: 'spotify',
     aliases: ['sp'],
     category: 'media',
     exp: 5,
-    cool: 4,
-    react: "✅",
-    description: 'Downloads given Spotify track and sends it as Audio',
-    async execute(client, arg, M) {
-        try {
-            if (!arg || !arg.includes('https://open.spotify.com/')) {
-                return M.reply('Please provide a valid Spotify track URL.');
+    description: 'Downloads given spotify track and sends it as Audio',
+    async execute(client, flag, arg, M) {
+        const link = M.urls[0]
+        if (!link.includes('https://open.spotify.com/track/'))
+            return M.reply('Please use command with a valid youtube.com link')
+        const audioSpotify = await spotifydl(link.trim()).catch((err) => {
+            return M.reply(err.toString())
+            client.log(err, 'red')
+        })
+
+        if (spotifydl.error) return M.reply(`Error Fetching: ${link.trim()}. Check if the url is valid and try again`)
+        M.reply('Downloading has started please have some pesence')
+
+        const caption = `🎧 *Title:* ${audioSpotify.data.name || ''}\n🎤 *Artists:* ${(
+            audioSpotify.data.artists || []
+        ).join(', ')}\n💽 *Album:* ${audioSpotify.data.album_name}\n📆 *Release Date:* ${
+            audioSpotify.data.release_date || ''
+        }`
+
+        client.sendMessage(
+            M.from,
+            {
+                image: audioSpotify.coverimage,
+                caption: caption
+            },
+            {
+                quoted: M
             }
-            
-            const spotify = new Spotify(arg);
-            const info = await spotify.getInfo();
-            
-            if (info.error) {
-                return M.reply('Provide a valid Spotify track URL.');
+        )
+        await client.sendMessage(
+            M.from,
+            {
+                document: audioSpotify.audio,
+                mimetype: 'audio/mpeg',
+                fileName: audioSpotify.data.name + '.mp3'
+            },
+            {
+                quoted: M
             }
-            
-            const { name, artists, album_name, release_date, cover_url } = info;
-            const details = `🎧 *Title:* ${name || ''}\n🎤 *Artists:* ${(artists || []).join(',')}\n💽 *Album:* ${album_name}\n📆 *Release Date:* ${release_date || ''}`;
-            
-            const response = await client.sendMessage(M.from,{ 
-                 image: { url: cover_url },
-                 caption: details ,
-                    },
-                { quoted: M.message }
-            );
-            
-            const buffer = await spotify.download();
-            
-            if (buffer) {
-                await client.sendMessage(M.from, { audio: buffer }, { quoted: response });
-            } else {
-                M.reply('Failed to download the Spotify track.');
-            }
-        } catch (error) {
-            console.error(error);
-            M.reply('An error occurred while downloading the Spotify track.');
-        }
+        )
     }
-};
+}
+//M.quoted.mtype === 'imageMessage',
