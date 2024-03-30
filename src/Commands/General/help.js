@@ -16,6 +16,7 @@ module.exports = {
   exp: 10,
   cool: 4,
   react: "☃️",
+  usage: 'Use :help for helplist or :help <command_name> to get command info',
   description: 'Displays the command list or specific command info',
   async execute(client, arg, M) {
     try {
@@ -37,19 +38,17 @@ module.exports = {
         let commands = '';
 
         for (const category of commandList) {
-          commands += `*❯─『${client.utils.capitalize(category, true)}』─❮* \n\`\`\`${categories[category].join(', ')}\`\`\`\n\n`;
+          commands += `*❯─『 ${client.utils.capitalize(category, true)} 』─❮* \n\`\`\`${categories[category].join(', ')}\`\`\`\n\n`;
         }
 
         let message = `*${greeting}* ${pushName}. *Konnichiwa Sanpai How Are You..!?\n*𝓐𝓾𝓻𝓸𝓻𝓪 𝓫𝓸𝓽 𝄞*\n\n☃️ ʜᴇʀᴇ's ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛᴇᴅ ʙᴇʟᴏᴡ:\n\n${commands}`;
         message += `© _Team Aurora𝄞 \n\n📒ɴᴏᴛᴇs: \n1. ғᴏʀ ᴏғғɪᴄɪᴀʟ ɢʀᴏᴜᴘ = ᴛʏᴘᴇ *${client.prefix}sᴜᴘᴘᴏʀᴛ*\n\n2.ғᴏʀ ᴄᴏᴍᴍᴀɴᴅs ɪɴғᴏ type = *:ᴄᴏᴍᴍᴀɴᴅ <ᴄᴏᴍᴍᴀɴᴅ_ɴᴀᴍᴇ>*\n\n3.ғᴏʀ ᴋɴᴏᴡɪɴɢ ᴀʙᴏᴜᴛ ᴏᴜʀ ʙᴏᴛ type = *:ɢᴜɪᴅᴇ*`;
-        const buffer = await client.utils.getBuffer('https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg');
-
+        
         await client.sendMessage(
           M.from,
           {
-            video: { url: "https://graph.org/file/d2662e4c6a394dba9df06.mp4" },
-            caption: message,
-            gifPlayback: true
+            image: { url: "https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg" },
+            caption: message
           },
           {
             quoted: M
@@ -62,7 +61,7 @@ module.exports = {
 
       if (!command) return M.reply('Command not found');
 
-      const message = `*COMMAND INFO*\n\n*🟥 Name:* ${command.name}\n*🟩 Aliases:* ${command.aliases.join(', ')}\n*⬜ Exp:* ${command.exp}\n\n🟪 Cool:* ${command.cool}\n*🟦 Category:* ${command.category}*🟨 Desc:* ${command.description}`;
+      const message = `🔸 *Name:* ${command.name}\n♓ *Aliases:* ${command.aliases.join(', ')}\n🌐 *Category:* ${command.category}\n⚜️ *Exp:* ${command.exp}\n🌀 *Cool:* ${command.cool}\n☣️ *Usage:* ${command.usage}\n🔰 *Desc:* ${command.description}`;
 
       M.reply(message);
     } catch (err) {
