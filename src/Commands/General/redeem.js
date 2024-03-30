@@ -7,6 +7,7 @@ module.exports = {
   cool: 4,
   react: "✅",
   category: 'general',
+  usage: 'Use :redeem <Redeem_Code>',
   description: 'Redeem voucher or discount codes from bot',
   async execute(client, arg, M) {
     const filePath = path.join(__dirname, '../../Helpers/Codes.json');
