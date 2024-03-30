@@ -24,9 +24,10 @@ module.exports = {
             const { name, artists, album_name, release_date, cover_url } = info;
             const details = `🎧 *Title:* ${name || ''}\n🎤 *Artists:* ${(artists || []).join(',')}\n💽 *Album:* ${album_name}\n📆 *Release Date:* ${release_date || ''}`;
             
-            const response = await client.sendMessage(
-                M.from,
-                { image: { url: cover_url }, caption: details },
+            const response = await client.sendMessage(M.from,{ 
+                 image: { url: cover_url },
+                 caption: details ,
+                    },
                 { quoted: M.message }
             );
             
