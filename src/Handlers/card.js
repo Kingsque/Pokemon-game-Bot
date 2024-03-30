@@ -23,7 +23,7 @@ module.exports = CardHandler = async (client, m) => {
         const tsLimit = 15;
         const t6Limit = 10; // Different limit for t6
 
-        cron.schedule('*/20 * * * *', async () => {
+        cron.schedule('*/5 * * * *', async () => {
           try {
             const filePath = path.join(__dirname, '../Helpers/card.json');
             const data = require(filePath);
@@ -96,17 +96,17 @@ module.exports = CardHandler = async (client, m) => {
             console.log(err);
             await client.sendMessage(jid, {image: {url: `${client.utils.errorChan()}`}, caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}`});
           }
-        });
 
-        cron.schedule('*/15 * * * *', async () => {
+        cron.schedule('*/4 * * * *', async () => {
           await client.cards.delete(`${jid}.card`);
           await client.cards.delete(`${jid}.card_price`);
           console.log(`Card deleted after 5 minutes`);
+		
         });
+	})
       }
     }
   } catch (error) {
     console.log(error);
   }
-};
-		    
+};		    
