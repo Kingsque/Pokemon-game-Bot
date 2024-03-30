@@ -3,28 +3,20 @@ module.exports = {
   aliases: ['mod'],
   category: 'general',
   exp: 0,
-  cool: 4,
+  cool: 5,
   react: "✅",
-  description: 'Get information about bot moderators',
+  usage: 'Use :mods',
+  description: 'Get information about moderators',
   async execute(client, arg, M) {
-    try {
-      
+    let mods = client.mods;
+    let mo = "*Aurora MODS*\n";
 
-      let mods = client.mods;
-      let mo = "*Aurora MODS*\n";
-
-      for (let i = 0; i < mods.length; i++) {
-        let contact = await client.getContact(mods[i]);
-        if (contact) {
-          const um = contact.username;
-          mo += `\n#${i + 1}\n*Contact:* @${um}\n`;
-        }
-      }
-
-      M.reply(mo);
-    } catch (error) {
-      console.error('Error executing mods command:', error);
-      M.reply('An error occurred while executing the command. Please try again later.');
+    for (let i = 0; i < mods.length; i++) {
+      let hmm = mods[i];
+      const um = (await client.contact.getContact(hmm, client)).username;
+      mo += `\n#${i + 1}\n*Contact:* @${um}\n`; // Added "@" symbol before the username
     }
+
+    M.reply(mo);
   }
 }
