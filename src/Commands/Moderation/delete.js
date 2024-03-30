@@ -5,6 +5,7 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
+    usage: 'Use :delete quoted to the mesaege you want to delete',
     description: 'Deletes the quoted message',
     async execute(client, arg, M) {
     
