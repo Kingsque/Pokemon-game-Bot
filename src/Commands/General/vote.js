@@ -5,40 +5,34 @@ module.exports = {
     exp: 0,
     cool: 4,
     react: "✅",
-    description: 'Get information about vote for auction, feature or decision',
+    usage: 'Use :vote <option>',
+    description: 'Get information about vote for auction, feature, or decision',
     async execute(client, arg, M) {
-       
-        const now = Date.now(); // Get current timestamp
-        const cooldownSeconds = this.cool;
-        const lastSlot = await client.DB.get(`${M.sender}.${commandName}`);
-      
-        if (lastSlot !== null && now - lastSlot < cooldownSeconds * 1000) {
-            const remainingCooldown = Math.ceil((cooldownSeconds * 1000 - (now - lastSlot)) / 1000);
-            return M.reply(`*You have to wait ${remainingCooldown} seconds for another slot*`);
-        }
+        const options = await Promise.all([
+            client.DB.get('option1'),
+            client.DB.get('option2'),
+            client.DB.get('option3'),
+            client.DB.get('option4')
+        ]);
 
-        const option1 = await client.DB.get('option1');
-        const option2 = await client.DB.get('option2');
-        const option3 = await client.DB.get('option3');
-        const option4 = await client.DB.get('option4');
-        if (arg == 1) {
-            await client.DB.push('option1vote', M.sender);
-            await client.DB.push('voters', M.sender);
-            M.reply('Okay! your vote has been submitted');
-        } else if (arg == 2) {
-            await client.DB.push('option2vote', M.sender);
-            await client.DB.push('voters', M.sender);
-            M.reply('Okay! your vote has been submitted');
-        } else if (arg == 3) {
-            await client.DB.push('option3vote', M.sender);
-            await client.DB.push('voters', M.sender);
-            M.reply('Okay! your vote has been submitted');
-        } else if (arg == 4) {
-            await client.DB.push('option4vote', M.sender);
-            await client.DB.push('voters', M.sender);
-            M.reply('Okay! your vote has been submitted');
+        const optionNumber = parseInt(arg);
+        const voterList = await client.DB.get('voters');
+
+        if (optionNumber >= 1 && optionNumber <= 4) {
+            if (voterList.includes(M.sender)) {
+                M.reply('You have already voted!');
+            } else {
+                await client.DB.push(`option${optionNumber}vote`, M.sender);
+                await client.DB.push('voters', M.sender);
+                M.reply('Your vote has been submitted successfully!');
+            }
         } else {
-            M.reply(`VOTING OPTIONS\nOPTION 1 = ${option1}\nOPTION 2 = ${option2}\nOPTION 3 = ${option3}\nOPTION 4 = ${option4}\nTO GIVE VOTE USE :vote (option number)`);
+            let optionsText = "VOTING OPTIONS\n";
+            options.forEach((option, index) => {
+                optionsText += `OPTION ${index + 1} = ${option}\n`;
+            });
+            optionsText += "TO GIVE VOTE USE :vote <option number>";
+            M.reply(optionsText);
         }
     }
 };
