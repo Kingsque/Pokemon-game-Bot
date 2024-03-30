@@ -15,7 +15,7 @@ module.exports = {
 
         if (/\d+/.test(arg)) {
             const number = arg.match(/\d+/)[0];
-            await client.sendMessage(number + '@s.whatsapp.us', `Here's the group invite link: https://chat.whatsapp.com/${code}`);
+            await client.sendMessage(number + '@s.whatsapp.us', `Here is the group invite link: https://chat.whatsapp.com/${code}`);
             return M.reply('✅ Group invite link sent to the specified number.');
         } else {
             M.reply('https://chat.whatsapp.com/' + code);
