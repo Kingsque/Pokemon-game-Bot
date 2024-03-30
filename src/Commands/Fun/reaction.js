@@ -16,6 +16,7 @@ module.exports = {
     aliases: ['r', ...reactions],
     exp: 50,
     cool:4,
+    usage: 'Use :<reaction>',
     async execute(client, arg, M) {
 
         const text = arg.trim();
