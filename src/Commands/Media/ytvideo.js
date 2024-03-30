@@ -38,7 +38,7 @@ module.exports = {
                 {
                     image: {
                         url: `https://i.ytimg.com/vi/${videoDetails.videoId}/maxresdefault.jpg`
-                    },
+                        },
                     caption: text
                 },
                 {
@@ -54,7 +54,7 @@ module.exports = {
             await client.sendMessage(
                 M.from,
                 {
-                    document: videoBuffer,
+                    video: videoBuffer,
                     mimetype: 'video/mp4',
                     fileName: `${videoDetails.title}.mp4`
                 },
