@@ -26,7 +26,7 @@ module.exports = {
             audioSpotify.data.release_date || ''
         }`
 
-        client.sendMessage(
+        await client.sendMessage(
             M.from,
             {
                 image: audioSpotify.coverimage,
@@ -36,10 +36,11 @@ module.exports = {
                 quoted: M
             }
         )
+
         await client.sendMessage(
             M.from,
             {
-                document: audioSpotify.audio,
+                audio: audioSpotify.audio,
                 mimetype: 'audio/mpeg',
                 fileName: audioSpotify.data.name + '.mp3'
             },
@@ -49,4 +50,3 @@ module.exports = {
         )
     }
 }
-//M.quoted.mtype === 'imageMessage',
