@@ -8,6 +8,7 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
+    usage: 'Use :lb --credit/--cards',
     description: "Displays global's or group's leaderboard of a specific field\nEx: lb gold gc",
     async execute(client, arg, M) {
         try {
