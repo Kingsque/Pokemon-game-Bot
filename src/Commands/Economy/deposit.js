@@ -5,7 +5,8 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
-    description: 'Deposits credits in your bank',
+    usage: 'Use :deposit <amount>',
+    description: 'Deposits credits from your credits to your treasury',
     async execute(client, arg, M) {
     
         if (!arg || isNaN(arg)) return M.reply('Please provide a valid amount');
