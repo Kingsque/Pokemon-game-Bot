@@ -19,10 +19,6 @@ module.exports = {
                 return M.reply('This command is already disabled.');
             }
 
-            // Check if the command to disable exists
-            if (!client.cmd.has(commandName)) {
-                return M.reply('That command does not exist.');
-            }
 
             // Store the reason, time, and user who disabled the command
             const reason = arg.slice(1).join(" "); // Join the remaining arguments as reason
