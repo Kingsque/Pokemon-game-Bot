@@ -1,10 +1,11 @@
 module.exports = {
-    name: 'transfer',
-    aliases: ['pay', 'give'],
+    name: 'give',
+    aliases: ['pay', 'transfer'],
     category: 'economy',
     exp: 5,
     cool: 4,
     react: "✅",
+    usage: 'Use :give <amount> @taguser',
     description: 'Transfer golds to your friend',
     async execute(client, arg, M) {
         if (M.mentions.length === 0) return M.reply('*You must mention someone to send the money*');
