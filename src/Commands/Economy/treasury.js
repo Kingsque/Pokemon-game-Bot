@@ -1,8 +1,8 @@
 const MAX_AMOUNT = 100000000;
 
 module.exports = {
-    name: 'stash',
-    aliases: ['st'],
+    name: 'treasury',
+    aliases: ['tr'],
     category: 'economy',
     exp: 5,
     cool: 4,
