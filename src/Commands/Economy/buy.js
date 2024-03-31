@@ -17,7 +17,7 @@ module.exports = {
     exp: 10,
     cool: 4,
     react: '✅',
-    usage: 'Use :buy <item_name>',
+    usage: 'Use :buy <item_name> <item_quantity>',
     description: 'Buy an item from the shop',
     async execute(client, arg, M) {
       
