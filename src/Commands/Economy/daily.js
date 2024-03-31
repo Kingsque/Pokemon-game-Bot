@@ -2,15 +2,16 @@ const ms = require('parse-ms');
 
 module.exports = {
     name: 'daily',
-    aliases: ['rewards'],
+    aliases: ['daily'],
     category: 'economy',
     exp: 5,
     cool: 4,
     react: "✅",
+    usage: 'daily',
     description: 'Claims your daily rewards',
     async execute(client, arg, M) {
         const dailyTimeout = 86400000; 
-        const dailyAmount = 1000; 
+        const dailyAmount = 2000; 
 
         const lastClaimed = await client.credit.get(`${M.sender}.daily`);
 
