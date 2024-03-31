@@ -94,10 +94,14 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
 }
 
         // Disabled commands handling
-        const disabled = await client.DB.get('disable-commands') || [];
-        if (disabled.includes(cmdName) || command.aliases.some(alias => disabled.includes(alias.toLowerCase()))) {
-            return M.reply('This command is currently disabled.');
-        }
+const disabledCommands = await client.DB.get('disable-commands') || [];
+if (disabledCommands.some(disabledCmd => disabledCmd.command === cmdName)) {
+    const disabledCommandInfo = disabledCommands.find(disabledCmd => disabledCmd.command === cmdName);
+    const disabledAt = new Date(disabledCommandInfo.disabledAt).toLocaleString();
+    const reason = disabledCommandInfo.reason || "No reason provided.";
+    const disabledBy = disabledCommandInfo.disabledBy || "Unknown user";
+    return M.reply(`This command is currently disabled by ${disabledBy}. Reason: ${reason}. Disabled at: ${disabledAt}`);
+}
 
     // Cooldown handling
     const cooldownAmount = (command.cool ?? 5) * 1000;
