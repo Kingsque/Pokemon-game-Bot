@@ -5,7 +5,8 @@ module.exports = {
     exp: 5,
     cool:4,
     react: "✅",
-    description: 'Withdraws credit in your bank',
+    usage: 'Use :withdraw <amount>',
+    description: 'Withdraws credit from your treasury to your credits',
     async execute(client, arg, M) {
         if (!arg || isNaN(arg)) return M.reply('Please provide a valid amount')
         const amount = parseInt(arg)
