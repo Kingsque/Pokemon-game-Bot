@@ -17,9 +17,10 @@ module.exports = {
     exp: 10,
     cool: 4,
     react: '✅',
+    usage: 'Use :shop',
     description: 'View items available for purchase',
     async execute(client, arg, M) {
-        let text = '======👔**SHOP**👔======';
+        let text = '*❯─『 SHOP 』─❮*';
         text += '\n\n';
         items.buy.forEach((item, index) => {
             text += `${index + 1}) *Name:* ${item.name}\n💰 *price:* ${item.price}\n🎴 *Usage:* ${item.usage}\n`;
