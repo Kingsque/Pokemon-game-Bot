@@ -25,7 +25,7 @@ module.exports = {
             }
 
             // Store the reason, time, and user who disabled the command
-            const reason = M.content.slice(arg.length + 1).trim();
+            const reason = arg.slice(1).join(" "); // Fix how reason is sliced
             const disabledCommandInfo = {
                 command: commandName,
                 reason: reason,
