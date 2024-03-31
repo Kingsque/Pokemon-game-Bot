@@ -7,6 +7,7 @@ module.exports = {
     exp: 5,
     cool: 8,
     react: "👍",
+    usage: 'Use :slot <amount>',
     description: 'Bets the given amount of credits in a slot machine',
     async execute(client, arg, M) {
         const participant = await client.DB.get('economy') || [];
