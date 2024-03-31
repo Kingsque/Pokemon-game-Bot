@@ -41,7 +41,7 @@
       "MODS":{
 
          "description":"The phone numbers of the users who you want to be admin for the bot (should be in international format without + and multiple numbers must be separated by a comma \",\")",
-         "value": "918961331275",
+         "value": "917980329866",
          "required":true
 
       },
@@ -61,30 +61,6 @@
          "required": true
 
       },
-
-      "WRITE_SONIC":{
-
-         "description":"A key used for Write Sonic",
-         "value":"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",
-         "required":false
-
-      },
-
-      "BG_API_KEY":{
-
-         "description":"A key used for www.remove.bg",
-         "value":"mjWeXgKfjodxyjYPgNMztPm",
-         "required":false
-
-      },
-
-       "SESSION_URL": {
-
-        "description" : "for me", 
-        "value":"mongodb+srv://Kingshisui00:shisui001@cluster0.vwjrj53.mongodb.net/?retryWrites=true&w=majority",
-        "required" :true
-
-}, 
 
       "PORT":{
 
