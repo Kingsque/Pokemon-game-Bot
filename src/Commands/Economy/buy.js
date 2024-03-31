@@ -12,11 +12,12 @@ const items = {
 
 module.exports = {
     name: 'buy',
-    aliases: [],
+    aliases: ['acquire'],
     category: 'economy',
     exp: 10,
     cool: 4,
     react: '✅',
+    usage: 'Use :buy <item_name>',
     description: 'Buy an item from the shop',
     async execute(client, arg, M) {
       
