@@ -8,13 +8,10 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
+    usage: 'Use :bonus',
     description: 'Claims your bonus',
     async execute(client, arg, M) {
 
-        const deck = await client.DB.get(`${M.sender}_Deck`) || [];
-        const user = client.DB.get(`users`);
-        const filePath = path.join(__dirname, '../../storages/card.json');
-        const data = require(filePath);
         const bonusTimeout = 31536000000; 
         const bonusAmount = 50000;
         const bonus = await client.credit.get(`${M.sender}.bonus`);
@@ -24,17 +21,7 @@ module.exports = {
             const bonusTime = ms(bonusTimeout - (Date.now() - bonus));
             text += `*You have already claimed your bonus reward. You cannot claim it again. Time left: ${bonusTime.days}d ${bonusTime.hours}h ${bonusTime.minutes}m ${bonusTime.seconds}s.*`;
         } else {
-            text += `*Welcome to our Celestic family! We are really happy to have you as our member. You have claimed your bonus reward 🎉: ${bonusAmount}.*`;
-
-            const firstTenUsers = Object.values(await client.contactDB.all());
-            if (firstTenUsers.length < 10) {
-                const randomT6Index = Math.floor(Math.random() * data.t6.length);
-                const randomT6 = data.t6[randomT6Index];
-                deck.push(randomT6);
-                await client.DB.set(`${M.sender}_Deck`, deck);
-
-                text += `You are also one of the first ten users and have received a free random T6 card: ${randomT6}.`;
-            } 
+            text += `*Welcome to our Aurora family! We are really happy to have you as our member. You have claimed your bonus reward 🎉: ${bonusAmount}.*`;
 
             await client.credit.add(`${M.sender}.wallet`, bonusAmount);
             await client.credit.set(`${M.sender}.bonus`, Date.now());
