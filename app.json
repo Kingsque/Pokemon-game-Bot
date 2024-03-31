@@ -49,7 +49,7 @@
       "URL":{
 
          "description":"A secret String for Mongodb Connection.(Required)",
-         "value":"mongodb+srv://Kingshisui00:shisui001@cluster0.vwjrj53.mongodb.net/?retryWrites=true&w=majority",
+         "value":"mongodb+srv://tan:tan@cluster0.mf0nmls.mongodb.net/?retryWrites=true&w=majority",
          "required":true
 
       },
