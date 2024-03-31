@@ -5,7 +5,7 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
-    usage: 'Use rob @taguser'
+    usage: 'Use rob @taguser',
     description: 'Attempt to rob the mentioned user',
     async execute(client, arg, M) {
         if (!M.mentions.length) return M.reply('*You must mention someone to attempt the robbery*');
