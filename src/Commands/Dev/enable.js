@@ -19,10 +19,6 @@ module.exports = {
                 return M.reply('This command is not disabled.');
             }
 
-            // Check if the command to enable exists
-            if (!client.cmd.has(commandName)) {
-                return M.reply('That command does not exist.');
-            }
 
             await client.DB.pull('disable-commands', disabledCommands.filter(disabledCmd => disabledCmd.command === commandName));
             M.reply(`Command "${commandName}" has been enabled successfully.`);
