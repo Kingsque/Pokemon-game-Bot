@@ -13,9 +13,9 @@ module.exports = {
             }
 
             const commandName = arg.toLowerCase(); // Ensure case insensitivity
-            const disabled = await client.DB.get('disable-commands') || [];
+            const disabledCommands = await client.DB.get('disable-commands') || [];
 
-            if (disabled.includes(commandName)) {
+            if (disabledCommands.some(disabledCmd => disabledCmd.command === commandName)) {
                 return M.reply('This command is already disabled.');
             }
 
@@ -24,8 +24,17 @@ module.exports = {
                 return M.reply('That command does not exist.');
             }
 
-            await client.DB.push('disable-commands', commandName);
-            M.reply(`Command "${commandName}" has been disabled successfully.`);
+            // Store the reason, time, and user who disabled the command
+            const reason = M.content.slice(arg.length + 1).trim();
+            const disabledCommandInfo = {
+                command: commandName,
+                reason: reason,
+                disabledAt: new Date().toISOString(),
+                disabledBy: M.sender
+            };
+
+            await client.DB.push('disable-commands', disabledCommandInfo);
+            M.reply(`Command "${commandName}" has been disabled successfully by ${M.pushName}.`);
         } catch (error) {
             console.error('Error in disabling command:', error);
             M.reply('An error occurred while disabling the command.');
