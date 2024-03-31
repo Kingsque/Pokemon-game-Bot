@@ -5,6 +5,7 @@ module.exports = {
     exp: 7,
     cool: 4,
     react: "✅",
+    inevntory: 'Use :inv',
     description: 'Gives you details about your inventory',
     async execute(client, arg, M) {
         const pepper = await client.rpg.get(`${M.sender}.pepperspray`);
