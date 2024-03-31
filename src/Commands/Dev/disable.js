@@ -8,7 +8,7 @@ module.exports = {
     description: 'Disables a certain command.',
     async execute(client, arg, M) {
         try {
-            if (!arg.length) {
+            if (!arg || !Array.isArray(arg) || arg.length === 0) {
                 return M.reply('You need to provide the name of the command to disable.');
             }
 
@@ -18,7 +18,6 @@ module.exports = {
             if (disabledCommands.some(disabledCmd => disabledCmd.command === commandName)) {
                 return M.reply('This command is already disabled.');
             }
-
 
             // Store the reason, time, and user who disabled the command
             const reason = arg.slice(1).join(" "); // Join the remaining arguments as reason
