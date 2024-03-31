@@ -5,6 +5,7 @@ module.exports = {
   exp: 5,
   cool: 5,
   react: "✅",
+  usage: 'Use :bid <amount>',
   description: 'Bid an amount on an ongoing auction',
   async execute(client, arg, M) {
     try {
