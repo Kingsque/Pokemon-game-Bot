@@ -13,9 +13,9 @@ module.exports = {
             }
 
             const commandName = arg.toLowerCase(); // Ensure case insensitivity
-            const disabled = await client.DB.get('disable-commands') || [];
+            const disabledCommands = await client.DB.get('disable-commands') || [];
 
-            if (!disabled.includes(commandName)) {
+            if (!disabledCommands.some(disabledCmd => disabledCmd.command === commandName)) {
                 return M.reply('This command is not disabled.');
             }
 
@@ -24,7 +24,7 @@ module.exports = {
                 return M.reply('That command does not exist.');
             }
 
-            await client.DB.pull('disable-commands', commandName);
+            await client.DB.pull('disable-commands', disabledCommands.filter(disabledCmd => disabledCmd.command === commandName));
             M.reply(`Command "${commandName}" has been enabled successfully.`);
         } catch (error) {
             console.error('Error in enabling command:', error);
