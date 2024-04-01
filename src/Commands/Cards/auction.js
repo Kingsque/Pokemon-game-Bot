@@ -1,4 +1,3 @@
-const axios = require("axios");
 const path = require('path');
 
 module.exports = {
@@ -11,18 +10,23 @@ module.exports = {
   description: "Starts or ends a card auction",
   async execute(client, arg, M) {
     try {
-      if (arg === 'start') {
+      if (arg.startsWith('start')) {
         const auctionInProgress = await client.DB.get(`${M.from}.auctionInProgress`);
         if (auctionInProgress) {
           return M.reply("An auction is already in progress. You cannot start a new one.");
         }
         
+        const splitArgs = arg.split('|');
+        if (splitArgs.length !== 2) {
+          return M.reply("Please provide both the card index and the starting price separated by '|' (e.g., start|1|100).");
+        }
+
         const deck = await client.DB.get(`${M.sender}_Deck`) || [];
         if (deck.length === 0) {
           return M.reply("You do not have any cards in your deck to auction.");
         }
 
-        const cardIndex = parseInt(arg) - 1;
+        const cardIndex = parseInt(splitArgs[1]) - 1;
         if (isNaN(cardIndex) || cardIndex < 0 || cardIndex >= deck.length) {
           return M.reply("Please provide a valid card index to auction.");
         }
@@ -99,4 +103,4 @@ module.exports = {
     }
   }
 };
-        
+      
