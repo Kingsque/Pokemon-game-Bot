@@ -93,9 +93,7 @@ module.exports = {
             M.reply(`The card ${cardData.title} of tier ${cardData.tier} is won by ${winner} with a bid of ${bid}. It has been added to your collection.`);
           }
         }, 15 * 60 * 1000);
-      } else {
-        M.reply("An auction is already in progress.");
-      }
+      } 
     } catch (err) {
       console.log(err);
       await client.sendMessage(M.from, { image: { url: client.utils.errorChan() }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
