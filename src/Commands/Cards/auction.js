@@ -25,10 +25,11 @@ module.exports = {
           return M.reply("You do not have any cards in your deck to auction.");
         }
 
-        const cardIndex = parseInt(splitArgs[0]);
-        const startingPrice = splitArgs[1];
-        if (isNaN(cardIndex) || cardIndex < 0 || cardIndex >= deck.length) {
-          return M.reply("Please provide a valid card index to auction.");
+        const cardIndex = parseInt(splitArgs[0]) - 1;
+        const startingPrice = parseInt(splitArgs[1]);
+
+        if (isNaN(cardIndex) || cardIndex < 0) {
+          return M.reply("Please provide a valid card index.");
         }
 
         const cardToSell = deck[cardIndex].split('-');
