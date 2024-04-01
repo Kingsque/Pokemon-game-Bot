@@ -73,19 +73,28 @@ module.exports = {
           const cardIndex = await client.DB.get(`${M.from}.auctionCardIndex`);
           const deck = await client.DB.get(`${M.sender}_Deck`) || [];
           const cardToSell = deck[cardIndex].split('-');
-        const filePath = path.join(__dirname, '../../Helpers/card.json');
-        const cardDataJson = require(filePath);
-        const cardsInTier = cardDataJson.filter((card) => card.tier === cardToSell[1]);
-        const cardData = cardsInTier.find((card) => card.title === cardToSell[0]); => card.title === cardToSell[0]);
+          const filePath = path.join(__dirname, '../../Helpers/card.json');
+          const cardDataJson = require(filePath);
+          const cardsInTier = cardDataJson.filter((card) => card.tier === cardToSell[1]);
+          const cardData = cardsInTier.find((card) => card.title === cardToSell[0]);
+
+          // Check if the winner has less than 12 cards in their deck
+          const winnerDeck = await client.DB.get(`${winner}_Deck`) || [];
+          if (winnerDeck.length < 12) {
+            // Store the won card in the winner's deck
+            await client.DB.push(`${winner}_Deck`, `${cardData.title}-${cardData.tier}`);
+          } else {
+            // Store the won card in the winner's collection
+            await client.DB.push(`${winner}_Collection`, `${cardData.title}-${cardData.tier}`);
+          }
 
           await client.credit.sub(`${winner}.wallet`, bid);
-          await client.DB.push(`${winner}_Collection`, `${cardData.title}-${cardData.tier}`);
           await client.DB.delete(`${M.from}.auctionWinner`);
           await client.credit.delete(`${M.from}.bid`);
           await client.DB.delete(`${M.from}.auctionInProgress`);
           await client.DB.delete(`${M.from}.auctionCardIndex`);
 
-          M.reply(`The auction for ${cardData.title} of tier ${cardData.tier} is won by ${winner} with a bid of ${bid}. It has been added to the winner's collection.`);
+          M.reply(`*The auction for ${cardData.title} of tier ${cardData.tier} is won by ${winner.split('@')[0]} with a bid of ${bid}. It has been added to the winner's ${winnerDeck.length < 12 ? 'deck' : 'collection'}.*`);
         }
       }
     } catch (err) {
