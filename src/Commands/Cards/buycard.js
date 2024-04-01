@@ -8,24 +8,29 @@ module.exports = {
   description: "Buys a card on sale",
   async execute(client, arg, M) {
     try {
-         const saleData = await client.DB.get(`${M.from}.sell`);
-         
-            if (!saleData) {
+      const saleData = await client.DB.get(`${M.from}.sell`);
+
+      if (!saleData) {
         return M.reply("Sale with that ID does not exist or has expired.");
       }
-      
+
       const shopID = parseInt(arg);
-      if (isNaN(shopID) && arg !=== saleData.shopID) {
+      if (isNaN(shopID) || shopID !== saleData.shopID) {
         return M.reply("Invalid sale ID. Please use a valid sale ID.");
       }
 
-       const seller = saleData.seller
-       const price = saleData.price
-       const index = saleData.cardIndex
-       
+      const seller = saleData.seller;
+      const price = saleData.price;
+      const index = saleData.cardIndex;
+
       const buyer = M.sender;
-      const sellerDeck = await client.DB.get(`${seller}_Deck`) || [];
-      const buyerDeck = await client.DB.get(`${buyer}_Deck`) || [];
+      const sellerDeck = (await client.DB.get(`${seller}_Deck`)) || [];
+      const buyerDeck = (await client.DB.get(`${buyer}_Deck`)) || [];
+
+      if (sellerDeck.length <= index) {
+        return M.reply("Seller's deck does not contain the specified card.");
+      }
+
       const cardData = sellerDeck[index].split('-');
       const cardName = cardData[0];
       const cardTier = cardData[1];
@@ -43,7 +48,7 @@ module.exports = {
 
       await client.DB.set(`${buyer}_Deck`, buyerDeck);
       await client.DB.set(`${seller}_Deck`, sellerDeck);
-      
+
       await client.DB.delete(`${M.from}.sell`);
       await client.DB.set(`${M.from}.sellInProgress`, false);
 
