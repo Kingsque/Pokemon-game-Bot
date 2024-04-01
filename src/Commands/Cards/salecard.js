@@ -90,7 +90,7 @@ module.exports = {
         }
 
         await client.credit.add(`${seller}.wallet`, price);
-        await client.credit.subtract(`${buyer}.wallet`, price);
+        await client.credit.sub(`${buyer}.wallet`, price);
 
         buyerDeck.push(`${cardName}-${cardTier}`);
         sellerDeck.splice(cardIndex, 1);
