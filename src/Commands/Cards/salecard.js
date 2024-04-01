@@ -13,14 +13,14 @@ module.exports = {
       const selling = await client.DB.get(`${M.from}.sellInProgress`) || false;
       if (selling) return M.reply("Sale is already in progress.");
 
-      const seller = M.sender.jid;
+      const seller = M.sender; // Using M.sender as the seller ID
       const splitArgs = arg.split('|');
       if (splitArgs.length !== 2) {
         return M.reply("Please provide both index and price in the format 'index|price'.");
       }
       const cardIndex = parseInt(splitArgs[0]) - 1;
       const price = splitArgs[1];
-      const deck = await client.DB.get(`${M.sender}_Deck`) || [];
+      const deck = await client.DB.get(`${M.sender}_Deck`) || []; // Use M.sender for consistency
       if (!deck.length) {
         return M.reply("❗ You do not have any cards in your deck!");
       }
@@ -58,11 +58,11 @@ module.exports = {
         }, { quoted: M });
       }
 
-      await client.DB.push(`${M.from}.sell`, { shopID, seller, cardIndex, price });
+      await client.DB.push(`${M.from}.sell`, { shopID: shopID, seller: seller, cardIndex: cardIndex, price: price }); // Use M.sender for consistency
       await client.DB.set(`${M.from}.sellInProgress`, true);
 
       setTimeout(async () => {
-        await client.DB.pull(`${M.from}.sell`, { shopID, seller, cardIndex, price });
+        await client.DB.delete(`${M.from}.sell`); // Use M.sender for consistency
         M.reply(`Sale with ID ${shopID} has expired and is now deleted.`);
       }, 600000);
     } catch (err) {
