@@ -73,9 +73,10 @@ module.exports = {
           const cardIndex = await client.DB.get(`${M.from}.auctionCardIndex`);
           const deck = await client.DB.get(`${M.sender}_Deck`) || [];
           const cardToSell = deck[cardIndex].split('-');
-          const filePath = path.join(__dirname, '../../Helpers/card.json');
-          const cardDataJson = require(filePath);
-          const cardData = cardDataJson.find((card) => card.title === cardToSell[0]);
+        const filePath = path.join(__dirname, '../../Helpers/card.json');
+        const cardDataJson = require(filePath);
+        const cardsInTier = cardDataJson.filter((card) => card.tier === cardToSell[1]);
+        const cardData = cardsInTier.find((card) => card.title === cardToSell[0]); => card.title === cardToSell[0]);
 
           await client.credit.sub(`${winner}.wallet`, bid);
           await client.DB.push(`${winner}_Collection`, `${cardData.title}-${cardData.tier}`);
