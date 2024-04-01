@@ -8,6 +8,7 @@ module.exports = {
   cool: 4,
   react: "✅",
   category: "card game",
+  usage: 'Use :cg 1 by tagging',
   description: "Give a card to another user",
   async execute(client, arg, M) {
     try {
@@ -44,7 +45,7 @@ module.exports = {
       await client.DB.set(`${M.sender}_Deck`, deck);
       await client.DB.set(`${M.mentions[0]}_Deck`, mentionedUserDeck);
 
-      const filePath = path.join(__dirname, '../../storages/card.json');
+      const filePath = path.join(__dirname, '../../Helpers/card.json');
       const data = require(filePath);
       const cardData = data.find((cardData) => cardData.title === card.split("-")[0] && cardData.tier === card.split("-")[1]);
 
@@ -54,13 +55,12 @@ module.exports = {
 
       const replyMsg = cardData ? `🃏 Card *${cardData.title} - ${cardData.tier}* has been gifted to @${mentionUser.split('@')[0]} ! 🎁` : `🃏 Card has been given to @${mentionUser.split('@')[0]} ! 🎁`;
 
-      if (url.endsWith(".gif")) {
-        await client.sendMessage(M.from, { video: { url: url }, gifPlayback: true, caption: replyMsg, mentions: [M.mentions[0]] }, { quoted: M });
-      } else {
-        await client.sendMessage(M.from, { image: { url: url }, caption: replyMsg, mentions: [M.mentions[0]] }, { quoted: M });
-      }
-      let tr = `@${M.sender.split('@')[0]} gave 🃏 Card *${cardData.title} - ${cardData.tier} to @${M.mentions[0].split('@')[0]}`
-      await client.sendMessage("120363062645637432@g.us", tr);
+      const messageToSend = `${replyMsg}\n\n@${M.sender.split('@')[0]} gave 🃏 Card *${cardData.title} - ${cardData.tier}* to @${M.mentions[0].split('@')[0]}`;
+
+      await client.sendMessage(M.from, messageToSend);
+
+      // Send notification to group
+      await client.sendMessage("120363062645637432@g.us", messageToSend);
     } catch (err) {
       console.error(err);
       await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.errText()} Error-Chan Dis\n\nError:\n${err}` });
