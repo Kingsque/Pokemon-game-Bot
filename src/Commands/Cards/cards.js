@@ -8,6 +8,7 @@ module.exports = {
   cool: 4,
   react: "✅",
   category: "card game",
+  usage: 'Use :cards --tier/--name',
   description: "View all your cards, mixed from deck and collection",
   async execute(client, arg, M) {
     const collection = await client.DB.get(`${M.sender}_Collection`) || [];
@@ -25,6 +26,11 @@ module.exports = {
       if (arg === "--name") {
         collection.sort();
         deck.sort();
+        // Displaying cards normally with alphabetical sorting
+        [...deck, ...collection].forEach((card, index) => {
+          const [name, tier] = card.split("-");
+          tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
+        });
       } else if (arg === "--tier") {
         // Grouping cards by tier
         const tiers = {};
@@ -34,16 +40,18 @@ module.exports = {
           tiers[tier].push(name);
         });
 
-        // Displaying cards tier-wise
-        Object.keys(tiers).sort().forEach(tier => {
-          tr += `Tier ${tier}:\n`;
-          tiers[tier].forEach((name, index) => {
-            tr += `${index + 1}. ${name}\n`;
-          });
-          tr += '\n';
+        // Displaying cards tier-wise, sorted from S to 1
+        ['S', '6', '5', '4', '3', '2', '1'].forEach(tier => {
+          if (tiers[tier]) {
+            tr += `Tier ${tier}:\n`;
+            tiers[tier].forEach((name, index) => {
+              tr += `${index + 1}. ${name}\n`;
+            });
+            tr += '\n';
+          }
         });
       } else {
-        // Displaying cards normally
+        // Displaying cards normally without sorting
         [...deck, ...collection].forEach((card, index) => {
           const [name, tier] = card.split("-");
           tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
@@ -62,7 +70,7 @@ module.exports = {
       if (imageUrl.endsWith(".gif")) {
         return await client.sendMessage(M.from, { video: { url: imageUrl }, caption: tr, gifPlayback: true }, { quoted: M });
       } else if (imageUrl) {
-        return await client.sendMessage(M.from, { image: { url: imageUrl }, caption: tr }, { quoted: M });
+        return await client.sendMessage(M.from, { image: { url: imageUrl }, caption: arg === "--name" ? null : tr }, { quoted: M });
       } else {
         return M.reply("Error: Unable to find an image for the first card in your deck.");
       }
@@ -71,3 +79,4 @@ module.exports = {
     }
   },
 };
+        
