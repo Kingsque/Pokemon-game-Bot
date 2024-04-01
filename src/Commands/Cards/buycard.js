@@ -8,19 +8,27 @@ module.exports = {
   description: "Buys a card on sale",
   async execute(client, arg, M) {
     try {
-      const shopID = parseInt(arg);
-      if (isNaN(shopID)) {
-        return M.reply("Invalid sale ID. Please use a valid sale ID.");
-      }
-      const saleData = await client.DB.get(`${M.from}.sell`, { shopID });
-      if (!saleData) {
+         const saleData = await client.DB.get(`${M.from}.sell`);
+         
+            if (!saleData) {
         return M.reply("Sale with that ID does not exist or has expired.");
       }
-      const { seller, cardIndex, price } = saleData;
+      
+      const shopID = parseInt(arg);
+      if (isNaN(shopID) && arg !=== saleData.shopID) {
+        return M.reply("Invalid sale ID. Please use a valid sale ID.");
+      }
 
+       const seller = saleData.seller
+       const price = saleData.price
+       const index = saleData.cardIndex
+       
       const buyer = M.sender;
       const sellerDeck = await client.DB.get(`${seller}_Deck`) || [];
       const buyerDeck = await client.DB.get(`${buyer}_Deck`) || [];
+      const cardData = sellerDeck[index].split('-');
+      const cardName = cardData[0];
+      const cardTier = cardData[1];
       const wallet = await client.credit.get(`${buyer}.wallet`) || 0;
 
       if (wallet < price) {
@@ -31,9 +39,14 @@ module.exports = {
       await client.credit.sub(`${buyer}.wallet`, price);
 
       buyerDeck.push(`${cardName}-${cardTier}`);
-      sellerDeck.splice(cardIndex, 1);
-      await client.DB.pull(`${M.from}.sell`, { shopID, seller, cardIndex, price });
+      sellerDeck.splice(index, 1);
+
+      await client.DB.set(`${buyer}_Deck`, buyerDeck);
+      await client.DB.set(`${seller}_Deck`, sellerDeck);
+      
+      await client.DB.delete(`${M.from}.sell`);
       await client.DB.set(`${M.from}.sellInProgress`, false);
+
       M.reply(`Sale is done. User ${buyer} paid ${price} to ${seller} and bought the card.`);
     } catch (err) {
       console.error(err);
