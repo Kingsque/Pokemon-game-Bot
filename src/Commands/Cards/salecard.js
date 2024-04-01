@@ -58,11 +58,12 @@ module.exports = {
         }, { quoted: M });
       }
 
-      await client.DB.push(`${M.from}.sell`, { shopID: shopID, seller: seller, cardIndex: cardIndex, price: price }); // Use M.sender for consistency
+      await client.DB.set(`${M.from}.sell`, { shopID: shopID, seller: seller, cardIndex: cardIndex, price: price }); // Use M.sender for consistency
       await client.DB.set(`${M.from}.sellInProgress`, true);
 
       setTimeout(async () => {
         await client.DB.delete(`${M.from}.sell`); // Use M.sender for consistency
+        await client.DB.set(`${M.from}.sellInProgress`, false);
         M.reply(`Sale with ID ${shopID} has expired and is now deleted.`);
       }, 600000);
     } catch (err) {
