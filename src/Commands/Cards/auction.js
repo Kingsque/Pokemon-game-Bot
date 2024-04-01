@@ -41,17 +41,26 @@ module.exports = {
 
         let startingPrice;
         switch (cardData.tier) {
-          case '5':
+          case '1':
+            startingPrice = 5000;
+            break;
+          case '2':
+            startingPrice = 10000;
+            break;
+          case '3':
+            startingPrice = 15000;
+            break;
+          case '4':
             startingPrice = 20000;
+            break;
+          case '5':
+            startingPrice = 25000;
             break;
           case '6':
             startingPrice = 50000;
             break;
           case 'S':
             startingPrice = 100000;
-            break;
-          default:
-            startingPrice = 10000; // Default starting price for other tiers
             break;
         }
 
@@ -103,4 +112,3 @@ module.exports = {
     }
   }
 };
-      
