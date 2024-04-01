@@ -8,6 +8,7 @@ module.exports = {
   cool: 4,
   react: "✅",
   category: "card game",
+  usage: 'Use :t2deck <card_index>',
   description: "Send a card from collection to deck",
   async execute(client, arg, M) {
     try {
@@ -37,7 +38,7 @@ module.exports = {
       await client.DB.set(`${M.sender}_Collection`, collection);
       await client.DB.set(`${M.sender}_Deck`, deck);
       
-      const filePath = path.join(__dirname, '../../storages/card.json');
+      const filePath = path.join(__dirname, '../../Helpers/card.json');
       const data = require(filePath);
       const newArray = data.filter(function (I) {
         return I.tier == card.split("-")[1];
