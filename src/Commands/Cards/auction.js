@@ -94,7 +94,7 @@ module.exports = {
           await client.DB.delete(`${M.from}.auctionInProgress`);
           await client.DB.delete(`${M.from}.auctionCardIndex`);
 
-          M.reply(`*The auction for ${cardData.title} of tier ${cardData.tier} is won by ${winner.split('@')[0]} with a bid of ${bid}. It has been added to the winner's ${winnerDeck.length < 12 ? 'deck' : 'collection'}.*`);
+          M.reply(`*The auction for ${cardData.title} of tier ${cardData.tier} is won by @${winner.split('@')[0]} with a bid of ${bid}. It has been added to the winner's ${winnerDeck.length < 12 ? 'deck' : 'collection'}.*`);
         }
       }
     } catch (err) {
