@@ -12,10 +12,10 @@ module.exports = {
   description: "sales/buys or cancels card sales",
   async execute(client, arg, M) { 
     try {
-      const selling = await client.DB.get(`${M.from}.sellInProgress`) || false;
-      if (selling) return M.reply("Sale is already in progress.");
-
       const command = M.body.split(' ')[0].toLowerCase().slice(client.prefix.length).trim();
+     const selling = await client.DB.get(`${M.from}.sellInProgress`) || false;
+      if (selling && command === 'salecard') return M.reply("Sale is already in progress.");
+      
       if (command === 'salecard') {
         const seller = M.sender.jid;
         const splitArgs = arg.split('|');
