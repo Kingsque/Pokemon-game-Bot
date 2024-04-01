@@ -21,17 +21,30 @@ module.exports = {
       let tag = M.sender.substring(3, 7);
       let tr = `*🃏 Name:* ${(await client.contact.getContact(M.sender, client)).username} #${tag}*\n\n`;
 
-      // Display deck cards first
-      if (deck.length > 0) {
-        deck.forEach((card, index) => {
+      // Sorting the cards based on the argument
+      if (arg === "--name") {
+        collection.sort();
+        deck.sort();
+      } else if (arg === "--tier") {
+        // Grouping cards by tier
+        const tiers = {};
+        [...collection, ...deck].forEach(card => {
           const [name, tier] = card.split("-");
-          tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
+          if (!tiers[tier]) tiers[tier] = [];
+          tiers[tier].push(name);
         });
-      }
 
-      // Display collection cards
-      if (collection.length > 0) {
-        collection.forEach((card, index) => {
+        // Displaying cards tier-wise
+        Object.keys(tiers).sort().forEach(tier => {
+          tr += `Tier ${tier}:\n`;
+          tiers[tier].forEach((name, index) => {
+            tr += `${index + 1}. ${name}\n`;
+          });
+          tr += '\n';
+        });
+      } else {
+        // Displaying cards normally
+        [...deck, ...collection].forEach((card, index) => {
           const [name, tier] = card.split("-");
           tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
         });
