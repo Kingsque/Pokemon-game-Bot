@@ -2,10 +2,11 @@ const path = require('path');
 
 module.exports = {
   name: "searchcard",
-  aliases: ["search"],
+  aliases: ["csearch"],
   exp: 0,
   react: "✅",
   category: "card game",
+  usage: 'Use :searchcard <cardName>',
   description: "Search for a card by name in your deck and collection.",
   async execute(client, arg, M) {
     try {
@@ -23,14 +24,14 @@ module.exports = {
       if (cardsInDeck.length > 0) {
         response += "**In Deck**:\n";
         cardsInDeck.forEach((card, index) => {
-          response += `${index + 1}. ${card}\n`;
+          response += `${index + 1}. Tier: ${deck[index].tier}, Index: ${index + 1}, Card: ${card}\n`;
         });
       }
 
       if (cardsInCollection.length > 0) {
         response += "**In Collection**:\n";
         cardsInCollection.forEach((card, index) => {
-          response += `${index + 1}. ${card}\n`;
+          response += `${index + 1}. Tier: ${collection[index].tier}, Index: ${index + 1}, Card: ${card}\n`;
         });
       }
 
