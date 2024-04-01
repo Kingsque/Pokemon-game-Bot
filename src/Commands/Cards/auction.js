@@ -11,7 +11,7 @@ module.exports = {
   async execute(client, arg, M) {
     try {
         const auctionInProgress = await client.DB.get(`${M.from}.auctionInProgress`);
-        if (auctionInProgress) {
+        if (auctionInProgress && arg !== 'end') {
           return M.reply("An auction is already in progress. You cannot start a new one.");
         }
         
