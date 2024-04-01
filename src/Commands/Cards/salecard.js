@@ -8,6 +8,7 @@ module.exports = {
   cool: 4,
   react: "✅",
   category: "card game",
+  usage: 'salecard <index>|<price> or :buycard <id> or :cancelsale',
   description: "sales/buys or cancels card sales",
   async execute(client, arg, M) { 
     try {
@@ -31,7 +32,7 @@ module.exports = {
         if (!cardToSell) {
           return M.reply("❗ The card index you provided is invalid!");
         }
-        const filePath = path.join(__dirname, '../../storages/card.json');
+        const filePath = path.join(__dirname, '../../Helpers/card.json');
         const data = require(filePath);
         const cardsInTier = data.filter((cardData) => cardData.tier === cardToSell[1]);
         const cardData = cardsInTier.find((cardData) => cardData.title === cardToSell[0]);
