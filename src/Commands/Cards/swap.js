@@ -8,15 +8,14 @@ module.exports = {
   description: "Swap two cards in your deck",
   async execute(client, arg, M) {
       try {
-
           let pc = await client.DB.get(`${M.sender}_Deck`) || [];
 
-          if (!arg[0] || isNaN(arg[0]) || arg[0].includes("-") || arg[0].includes("+") || (pc.length - parseInt(arg[0])) < 0) {
+          if (!arg[0] || isNaN(arg[0]) || parseInt(arg[0]) < 0 || parseInt(arg[0]) > pc.length) {
               M.reply("Please provide a valid first card index.");
               return;
           }
 
-          if (!arg[1] || isNaN(arg[1]) || arg[1].includes("-") || arg[1].includes("+") || (pc.length - parseInt(arg[1])) < 0) {
+          if (!arg[1] || isNaN(arg[1]) || parseInt(arg[1]) < 0 || parseInt(arg[1]) > pc.length) {
               M.reply("Please provide a valid second card index.");
               return;
           }
