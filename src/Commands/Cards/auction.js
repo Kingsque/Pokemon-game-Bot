@@ -35,7 +35,8 @@ module.exports = {
         const cardToSell = deck[cardIndex].split('-');
         const filePath = path.join(__dirname, '../../Helpers/card.json');
         const cardDataJson = require(filePath);
-        const cardData = cardDataJson.find((card) => card.title === cardToSell[0]);
+        const cardsInTier = cardDataJson.filter((card) => card.tier === cardToSell[1]);
+        const cardData = cardsInTier.find((card) => card.title === cardToSell[0]);
         if (!cardData) {
           return M.reply("The card data could not be found.");
         }
