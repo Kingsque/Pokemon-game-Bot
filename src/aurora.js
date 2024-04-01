@@ -10,18 +10,17 @@ const {
 const { QuickDB } = require('quick.db')
 const { MongoDriver } = require('quickmongo')
 const { Collection } = require('discord.js')
-const auth = require("./Handlers/auth")
+const auth = require("./Structures/Auth")
+//handlers
 const MessageHandler = require('./Handlers/Message')
 const CardHandler = require('./Handlers/card')
-   // call the summon function
-const jid = "120363138194549275@g.us";
-
+const PokeHandler = require('./Handlers/pokemon')
 const EventsHandler = require('./Handlers/Events')
-const contact = require('./lib/contacts')
-const gpt = require('./lib/gpt')
-const utils = require('./lib/function')
+const { groups } = require('./Handlers/Mods')
+
+const contact = require('./Structures/Contact')
+const utils = require('./Structures/Functions')
 const YT = require('./lib/YT')
-const AI_lib = require('./lib/AI_lib')
 const express = require("express");
 const app = express();
 const { imageSync }= require('qr-image')
@@ -36,7 +35,7 @@ const driver = new MongoDriver(process.env.URL)
 const chalk = require('chalk')
 
 const start = async () => {
-    await mongoose.connect(process.env.SESSION_URL);
+    await mongoose.connect(process.env.URL);
 
   const { useAuthFromDatabase } = new auth(process.env.SESSION);
 
@@ -53,9 +52,10 @@ const start = async () => {
     //Config
     client.name = process.env.NAME || 'Aurora-Private'
     client.prefix = process.env.PREFIX || ':'
-    client.writesonicAPI = process.env.WRITE_SONIC || null
-    client.bgAPI = process.env.BG_API_KEY || null
-    client.mods = ('917903576495,918961331275').split(',')
+    client.mods = ('917903576495,916239664935,917980329866').split(',')
+
+    //grouos
+    client.groups = groups()
 
     //Database
     client.DB = new QuickDB({
@@ -67,23 +67,23 @@ const start = async () => {
     //Contacts
     client.contact = contact
 
-    //Open AI
-    client.AI = AI_lib
-
     //Experience
     client.exp = client.DB.table('experience')
 
     //Cards
     client.cards = client.DB.table('cards')
 
-    //Cradits
-    client.cradit = client.DB.table('cradit')
+    //Credits       `
+    client.credit = client.DB.table('credit')
 
     //RPG
     client.rpg = client.DB.table('rpg_game')
     
-    //charagame
-    client.chara = client.DB.table('chara')
+    //backgroungs
+    client.bg = client.DB.table('bg')
+
+    //evets
+    client.event = client.DB.table('event')
     
     //Commands
     client.cmd = new Collection()
@@ -91,11 +91,18 @@ const start = async () => {
     //Utils
     client.utils = utils
 
-    //GPT
-    client.gpt = gpt
-
     //YT gif
     client.YT = YT;
+    
+    //groups
+    client.getAllGroups = async () => Object.keys(await client.groupFetchAllParticipating())
+
+    //user
+    client.getAllUsers = async () => {
+        const data = (await client.contactDB.all()).map((x) => x.id)
+        const users = data.filter((element) => /^\d+@s$/.test(element)).map((element) => `${element}.whatsapp.net`)
+        return users
+    }
 
     //Colourful
     client.log = (text, color = 'green') =>
@@ -115,7 +122,6 @@ const start = async () => {
         }
         readCommand(join(__dirname, '.', 'Commands'))
     }
-    
       
     //connection updates
     client.ev.on('connection.update', async (update) => {
@@ -124,6 +130,16 @@ const start = async () => {
             client.log(`[${chalk.red('!')}]`, 'white')
             client.log(`Scan the QR code above | You can also authenicate in http://localhost:${port}`, 'blue')
             client.QR = imageSync(update.qr)
+        }
+        if (connection === 'connecting') {
+            client.state = 'connecting'
+            console.log('Connecting to WhatsApp...')
+        }
+        if (connection === 'open') {
+            client.state = 'open'
+            loadCommands()
+            client.log('Connected to WhatsApp')
+            client.log('Total Mods: ' + client.mods.length)
         }
         if (connection === 'close') {
             const { statusCode } = new Boom(lastDisconnect?.error).output
@@ -136,16 +152,6 @@ const start = async () => {
                 console.log('Starting...')
                 setTimeout(() => start(), 3000)
             }
-        }
-        if (connection === 'connecting') {
-            client.state = 'connecting'
-            console.log('Connecting to WhatsApp...')
-        }
-        if (connection === 'open') {
-            client.state = 'open'
-            loadCommands()
-            client.log('Connected to WhatsApp')
-            client.log('Total Mods: ' + client.mods.length)
         }
     })
 
@@ -160,6 +166,12 @@ const start = async () => {
     client.ev.on('contacts.update', async (update) => await contact.saveContacts(update, client))
 
     client.ev.on('creds.update', saveState)
+
+    // Integrate CardHandler to set up card spawning functionality
+    await CardHandler(client);
+
+    await PokeHandler(client);
+    
     return client
 }
 
