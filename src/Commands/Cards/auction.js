@@ -16,7 +16,7 @@ module.exports = {
 
       if (!auctionInProgress) {
         const splitArgs = arg.split('|');
-        if (splitArgs.length !=== 2) {
+        if (splitArgs.length !== 2) {
           return M.reply("Please provide both the card index and the starting price separated by '|' (e.g., 1|100).");
         }
 
