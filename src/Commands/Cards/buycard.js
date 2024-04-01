@@ -44,9 +44,17 @@ module.exports = {
       await client.credit.sub(`${buyer}.wallet`, price);
 
       buyerDeck.push(`${cardName}-${cardTier}`);
+
+      if (buyerDeck.length === 12) {
+        // Store buyer's deck in collection
+        await client.DB.set(`${buyer}_Collection`, buyerDeck);
+        await client.DB.delete(`${buyer}_Deck`);
+      } else {
+        await client.DB.set(`${buyer}_Deck`, buyerDeck);
+      }
+
       sellerDeck.splice(index, 1);
 
-      await client.DB.set(`${buyer}_Deck`, buyerDeck);
       await client.DB.set(`${seller}_Deck`, sellerDeck);
 
       await client.DB.delete(`${M.from}.sell`);
@@ -62,3 +70,4 @@ module.exports = {
     }
   },
 };
+    
