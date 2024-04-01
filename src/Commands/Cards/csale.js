@@ -8,13 +8,14 @@ module.exports = {
   description: "Cancels a card sale",
   async execute(client, arg, M) {
     try {
-      const saleData = await client.DB.get(`${M.from}.sell`, { shopID });
+      const saleData = await client.DB.get(`${M.from}.sell`);
+      
       if (!saleData) {
         return M.reply("Sale with that ID does not exist or has expired.");
       }
-      const { seller, cardIndex, price } = saleData;
-      if (M.sender === seller) {
-        await client.DB.pull(`${M.from}.sell`, { shopID, seller, cardIndex, price });
+     
+      if (M.sender === saleData.seller) {
+        await client.DB.delete(`${M.from}.sell`);
         await client.DB.set(`${M.from}.sellInProgress`, false);
         M.reply("Sale canceled");
       } else {
