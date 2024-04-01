@@ -2,12 +2,13 @@ const axios = require("axios");
 const path = require('path');
 
 module.exports = {
-  name: "ToColl",
-  aliases: ["t2coll", "2coll"],
+  name: "t2coll",
+  aliases: ["tocoll", "2coll"],
   exp: 0,
   cool: 4,
   react: "✅",
   category: "card game",
+  usage: 'Use :t2coll <card_index>',
   description: "Transfer a card from your deck to your collection",
   async execute(client, arg, M) {
     try {
@@ -33,7 +34,7 @@ module.exports = {
       await client.DB.set(`${M.sender}_Collection`, collection);
       await client.DB.set(`${M.sender}_Deck`, deck);
 
-      const cardData = require('../../storages/card.json').find((cardData) => cardData.title === card.split("-")[0] && cardData.tier === card.split("-")[1]);
+      const cardData = require('../../Helpers/card.json').find((cardData) => cardData.title === card.split("-")[0] && cardData.tier === card.split("-")[1]);
 
       const replyMsg = cardData ? `Sent "${indexOF}" from your deck to your collection!\n\nCard Details:\nName: ${cardData.title}\nTier: ${cardData.tier}` : `Card transferred from deck to collection.`;
 
