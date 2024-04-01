@@ -8,65 +8,50 @@ module.exports = {
   cool: 4,
   react: "✅",
   category: "card game",
-  description: "View your all cards, by numbers or by tiers",
+  description: "View all your cards, mixed from deck and collection",
   async execute(client, arg, M) {
     const collection = await client.DB.get(`${M.sender}_Collection`) || [];
     const deck = await client.DB.get(`${M.sender}_Deck`) || [];
     
     try {
-      if (collection.length === 0) {
+      if (collection.length === 0 && deck.length === 0) {
         return M.reply("Sorry, you don't have any cards in your collection and deck.");
       }
 
-      const uniqueCards = collection.filter((card, index) => {
-        return collection.indexOf(card) === index;
-      });
-
       let tag = M.sender.substring(3, 7);
-      let tr = `*🃏 Name:* ${(await client.contact.getContact(M.sender, client)).username} #${tag}*\n\n*🔖 Total claimed Cards:* ${uniqueCards.length + deck.length}↯\n\n`;
+      let tr = `*🃏 Name:* ${(await client.contact.getContact(M.sender, client)).username} #${tag}*\n\n`;
 
+      // Display deck cards first
       if (deck.length > 0) {
-        tr += "*🎴 Your Deck:*\n";
-        const sortedDeck = deck.sort((a, b) => a.split("-")[1] - b.split("-")[1]);
-        sortedDeck.forEach((card, index) => {
+        deck.forEach((card, index) => {
           const [name, tier] = card.split("-");
-          tr += `${index + 1}. ${name} (Tier: ${tier})\n\n`;
+          tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
         });
       }
 
-      tr += "*🎴 Your Collection:*\n";
-      let sortedCollection = uniqueCards.sort((a, b) => a.localeCompare(b)); // Sort alphabetically by default
-
-      if (arg && arg.includes("--tier")) {
-        sortedCollection = uniqueCards.sort((a, b) => a.split("-")[1] - b.split("-")[1]); // Sort by tier
-      } else if (arg && arg.includes("--name")) {
-        sortedCollection = uniqueCards.sort((a, b) => {
-          const nameA = a.split("-")[0];
-          const nameB = b.split("-")[0];
-          return nameA.localeCompare(nameB); // Sort by name
+      // Display collection cards
+      if (collection.length > 0) {
+        collection.forEach((card, index) => {
+          const [name, tier] = card.split("-");
+          tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
         });
       }
 
-      sortedCollection.forEach((card, index) => {
-        const [name, tier] = card.split("-");
-        tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
-      });
-      
-      // Randomize cards 
-      const index = Math.floor(Math.random() * uniqueCards.length);
-      const card = uniqueCards[index].split("-");
+      // Select the image or link of the first card in deck
+      const firstDeckCard = deck.length > 0 ? deck[0].split("-") : null;
       const filePath = path.join(__dirname, '../../Helpers/card.json');
       const data = require(filePath);
-      const newArray = data.filter(function (I) {
-        return I.tier == card[1];
+      const matchingCards = data.filter(function (cardData) {
+        return cardData.tier == firstDeckCard[1] && cardData.title == firstDeckCard[0];
       });
-      const cardData = newArray.find((cardData) => cardData.title == card[0]);
-      const imageUrl = cardData.url;
-      
+      const imageUrl = matchingCards.length > 0 ? matchingCards[0].url : '';
+
       if (imageUrl.endsWith(".gif")) {
         return await client.sendMessage(M.from, { video: { url: imageUrl }, caption: tr, gifPlayback: true }, { quoted: M });
-      } else {
+      } else if (imageUrl) {
         return await client.sendMessage(M.from, { image: { url: imageUrl }, caption: tr }, { quoted: M });
+      } else {
+        return M.reply("Error: Unable to find an image for the first card in your deck.");
       }
     } catch(err) {
       await client.sendMessage(M.from , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`});
