@@ -94,7 +94,7 @@ module.exports = {
 
         buyerDeck.push(`${cardName}-${cardTier}`);
         sellerDeck.splice(cardIndex, 1);
-        await client.DB.pull(`${M.sender}.sell`, { shopID, seller, cardIndex, price });
+        await client.DB.pull(`${M.from}.sell`, { shopID, seller, cardIndex, price });
         await client.DB.set(`${M.from}.sellInProgress`, false);
         M.reply(`Sale is done. User ${buyer} paid ${price} to ${seller} and bought the card.`);
       } else if (command === 'csale') {
