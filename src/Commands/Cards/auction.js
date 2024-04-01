@@ -41,13 +41,13 @@ module.exports = {
 
         let startingPrice;
         switch (cardData.tier) {
-          case 't5':
+          case '5':
             startingPrice = 20000;
             break;
-          case 't6':
+          case '6':
             startingPrice = 50000;
             break;
-          case 'tS':
+          case 'S':
             startingPrice = 100000;
             break;
           default:
