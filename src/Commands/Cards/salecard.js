@@ -62,7 +62,7 @@ module.exports = {
           }, { quoted: M });
         }
 
-        await client.DB.push(`${M.sender}.sell`, { shopID, seller, cardIndex, price });
+        await client.DB.push(`${M.from}.sell`, { shopID, seller, cardIndex, price });
         await client.DB.set(`${M.from}.sellInProgress`, true);
 
         setTimeout(async () => {
@@ -74,7 +74,7 @@ module.exports = {
         if (isNaN(shopID)) {
           return M.reply("Invalid sale ID. Please use a valid sale ID.");
         }
-        const saleData = await client.DB.get(`${M.sender}.sell`, { shopID });
+        const saleData = await client.DB.get(`${M.from}.sell`, { shopID });
         if (!saleData) {
           return M.reply("Sale with that ID does not exist or has expired.");
         }
@@ -102,13 +102,13 @@ module.exports = {
         if (isNaN(shopID)) {
           return M.reply("Invalid sale ID. Please use a valid sale ID.");
         }
-        const saleData = await client.DB.get(`${M.sender}.sell`, { shopID });
+        const saleData = await client.DB.get(`${M.from}.sell`, { shopID });
         if (!saleData) {
           return M.reply("Sale with that ID does not exist or has expired.");
         }
         const { seller, cardIndex, price } = saleData;
         if (M.sender !== seller) return M.reply("You cannot cancel as you didn't start it.");
-        await client.DB.pull(`${M.sender}.sell`, { shopID, seller, cardIndex, price });
+        await client.DB.pull(`${M.from}.sell`, { shopID, seller, cardIndex, price });
         await client.DB.set(`${M.from}.sellInProgress`, false);
         M.reply("Sale canceled");
       }
