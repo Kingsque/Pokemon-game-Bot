@@ -18,7 +18,7 @@ module.exports = {
             M.reply("Bank reached maximum amount; removing extra amount!");
         }
 
-        let text = `🏦 *Bank* 🏦\n\n👤 *Name:* ${(await client.contact.getContact(M.sender, client)).username}\n🔖 *Tag:* #${M.sender.substring(3, 7)}\n💰 *Credits:* ${bank} `;
+        let text = `🏦 *Treasury* 🏦\n\n👤 *Name:* ${(await client.contact.getContact(M.sender, client)).username}\n🔖 *Tag:* #${M.sender.substring(3, 7)}\n💰 *Credits:* ${bank} `;
 
         let imageT = await client.utils.generateCreditCardImage(
             (await client.contact.getContact(M.sender, client)).username,
