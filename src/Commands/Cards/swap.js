@@ -9,46 +9,44 @@ module.exports = {
   description: "Swap two cards in your deck",
   async execute(client, arg, M) {
       try {
-          let pc = await client.DB.get(`${M.sender}_Deck`) || [];
-          
-          // Check if arguments are provided
-          if (arg.length < 2) {
-              M.reply("Please provide two valid card indices to swap.");
-              return;
-          }
 
-          // Check if inputs are valid integers
-          const index1 = parseInt(arg[0]);
-          const index2 = parseInt(arg[1]);
+      let pc = await client.DB.get(`${M.sender}_Deck`) || [];
 
-          if (isNaN(index1) || isNaN(index2) || index1 < 1 || index2 < 1 || index1 > pc.length || index2 > pc.length) {
-              M.reply("Please provide valid integer indices within the range of your deck.");
-              return;
-          }
+    if (!arg[0] || isNaN(arg[0]) || arg[0].includes("-") || arg[0].includes("+") || (pc.length - parseInt(arg[0])) < 0) {
+        M.reply("Please provide a valid first card index.");
+        return;
+    }
 
-          // Adjust indices to array indexing
-          const actualIndex1 = index1 - 1;
-          const actualIndex2 = index2 - 1;
+    if (!arg[1] || isNaN(arg[1]) || arg[1].includes("-") || arg[1].includes("+") || (pc.length - parseInt(arg[1])) < 0) {
+        M.reply("Please provide a valid second card index.");
+        return;
+    }
 
-          // Check if the indices are the same
-          if (actualIndex1 === actualIndex2) {
-              M.reply("The two indices provided cannot be the same.");
-              return;
-          }
+    const index1 = parseInt(arg.split(' ')[0]) - 1;
+    const index2 = parseInt(arg.split(' ')[1]) - 1 ;
 
-          // Swap the cards
-          const newArray = [...pc];
-          const temp = newArray[actualIndex1];
-          newArray[actualIndex1] = newArray[actualIndex2];
-          newArray[actualIndex2] = temp;
+    if (index1 === index2) {
+        M.reply("The two indices provided cannot be the same.");
+        return;
+    }
 
-          // Update the deck with the swapped cards
-          await client.DB.set(`${M.sender}_Deck`, newArray);
+    const newArray = [...pc];
+    const temp = newArray[index1];
+    newArray[index1] = newArray[index2];
+    newArray[index2] = temp;
 
-          M.reply(`Cards at index ${index1} and ${index2} have been swapped.`);
-      } catch (err) {
-          console.error(err);
-          await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
+    await client.DB.delete(`${M.sender}_Deck`);
+
+
+    for (let i = 0; i < pc.length; i++) {
+        await client.DB.push(`${M.sender}_Deck`, newArray[i]);
       }
+      
+
+    M.reply(`Cards at index ${index1} and ${index2} have been swapped.`);
+    
+    }catch(err){
+      await client.sendMessage(M.from , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`})
+    }
   },
 };
