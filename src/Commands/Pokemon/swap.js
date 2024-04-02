@@ -13,22 +13,6 @@ module.exports = {
             if (party.length < 2) {
                 return M.reply("You need at least two Pokémon in your party to swap.");
             }
-
-module.exports = {
-    name: "swap",
-    aliases: ["swap"],
-    exp: 0,
-    cool: 4,
-    react: "🔄",
-    usage: 'Use :swap <pokemon_index_1> <pokemon_index_2>',
-    category: "pokemon",
-    description: "Swap Pokémon within your party",
-    async execute(client, arg, M) {
-        try {
-            const party = await client.DB.get(`${M.sender}_Party`) || [];
-            if (party.length < 2) {
-                return M.reply("You need at least two Pokémon in your party to swap.");
-            }
             
             if (!arg[0] || isNaN(arg[0]) || arg[0].includes("-") || arg[0].includes("+") || (party.length - parseInt(arg[0])) < 0) {
         M.reply("Please provide a valid first card index.");
