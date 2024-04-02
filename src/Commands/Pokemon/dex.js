@@ -5,6 +5,7 @@ module.exports = {
     cool: 4,
     react: "📚",
     category: "pokemon",
+    usage: 'Use :dex',
     description: "View all Pokémon in your collection (PC + Party)",
     async execute(client, arg, M) {
         try {
@@ -15,9 +16,9 @@ module.exports = {
                 return M.reply("📭 Your Pokémon collection is empty!");
             }
 
-            let response = "📚 Your Pokémon Collection (Dex):\n";
+            let response = `*Aurora Pokedex*\n⬛*Username:*${M.sender.username}*\n🔑TOTAL POKEMON: ${party.length + pc.length}\n🔮pokemons\n`
             pc.concat(party).forEach((pokemon, index) => {
-                response += `${index + 1}. ${pokemon.name}\n`;
+                response += `${index + 1}) ${pokemon.name}\n`;
             });
 
             await M.reply(response);
