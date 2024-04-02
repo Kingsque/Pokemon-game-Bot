@@ -3,11 +3,12 @@ const axios = require("axios");
 const path = require('path');
 
 module.exports = {
-  name: "viewcard",
-  aliases: ["view"],
+  name: "aboutcard",
+  aliases: ["acard"],
   exp: 0,
   react: "✅",
   category: "card game",
+  usage: 'Use :aboutcard <cardName>',
   description: "Views any card from the bot",
   async execute(client, args, M) {
     const [cardName, cardTier] = args.trim().split(","); // Accept card name and tier as input
