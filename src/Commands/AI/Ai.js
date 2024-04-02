@@ -3,7 +3,7 @@ const cooldowns = new Map();
 
 module.exports = {
     name: 'ai',
-    aliases: ['learn'],
+    aliases: ['ai'],
     category: 'Ai',
     exp: 0,
     cool: 4,
