@@ -15,33 +15,14 @@ module.exports = {
             }
             
             if (!arg[0] || isNaN(arg[0]) || arg[0].includes("-") || arg[0].includes("+") || (party.length - parseInt(arg[0])) < 0) {
-        M.reply("Please provide a valid first card index.");
-        return;
-    }
+                M.reply("Please provide a valid first card index.");
+                return;
+            }
 
-    if (!arg[1] || isNaN(arg[1]) || arg[1].includes("-") || arg[1].includes("+") || (party.length - parseInt(arg[1])) < 0) {
-        M.reply("Please provide a valid second card index.");
-        return;
-    }
-            const index1 = parseInt(arg[0]) - 1;
-            const index2 = parseInt(arg[1]) - 1;
-
-            const temp = party[index1];
-            party[index1] = party[index2];
-            party[index2] = temp;
-
-            await client.DB.set(`${M.sender}_Party`, party);
-            
-            await M.reply(`🔄 Successfully swapped ${party[index1].name} and ${party[index2].name} in your party!`);
-        } catch (err) {
-            console.error(err);
-            await client.sendMessage(M.from, {
-                text: "An error occurred while swapping Pokémon."
-            });
-        }
-    },
-};
-
+            if (!arg[1] || isNaN(arg[1]) || arg[1].includes("-") || arg[1].includes("+") || (party.length - parseInt(arg[1])) < 0) {
+                M.reply("Please provide a valid second card index.");
+                return;
+            }
             
             const index1 = parseInt(arg[0]) - 1;
             const index2 = parseInt(arg[1]) - 1;
