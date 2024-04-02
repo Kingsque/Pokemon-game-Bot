@@ -18,7 +18,7 @@ module.exports = {
                 return M.reply("Please provide the name of the Pokémon you want to catch.");
             }
 
-            const pokemonName = arg.join(" ").toLowerCase();
+            const pokemonName = arg.toLowerCase();
             if (pokemonName !== pokemon.name.toLowerCase()) {
                 return M.reply(`The provided Pokémon name '${pokemonName}' does not match the spawned Pokémon.`);
             }
