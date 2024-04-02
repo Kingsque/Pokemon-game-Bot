@@ -32,6 +32,15 @@ module.exports = {
         text += `💠 *Mods:* ${modCount}\n`;
         text += `💠 *Website:* ${website}`;
 
-        M.reply(text);
+         await client.sendMessage(
+          M.from,
+          {
+            image: { url: "https://i.ibb.co/tPhb428/Aurora.jpg" },
+            caption: text
+          },
+          {
+            quoted: M
+          }
+        );
     }
 }; 
