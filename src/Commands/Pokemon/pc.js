@@ -5,6 +5,7 @@ module.exports = {
     cool: 4,
     react: "📋",
     category: "pokemon",
+    usage: 'Use :pc',
     description: "View your caught Pokémon in your PC",
     async execute(client, arg, M) {
         try {
