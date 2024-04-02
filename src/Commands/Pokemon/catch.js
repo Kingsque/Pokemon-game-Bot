@@ -14,6 +14,15 @@ module.exports = {
                 return M.reply("🙅‍♂️ Sorry, there are currently no Pokémon available to catch!");
             }
 
+            if (!arg || arg.length === 0) {
+                return M.reply("Please provide the name of the Pokémon you want to catch.");
+            }
+
+            const pokemonName = arg.join(" ").toLowerCase();
+            if (pokemonName !== pokemon.name.toLowerCase()) {
+                return M.reply(`The provided Pokémon name '${pokemonName}' does not match the spawned Pokémon.`);
+            }
+
             // Check if the user has space in their party
             const party = await client.DB.get(`${M.sender}_Party`) || [];
             if (party.length < 6) {
