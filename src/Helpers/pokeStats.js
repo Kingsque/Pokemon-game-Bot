@@ -12,7 +12,7 @@ const getStats = (level) => {
     }
     const levelStr = level <= levels.length ? levels[level - 1] : `🌸 Level ${level}`;
     return {
-        requiredXpToLevelUp: requiredXp,
+        requiredEXpToLevelUp: requiredXp,
         level: levelStr
     };
 };
