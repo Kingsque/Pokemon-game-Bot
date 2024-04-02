@@ -14,7 +14,7 @@ module.exports = {
                 return M.reply("📭 Your Pokémon party is empty!");
             }
 
-            const pokemonName = arg.join(" ").toLowerCase();
+            const pokemonName = arg.toLowerCase();
             const transferredPokemonIndex = party.findIndex(pokemon => pokemon.name.toLowerCase() === pokemonName);
             if (transferredPokemonIndex === -1) {
                 return M.reply(`Could not find a Pokémon named ${pokemonName} in your party.`);
