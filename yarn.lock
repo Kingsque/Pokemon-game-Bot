@@ -4704,6 +4704,20 @@ marked@^4.3.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-4.3.0.tgz#796362821b019f734054582038b116481b456cf3"
   integrity sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==
 
+markov-strings@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/markov-strings/-/markov-strings-3.0.1.tgz#8d920114b40cbdc5e44b99e4f9ff467d8f8ca90b"
+  integrity sha512-/Cf6m7iIK1JWtvOemZ9eRUpKvebm+m6uXMTzszOJrRO3rkmdCqoS/EO9d4/3aFPnYEIHkopcF4C7W+k1zTDjnw==
+  dependencies:
+    lodash "^4.17.20"
+
+markovchain@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/markovchain/-/markovchain-1.0.2.tgz#58b38643fb6093cd5b62455b7b1e7bbfe56d7e53"
+  integrity sha512-TnHXUko0giDt4RpM7Q6JVZezkEUeVEz2j23JhiNcCZKJn1ukvVFdeOw06q8cEK1Jx6S7Q8QCQq9fab7LdGLQHg==
+  dependencies:
+    pick-one-by-weight "~1.0.0"
+
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
@@ -5626,6 +5640,11 @@ phin@^2.9.1:
   version "2.9.3"
   resolved "https://registry.yarnpkg.com/phin/-/phin-2.9.3.tgz#f9b6ac10a035636fb65dfc576aaaa17b8743125c"
   integrity sha512-CzFr90qM24ju5f88quFC/6qohjC144rehe5n6DH900lgXmUe86+xCKc10ev56gRKC4/BkHUoG4uSiQgBiIXwDA==
+
+pick-one-by-weight@~1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/pick-one-by-weight/-/pick-one-by-weight-1.0.2.tgz#fa0893276c848c8b7dd2f446e99f89d83c4cee86"
+  integrity sha512-DY2aJWPEhkhWJgYHL28Rr3OBMBEFwN+ff2C4Ltb9P5o5v6EzREWNgM3LOLKRjjvkvXKEo95k/sA4Mv2j/ZrLPQ==
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.3.1:
   version "2.3.1"

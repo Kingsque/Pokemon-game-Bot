@@ -53,6 +53,8 @@
       "google-tts-api": "^2.0.2",
       "googlethis": "^1.7.1",
       "human-readable": "^0.2.1",
+      "markov-strings": "^3.0.1",
+      "markovchain": "^1.0.2",
       "moment-timezone": "^0.5.40",
       "mongoose": "^7.1.0",
       "mumaker": "^1.0.0",

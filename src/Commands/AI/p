@@ -1,170 +1,82 @@
-const axios = require("axios");
+const Markov = require('markov-strings');
 
 module.exports = {
-    name: 'generate',
-    aliases: ['generate'],
-    category: 'utils',
-    exp: 5,
+    name: 'assistant',
+    aliases: ['assist', 'help'],
+    category: 'Ai',
+    exp: 0,
+    cool: 4,
     react: "✅",
-    description: 'Let you chat with GPT chat bot',
-    cool: 4, // Add cooldown time in seconds
+    description: 'Get assistance from the personal assistant.',
     async execute(client, arg, M) {
+        arg = Array.isArray(arg) ? arg : [arg];
+        const question = arg.join(' ');
+
         try {
-            if (!arg) {
-                return M.reply('Provide a query!');
-            }
+            if (!question) return M.reply('Please ask a question.');
 
-            async function generateImage(prompt) {
-                const API_URL = "https://api.openai.com/v1/images/generations";
+            // Generate a response based on the user's question
+            const response = await generateResponse(question);
 
-                const headers = {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${process.env.openAiAPI}`,
-                };
-
-                const data = {
-                    model: "image-alpha-001",
-                    prompt: prompt,
-                    n: 1,
-                    size: "256x256",
-                };
-
-                try {
-                    const response = await axios.post(API_URL, data, {
-                        headers: headers,
-                    });
-                    return response.data.data[0].url;
-                } catch (error) {
-                    console.error("Error generating image:", error);
-                    return null;
-                }
-            }
-
-            const imageUrl = await generateImage(arg);
-            if (!imageUrl) {
-                return M.reply("Failed to generate an image - API usage limit exceeded or wrong API key.");
-            }
-            return M.reply({ image: { url: imageUrl }, caption: arg });
+            // Send the response as a reply
+            M.reply(response);
         } catch (error) {
-            console.error("Error getting image:", error);
-            M.reply("Error occurred while generating image.");
-        }
-    },
-};
-const { Configuration, OpenAIApi } = require("openai");
-
-module.exports = {
-    name: 'gpt',
-    aliases: ['ai'],
-    category: 'utils',
-    exp: 5,
-    react: "✅",
-    description: 'Let you chat with GPT chat bot',
-    cool: 4, // Add cooldown time in seconds
-    async execute(client, arg, M) {
-        try {
-            const configuration = new Configuration({
-                apiKey: process.env.openAiKey,
-            });
-            const openai = new OpenAIApi(configuration);
-
-            if (!process.env.openAiKey) {
-                return M.reply("Our AI API is not working now, please wait!");
-            }
-            if (!arg) {
-                return M.reply('Provide a query!');
-            }
-
-            const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-            async function generateResponse(prompt, retries = 2) {
-                try {
-                    const completion = await openai.createChatCompletion({
-                        model: "gpt-3.5-turbo",
-                        messages: [{ role: "user", content: prompt }],
-                    });
-
-                    console.log("API Key:", process.env.openAiKey);
-
-                    return completion.data.choices[0].message.content.trim();
-                } catch (error) {
-                    if (error.response && error.response.status === 429 && retries > 0) {
-                        const retryAfter = error.response.headers["retry-after"] * 1000 || 5000;
-                        M.reply(`Rate limit exceeded. Retrying in ${retryAfter / 1000} seconds...`);
-                        await sleep(retryAfter);
-                        return generateResponse(prompt, retries - 1);
-                    } else {
-                        console.error(error);
-                        return "Error occurred while generating response - API usage limit exceeded or wrong API key.";
-                    }
-                }
-            }
-
-            const response = await generateResponse(arg);
-            return M.reply(response);
-        } catch (err) {
-            M.reply(err.toString());
-            client.log(err, 'red');
+            console.error('Error:', error.message);
+            M.reply('An error occurred while processing your request.');
         }
     }
 };
-const { Configuration, OpenAIApi } = require("openai");
+
+// Function to generate a response based on the user's question
+async function generateResponse(question) {
+    // Sample input text for Markov chain (you can replace this with your own dataset)
+    const inputTexts = [
+        'Sample text for the Markov chain. You can add more text here.'
+    ];
+
+    // Create a Markov chain
+    const markov = new Markov(inputTexts, { stateSize: 2 });
+
+    // Generate text based on the user's question
+    const result = await markov.generate({
+        maxTries: 100,
+        filter: (result) => result.string.startsWith(question.substring(0, 5)),
+        maxWords: 100
+    });
+
+    // Return the generated text
+    return result.string;
+}
+
+const MarkovChain = require('markovchain');
 
 module.exports = {
-    name: 'gpt',
-    aliases: ['ai'],
-    category: 'utils',
-    exp: 5,
+    name: 'assistant',
+    aliases: ['assist', 'help'],
+    category: 'Ai',
+    exp: 0,
+    cool: 4,
     react: "✅",
-    description: 'Let you chat with GPT chat bot',
-    cool: 4, // Add cooldown time in seconds
+    description: 'Get assistance from the personal assistant.',
     async execute(client, arg, M) {
+        arg = Array.isArray(arg) ? arg : [arg];
+        const prompt = arg.join(' ');
+
         try {
-            const configuration = new Configuration({
-                apiKey: process.env.openAi,
-            });
-            const openai = new OpenAIApi(configuration);
+            if (!prompt) return M.reply('Please provide a prompt for the assistant.');
 
-            if (!process.env.openAi) {
-                return M.reply("Our AI API is not working now, please wait!");
-            }
-            if (!arg) {
-                return M.reply('Provide a query!');
-            }
+            // Initialize a markov chain with sample text or your own dataset
+            const chain = new MarkovChain();
+            chain.addText('Sample text for the markov chain.');
 
-            const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+            // Generate text based on the prompt
+            const generatedText = chain.start(prompt).end(100).process();
 
-            async function generateResponse(prompt, retries = 2) {
-                try {
-                    const completion = await openai.createCompletion({
-                        model: "text-davinci-003",
-                        prompt: `${prompt}`,
-                        temperature: 0,
-                        max_tokens: 3000,
-                        top_p: 1,
-                        frequency_penalty: 0.5,
-                        presence_penalty: 0
-                    });
-
-                    return completion.data.choices[0].text.trim();
-                } catch (error) {
-                    if (error.response && error.response.status === 429 && retries > 0) {
-                        const retryAfter = error.response.headers["retry-after"] * 1000 || 5000;
-                        M.reply(`Rate limit exceeded. Retrying in ${retryAfter / 1000} seconds...`);
-                        await sleep(retryAfter);
-                        return generateResponse(prompt, retries - 1);
-                    } else {
-                        console.error(error);
-                        return "Error occurred while generating response - API usage limit exceeded or wrong API key.";
-                    }
-                }
-            }
-
-            const response = await generateResponse(arg);
-            return M.reply(response);
-        } catch (err) {
-            M.reply(err.toString());
-            client.log(err, 'red');
+            // Send the generated text as a reply
+            M.reply(`Here is the generated text:\n\n${generatedText}`);
+        } catch (error) {
+            console.error('Error:', error.message);
+            M.reply('An error occurred while processing your request.');
         }
     }
 };
