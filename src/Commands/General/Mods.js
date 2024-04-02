@@ -10,10 +10,12 @@ module.exports = {
   async execute(client, arg, M) {
     let mods = client.mods;
     let mo = "*Aurora MODS*\n";
+    
     for (let i = 0; i < mods.length; i++) {
-      let hmm = mods[i];
-      const um = (await client.contact.getContact(hmm, client)).username;
-      mo += `\n#${i + 1})*Name: ${um}\nContact:* http://wa.me/+${mods[i]}\n`;
+      const contact = await client.contact.getContact(mods[i], client);
+      const username = contact && contact.username ? contact.username : 'MOD';
+    
+      mo += `\n#${i + 1}) *Name:* ${username}\n*Contact:* http://wa.me/+${mods[i]}\n*Tag: @${mods[i].split('@')[0]}\n`;
     }
     await client.sendMessage(
       M.from,
