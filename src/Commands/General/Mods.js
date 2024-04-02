@@ -13,7 +13,7 @@ module.exports = {
     
     for (let i = 0; i < mods.length; i++) {
       const contact = await client.contact.getContact(mods[i], client);
-      const username = contact && contact.username ? contact.username : 'MOD';
+      const username = await client.contact.getContact(mods[i]).username;
     
       mo += `\n#${i + 1}) *Name:* ${username}\n*Contact:* http://wa.me/+${mods[i]}\n*Tag: @${mods[i].split('@')[0]}\n`;
     }
