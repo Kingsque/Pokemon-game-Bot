@@ -4,6 +4,7 @@ module.exports = {
     exp: 0,
     cool: 4,
     react: "✅",
+    usage: 'Use :catch <name>',
     category: "pokemon",
     description: "Catch the spawned Pokémon",
     async execute(client, arg, M) {
