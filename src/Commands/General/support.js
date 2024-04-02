@@ -9,14 +9,7 @@ module.exports = {
      description: 'Gives links of official gcs',
      async execute(client, arg, M) {
        try {
-         const videos = [
-           'https://telegra.ph/file/f0c24da2961de0bede5e1.mp4',
-           'https://telegra.ph/file/f7d87038dc8c486c1a094.mp4',
-           'https://telegra.ph/file/672375c8205e1f126f200.mp4'
-         ];
-         const randomRes = videos[Math.floor(Math.random() * videos.length)];
-         const ariLogo = "https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg";
-   
+         
          let supportG = `*━『 Support Group Links 』━*\n\n* [ Aurora Support ] :*\np\nDescription: This is the main group of our bot, here RPG commands, game commands, and card shop commands will work\n* [ Aurora Auction ] :*\np\nDescription: Here every weekend auctions of events auction of event cards takes place and on every nee 100 user a grand auction takes place\n* [ Aurora Casino ] :**\np\nDescription: Here you can do slots and gamble to increase your money\n\n`;
    
          let text = [
@@ -57,12 +50,12 @@ module.exports = {
    
          const final = supportG.concat(ran);
    
-         await client.sendMessage(M.from, { video: { url: randomRes }, gifPlayback: true, caption: `*Dmed you the group link*` }, { quoted: M });
-         await client.sendMessage(M.sender, { image: { url: ariLogo }, caption: final }, { quoted: M });
+         await client.sendMessage(M.from, { image: { url: 'https://i.ibb.co/tPhb428/Aurora.jpg' }, caption: `*Dmed you the group link*` }, { quoted: M });
+         await client.sendMessage(M.sender, { image: { url: 'https://i.ibb.co/tPhb428/Aurora.jpg' }, caption: final }, { quoted: M });
        } catch (error) {
          console.error('Error in support command:', error);
          await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${error}` });
        }
      }
    };
-   
+
