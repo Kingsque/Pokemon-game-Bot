@@ -43,7 +43,7 @@ module.exports = {
       }
       
 
-    M.reply(`Cards at index ${index1} and ${index2} have been swapped.`);
+    M.reply(`Cards at index ${index1 + 1} and ${index2 + 1} have been swapped.`);
     
     }catch(err){
       await client.sendMessage(M.from , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`})
