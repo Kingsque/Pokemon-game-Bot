@@ -27,6 +27,15 @@ module.exports = {
             await client.credit.set(`${M.sender}.bonus`, Date.now());
         }
 
-        M.reply(text);
+      await client.sendMessage(
+          M.from,
+          {
+            image: { url: "https://i.ibb.co/tPhb428/Aurora.jpg" },
+            caption: text
+          },
+          {
+            quoted: M
+          }
+        );
     }
 };
