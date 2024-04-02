@@ -47,7 +47,7 @@ module.exports = {
         await client.sendMessage(
           M.from,
           {
-            image: { url: "https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg" },
+            image: { url: "https://i.ibb.co/1Jn9LX8/Screenshot-20240331-154216-1.jpg" },
             caption: message
           },
           {
