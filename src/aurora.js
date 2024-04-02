@@ -137,8 +137,8 @@ const start = async () => {
                 console.log('Connecting...')
                 setTimeout(() => start(), 3000)
             } else {
+                clearState()
                 client.log('Disconnected.', 'red')
-                await remove('session')
                 console.log('Starting...')
                 setTimeout(() => start(), 3000)
             }
