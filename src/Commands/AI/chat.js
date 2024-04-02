@@ -2,7 +2,7 @@ const axios = require('axios');
 
 module.exports = {
     name: 'chat',
-    aliases: ['talk'],
+    aliases: ['chatbot'],
     category: 'Ai',
     exp: 0,
     cool: 4,
@@ -17,11 +17,8 @@ module.exports = {
             const uid = encodeURIComponent(M.sender.jid); // Encode user's JID
             const msg = encodeURIComponent(arg.join('')); // Encode user's message
 
-            // Construct URL with BrainShop API parameters
-            const apiUrl = `http://api.brainshop.ai/get?bid=170305&key=8OpWeiccHtCb1dFj&uid=${uid}&msg=${msg}`;
-
             // Send GET request to BrainShop API
-            const response = await axios.get(apiUrl);
+            const response = await axios.get(`http://api.brainshop.ai/get?bid=170305&key=8OpWeiccHtCb1dFj&uid=${uid}&msg=${msg}`);
 
             if (response.status === 200 && response.data.cnt) {
                 // If successful response, send chatbot's reply to the user
