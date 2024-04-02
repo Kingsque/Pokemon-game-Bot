@@ -1,6 +1,6 @@
 module.exports = {
   name: 'cardswap',
-  aliases: ['cardswap'],
+  aliases: ['cswap'],
   exp: 0,
   cool: 4,
   react: "✅",
