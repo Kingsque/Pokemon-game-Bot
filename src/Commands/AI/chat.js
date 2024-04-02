@@ -7,7 +7,8 @@ module.exports = {
     exp: 0,
     cool: 4,
     react: "✅",
-    description: 'Chat with yoyr personal aurora ai',
+    usage: 'Use :chat <text>',
+    description: 'Lets you chat with your assistant chatbot',
     async execute(client, arg, M) {
         try {
             // Check if arg is an array, if not, convert it to an array
