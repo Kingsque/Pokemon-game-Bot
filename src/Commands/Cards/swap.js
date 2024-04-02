@@ -9,30 +9,39 @@ module.exports = {
   async execute(client, arg, M) {
       try {
           let pc = await client.DB.get(`${M.sender}_Deck`) || [];
-
-          if (!arg[0] || isNaN(arg[0]) || parseInt(arg[0]) < 0 || parseInt(arg[0]) > pc.length) {
-              M.reply("Please provide a valid first card index.");
+          
+          // Check if arguments are provided
+          if (arg.length < 2) {
+              M.reply("Please provide two valid card indices to swap.");
               return;
           }
 
-          if (!arg[1] || isNaN(arg[1]) || parseInt(arg[1]) < 0 || parseInt(arg[1]) > pc.length) {
-              M.reply("Please provide a valid second card index.");
+          // Check if inputs are valid integers
+          const index1 = parseInt(arg[0]);
+          const index2 = parseInt(arg[1]);
+
+          if (isNaN(index1) || isNaN(index2) || index1 <= 0 || index2 <= 0 || index1 > pc.length || index2 > pc.length) {
+              M.reply("Please provide valid integer indices within the range of your deck.");
               return;
           }
 
-          const index1 = parseInt(arg[0]) - 1;
-          const index2 = parseInt(arg[1]) - 1;
+          // Adjust indices to array indexing
+          const actualIndex1 = index1 - 1;
+          const actualIndex2 = index2 - 1;
 
-          if (index1 === index2) {
+          // Check if the indices are the same
+          if (actualIndex1 === actualIndex2) {
               M.reply("The two indices provided cannot be the same.");
               return;
           }
 
+          // Swap the cards
           const newArray = [...pc];
-          const temp = newArray[index1];
-          newArray[index1] = newArray[index2];
-          newArray[index2] = temp;
+          const temp = newArray[actualIndex1];
+          newArray[actualIndex1] = newArray[actualIndex2];
+          newArray[actualIndex2] = temp;
 
+          // Update the deck with the swapped cards
           await client.DB.set(`${M.sender}_Deck`, newArray);
 
           M.reply(`Cards at index ${index1} and ${index2} have been swapped.`);
