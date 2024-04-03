@@ -332,24 +332,21 @@ module.exports = {
     category: 'games',
     description: 'Start a quiz game',
     async execute(client, arg, M) {
-        const shuffle = (array) => {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        };
+        if (await client.DB.get(`${M.sender}.quizInProgress`)) {
+            return M.reply("You are already in a quiz game. Please finish it before starting a new one.");
+        }
 
-        const numberOfQuestions = 10; // Number of questions in the quiz
-        const shuffledQuestions = shuffle(quizQuestions).slice(0, numberOfQuestions);
-        const quizData = shuffledQuestions.map((question, index) => {
-            const options = question.options.map((option, idx) => `${String.fromCharCode(97 + idx)}) ${option}`).join('\n');
-            return `${index + 1}. ${question.question}\n${options}`;
-        }).join('\n\n');
+        const shuffledQuestions = quizQuestions.sort(() => 0.5 - Math.random()); // Shuffle questions
+        const selectedQuestions = shuffledQuestions.slice(0, 10); // Select first 10 questions
 
-        await client.DB.set(`${M.sender}.quizInProgress`, true);
+        await client.DB.set(`${M.sender}.quizQuestions`, selectedQuestions);
         await client.DB.set(`${M.sender}.currentQuestionIndex`, 0);
+        await client.DB.set(`${M.sender}.quizScore`, 0);
+        await client.DB.set(`${M.sender}.quizInProgress`, true);
 
-        return M.reply(`Welcome to the quiz!\n\n${quizData}\n\nTo answer, use the command :ans <option>`);
+        const firstQuestion = selectedQuestions[0];
+        const options = firstQuestion.options.map((option, index) => `${String.fromCharCode(97 + index)}) ${option}`).join('\n');
+
+        return M.reply(`Let's start the quiz!\nQuestion 1: ${firstQuestion.question}\nOptions:\n${options}\nTo answer, use the command :ans <option>`);
     },
 };
