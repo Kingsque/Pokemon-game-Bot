@@ -87,11 +87,10 @@ module.exports = {
       }
     };
 
-    if (!arg || arg.toLowerCase() === 'start') {
-      startGame();
-    } else {
+    if (arg && !['start', ''].includes(arg.toLowerCase())) {
       processGuess(arg);
+    } else {
+      startGame();
     }
   }
 };
-    
