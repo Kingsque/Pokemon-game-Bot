@@ -54,7 +54,7 @@ module.exports = MessageHandler = async (messages, client) => {
         }
          
         //Banned system
-        if (banned.includes(sender)) return M.reply('You are banned from using the bot')
+        if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot')
         
 
         // Logging Message
