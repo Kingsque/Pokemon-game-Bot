@@ -39,7 +39,7 @@ module.exports = {
 
 
     for (let i = 0; i < pc.length; i++) {
-        await client.DB.push(`${M.sender}_Deck`, newArray[i]);
+        await client.DB.push(`${M.sender}_Party`, newArray[i]);
       }
       
 
