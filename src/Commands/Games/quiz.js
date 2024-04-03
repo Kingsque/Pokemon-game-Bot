@@ -326,23 +326,34 @@ answer: "Hunter x Hunter"
 }
 ];
 
+const quizQuestions = [
+    // Add your quiz questions here
+];
+
 module.exports = {
-  name: 'quiz',
-  aliases: ['quiz'],
-  category: 'games',
-  description: 'Play a solo quiz game',
-  async execute(client, arg, M) {
-    if (arg === "start") {
-      await client.DB.set(`${M.sender}.quizInProgress`, true);
-      await client.DB.set(`${M.sender}.quizScore`, 0);
-      await client.DB.set(`${M.sender}.currentQuestionIndex`, 0);
-      const questionData = quizQuestions[0];
-      const question = questionData.question;
-      const options = questionData.options.map((option, index) => `${String.fromCharCode(97 + index)}) ${option}`).join('\n');
-      return M.reply(`Here's your first question: ${question}\nOptions:\n${options}\nTo answer, use the command :ans <option>`);
-    }
+    name: 'quiz',
+    aliases: ['quiz'],
+    category: 'games',
+    description: 'Start a quiz game',
+    async execute(client, arg, M) {
+        const shuffle = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        };
 
-    return M.reply("Usage: :quiz start to begin the quiz.");
-  },
+        const numberOfQuestions = 10; // Number of questions in the quiz
+        const shuffledQuestions = shuffle(quizQuestions).slice(0, numberOfQuestions);
+        const quizData = shuffledQuestions.map((question, index) => {
+            const options = question.options.map((option, idx) => `${String.fromCharCode(97 + idx)}) ${option}`).join('\n');
+            return `${index + 1}. ${question.question}\n${options}`;
+        }).join('\n\n');
+
+        await client.DB.set(`${M.sender}.quizInProgress`, true);
+        await client.DB.set(`${M.sender}.currentQuestionIndex`, 0);
+
+        return M.reply(`Welcome to the quiz!\n\n${quizData}\n\nTo answer, use the command :ans <option>`);
+    },
 };
-
