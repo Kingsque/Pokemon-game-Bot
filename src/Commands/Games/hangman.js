@@ -35,7 +35,7 @@ module.exports = {
         ' ________     \n|        |    \n|        O    \n|       /|\\  \n|       / \\  \n|             '
       ];
 
-      return hangmanParts[incorrectAttempts];
+      return hangmanParts.slice(0, incorrectAttempts).join('\n');
     };
 
     const isGameOver = () => {
@@ -93,3 +93,4 @@ module.exports = {
     }
   }
 };
+            
