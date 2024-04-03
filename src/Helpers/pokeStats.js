@@ -1,29 +1,50 @@
 const levels = Array.from({ length: 100 }, (_, i) => (i + 1).toString());
 
 /**
- * Calculate required experience points to level up based on the level.
- * @param {number} level - The level of the Pokémon.
- * @returns {number} - The required experience points to level up.
+ * @param {number} levels
+ * @returns {number} requiredPokeExpToLevelUp
  */
-const calculateRequiredExp = (level) => {
-    // Improved logic for calculating required experience points
-    return Math.floor(70 * Math.pow(level, 1.8));
+const calculatePokeExp = (levels) => {
+    let requiredPokeExp = 0;
+    for (let i = 1; i <= level; i++) {
+        requiredPokeExp += 50 * i;
+    }
+    return requiredPokeExp;
 };
 
 /**
- * @param {number} level - The level of the Pokémon.
- * @param {string} pokemon - The name of the Pokémon.
- * @returns {{requiredExpToLevelUp: number, pokemon: string}} - Object containing required experience points and Pokémon name.
+ * @param {number} pokeExp
+ * @returns {string} levels
  */
-const getPokeStats = (level, pokemon) => {
-    const requiredExpToLevelUp = calculateRequiredExp(level);
+const getPokeLevel = (pokeExp) => {
+    let level = 1;
+    let requiredPokeExp = 0;
+    while (pokeExp >= requiredPokeExp) {
+        requiredPokeExp = calculatePokeExp(level);
+        if (pokeExp >= requiredPokeExp) {
+            level++;
+        }
+    }
+    return levels.toString();
+};
+
+/**
+ * @param {number} level
+ * @returns {{requiredPokeExpToLevelUp: number, level: string}}
+ */
+const getPokeStats = (level) => {
+    const requiredPokeExp = calculatePokeExp(level);
+    const levelString = levels > levels.length ? levels[levels.length - 1] : levels[levels - 1];
     return {
-        requiredExpToLevelUp,
-        pokemon
+        requiredPokeExpToLevelUp: requiredPokeExp,
+        level: levelString
     };
 };
 
 module.exports = {
     getPokeStats,
-    levels
+    levels,
+    getPokeLevel,
+    calculatePokeExp
 };
+
