@@ -1,3 +1,5 @@
+const { quizQuestions } = require('./quiz');
+
 module.exports = {
   name: 'ans',
   aliases: ['ans'],
