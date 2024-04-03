@@ -8,158 +8,94 @@ module.exports = {
     usage: 'Use :hangman to start a Hangman game',
     description: 'Start a Hangman game',
     async execute(client, arg, M) {
-        // Define the word to guess
-        const wordToGuess = "hangman";
+   const words = ['output', 'proves', 'javas', 'human', 'game'];
+   const maxAttempts = 6;
+   const usedLetters = [];
+   let currentWord = '';
+   let attempts = 0;
 
-        // Initialize variables for Hangman game
-        let guessedWord = "_".repeat(wordToGuess.length);
-        let remainingAttempts = 6; // Total number of incorrect guesses allowed
+   const getRandomWord = () => {
+     const randomIndex = Math.floor(Math.random() * words.length);
+     return words[randomIndex];
+   };
 
-        // Hangman visual representation
-        const hangmanStages = [
-            `
-            _______
-            |     |
-            |     
-            |    
-            |   
-            |     
-            |__________
-            `,
-            `
-            _______
-            |     |
-            |     O
-            |    
-            |   
-            |     
-            |__________
-            `,
-            `
-            _______
-            |     |
-            |     O
-            |     |
-            |   
-            |     
-            |__________
-            `,
-            `
-            _______
-            |     |
-            |     O
-            |    /|
-            |   
-            |     
-            |__________
-            `,
-            `
-            _______
-            |     |
-            |     O
-            |    /|\\
-            |   
-            |     
-            |__________
-            `,
-            `
-            _______
-            |     |
-            |     O
-            |    /|\\
-            |    /
-            |     
-            |__________
-            `,
-            `
-            _______
-            |     |
-            |     O
-            |    /|\\
-            |    / \\
-            |     
-            |__________
-            `
-        ];
+   const updateCurrentWord = (word, letter) => {
+     let newWord = '';
+     for (let i = 0; i < word.length; i++) {
+       if (word[i] === letter) {
+         newWord += letter;
+       } else if (currentWord[i] !== '_') {
+         newWord += currentWord[i];
+       } else {
+         newWord += '_';
+       }
+     }
+     return newWord;
+   };
 
-        // Function to display Hangman visual
-        const displayHangman = (stage) => {
-            return "```" + hangmanStages[stage] + "```";
-        };
+   const displayHangman = (incorrectLetters) => {
+     const hangmanParts = [
+       ' ________     \n|        |    \n|             \n|             \n|             \n|             ',
+       ' ________     \n|        |    \n|        O    \n|             \n|             \n|             ',
+       ' ________     \n|        |    \n|        O    \n|        |    \n|             \n|             ',
+       ' ________     \n|        |    \n|        O    \n|       /|    \n|             \n|             ',
+       ' ________     \n|        |    \n|        O    \n|       /|\\  \n|             \n|             ',
+       ' ________     \n|        |    \n|        O    \n|       /|\\  \n|       /     \n|             ',
+       ' ________     \n|        |    \n|        O    \n|       /|\\  \n|       / \\  \n|             '
+     ];
 
-        // Start the Hangman game
-        await client.sendMessage(
-            M.from,
-            {
-                body: "Let's play Hangman! Try to guess the word.",
-                quoted: M
-            }
-        );
+     const hangmanIndex = Math.min(incorrectLetters.length, maxAttempts) - 1;
+     return hangmanParts[hangmanIndex];
+   };
 
-        // Game loop
-        while (remainingAttempts > 0 && guessedWord !== wordToGuess) {
-            await client.sendMessage(
-                M.from,
-                {
-                    body: displayHangman(6 - remainingAttempts),
-                    quoted: M
-                }
-            );
+   const isGameOver = () => {
+     return attempts >= maxAttempts || currentWord.indexOf('_') === -1;
+   };
 
-            await client.sendMessage(
-                M.from,
-                {
-                    body: `Word: ${guessedWord}\nRemaining Attempts: ${remainingAttempts}`,
-                    quoted: M
-                }
-            );
+   const startGame = () => {
+     currentWord = getRandomWord().toLowerCase();
+     attempts = 0;
+     usedLetters.length = 0;
+     M.reply('Let\'s play hangman! The word has been chosen. Start guessing letters!');
+     M.reply(`\`${currentWord.replace(/./g, '_ ')}\``);
+   };
 
-            // Prompt user to guess a letter
-            await client.sendMessage(
-                M.from,
-                {
-                    body: "Guess a letter:",
-                    quoted: M
-                }
-            );
+   const processGuess = (guess) => {
+     if (!guess || guess.length !== 1 || !guess.match(/[a-z]/i)) {
+       M.reply('Please provide a single letter as your guess.');
+       return;
+     }
 
-            // Receive user input
-            const response = await client.waitForMessage();
-            const guessedLetter = response.body.toLowerCase();
+     const letter = guess.toLowerCase();
+     if (usedLetters.includes(letter)) {
+       M.reply(`The letter \`${letter}\` has already been used. Please guess another letter.`);
+       return;
+     }
 
-            // Check if guessed letter is in the word
-            let found = false;
-            for (let i = 0; i < wordToGuess.length; i++) {
-                if (wordToGuess[i] === guessedLetter) {
-                    guessedWord = guessedWord.substring(0, i) + guessedLetter + guessedWord.substring(i + 1);
-                    found = true;
-                }
-            }
+     usedLetters.push(letter);
 
-            // Update remaining attempts if guessed letter is incorrect
-            if (!found) {
-                remainingAttempts--;
-            }
-        }
+     if (currentWord.includes(letter)) {
+       currentWord = updateCurrentWord(currentWord, letter);
+       M.reply(`Good guess! The letter \`${letter}\` is in the word.`);
+       M.reply(`\`${currentWord.replace(/./g, '_ ')}\``);
+     } else {
+       attempts++;
+       M.reply(`Oops! The letter \`${letter}\` is not in the word.`);
+       M.reply(`\`${currentWord.replace(/./g, '_ ')}\``);
+       M.reply(`Letters used: \`${usedLetters.join(', ')}\``);
+       M.reply(`${displayHangman(usedLetters)}`);
+     }
 
-        // Display game result
-        if (guessedWord === wordToGuess) {
-            await client.sendMessage(
-                M.from,
-                {
-                    body: `Congratulations! You guessed the word "${wordToGuess}" correctly!`,
-                    quoted: M
-                }
-            );
-        } else {
-            await client.sendMessage(
-                M.from,
-                {
-                    body: "Sorry, you ran out of attempts. The word was: " + wordToGuess,
-                    quoted: M
-                }
-            );
-        }
-    }
+     if (isGameOver()) {
+       M.reply('Game over!');
+       M.reply(`The word was \`${currentWord}\`.`);
+     }
+   };
+
+   if (!arg || arg.toLowerCase() === 'start') {
+     startGame();
+   } else {
+     processGuess(arg);
+   }
+ }
 };
-              
