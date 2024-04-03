@@ -12,6 +12,10 @@ module.exports = {
         const luck = await client.rpg.get(`${M.sender}.luckpotion`);
         const deck = await client.DB.get(`${M.sender}_Deck`) || []
         const coll = await client.DB.get(`${M.sender}_Collection`) || []
+        const party = await client.DB.get(`${M.sender}_Party`) || []
+        const pc = await client.DB.get(`${M.sender}_PC`) || []
+        const wallet = await client.credit.get(`${M.sender}.wallet`);
+        const bank = await client.credit.get(`${M.sender}.bank`);
         
         const inventory = await client.rpg.get(M.sender);
         if (!inventory) return M.reply('You have no inventory');
@@ -19,9 +23,10 @@ module.exports = {
         let text = '🗻 *INVENTORY* 🗻\n\n';
         text += `🌶️ *Pepper Spray:* ${pepper || 0}\n`;
         text += `🧧 *Luck Potion:* ${luck || 0}\n`;
-        text += `🎴 *Deck:* ${deck.length || 'None'}\n`;
-        text += `♦️ *Collection:* ${coll.length || 'None'}`;
-
+        text += `🎴 *Total cards:* ${deck.length + coll.length || 'None'}\n`;
+        text += `🎊 *Total pokemons:* ${party.length + pc.length || 'None'}\n`;
+        text += `💳 *Credits:* ${wallet + bank}`;
+        
         M.reply(text);
     }
 };
