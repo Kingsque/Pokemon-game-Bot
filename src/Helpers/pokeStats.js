@@ -1,19 +1,17 @@
-const levels = Array.from({ length: 100 }, (_, i) => `🌸 Level ${i + 1}`);
+const levels = Array.from({ length: 100 }, (_, i) => (i + 1).toString());
 
 /**
  * @param {number} level
- * @returns {{requiredXpToLevelUp: number, level: string}}
+ * @returns {{requiredExpToLevelUp: number, pokemon: string}}
  */
-
-const getStats = (level) => {
-    let requiredXp = 70; // Base XP requirement
+const getPokeStats = (level, pokemon) => {
+    let required = 70;
     for (let i = 1; i <= level; i++) {
-        requiredXp += 5 * (i * 50) + 100 * i * (i * (i + 1)) + 300; // Calculate required XP
+        required += 5 * (i * 50) + 100 * i * (i * (i + 1)) + 300;
     }
-    const levelStr = level <= levels.length ? levels[level - 1] : `🌸 Level ${level}`;
     return {
-        requiredEXpToLevelUp: requiredXp,
-        level: levelStr
+        requiredExpToLevelUp: required,
+        pokemon
     };
 };
 
