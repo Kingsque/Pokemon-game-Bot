@@ -334,13 +334,19 @@ module.exports = {
     async execute(client, arg, M) {
         const option = arg.toLowerCase();
         const currentQuestionIndex = await client.DB.get(`${M.sender}.currentQuestionIndex`);
+        const quizQuestions = await client.DB.get(`${M.sender}.quizQuestions`);
+
+        if (!quizQuestions) {
+            return M.reply("You haven't started a quiz game yet. Use the command :quiz start to begin.");
+        }
+
         const currentQuestion = quizQuestions[currentQuestionIndex];
 
         if (!currentQuestion) {
             return M.reply("There are no more questions.");
         }
 
-        const correctOption = String.fromCharCode(97 + currentQuestion.options.findIndex(opt => opt === currentQuestion.answer));
+        const correctOption = String.fromCharCode(97 + currentQuestion.answer.charCodeAt(0) - 'a'.charCodeAt(0));
 
         if (option !== correctOption) {
             return M.reply("Wrong answer, better luck next time");
