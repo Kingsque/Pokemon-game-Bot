@@ -5,8 +5,8 @@ module.exports = {
   exp: 0,
   cool: 4,
   react: "✅",
-  usage: 'Use :hangman to start a Hangman game',
-  description: 'Start a Hangman game',
+  usage: 'Use :hangman start to start a Hangman game',
+  description: 'Start or play a Hangman game',
   async execute(client, arg, M) {
     const words = ['output', 'proves', 'javas', 'human', 'game'];
     const maxAttempts = 6;
@@ -48,7 +48,7 @@ module.exports = {
       attempts = 0;
       usedLetters.clear();
       M.reply('Let\'s play Hangman! The word has been chosen. Start guessing letters!');
-      M.reply(`\`${maskedWord}\``);
+      M.reply(`${maskedWord}\n\nTo make a guess, use the command: \`hangman guess <letter>\``);
     };
 
     const processGuess = (guess) => {
@@ -67,30 +67,29 @@ module.exports = {
 
       if (currentWord.includes(letter)) {
         maskedWord = generateMaskedWord(currentWord, usedLetters);
-        M.reply(`Good guess! The letter \`${letter}\` is in the word.`);
-        M.reply(`\`${maskedWord}\``);
+        if (maskedWord === currentWord) {
+          M.reply(`Congratulations! You won! The word was \`${currentWord}\`.`);
+        } else {
+          M.reply(`Good guess! The letter \`${letter}\` is in the word.`);
+          M.reply(`${maskedWord}`);
+        }
       } else {
         attempts++;
         M.reply(`Oops! The letter \`${letter}\` is not in the word.`);
-        M.reply(`\`${maskedWord}\``);
-        M.reply(`Letters used: \`${[...usedLetters].join(', ')}\``);
         M.reply(`${displayHangman(attempts)}`);
-      }
-
-      if (isGameOver()) {
-        if (maskedWord === currentWord) {
-          M.reply('Congratulations! You won!');
-        } else {
-          M.reply('Game over!');
-          M.reply(`The word was \`${currentWord}\`.`);
+        if (attempts >= maxAttempts) {
+          M.reply(`Game over! You've used all your attempts. The word was \`${currentWord}\`.`);
         }
       }
     };
 
-    if (arg && !['start', ''].includes(arg.toLowerCase())) {
-      processGuess(arg);
-    } else {
+    if (!arg || arg.toLowerCase() === 'start') {
       startGame();
+    } else if (arg.toLowerCase() === 'guess') {
+      M.reply('To make a guess, provide a letter after the `guess` command. For example: `hangman guess a`.');
+    } else if (arg.toLowerCase().startsWith('guess ')) {
+      const guess = arg.toLowerCase().slice(6); // Extract the guessed letter
+      processGuess(guess);
     }
   }
 };
