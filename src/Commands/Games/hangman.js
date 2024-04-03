@@ -5,7 +5,7 @@ module.exports = {
   exp: 0,
   cool: 4,
   react: "✅",
-  usage: 'Use :hangman start to start a Hangman game',
+  usage: 'Use `:hangman start` to start a Hangman game',
   description: 'Start or play a Hangman game',
   async execute(client, arg, M) {
     const words = ['output', 'proves', 'javas', 'human', 'game'];
@@ -69,7 +69,7 @@ module.exports = {
         maskedWord = generateMaskedWord(currentWord, usedLetters);
         if (maskedWord === currentWord) {
           M.reply(`Congratulations! You won! The word was \`${currentWord}\`.`);
-          client.credit.add(${M.sender}.wallet, 30000);
+          client.credit.add(`${M.sender}.wallet`, 30000);
         } else {
           M.reply(`Damn! You guessed a letter right. Keep going!`);
           M.reply(`${displayHangman(attempts)}\n\n${maskedWord}`);
