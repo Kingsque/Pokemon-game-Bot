@@ -1,12 +1,7 @@
 const items = {
     buy: [
       { luckpotion: 1200 },
-      { pepperspray: 1000},
-      { woodpickaxe: 10000 },
-      { ironpickaxe: 30000 },
-      { goldpickaxe: 50000 },
-      { diamondpickaxe: 70000 },
-      { emeraldpickaxe: 100000 },
+      { pepperspray: 1000}
     ]
   };
 
