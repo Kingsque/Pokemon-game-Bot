@@ -20,7 +20,7 @@ module.exports = {
 
             const pokemonName = arg.toLowerCase();
             if (pokemonName !== pokemon.name.toLowerCase()) {
-                return M.reply(`The provided Pokémon name '${pokemonName}' does not match the spawned Pokémon.`);
+                return M.reply(`You have provided wrong name for the spawned Pokémon.`);
             }
 
             // Check if the user has space in their party
