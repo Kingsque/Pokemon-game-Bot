@@ -326,10 +326,6 @@ answer: "Hunter x Hunter"
 }
 ];
 
-const quizQuestions = [
-    // Add your quiz questions here
-];
-
 module.exports = {
     name: 'quiz',
     aliases: ['quiz'],
