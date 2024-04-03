@@ -1,6 +1,6 @@
 module.exports = {
   name: 'hangman',
-  aliases: ['startgame'],
+  aliases: ['hm'],
   category: 'games',
   exp: 0,
   cool: 4,
@@ -10,30 +10,21 @@ module.exports = {
   async execute(client, arg, M) {
     const words = ['output', 'proves', 'javas', 'human', 'game'];
     const maxAttempts = 6;
-    const usedLetters = [];
     let currentWord = '';
+    let maskedWord = '';
     let attempts = 0;
+    const usedLetters = new Set();
 
     const getRandomWord = () => {
       const randomIndex = Math.floor(Math.random() * words.length);
       return words[randomIndex];
     };
 
-    const updateCurrentWord = (word, letter) => {
-      let newWord = '';
-      for (let i = 0; i < word.length; i++) {
-        if (word[i] === letter) {
-          newWord += letter;
-        } else if (word[i] !== '_') {
-          newWord += currentWord[i];
-        } else {
-          newWord += '_';
-        }
-      }
-      return newWord;
+    const generateMaskedWord = (word, letters) => {
+      return word.replace(/\w/g, letter => (letters.has(letter) ? letter : '_'));
     };
 
-    const displayHangman = (incorrectLetters) => {
+    const displayHangman = (incorrectAttempts) => {
       const hangmanParts = [
         ' ________     \n|        |    \n|             \n|             \n|             \n|             ',
         ' ________     \n|        |    \n|        O    \n|             \n|             \n|             ',
@@ -44,51 +35,55 @@ module.exports = {
         ' ________     \n|        |    \n|        O    \n|       /|\\  \n|       / \\  \n|             '
       ];
 
-      const hangmanIndex = Math.min(incorrectLetters.length, maxAttempts) - 1;
-      return hangmanParts[hangmanIndex];
+      return hangmanParts[incorrectAttempts];
     };
 
     const isGameOver = () => {
-      return attempts >= maxAttempts || currentWord.indexOf('_') === -1;
+      return attempts >= maxAttempts || maskedWord === currentWord;
     };
 
     const startGame = () => {
-      currentWord = getRandomWord().toLowerCase();
+      currentWord = getRandomWord();
+      maskedWord = generateMaskedWord(currentWord, usedLetters);
       attempts = 0;
-      usedLetters.length = 0;
-      M.reply('Let\'s play hangman! The word has been chosen. Start guessing letters!');
-      M.reply(`\`${currentWord.replace(/./g, '_ ')}\``);
+      usedLetters.clear();
+      M.reply('Let\'s play Hangman! The word has been chosen. Start guessing letters!');
+      M.reply(`\`${maskedWord}\``);
     };
 
     const processGuess = (guess) => {
-      if (!guess || guess.length !== 1 || !guess.match(/[a-z]/i)) {
+      if (!guess || guess.length !== 1 || !/[a-z]/i.test(guess)) {
         M.reply('Please provide a single letter as your guess.');
         return;
       }
 
       const letter = guess.toLowerCase();
-      if (usedLetters.includes(letter)) {
+      if (usedLetters.has(letter)) {
         M.reply(`The letter \`${letter}\` has already been used. Please guess another letter.`);
         return;
       }
 
-      usedLetters.push(letter);
+      usedLetters.add(letter);
 
       if (currentWord.includes(letter)) {
-        currentWord = updateCurrentWord(currentWord, letter);
+        maskedWord = generateMaskedWord(currentWord, usedLetters);
         M.reply(`Good guess! The letter \`${letter}\` is in the word.`);
-        M.reply(`\`${currentWord.replace(/./g, '_ ')}\``);
+        M.reply(`\`${maskedWord}\``);
       } else {
         attempts++;
         M.reply(`Oops! The letter \`${letter}\` is not in the word.`);
-        M.reply(`\`${currentWord.replace(/./g, '_ ')}\``);
-        M.reply(`Letters used: \`${usedLetters.join(', ')}\``);
-        M.reply(`${displayHangman(usedLetters)}`);
+        M.reply(`\`${maskedWord}\``);
+        M.reply(`Letters used: \`${[...usedLetters].join(', ')}\``);
+        M.reply(`${displayHangman(attempts)}`);
       }
 
       if (isGameOver()) {
-        M.reply('Game over!');
-        M.reply(`The word was \`${currentWord}\`.`);
+        if (maskedWord === currentWord) {
+          M.reply('Congratulations! You won!');
+        } else {
+          M.reply('Game over!');
+          M.reply(`The word was \`${currentWord}\`.`);
+        }
       }
     };
 
@@ -99,4 +94,4 @@ module.exports = {
     }
   }
 };
-        
+    
