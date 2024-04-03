@@ -1,6 +1,7 @@
 const cron = require("node-cron")
 const axios = require('axios')
 const path = require('path')
+const { calculateRequiredExp } = require('../Helpers/pokeStats')
 require("./Message");
 module.exports = PokeHandler = async (client, m) => {
   try {
@@ -13,7 +14,7 @@ module.exports = PokeHandler = async (client, m) => {
       let jid = randomJid;
 
       if (wild.includes(jid)) {
-        cron.schedule('*/5 * * * *', async () => {
+        cron.schedule('*/20 * * * *', async () => {
           try {
             const id = Math.floor(Math.random() * 1025);
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -23,9 +24,9 @@ module.exports = PokeHandler = async (client, m) => {
             const types = pokemon.types.map(type => type.type.name);
             const image = pokemon.sprites.other['official-artwork'].front_default;
             const level = Math.floor(Math.random() * (30 - 15) + 15);
-            const exp = 0; // Set initial exp to 0
+            const requiredExp = calculateRequiredExp(level);
 
-            const pokemonData = { name: name, level: level, exp: exp }; // Create an object with name, level, and exp
+            const pokemonData = { name: name, level: level, exp: requiredExp }; // Create an object with name, level, and exp
            console.log(`Spawned: ${pokemonData.name} in ${jid}`);
            await client.DB.set(`${jid}.pokemon`, pokemonData);
 
@@ -44,7 +45,7 @@ module.exports = PokeHandler = async (client, m) => {
             });
           }      
   
-    cron.schedule('*/3 * * * *', async () => {
+    cron.schedule('*/15 * * * *', async () => {
      await client.DB.delete(`${jid}.pokemon`);
       console.log(`Pokemon deleted after 5minutes`)
   
