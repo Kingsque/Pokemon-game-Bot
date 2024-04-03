@@ -43,7 +43,7 @@ module.exports = {
       }
       
 
-    await M.reply(`🔄 Successfully swapped ${party[index1].name} and ${party[index2].name} in your party!`);
+    await M.reply(`🔄 Successfully swapped ${pc[index1].name} and ${pc[index2].name} in your party!`);
     }catch(err){
       await client.sendMessage(M.from , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`})
     }
