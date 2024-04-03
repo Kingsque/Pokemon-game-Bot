@@ -48,7 +48,7 @@ module.exports = {
       attempts = 0;
       usedLetters.clear();
       M.reply('Let\'s play Hangman! The word has been chosen. Start guessing letters!');
-      M.reply(`${maskedWord}\n\nTo make a guess, use the command: \`hangman guess <letter>\``);
+      M.reply(`${displayHangman(attempts)}\n\n${maskedWord}\n\nTo make a guess, use the command: \`hangman guess <letter>\``);
     };
 
     const processGuess = (guess) => {
@@ -69,9 +69,10 @@ module.exports = {
         maskedWord = generateMaskedWord(currentWord, usedLetters);
         if (maskedWord === currentWord) {
           M.reply(`Congratulations! You won! The word was \`${currentWord}\`.`);
+          client.credit.add(${M.sender}.wallet, 30000);
         } else {
-          M.reply(`Good guess! The letter \`${letter}\` is in the word.`);
-          M.reply(`${maskedWord}`);
+          M.reply(`Damn! You guessed a letter right. Keep going!`);
+          M.reply(`${displayHangman(attempts)}\n\n${maskedWord}`);
         }
       } else {
         attempts++;
@@ -90,7 +91,10 @@ module.exports = {
     } else if (arg.toLowerCase().startsWith('guess ')) {
       const guess = arg.toLowerCase().slice(6); // Extract the guessed letter
       processGuess(guess);
+    } else if (arg.toLowerCase() === 'end') {
+      M.reply('The game has been ended.');
+    } else {
+      M.reply('Invalid command! Use `:hangman start` to start the game.');
     }
   }
 };
-            
