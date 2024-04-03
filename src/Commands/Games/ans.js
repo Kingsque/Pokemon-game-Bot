@@ -340,9 +340,9 @@ module.exports = {
       return M.reply("There are no more questions.");
     }
 
-    const correctOption = String.fromCharCode(97 + currentQuestion.answer.charCodeAt(0) - 'a'.charCodeAt(0));
+    const correctOption = currentQuestion.options.findIndex(option => option.toLowerCase() === currentQuestion.answer.toLowerCase());
 
-    if (option !== correctOption) {
+    if (option !== String.fromCharCode(97 + correctOption)) {
       return M.reply("Wrong answer, better luck next time");
     }
 
