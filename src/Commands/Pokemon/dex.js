@@ -20,7 +20,7 @@ module.exports = {
           pushName = `${pushName} san`;
         }
             
-            let response = `*Aurora Pokedex*\n⬛*Username:*${M.pushName}*\n🔑TOTAL POKEMON: ${party.length + pc.length}\n🔮pokemons\n`
+            let response = `*Aurora Pokedex*\n⬛*Username:**${M.pushName}*\n🔑TOTAL POKEMON: ${party.length + pc.length}\n`
             pc.concat(party).forEach((pokemon, index) => {
                 response += `${index + 1}) ${pokemon.name}\n`;
             });
