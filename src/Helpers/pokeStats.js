@@ -34,19 +34,16 @@ const getPokeStats = (level, exp) => {
     // Calculate required experience points for leveling up
     const requiredExpToLevelUp = requirePokeExpToLevelUp(exp, level);
     
-    // Determine rank based on level
-    const rank = level <= ranks.length ? ranks[level - 1] : ranks[ranks.length - 1];
-    
     return {
         level,
         exp,
         requiredExpToLevelUp,
-        rank
     };
 };
 
 module.exports = {
     calculatePokeExp,
     requirePokeExpToLevelUp,
-    getPokeStats
+    getPokeStats,
+    level,
 };
