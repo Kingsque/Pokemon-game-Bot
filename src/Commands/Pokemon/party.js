@@ -13,7 +13,7 @@ module.exports = {
             if (party.length === 0) {
                 return M.reply("📭 Your Pokémon party is empty!");
             }
-            const pushname = M.pushName.trim()
+            let pushname = M.pushName.trim()
             let response = "📋 ${pushname}'s Party:\n";
             party.forEach((pokemon, index) => {
                 response += `${index + 1}. ${pokemon.name}\nLevel: ${pokemon.level}\n\n`;
