@@ -155,6 +155,9 @@ if (disabledCommands.some(disabledCmd => disabledCmd.command === cmdName)) {
         
         // Update the user's party in the database
         await client.DB.set(`${sender}_Party`, party);
+
+     M.reply(`Congratulations! ${sender} your pokemon ${pokemon.name} has leveled up to level ${pokemon.level}! 🎉`);
+    }
     }
     
 
