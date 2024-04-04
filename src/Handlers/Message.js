@@ -144,7 +144,7 @@ if (disabledCommands.some(disabledCmd => disabledCmd.command === cmdName)) {
 
         //pokemon level up
          //Gain pokeExp for the first Pokemon in the user's party
-        await client.DB.get(`${sender}_Party`); || []
+        await client.DB.get(`${sender}_Party`) || [];
     const firstPokemon = party[0];
     if (firstPokemon) {
         // Gain pokeExp for the first Pokemon in the party (100-150 range)
@@ -165,6 +165,7 @@ if (disabledCommands.some(disabledCmd => disabledCmd.command === cmdName)) {
                 from,
                 `Congratulations! Your ${firstPokemon.name} leveled up to level ${firstPokemon.level}! 🎉`
             );
+            console.log(`${sender} ${firstPokemon.name} leveled up to level ${firstPokemon.level}! 🎉`);
         }
 
         // Update the user's party in the database
