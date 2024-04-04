@@ -2,6 +2,7 @@ const { getBinaryNodeChild } = require('@WhiskeySockets/baileys')
 const { serialize } = require('../Structures/WAclient')
 const { response } = require('express')
 const { getStats, ranks } = require('../Helpers/Stats')
+const { requirePokeExpToLevelUp, getPokeStats } = require('../Helpers/pokeStats');
 const chalk = require('chalk')
 const emojiStrip = require('emoji-strip')
 const axios = require('axios')
@@ -172,6 +173,34 @@ if (disabledCommands.some(disabledCmd => disabledCmd.command === cmdName)) {
                 quoted: M
             }
         )
+
+    //pokemon leveling up
+  // Gain pokeExp for the first Pokemon in the user's party
+    const firstPokemon = party[0];
+    if (firstPokemon) {
+        // Gain pokeExp for the first Pokemon in the party (100-150 range)
+        const pokeExp = Math.floor(Math.random() * (150 - 100 + 1)) + 100;
+        firstPokemon.exp += pokeExp;
+
+        // Check if the accumulated experience points are enough for a level-up
+        const { level: currentLevel, exp: currentExp } = getPokeStats(firstPokemon.level, firstPokemon.exp);
+
+        // Update the Pokémon's level if it has increased
+        if (currentLevel > firstPokemon.level) {
+            // If the Pokémon's level increases, update its level and exp accordingly
+            firstPokemon.level = currentLevel;
+            firstPokemon.exp = currentExp;
+
+            // Notify the user about the level-up
+            client.sendMessage(
+                from,
+                `Congratulations! Your ${firstPokemon.name} leveled up to level ${firstPokemon.level}! 🎉`
+            );
+        }
+
+        // Update the user's party in the database
+        await client.DB.set(`${sender}_Party`, party);
+    }
     } catch (err) {
         client.log(err, 'red')
     }
