@@ -13,13 +13,22 @@ module.exports = {
             if (party.length === 0) {
                 return M.reply("📭 Your Pokémon party is empty!");
             }
-
-            let response = "📋 Your Party:\n";
+            const pushname = M.pushName.trim()
+            let response = "📋 ${pushname}'s Party:\n";
             party.forEach((pokemon, index) => {
                 response += `${index + 1}. ${pokemon.name}\nLevel: ${pokemon.level}\n\n`;
             });
 
-            await M.reply(response);
+            await client.sendMessage(
+          M.from,
+          {
+            image: { url: "https://i.ibb.co/kxvz1WD/Aurora-party.jpg" },
+            caption: response
+          },
+          {
+            quoted: M
+          }
+        );
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
