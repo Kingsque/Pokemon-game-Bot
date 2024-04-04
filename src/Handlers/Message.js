@@ -158,7 +158,6 @@ if (disabledCommands.some(disabledCmd => disabledCmd.command === cmdName)) {
 
      M.reply(`Congratulations! ${sender} your pokemon ${pokemon.name} has leveled up to level ${pokemon.level}! 🎉`);
     }
-    }
     
 
         //Will add exp according to the commands
