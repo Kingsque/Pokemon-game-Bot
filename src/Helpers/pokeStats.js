@@ -51,8 +51,9 @@ const levelUpPokemon = (pokemon) => {
     
     if (requiredExp <= 0 && level < maxLevel) {
         pokemon.level += 1;
-        pokemon.exp = Math.max(exp - calculatePokeExp(level), 0);
-        console.log(`Congratulations! Your ${pokemon.name} leveled up to level ${pokemon.level}! 🎉`);
+        const remainingExp = Math.max(exp - calculatePokeExp(level), 0);
+        const nextLevelExp = calculatePokeExp(pokemon.level);
+        pokemon.exp = remainingExp + nextLevelExp;
     }
 };
 
