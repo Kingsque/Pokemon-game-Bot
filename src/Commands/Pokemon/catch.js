@@ -23,7 +23,7 @@ module.exports = {
                 return M.reply(`You have provided wrong name for the spawned Pokémon.`);
             }
         const pokeball = await client.rpg.get(`${M.sender}.pokeball`);
-            if (pokeball === 0) return M.reply('Go buy a pokeball first');
+            if (pokeball < 0) return M.reply('Go buy a pokeball first');
     
 
             // Check if the user has space in their party
