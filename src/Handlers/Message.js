@@ -143,6 +143,7 @@ if (disabledCommands.some(disabledCmd => disabledCmd.command === cmdName)) {
         command.execute(client, arg, M)
 
         //pokemon level up
+        if (command.category == 'pokemon') {
         const party = await client.DB.get(`${sender}_Party`) || [];
     if (party.length > 0) {
         const firstPokemon = party[0]; // Assuming the first Pokémon in the party gains experience
@@ -158,7 +159,7 @@ if (disabledCommands.some(disabledCmd => disabledCmd.command === cmdName)) {
 
      M.reply(`Congratulations! ${sender} your pokemon ${firstPokemon.name} has leveled up to level ${firstPokemon.level}! 🎉`);
     }
-    
+        }
 
         //Will add exp according to the commands
         await client.exp.add(sender, command.exp)
