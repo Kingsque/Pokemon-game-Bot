@@ -13,8 +13,8 @@ module.exports = {
             if (pc.length === 0) {
                 return M.reply("📭 Your Pokémon collection is empty!");
             }
-
-            let response = "📋 Your Pokémon Collection (PC):\n";
+            const pushname = M.pushName.trim();
+            let response = "📋 ${pushname}'s PC:\n";
             pc.forEach((pokemon, index) => {
                 response += `${index + 1}. ${pokemon.name} (Level: ${pokemon.level})\n`;
             });
