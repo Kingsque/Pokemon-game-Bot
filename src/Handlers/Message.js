@@ -1,7 +1,7 @@
 const { getBinaryNodeChild } = require('@WhiskeySockets/baileys')
 const { serialize } = require('../Structures/WAclient')
 const { response } = require('express')
-const { getStats } = require('../Helpers/Stats')
+const { ranks, getStats } = require('../Helpers/Stats')
 const { requirePokeExpToLevelUp, getPokeStats } = require('../Helpers/pokeStats')
 const chalk = require('chalk')
 const emojiStrip = require('emoji-strip')
