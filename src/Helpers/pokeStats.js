@@ -41,8 +41,24 @@ const getPokeStats = (level, exp) => {
     };
 };
 
+/**
+ * Level up a Pokémon if it has enough experience points to do so.
+ * @param {Object} pokemon - The Pokémon object to level up.
+ */
+const levelUpPokemon = (pokemon) => {
+    const { level, exp } = pokemon;
+    const requiredExp = requirePokeExpToLevelUp(exp, level);
+    
+    if (requiredExp <= 0 && level < maxLevel) {
+        pokemon.level += 1;
+        pokemon.exp = Math.max(exp - calculatePokeExp(level), 0);
+        console.log(`Congratulations! Your ${pokemon.name} leveled up to level ${pokemon.level}! 🎉`);
+    }
+};
+
 module.exports = {
     calculatePokeExp,
     requirePokeExpToLevelUp,
-    getPokeStats
+    getPokeStats,
+    levelUpPokemon
 };
