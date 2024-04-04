@@ -22,6 +22,9 @@ module.exports = {
             if (pokemonName !== pokemon.name.toLowerCase()) {
                 return M.reply(`You have provided wrong name for the spawned Pokémon.`);
             }
+        const pokeball = await client.rpg.get(`${M.sender}.pokeball`);
+            if (pokeball.length === 0) return M.reply('Go buy a pokeball first');
+    
 
             // Check if the user has space in their party
             const party = await client.DB.get(`${M.sender}_Party`) || [];
@@ -29,6 +32,7 @@ module.exports = {
                 // If party has space, add Pokémon to party
                 party.push(pokemon); // Add Pokémon to Party
                 await client.DB.set(`${M.sender}_Party`, party);
+                await client.rpg.sub(`${M.sender}.pokeball`, 1)
 
                 await M.reply(`🎉 You have successfully caught ${pokemon.name} (Level: ${pokemon.level}) and stored it in your Party!`);
             } else {
