@@ -44,6 +44,5 @@ const getPokeStats = (level, exp) => {
 module.exports = {
     calculatePokeExp,
     requirePokeExpToLevelUp,
-    getPokeStats,
-    level,
+    getPokeStats
 };
