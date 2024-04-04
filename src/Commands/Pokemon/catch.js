@@ -23,7 +23,7 @@ module.exports = {
                 return M.reply(`You have provided wrong name for the spawned Pokémon.`);
             }
         const pokeball = await client.rpg.get(`${M.sender}.pokeball`);
-            if (pokeball.length === 0) return M.reply('Go buy a pokeball first');
+            if (pokeball === 0) return M.reply('Go buy a pokeball first');
     
 
             // Check if the user has space in their party
@@ -40,6 +40,7 @@ module.exports = {
                 const pc = await client.DB.get(`${M.sender}_PC`) || [];
                 pc.push(pokemon); // Add Pokémon to PC
                 await client.DB.set(`${M.sender}_PC`, pc);
+                await client.rpg.sub(`${M.sender}.pokeball`, 1)
 
                 await M.reply(`🎉 You have successfully caught ${pokemon.name} (Level: ${pokemon.level}) and stored it in your PC!`);
             }
