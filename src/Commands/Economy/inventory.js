@@ -16,6 +16,7 @@ module.exports = {
         const pc = await client.DB.get(`${M.sender}_PC`) || []
         const wallet = await client.credit.get(`${M.sender}.wallet`);
         const bank = await client.credit.get(`${M.sender}.bank`);
+        const pokeballs = await client.rpg.get(`${M.sender}.pokeball`);
         
         const inventory = await client.rpg.get(M.sender);
         if (!inventory) return M.reply('You have no inventory');
@@ -23,6 +24,7 @@ module.exports = {
         let text = '🗻 *INVENTORY* 🗻\n\n';
         text += `🌶️ *Pepper Spray:* ${pepper || 0}\n`;
         text += `🧧 *Luck Potion:* ${luck || 0}\n`;
+        text += `🏀 *Pokeballs:* ${pokeballs || 0}\n;
         text += `🎴 *Total cards:* ${deck.length + coll.length || 'None'}\n`;
         text += `🎊 *Total pokemons:* ${party.length + pc.length || 'None'}\n`;
         text += `💳 *Credits:* ${wallet + bank}`;
