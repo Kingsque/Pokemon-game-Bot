@@ -31,7 +31,7 @@ module.exports = MessageHandler = async (messages, client) => {
         const ActivateChatBot = (await client.DB.get('chatbot')) || []
         const banned = (await client.DB.get('banned')) || []
         
-        
+            if (isCmd && !cmdName) return M.reply('No such command found! BAKA');
 
         // Antilink system
         if (
