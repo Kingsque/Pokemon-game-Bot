@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const maxLevel = 100; // Maximum level for a Pokémon
 
 /**
@@ -57,9 +59,56 @@ const levelUpPokemon = (pokemon) => {
     }
 };
 
+/**
+ * Extract species information for a given Pokémon name.
+ * @param {string} pokemonName - Name of the Pokémon.
+ * @returns {Object} - Species information for the Pokémon.
+ */
+const extractSpecies = async (pokemonName) => {
+    try {
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching species data for ${pokemonName}: ${error}`);
+        return null;
+    }
+};
+
+/**
+ * Check if a Pokémon can evolve based on its level and species.
+ * @param {Object} pokemon - The Pokémon object to check for evolution.
+ * @returns {boolean} - True if the Pokémon can evolve, otherwise false.
+ */
+const canPokemonEvolve = async (pokemon) => {
+    // Check if the Pokémon has reached its maximum level
+    if (pokemon.level >= maxLevel) {
+        return false;
+    }
+    
+    // Extract species information for the Pokémon
+    const speciesData = await extractSpecies(pokemon.name);
+    
+    // Check if the Pokémon has evolution requirements
+    if (speciesData && speciesData.evolves_from_species) {
+        const { evolves_from_species } = speciesData;
+        
+        // Check if the Pokémon's level is high enough for evolution
+        if (pokemon.level >= evolves_from_species.min_level && pokemon.species === evolves_from_species.name) {
+            return true;
+        }
+    } else {
+        // If no evolution data or not in the correct level/species, cannot evolve
+        return false;
+    }
+    
+    return false;
+};
+
 module.exports = {
     calculatePokeExp,
     requirePokeExpToLevelUp,
     getPokeStats,
-    levelUpPokemon
+    levelUpPokemon,
+    extractSpecies,
+    canPokemonEvolve
 };
