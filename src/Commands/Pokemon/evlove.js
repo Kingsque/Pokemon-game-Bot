@@ -36,7 +36,7 @@ module.exports = {
             const evolutionChainUrl = speciesData.data?.evolution_chain?.url;
 
             if (!evolutionChainUrl) {
-                return M.reply(`Failed to retrieve evolution data for ${pokemonToEvolve.species}.`);
+                return M.reply(`Failed to retrieve evolution data for ${pokemonToEvolve.name}.`);
             }
 
             const evolutionChainData = await axios.get(evolutionChainUrl);
@@ -48,7 +48,7 @@ module.exports = {
 
             // Traverse the evolution chain to find the next evolution
             let nextEvolution = evolutionDetails;
-            while (nextEvolution && nextEvolution.name && nextEvolution.sepcies.name !== pokemonToEvolve.name) {
+            while (nextEvolution && nextEvolution.species && nextEvolution.species.name !== pokemonToEvolve.species) {
                 nextEvolution = nextEvolution.evolves_to[0];
             }
 
