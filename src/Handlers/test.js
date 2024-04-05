@@ -1,8 +1,8 @@
 const axios = require('axios')
 const path = require('path')
 const { calculatePokeExp } = require('../Helpers/pokeStats')
-
-module.exports.spawnPokemon = async (client, M) => {
+            
+         const spawnPokemon = async (client, M) => {
             const id = Math.floor(Math.random() * 1025);
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
             const pokemon = response.data;
@@ -26,3 +26,8 @@ module.exports.spawnPokemon = async (client, M) => {
               caption: message,
             });
         }
+}
+
+module.exports = {
+    spawnPokemon
+};
