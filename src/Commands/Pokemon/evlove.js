@@ -25,16 +25,14 @@ module.exports = {
             const index = parseInt(arg) - 1;
             const pokemonToEvolve = party[index];
 
-            if (!pokemonToEvolve || !pokemonToEvolve.species) {
-                return M.reply("Cannot find Pokémon to evolve.");
-            }
-
+             const pokemon= pokemonToEvolve.name.toLowerCase()
+            
             if (!canPokemonEvolve(pokemonToEvolve)) {
                 return M.reply("This Pokémon cannot evolve at the moment.");
             }
 
             // Fetch evolution chain data for the current Pokémon species
-            const speciesData = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonToEvolve.species.toLowerCase()}`);
+            const speciesData = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemon}`);
             const evolutionChainUrl = speciesData.data?.evolution_chain?.url;
 
             if (!evolutionChainUrl) {
