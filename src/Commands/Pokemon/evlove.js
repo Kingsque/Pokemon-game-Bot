@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { canPokemonEvolve } = require('../Handers/pokeStats');
+const { canPokemonEvolve } = require('../../Helpers/pokeStats');
 
 module.exports = {
     name: "evolve",
