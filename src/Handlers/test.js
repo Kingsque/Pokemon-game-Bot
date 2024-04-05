@@ -3,6 +3,10 @@ const { calculatePokeExp } = require('../Helpers/pokeStats');
 
 const spawnPokemon = async (client, M) => {
     try {
+        if (!M) {
+            throw new Error('Message object is undefined');
+        }
+        
         const id = Math.floor(Math.random() * 1025);
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
         const pokemon = response.data;
