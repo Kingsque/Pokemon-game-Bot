@@ -43,12 +43,12 @@ module.exports = {
             const evolutionDetails = evolutionChainData.data?.chain;
 
             if (!evolutionDetails) {
-                return M.reply(`Failed to parse evolution data for ${pokemonToEvolve.species}.`);
+                return M.reply(`Failed to parse evolution data for ${pokemonToEvolve.name}.`);
             }
 
             // Traverse the evolution chain to find the next evolution
             let nextEvolution = evolutionDetails;
-            while (nextEvolution && nextEvolution.species && nextEvolution.species.name !== pokemonToEvolve.species) {
+            while (nextEvolution && nextEvolution.name && nextEvolution.sepcies.name !== pokemonToEvolve.name) {
                 nextEvolution = nextEvolution.evolves_to[0];
             }
 
