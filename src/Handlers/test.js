@@ -34,6 +34,5 @@ const spawnPokemon = async (client, M) => {
     }
 };
 
-module.exports = {
-    spawnPokemon
-};
+module.exports = spawnPokemon;
+    
