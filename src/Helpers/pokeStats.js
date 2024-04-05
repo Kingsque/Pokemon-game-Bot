@@ -60,16 +60,16 @@ const levelUpPokemon = (pokemon) => {
 };
 
 /**
- * Extract species information for a given Pokémon name.
+ * Extract evolution details for a given Pokémon name.
  * @param {string} pokemonName - Name of the Pokémon.
- * @returns {Object} - Species information for the Pokémon.
+ * @returns {Object|null} - Evolution details for the Pokémon, or null if not found.
  */
-const extractSpecies = async (pokemonName) => {
+const extractEvolution = async (pokemonName) => {
     try {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
-        return response.data;
+        const response = await axios.get(`https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/pokedex.json/${pokemonName}`);
+        return response.data.evolution;
     } catch (error) {
-        console.error(`Error fetching species data for ${pokemonName}: ${error}`);
+        console.error(`Error fetching evolution data for ${pokemonName}: ${error}`);
         return null;
     }
 };
@@ -85,23 +85,16 @@ const canPokemonEvolve = async (pokemon) => {
         return false;
     }
     
-    // Extract species information for the Pokémon
-    const speciesData = await extractSpecies(pokemon.name);
+    // Extract evolution details for the Pokémon
+    const evolutionDetails = await extractEvolution(pokemon.name);
     
     // Check if the Pokémon has evolution requirements
-    if (speciesData && speciesData.evolves_from_species) {
-        const { evolves_from_species } = speciesData;
-        
+    if (evolutionDetails && evolutionDetails.required_level) {
         // Check if the Pokémon's level is high enough for evolution
-        if (pokemon.level >= evolves_from_species.min_level && pokemon.species === evolves_from_species.name) {
-            return true;
-        }
+        return pokemon.level >= evolutionDetails.required_level;
     } else {
-        // If no evolution data or not in the correct level/species, cannot evolve
         return false;
     }
-    
-    return false;
 };
 
 module.exports = {
@@ -109,6 +102,6 @@ module.exports = {
     requirePokeExpToLevelUp,
     getPokeStats,
     levelUpPokemon,
-    extractSpecies,
+    extractEvolution,
     canPokemonEvolve
 };
