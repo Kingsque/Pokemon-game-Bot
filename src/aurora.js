@@ -17,7 +17,7 @@ const CardHandler = require('./Handlers/card')
 const PokeHandler = require('./Handlers/pokemon')
 const EventsHandler = require('./Handlers/Events')
 const { groups } = require('./Handlers/Mods')
-const { spawnPokemon } = require('./Handlers/Message') // Import the spawnPokemon function
+const { spawnPokemon } = require('./Handlers/test') // Import the spawnPokemon function
 
 const contact = require('./Structures/Contact')
 const utils = require('./Structures/Functions')
