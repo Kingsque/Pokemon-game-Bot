@@ -2,8 +2,8 @@ const axios = require("axios");
 const path = require('path');
 
 module.exports = {
-  name: "ToDeck",
-  aliases: ["t2deck", "2deck"],
+  name: "t2deck",
+  aliases: ["todeck", "2deck"],
   exp: 0,
   cool: 4,
   react: "✅",
