@@ -106,12 +106,12 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
             const requiredExp = calculatePokeExp(level)
 
             const pokemonData = { name: name, level: level, exp: requiredExp }; // Create an object with name, level, and exp
-           console.log(`Spawned: ${pokemonData.name} in ${from}`);
-           await client.DB.set(`${from}.pokemon`, pokemonData);
+           console.log(`Spawned: ${pokemonData.name} in ${M.from}`);
+           await client.DB.set(`${M.from}.pokemon`, pokemonData);
 
             const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Type:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
 
-            await client.sendMessage(from, {
+            await client.sendMessage(M.from, {
               image: {
                 url: image,
               },
