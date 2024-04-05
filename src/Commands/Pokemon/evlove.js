@@ -25,6 +25,10 @@ module.exports = {
             const index = parseInt(arg) - 1;
             const pokemonToEvolve = party[index];
 
+            if (!pokemonToEvolve || !pokemonToEvolve.species) {
+                return M.reply("Cannot find Pokémon to evolve.");
+            }
+
             if (!canPokemonEvolve(pokemonToEvolve)) {
                 return M.reply("This Pokémon cannot evolve at the moment.");
             }
@@ -74,3 +78,4 @@ module.exports = {
         }
     }
 };
+                                                   
