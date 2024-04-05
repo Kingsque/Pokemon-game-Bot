@@ -7,7 +7,7 @@ module.exports = {
     exp: 0,
     cool: 4,
     react: "✨",
-    usage: 'Use :evolve',
+    usage: 'Use :evolve <index>',
     category: "pokemon",
     description: "Evolve your Pokémon if it meets the requirements",
     async execute(client, arg, M) {
@@ -17,14 +17,18 @@ module.exports = {
                 return M.reply("📭 Your Pokémon party is empty!");
             }
 
-            const evolveCandidates = party.filter(pokemon => canPokemonEvolve(pokemon));
-            if (evolveCandidates.length === 0) {
-                return M.reply("No Pokémon in your party can evolve at the moment.");
+            // Check if an index argument is provided
+            if (!arg || !parseInt(arg) || parseInt(arg) <= 0 || parseInt(arg) > party.length) {
+                return M.reply("Please provide a valid index of the Pokémon you want to evolve.");
             }
 
-            // Assuming only one Pokémon can evolve at a time
-            const pokemonToEvolve = evolveCandidates[0];
-            
+            const index = parseInt(arg) - 1;
+            const pokemonToEvolve = party[index];
+
+            if (!canPokemonEvolve(pokemonToEvolve)) {
+                return M.reply("This Pokémon cannot evolve at the moment.");
+            }
+
             // Fetch evolution chain data for the current Pokémon species
             const speciesData = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonToEvolve.species.toLowerCase()}`);
             const evolutionChainUrl = speciesData.data?.evolution_chain?.url;
@@ -70,4 +74,3 @@ module.exports = {
         }
     }
 };
-              
