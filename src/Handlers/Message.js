@@ -94,7 +94,7 @@ if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
     return;
 }
 
-        const spawnPokemon => {
+        const spawnPokemon = async () => {
             const id = Math.floor(Math.random() * 1025);
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
             const pokemon = response.data;
