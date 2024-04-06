@@ -31,10 +31,11 @@ module.exports = MessageHandler = async (messages, client) => {
         const ActivateMod = (await client.DB.get('mod')) || []
         const ActivateChatBot = (await client.DB.get('chatbot')) || []
         const banned = (await client.DB.get('banned')) || []
-
-        //check valid user
+        
+        // Check if sender is valid user
         const user = await client.DB.get(`data`);
-        if (sender.includes(user) return M.reply('Hello there, _Welcome to Aurora botz_. Use :help to get started`);
+        if (sender.includes(user)) return M.reply('Hello there, _Welcome to Aurora botz_. Use :help to get started');
+        
         // Antilink system
         if (
             isGroup &&
