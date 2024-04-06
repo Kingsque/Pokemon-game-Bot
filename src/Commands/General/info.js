@@ -20,14 +20,14 @@ module.exports = {
             return `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
         };
         const uptime = formatTime(process.uptime());
-        const usersCount = await client.DB.get(`data`);
-        const usersCounts = usersCount.length;
+        const usersCount = await client.DB.get(`data`) || []
+        const usersCounts = usersCount.length
         const modCount = client.mods.length;
         const website = 'https://kingshisui00.github.io/Aurora-web/';
         
         let text = `(¬‿¬) *${process.env.NAME}'s info*\n\n`;
         text += `💠 *UPTIME:* ${uptime}\n`;
-        text += `💠 *USERS:* ${usersCounts}\n`;
+        text += `💠 *USERS:* ${usersCounts || 0}\n`;
         text += `💠 *COMMANDS:* ${client.cmd.size}\n`;
         text += `💠 *Groups:* ${groupCount}\n`;
         text += `💠 *Mods:* ${modCount}\n`;
