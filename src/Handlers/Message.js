@@ -31,8 +31,6 @@ module.exports = MessageHandler = async (messages, client) => {
         const ActivateMod = (await client.DB.get('mod')) || []
         const ActivateChatBot = (await client.DB.get('chatbot')) || []
         const banned = (await client.DB.get('banned')) || []
-        
-            if (isCmd && !cmdName) return M.reply('I am alive user, use :help to get started');
 
         // Antilink system
         if (
@@ -56,7 +54,8 @@ module.exports = MessageHandler = async (messages, client) => {
          
         //Banned system
         if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot')
-        
+
+        if (isCmd && !cmdName) return M.reply('I am alive user, use :help to get started');
 
         // Logging Message
         client.log(
