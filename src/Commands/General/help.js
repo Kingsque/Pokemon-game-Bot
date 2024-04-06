@@ -19,13 +19,13 @@ module.exports = {
   usage: 'Use :help for helplist or :help <command_name> to get command info',
   description: 'Displays the command list or specific command info',
   async execute(client, arg, M) {
-
-    const user = await client.DB.get(`data`);
+    try {
+      const user = await client.DB.get(`data`);
 
     if (!M.sender.inclides(user) {
       await client.DB.push(`data`, M.sender);
     }
-    try {
+      
       if (!arg) {
         let pushName = M.pushName.trim();
         if (pushName.split(' ').length === 1) {
