@@ -60,7 +60,7 @@ module.exports = {
       await client.sendMessage(M.from, messageToSend);
 
       // Send notification to group
-      await client.sendMessage("120363062645637432@g.us", messageToSend);
+      await client.sendMessage("120363236615391329@g.us", messageToSend);
     } catch (err) {
       console.error(err);
       await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.errText()} Error-Chan Dis\n\nError:\n${err}` });
