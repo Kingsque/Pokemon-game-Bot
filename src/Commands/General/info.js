@@ -23,7 +23,7 @@ module.exports = {
         const usersCount = await client.DB.get(`data`) || []
         const usersCounts = usersCount.length
         const modCount = client.mods.length;
-        const website = 'https://kingshisui00.github.io/Aurora-web/';
+        const website = 'coming soon...';
         
         let text = `(¬‿¬) *${process.env.NAME}'s info*\n\n`;
         text += `💠 *UPTIME:* ${uptime}\n`;
