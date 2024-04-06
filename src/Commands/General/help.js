@@ -22,9 +22,9 @@ module.exports = {
     try {
       const user = await client.DB.get(`data`);
 
-    if (!M.sender.inclides(user) {
-      await client.DB.push(`data`, M.sender);
-    }
+      if (!user.includes(M.sender)) {
+        await client.DB.push(`data`, M.sender);
+      }
       
       if (!arg) {
         let pushName = M.pushName.trim();
