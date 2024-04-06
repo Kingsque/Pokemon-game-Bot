@@ -31,10 +31,7 @@ module.exports = MessageHandler = async (messages, client) => {
         const ActivateMod = (await client.DB.get('mod')) || []
         const ActivateChatBot = (await client.DB.get('chatbot')) || []
         const banned = (await client.DB.get('banned')) || []
-        
-        // Check if sender is valid user
-        const user = await client.DB.get(`data`);
-        if (isCmd && sender.includes(user)) await client.sendMessage(`Hello there, _Welcome to Aurora botz_. Use :help to get started`);
+        const user = (await client.DB.get(`data`)) || []
         
         // Antilink system
         if (
@@ -58,6 +55,8 @@ module.exports = MessageHandler = async (messages, client) => {
          
         //Banned system
         if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot')
+
+        if (isCmd && user.includes(sender)) await client.sendMessage(`Hello there, _Welcome to Aurora botz_. Use :help to get started`);
 
         if (isCmd && !cmdName) return M.reply('I am alive user, use :help to get started');
 
