@@ -34,7 +34,7 @@ module.exports = MessageHandler = async (messages, client) => {
         
         // Check if sender is valid user
         const user = await client.DB.get(`data`);
-        if (sender.includes(user)) return M.reply('Hello there, _Welcome to Aurora botz_. Use :help to get started');
+        if (isCmd && sender.includes(user)) await client.sendMessage(`Hello there, _Welcome to Aurora botz_. Use :help to get started`);
         
         // Antilink system
         if (
