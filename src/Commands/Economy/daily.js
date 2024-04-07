@@ -11,7 +11,7 @@ module.exports = {
     description: 'Claims your daily rewards',
     async execute(client, arg, M) {
         const dailyTimeout = 86400000; 
-        const dailyAmount = 2000; 
+        const dailyAmount = 3000; 
 
         const lastClaimed = await client.credit.get(`${M.sender}.daily`);
 
