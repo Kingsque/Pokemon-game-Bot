@@ -22,6 +22,6 @@ module.exports = {
             { quoted: M }
         );
         let tr = `@${M.sender.split('@')[0]} gave ${amount} to @${M.mentions[0].split('@')[0]}`;
-        await client.sendMessage("120363236615391329@g.us", tr);
+        await client.sendMessage(client.groups.adminsGroup, tr);
     }
 };
