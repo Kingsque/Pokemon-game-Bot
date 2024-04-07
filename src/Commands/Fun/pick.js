@@ -60,7 +60,9 @@ module.exports = {
         text += ":";
 
         for (const member of pickedMembers) {
-            text += `\n- *@${member.split('@')[0]}*`;
+            if (member) {
+                text += `\n- *@${member.split('@')[0]}*`;
+            }
         }
 
         await client.sendMessage(M.from, { text, mentions: groupMembers }, { quoted: M });
