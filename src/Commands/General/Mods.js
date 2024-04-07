@@ -21,7 +21,8 @@ module.exports = {
       M.from,
       {
         image: { url: "https://i.ibb.co/tPhb428/Aurora.jpg" },
-        caption: mo // Use mo as the caption
+        caption: mo,
+        mentions: [M.mentions[0]]// Use mo as the caption
       },
       {
         quoted: M
