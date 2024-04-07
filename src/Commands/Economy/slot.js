@@ -67,16 +67,15 @@ module.exports = {
 
         let text = '🎰 *SLOT MACHINE* 🎰\n\n';
         text += machine.visualize();
-        text += points <= 0 ? `\n\n📉 You lost ${amount} gold` : `\n\n📈 You won ${resultAmount} gold`;
-
-        if (luckFactor > 1) {
-            resultAmount *= luckFactor;
-            await client.rpg.subtract(`${M.sender}.luckpotion`, 1);
-            text += '🍀 You have been saved by your luck potion!';
+        
+        if (points <= 0 && luck > 0) {
+            resultAmount = 0;
+            await client.rpg.sub(`${M.sender}.luckpotion`, 1);
+            text += '\n\n🍀 You have been saved by your luck potion!';
+        } else {
+            text += points <= 0 ? `\n\n📉 You lost ${amount} gold` : `\n\n📈 You won ${resultAmount} gold`;
         }
 
-        
         M.reply(text);
     },
 };
-        
