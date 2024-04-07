@@ -1,6 +1,6 @@
 module.exports = {
   name: 'mods',
-  aliases: ['mods'],
+  aliases: ['mod'],
   category: 'general',
   exp: 0,
   cool: 5,
@@ -8,22 +8,21 @@ module.exports = {
   usage: 'Use :mods',
   description: 'Get information about moderators',
   async execute(client, arg, M) {
-    let mods = client.mods || []; // Ensure mods array exists
+    let mods = client.mods;
     let mo = "*Aurora MODS*\n";
     
     for (let i = 0; i < mods.length; i++) {
-      const contact = await client.contact.getContact(mods[i]); // Change contact.getContact to client.getContact
-      const username = contact && contact.name ? contact.name : 'MOD'; // Use contact.name for username
-      const tag = contact && contact.username ? `@${contact.username.split('@')[0]}` : `@MOD`; // Use contact.username for tag
+      const contact = await client.contact.getContact(mods[i], client);
+      const username = contact && contact.username ? contact.username : 'MOD';
     
-      mo += `\n#${i + 1}) *Name:* ${username}\n*Contact:* http://wa.me/${mods[i]}\n*Tag:* ${tag}\n`; // Change the URL format
+      mo += `\n#${i + 1}) *Name:* ${username}\n*Contact:* http://wa.me/+${mods[i]}\n*Tag: @${mods[i].split('@')[0]}\n`;
     }
     await client.sendMessage(
       M.from,
       {
         image: { url: "https://i.ibb.co/tPhb428/Aurora.jpg" },
-        caption: mo
-       },
+        caption: mo // Use mo as the caption
+      },
       {
         quoted: M
       }
