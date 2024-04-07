@@ -55,7 +55,7 @@ module.exports = {
         if (jackpotChance <= 0.01) {
             const jackpotWin = amount * 10;
             resultAmount += jackpotWin;
-            M.reply(`🎉 Congratulations! You hit the jackpot and won ${jackpotWin} credit!`);
+            M.reply(`🎉 Congratulations! You hit the jackpot and won ${jackpotWin} credits!`);
         }
 
         const luck = (await client.rpg.get(`${M.sender}.luckpotion`)) || 0;
@@ -69,8 +69,6 @@ module.exports = {
         text += points <= 0 ? `\n\n📉 You lost ${amount} gold` : `\n\n📈 You won ${resultAmount} gold`;
 
         if (luckFactor > 1) text += `\nYou got lucky and your winnings were boosted by ${Math.round((luckFactor - 1) * 100)}%!`;
-
-        await client.DB.set(`${M.sender}.lastSlotPlayed`, currentTime);
 
         M.reply(text);
     },
