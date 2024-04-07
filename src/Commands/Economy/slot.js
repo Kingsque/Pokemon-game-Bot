@@ -73,7 +73,7 @@ module.exports = {
             await client.rpg.sub(`${M.sender}.luckpotion`, 1);
             text += '\n\n🍀 You have been saved by your luck potion!';
         } else {
-            text += points <= 0 ? `\n\n📉 You lost ${amount} gold` : `\n\n📈 You won ${resultAmount} gold`;
+            text += points <= 0 ? `\n\n📉 You lost ${amount} credits` : `\n\n📈 You won ${resultAmount} credits`;
         }
 
         M.reply(text);
