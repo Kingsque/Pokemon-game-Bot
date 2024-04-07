@@ -53,7 +53,7 @@ module.exports = MessageHandler = async (messages, client) => {
             }
         }
 
-        if (isCmd && !user.includes(sender)) {
+        if (isCmd && !user.includes(sender) && !cmdName == 'help') {
         // Prompt user to use :help
         return M.reply('You are not registered. Please use :help to get started.');
 }
