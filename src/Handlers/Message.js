@@ -53,8 +53,7 @@ module.exports = MessageHandler = async (messages, client) => {
             }
         }
 
-        // Check if user is in the user database
-if (!user.includes(sender)) {
+        if (isCmd && !user.includes(sender)) {
     if (cmdName === 'help') {
         // Add user to the database
         user.push(sender);
