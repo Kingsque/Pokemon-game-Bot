@@ -73,7 +73,7 @@ module.exports = {
           const data = require(filePath);
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-          const cardKey = `${cardData.title}-${card[1]}`;
+          const cardKey = `${cardData.title}-${card[1]}-${cardData.url}-${i}`
           let cardUrl = cardData.url;
           if (!cardSet.has(cardKey)) {
             cardSet.add(cardKey);
