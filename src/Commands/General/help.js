@@ -20,11 +20,6 @@ module.exports = {
   description: 'Displays the command list or specific command info',
   async execute(client, arg, M) {
     try {
-      const user = await client.DB.set(`data`);
-     user.push(sender);
-        await client.DB.set(`data`, user);
-        return M.reply('You have been added to the user database. Use :help to get started.');
-      
       if (!arg) {
         let pushName = M.pushName.trim();
         if (pushName.split(' ').length === 1) {
