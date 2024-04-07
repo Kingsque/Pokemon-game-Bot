@@ -50,14 +50,14 @@ module.exports = {
             pickedMembers = pickMembers("");
         }
 
-        let text = `🎲 *Picked ${number > 1 ? 'members' : 'member'} randomly:`;
+        let text = `🎲 Picked ${number > 1 ? 'members' : 'member'} randomly`;
 
         // Add chosen type to the text
         if (arg) {
             text += ` ${number} ${arg}`;
         }
 
-        text += "*";
+        text += ":";
 
         for (const member of pickedMembers) {
             text += `\n- *@${member.split('@')[0]}*`;
