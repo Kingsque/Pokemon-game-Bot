@@ -57,7 +57,7 @@ module.exports = {
       const replyMsg = cardData ? `${cardTitle} has been transfered to @${recipientName}! 🎁` : `🃏 Card has been given to @${recipientName}! 🎁`;
       const messageToSend = `${replyMsg}\n\n@${senderName} gave ${cardTitle} to @${recipientName}`;
 
-      return M.reply(replyMsg);
+      await client.sendMessage(M.from, { text: replyMsg, mentions: [M.mentions[0]] } );
 
       // Send notification to group
       await client.sendMessage("120363236615391329@g.us", { text: messageToSend, mentions: [M.mentions[0]] } );
