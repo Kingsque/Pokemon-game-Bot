@@ -10,21 +10,24 @@ module.exports = {
   async execute(client, arg, M) {
     let mods = client.mods;
     let mo = "*Aurora MODS*\n";
+    let taggedMods = [];
     
     for (let i = 0; i < mods.length; i++) {
       const contact = await client.contact.getContact(mods[i], client);
-      const username = contact && contact.username ? contact.username : 'MOD';
-    
-      mo += `\n#${i + 1}) *Name:* ${username}\n*Contact:* http://wa.me/+${mods[i]}\n*Tag: @${mods[i].split('@')[0]}\n`;
+      const pushname = contact && contact.pushname ? contact.pushname : 'MOD';
+      taggedMods.push(pushname);
+      mo += `\n#${i + 1}) *Name:* ${pushname}\n*Contact:* http://wa.me/+${mods[i]}\n`;
     }
+    
     await client.sendMessage(
       M.from,
       {
         image: { url: "https://i.ibb.co/tPhb428/Aurora.jpg" },
-        caption: mo // Use mo as the caption
+        caption: mo + "\n\n*Tagged Mods:* " + taggedMods.join(", ") // Use mo as the caption
       },
       {
-        quoted: M
+        quoted: M,
+        mentions: taggedMods.map(mod => ({ tag: mod, id: mods[taggedMods.indexOf(mod)] }))
       }
     );
   }
