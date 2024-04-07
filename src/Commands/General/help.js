@@ -24,8 +24,7 @@ module.exports = {
         const m = M.sender;
         // If user is not in data, push the user
         if (!m.includes(user)) {
-            user.push(m);
-            await client.DB.set(`data`, user);
+            await client.DB.push(`data`, m);
         }
       
       if (!arg) {
