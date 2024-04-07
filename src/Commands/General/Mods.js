@@ -1,6 +1,6 @@
 module.exports = {
   name: 'mods',
-  aliases: ['mod'],
+  aliases: ['mods'],
   category: 'general',
   exp: 0,
   cool: 5,
@@ -14,15 +14,16 @@ module.exports = {
     for (let i = 0; i < mods.length; i++) {
       const contact = await client.contact.getContact(mods[i], client);
       const username = contact && contact.username ? contact.username : 'MOD';
+      const tag = contact && contact.username ? `@${contact.username.split('@')[0]}` : `@MOD`;
     
-      mo += `\n#${i + 1}) *Name:* ${username}\n*Contact:* http://wa.me/+${mods[i]}\n*Tag: @${mods[i].split('@')[0]}\n`;
+      mo += `\n#${i + 1}) *Name:* ${username}\n*Contact:* http://wa.me/+${mods[i]}\n*Tag:* ${tag}\n`;
     }
     await client.sendMessage(
       M.from,
       {
         image: { url: "https://i.ibb.co/tPhb428/Aurora.jpg" },
         caption: mo,
-        mentions: [M.mentions[0]]// Use mo as the caption
+        mentions: mods.map(mod => ({ tag: `@${mod.split('@')[0]}`, id: mod })) // Mentions the mods
       },
       {
         quoted: M
