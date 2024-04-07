@@ -2,6 +2,7 @@ const items = {
     buy: [
         { name: 'luckpotion', price: 1200, usage: 'Increases luck in slotting' },
         { name: 'pepperspray', price: 1000, usage: 'Self-defense against robbers' },
+        { name: 'pokeball', price: 1200, usage: 'For catching wild Pokemons' }
     ]
 };
 
