@@ -10,7 +10,7 @@ module.exports = {
      async execute(client, arg, M) {
        try {
          
-         let supportG = `*━『 Support Group Links 』━*\n\n* [ Aurora Support ] :*\np\nDescription: This is the main group of our bot, here RPG commands, game commands, and card shop commands will work\n* [ Aurora Auction ] :*\np\nDescription: Here every weekend auctions of events auction of event cards takes place and on every nee 100 user a grand auction takes place\n* [ Aurora Casino ] :**\np\nDescription: Here you can do slots and gamble to increase your money\n\n`;
+         let supportG = `*━『 Support Group Links 』━*\n\n* [ Aurora Support ] :* https://chat.whatsapp.com/HQDeQvuH2pl3X3YEMUEbQ8\nDescription: This is theain griup of our beta version, here the slot commands and other ussble commands work.\n\n`;
    
          let text = [
            "Together we rise, together we fall, but always together in this anime world we call home. Welcome to the support group.",
