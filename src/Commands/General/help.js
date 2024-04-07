@@ -21,10 +21,10 @@ module.exports = {
   async execute(client, arg, M) {
     try {
       const user = await client.DB.get(`data`);
-        
+        const m = M.sender;
         // If user is not in data, push the user
-        if (!user.includes(M.sender)) {
-            user.push(M.sender);
+        if (!m.includes(user)) {
+            user.push(m);
             await client.DB.set(`data`, user);
         }
       
