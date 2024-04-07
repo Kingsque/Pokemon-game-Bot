@@ -52,11 +52,22 @@ module.exports = MessageHandler = async (messages, client) => {
                 }
             }
         }
-         
+
+        // Check if user is in the user database
+if (!user.includes(sender)) {
+    if (cmdName === 'help') {
+        // Add user to the database
+        user.push(sender);
+        await client.DB.set(`data`, user);
+        return M.reply('You have been added to the user database. Use :help to get started.');
+    } else {
+        // Prompt user to use :help
+        return M.reply('You are not registered. Please use :help to get started.');
+    }
+}
+        
         //Banned system
         if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot')
-
-        if (isCmd && user.includes(sender)) await client.sendMessage(`Hello there, _Welcome to Aurora botz_. Use :help to get started`);
 
         if (isCmd && !cmdName) return M.reply('I am alive user, use :help to get started');
 
