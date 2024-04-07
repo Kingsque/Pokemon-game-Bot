@@ -143,7 +143,7 @@ if (disabledCommands.some(disabledCmd => disabledCmd.command === cmdName)) {
             return M.reply('This command can only be used when bot is admin')
         if (!isGroup && command.category == 'moderation') return M.reply('This command is ment to use in groups')
         if (!isGroup && !client.mods.includes(sender.split('@')[0])) return M.reply("Bot can only be accessed in groups")
-        if (isGroup && (command.name === 'slot' || command.name === 'gamble') && from !== "120363281892304546@g.us") {
+        if (isGroup && (command.name === 'slot' || command.name === 'gamble') && from !== client.groups.casinoGroup) {
     return M.reply(`The slot and gamble commands can only be used in the casino group.`);
         }
         if (!client.mods.includes(sender.split('@')[0]) && command.category == 'dev')
