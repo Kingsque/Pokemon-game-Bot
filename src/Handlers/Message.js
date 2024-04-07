@@ -53,6 +53,22 @@ module.exports = MessageHandler = async (messages, client) => {
             }
         }
 
+        // Link handling code
+if (!isGroup && body.includes('chat.whatsapp.com')) {
+    // Extract the sender's name or number
+    const senderInfo = M.pushName || sender;
+    
+    // Create the message to be sent to the mods group
+    const messageToMods = `WhatsApp link sent by: ${senderInfo}\nLink: ${body}`;
+
+    // Send a message to the user
+    await client.sendMessage(from, 'Your request has been sent.');
+
+    // Forward the link and sender info to the mods group
+    const modsGroupJid = client.groups.adminsGroup; // Get the mods group JID
+    await client.sendMessage(modsGroupJid, { text: messageToMods, mentions: [M.pushname] } );
+}
+
         if (isCmd && !user.includes(sender) && cmdName !== 'help') {
     // Prompt user to use :help
     return M.reply('You are not registered. Please use :help to get started.');
