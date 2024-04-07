@@ -12,7 +12,7 @@ module.exports = {
     let mo = "*Aurora MODS*\n";
     
     for (let i = 0; i < mods.length; i++) {
-      const contact = await client.getContact(mods[i]); // Change contact.getContact to client.getContact
+      const contact = await client.contact.getContact(mods[i]); // Change contact.getContact to client.getContact
       const username = contact && contact.name ? contact.name : 'MOD'; // Use contact.name for username
       const tag = contact && contact.username ? `@${contact.username.split('@')[0]}` : `@MOD`; // Use contact.username for tag
     
