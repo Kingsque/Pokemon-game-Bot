@@ -1,7 +1,8 @@
 const items = {
     buy: [
       { luckpotion: 1200 },
-      { pepperspray: 1000}
+      { pepperspray: 1000},
+      { pokeball: 1200 }
     ]
   };
 
