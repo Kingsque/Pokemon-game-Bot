@@ -10,10 +10,6 @@ module.exports = {
     usage: 'Use :slot <amount>',
     description: 'Bets the given amount of credits in a slot machine',
     async execute(client, arg, M) {
-        const participant = await client.DB.get('economy') || [];
-        if (!participant.includes(M.from)) {
-            return M.reply(`To use economy commands, join the casino group by using ${client.prefix}support`);
-        }
 
         const symbols = [
             new SlotSymbol('a', {
