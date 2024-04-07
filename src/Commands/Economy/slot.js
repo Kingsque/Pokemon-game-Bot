@@ -60,16 +60,23 @@ module.exports = {
 
         const luck = (await client.rpg.get(`${M.sender}.luckpotion`)) || 0;
         const luckFactor = 1 + (Math.random() * luck) / 10; 
-        resultAmount *= luckFactor;
 
-        await client.credit.add(`${M.sender}.wallet`, resultAmount);
+        if (points > 0 || luckFactor > 1) {
+            await client.credit.add(`${M.sender}.wallet`, resultAmount);
+        }
 
         let text = '🎰 *SLOT MACHINE* 🎰\n\n';
         text += machine.visualize();
         text += points <= 0 ? `\n\n📉 You lost ${amount} gold` : `\n\n📈 You won ${resultAmount} gold`;
 
-        if (luckFactor > 1) text += `\nYou got lucky and your winnings were boosted by ${Math.round((luckFactor - 1) * 100)}%!`;
+        if (luckFactor > 1) {
+            resultAmount *= luckFactor;
+            await client.rpg.subtract(`${M.sender}.luckpotion`, 1);
+            text += '🍀 You have been saved by your luck potion!';
+        }
 
+        
         M.reply(text);
     },
 };
+        
