@@ -20,11 +20,6 @@ module.exports = {
   description: 'Displays the command list or specific command info',
   async execute(client, arg, M) {
     try {
-      const user = await client.DB.get(`data`);
-
-      if (!user.includes(M.sender)) {
-        await client.DB.push(`data`, M.sender);
-      }
       
       if (!arg) {
         let pushName = M.pushName.trim();
