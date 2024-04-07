@@ -1,3 +1,5 @@
+const { Sticker } = require('wa-sticker-formatter');
+
 module.exports = {
     name: 'gamble',
     aliases: ['gb'],
@@ -20,25 +22,20 @@ module.exports = {
 
         const result = Math.random() < 0.5 ? 'left' : 'right';
         await client.credit.add(`${M.sender}.wallet`, result === direction ? amount : -amount);
-        M.reply(result === direction ? `🎉 You won ${amount}` : `🥀 You lost ${amount}`);
+        M.reply(result === direction ? `🎉 You won ${amount} credits` : `🥀 You lost ${amount} credits`);
 
-        // Here's the corrected part for the sticker generation
         const stickerUrl = result === 'right'
             ? 'https://i.ibb.co/SrtvnFH/ezgif-com-rotate.gif'
-            : 'https://bestanimations.com/media/left/365059883left-arrow-18.gif';
+            : 'https://raw.githubusercontent.com/Dkhitman3/Hitman47/master/assets/gifs/left.gif';
         
-        const sticker = {
-            type: 'sticker',
-            sticker: {
-                url: stickerUrl,
-                pack: 'Aurora',
-                author: 'By Aurora',
-                quality: 90,
-                type: 'full',
-                background: '#0000ffff'
-            }
-        };
+        const sticker = new Sticker(stickerUrl, {
+            pack: 'Aurora',
+            author: 'By Aurora',
+            quality: 90,
+            type: 'full',
+            background: '#0000ffff'
+        });
 
-        await client.sendMessage(M.from, sticker, { quoted: M });
+        await client.sendMessage(M.from, { sticker: await sticker.build() }, { quoted: M });
     }
 };
