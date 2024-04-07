@@ -49,18 +49,18 @@ module.exports = {
       const data = require(filePath);
       const cardData = data.find((cardData) => cardData.title === card.split("-")[0] && cardData.tier === card.split("-")[1]);
 
-      let url = cardData ? cardData.url : '';
-
+      const cardTitle = cardData ? `🃏 Card *${cardData.title} - ${cardData.tier}*` : "🃏 Card";
       const mentionUser = M.mentions[0];
+      const senderName = M.sender.split('@')[0];
+      const recipientName = mentionUser.split('@')[0];
 
-      const replyMsg = cardData ? `🃏 Card *${cardData.title} - ${cardData.tier}* has been gifted to @${mentionUser.split('@')[0]} ! 🎁` : `🃏 Card has been given to @${mentionUser.split('@')[0]} ! 🎁`;
-
-      const messageToSend = `${replyMsg}\n\n@${M.sender.split('@')[0]} gave 🃏 Card *${cardData.title} - ${cardData.tier}* to @${M.mentions[0].split('@')[0]}`;
+      const replyMsg = cardData ? `${cardTitle} has been gifted to @${recipientName}! 🎁` : `🃏 Card has been given to @${recipientName}! 🎁`;
+      const messageToSend = `${replyMsg}\n\n@${senderName} gave ${cardTitle} to @${recipientName}`;
 
       await client.sendMessage(M.from, messageToSend);
 
       // Send notification to group
-      await client.sendMessage(client.groups.adminsGroup, messageToSend);
+      await client.sendMessage("120363236615391329@g.us", messageToSend);
     } catch (err) {
       await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
     }
