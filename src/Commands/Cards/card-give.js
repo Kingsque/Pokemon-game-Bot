@@ -54,13 +54,13 @@ module.exports = {
       const senderName = M.sender.split('@')[0];
       const recipientName = mentionUser.split('@')[0];
 
-      const replyMsg = cardData ? `${cardTitle} has been gifted to @${recipientName}! 🎁` : `🃏 Card has been given to @${recipientName}! 🎁`;
+      const replyMsg = cardData ? `${cardTitle} has been transfered to @${recipientName}! 🎁` : `🃏 Card has been given to @${recipientName}! 🎁`;
       const messageToSend = `${replyMsg}\n\n@${senderName} gave ${cardTitle} to @${recipientName}`;
 
-      await client.sendMessage(M.from, messageToSend);
+      return M.reply(replyMsg);
 
       // Send notification to group
-      await client.sendMessage("120363236615391329@g.us", messageToSend);
+      await client.sendMessage("120363236615391329@g.us", { text: messageToSend, mentions: [M.mentions[0]] } );
     } catch (err) {
       await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
     }
