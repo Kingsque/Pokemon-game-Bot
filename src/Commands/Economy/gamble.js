@@ -10,10 +10,6 @@ module.exports = {
     usage: 'Use :gamble <amount> <direction>',
     description: 'Gambles your credits to decrease and increase',
     async execute(client, arg, M) {
-        const participant = await client.DB.get('economy') || [];
-        if (!participant.includes(M.from)) {
-          return M.reply(`To use economy commands, join the casino group by using ${client.prefix}support`);
-        }
         
         const directions = ['right', 'left'];
         const [amount, direction] = arg.split(' ');
