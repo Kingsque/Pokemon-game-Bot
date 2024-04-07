@@ -1,14 +1,14 @@
 const MAX_AMOUNT = 100000000;
 
 module.exports = {
-    name: 'treasury',
-    aliases: ['tr'],
+    name: 'savings',
+    aliases: ['ss'],
     category: 'economy',
     exp: 5,
     cool: 4,
     react: "✅",
-    usage: 'Use :treasury',
-    description: 'Shows the bank value of user',
+    usage: 'Use :savings',
+    description: 'Shows the savings value of user',
     async execute(client, arg, M) {
         let bank = await client.credit.get(`${M.sender}.bank`) || 0;
 
@@ -18,7 +18,7 @@ module.exports = {
             M.reply("Bank reached maximum amount; removing extra amount!");
         }
 
-        let text = `🏦 *Treasury* 🏦\n\n👤 *Name:* ${(await client.contact.getContact(M.sender, client)).username}\n🔖 *Tag:* #${M.sender.substring(3, 7)}\n💰 *Credits:* ${bank} `;
+        let text = `🏦 *Your Savings* 🏦\n\n👤 *Name:* ${(await client.contact.getContact(M.sender, client)).username}\n🔖 *Tag:* #${M.sender.substring(3, 7)}\n💰 *Credits:* ${bank} `;
 
         let imageT = await client.utils.generateCreditCardImage(
             (await client.contact.getContact(M.sender, client)).username,
