@@ -19,7 +19,7 @@ module.exports = {
         const recipientName = M.mentions[0].split('@')[0];
         const messageToSender = `You gave *${amount}* to *@${recipientName}*`;
         const messageToAdmin = `@${senderName} gave ${amount} to @${recipientName}`;
-        client.sendMessage(M.from, { text: messageToSender, mentions: [M.mentions[0]] }, { quoted: M });
+        client.sendMessage(M.from, messageToSender, { mentions: [M.mentions[0]] }, { quoted: M });
         await client.sendMessage("120363236615391329@g.us", messageToAdmin);
     }
 };
