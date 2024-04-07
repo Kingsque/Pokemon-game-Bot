@@ -53,10 +53,10 @@ module.exports = MessageHandler = async (messages, client) => {
             }
         }
 
-        if (isCmd && !user.includes(sender) && !cmdName == 'help') {
-        // Prompt user to use :help
-        return M.reply('You are not registered. Please use :help to get started.');
-}
+        if (isCmd && !user.includes(sender) && cmdName !== 'help') {
+    // Prompt user to use :help
+    return M.reply('You are not registered. Please use :help to get started.');
+        }
         
         //Banned system
         if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot')
