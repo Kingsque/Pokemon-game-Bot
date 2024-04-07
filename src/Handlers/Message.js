@@ -54,15 +54,8 @@ module.exports = MessageHandler = async (messages, client) => {
         }
 
         if (isCmd && !user.includes(sender)) {
-    if (cmdName === 'help') {
-        // Add user to the database
-        user.push(sender);
-        await client.DB.set(`data`, user);
-        return M.reply('You have been added to the user database. Use :help to get started.');
-    } else {
         // Prompt user to use :help
         return M.reply('You are not registered. Please use :help to get started.');
-    }
 }
         
         //Banned system
