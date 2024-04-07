@@ -13,7 +13,7 @@ module.exports = {
     async execute(client, arg, M) {
 
         const bonusTimeout = 31536000000; 
-        const bonusAmount = 50000;
+        const bonusAmount = 60000;
         const bonus = await client.credit.get(`${M.sender}.bonus`);
         let text = '';
 
