@@ -340,6 +340,31 @@ const convertMs = (ms, to = 'seconds') => {
     }
 }
 
+/**
+ * @param {string} file
+ * @returns {Promise<Buffer>}
+ */
+const gifToPng = async (file) => {
+    const { exec } = require('child_process');
+    const { promisify } = require('util');
+    const { writeFile } = require('fs').promises;
+    const { tmpdir } = require('os');
+    const { readFile, unlink } = require('fs').promises;
+    
+    const execute = promisify(exec);
+    
+    try {
+        const filename = `${tmpdir()}/${Math.random().toString(36)}.gif`;
+        await writeFile(filename, file);
+        await execute(`convert ${filename} ${filename.replace('.gif', '.png')}`);
+        const pngBuffer = await readFile(filename.replace('.gif', '.png'));
+        await Promise.all([unlink(filename), unlink(filename.replace('.gif', '.png'))]);
+        return pngBuffer;
+    } catch (error) {
+        throw new Error(`Failed to convert GIF to PNG: ${error.message}`);
+    }
+};
+
 module.exports = {
     calculatePing,
     capitalize,
@@ -362,5 +387,6 @@ module.exports = {
     getFormattedUrl,
     search,
     convertMs,
-    extractUrls
+    extractUrls,
+    gifToPng
 }
