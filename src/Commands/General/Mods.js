@@ -12,7 +12,7 @@ module.exports = {
     let mo = "*Aurora MODS*\n";
     
     for (let i = 0; i < mods.length; i++) {
-      const contact = await client.contact(mods[i]); // Change contact.getContact to client.getContact
+      const contact = await client.getContact(mods[i]); // Change contact.getContact to client.getContact
       const username = contact && contact.name ? contact.name : 'MOD'; // Use contact.name for username
       const tag = contact && contact.username ? `@${contact.username.split('@')[0]}` : `@MOD`; // Use contact.username for tag
     
@@ -22,9 +22,8 @@ module.exports = {
       M.from,
       {
         image: { url: "https://i.ibb.co/tPhb428/Aurora.jpg" },
-        caption: mo,
-        mentions: mods.map(mod => ({ tag: `@${mod.split('@')[0]}`, id: mod })) // Mentions the mods
-      },
+        caption: mo
+       },
       {
         quoted: M
       }
