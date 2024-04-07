@@ -8,9 +8,11 @@ module.exports = {
     usage: 'Use :give <amount> @taguser',
     description: 'Transfer credits to your friend',
     async execute(client, arg, M) {
-        if (!M.mentions || M.mentions.length === 0) return M.reply('*You must mention someone to send the money*');
-        const amount = parseInt(arg.split(' ')[1]);
-        if (isNaN(amount) || amount <= 0) return M.reply('Please provide a valid and positive amount');
+        if (!M.mentions.length) return M.reply('*You must mention someone to attend the robbery*')
+        const amount = parseInt(arg.split(' ')[0])
+        if (!amount) return M.reply('Please provide the amount')
+        if (arg.split(' ')[0].startsWith('-') || arg.split(' ')[0].startsWith('+'))
+            return M.reply('Please provide the amount')
         const senderCredits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
         if (senderCredits < amount) return M.reply('You don\'t have that much in your wallet');
         await client.credit.add(`${M.mentions[0]}.wallet`, amount);
