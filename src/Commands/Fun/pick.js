@@ -5,7 +5,7 @@ module.exports = {
     cool: 5,
     react: "✅",
     category: 'fun',
-    usage: 'Use :pick <type> <number>',
+    usage: 'Use :pick <number> <type>',
     description: 'Pick random members from the group',
     async execute(client, arg, M) {
         const groupMetadata = await client.groupMetadata(M.from);
@@ -16,17 +16,15 @@ module.exports = {
 
         if (arg) {
             const args = arg.split(" ");
-            if (args.length > 1) {
-                // Parse number of picks
-                const newNumber = parseInt(args[args.length - 1]);
-                if (!isNaN(newNumber) && newNumber > 0 && newNumber <= 5) {
-                    number = newNumber;
-                    // Remove the number from the args array
-                    args.pop();
-                }
-                // Join the remaining args to get the type
-                arg = args.join(" ");
+            // Parse number of picks
+            const newNumber = parseInt(args[0]);
+            if (!isNaN(newNumber) && newNumber > 0 && newNumber <= 5) {
+                number = newNumber;
+                // Remove the number from the args array
+                args.shift();
             }
+            // Join the remaining args to get the type
+            arg = args.join(" ");
         }
 
         const pickMembers = (type) => {
@@ -52,7 +50,14 @@ module.exports = {
             pickedMembers = pickMembers("");
         }
 
-        let text = `🎲 *Picked ${number > 1 ? 'members' : 'member'} randomly:*`;
+        let text = `🎲 *Picked ${number > 1 ? 'members' : 'member'} randomly:`;
+
+        // Add chosen type to the text
+        if (arg) {
+            text += ` ${number} ${arg}`;
+        }
+
+        text += "*";
 
         for (const member of pickedMembers) {
             text += `\n- *@${member.split('@')[0]}*`;
@@ -61,4 +66,3 @@ module.exports = {
         await client.sendMessage(M.from, { text, mentions: groupMembers }, { quoted: M });
     }
 };
-  
