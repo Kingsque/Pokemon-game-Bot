@@ -13,22 +13,22 @@ module.exports = {
 
         const symbols = [
             new SlotSymbol('a', {
-                display: '🍂',
-                points: 1,
-                weight: 20,
+                display: '🍉',
+                points: 3,
+                weight: 30,
             }),
             new SlotSymbol('b', {
-                display: '🌱',
+                display: '🥭',
                 points: 2,
                 weight: 20,
             }),
             new SlotSymbol('c', {
-                display: '🍁',
-                points: 0,
-                weight: 20,
+                display: '🍇',
+                points: 1,
+                weight: 10,
             }),
             new SlotSymbol('d', {
-                display: '🌾',
+                display: '🍓',
                 points: 2,
                 weight: 10,
             }),
