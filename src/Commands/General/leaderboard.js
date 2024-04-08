@@ -8,59 +8,46 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
-    usage: 'Use :lb --credit/--cards/--pokemon',
+    usage: 'Use :lb --credit/--cards',
     description: "Displays global leaderboard of aurora bot in various types",
     async execute(client, arg, M) {
         try {
-            let allUsers = [];
-            let leaderboard = [];
+            const allUsers =
+                (arg[1] ?? arg[0]) === '--credit'
+                    ? Object.values(await client.credit.all()).map((x) => ({
+                        user: x.id,
+                        credit: x.value.credit || 0,
+                        bank: x.value.bank || 0,
+                    }))
+                    : (arg[1] ?? arg[0]) === '--cards'
+                        ? Object.values(await client.DB.all()).map((x) => ({
+                            user: x.id,
+                            deck: x.value.deck || [],
+                            collection: x.value.collection || []
+                        }))
+                        : Object.values(await client.exp.all()).map((x) => ({ user: x.id, xp: x.value })) || [];
 
-            if ((arg[1] ?? arg[0]) === '--credit') {
-                allUsers = Object.values(await client.credit.all()).map((x) => ({
-                    user: x.id,
-                    credit: x.value.credit || 0,
-                    bank: x.value.bank || 0,
-                }));
-                leaderboard = sortArray(allUsers, {
-                    by: 'total',
-                    order: 'desc',
-                    computed: {
-                        total: (x) => x.credit + x.bank
-                    }
-                });
-            } else if ((arg[1] ?? arg[0]) === '--cards') {
-                allUsers = Object.values(await client.DB.all()).map((x) => ({
-                    user: x.id,
-                    deck: x.value.deck || [],
-                    collection: x.value.collection || []
-                }));
-                leaderboard = sortArray(allUsers, {
-                    by: 'totalCards',
-                    order: 'desc',
-                    computed: {
-                        totalCards: (x) => (x.deck ? x.deck.length : 0) + (x.collection ? x.collection.length : 0)
-                    }
-                });
-            } else if ((arg[1] ?? arg[0]) === '--pokemon') {
-                allUsers = Object.values(await client.DB.all()).map((x) => ({
-                    user: x.id,
-                    party: x.value.party || [],
-                    pc: x.value.pc || []
-                }));
-                leaderboard = sortArray(allUsers, {
-                    by: 'totalPokemon',
-                    order: 'desc',
-                    computed: {
-                        totalPokemon: (x) => (x.party ? x.party.length : 0) + (x.pc ? x.pc.length : 0)
-                    }
-                });
-            } else {
-                allUsers = Object.values(await client.exp.all()).map((x) => ({ user: x.id, xp: x.value })) || [];
-                leaderboard = sortArray(allUsers, {
-                    by: 'xp',
-                    order: 'desc'
-                });
-            }
+            const leaderboard =
+                (arg[1] ?? arg[0]) === '--credit'
+                    ? sortArray(allUsers, {
+                        by: 'total',
+                        order: 'desc',
+                        computed: {
+                            total: (x) => x.credit + x.bank
+                        }
+                    })
+                    : (arg[1] ?? arg[0]) === '--cards'
+                        ? sortArray(allUsers, {
+                            by: 'totalCards',
+                            order: 'desc',
+                            computed: {
+                                totalCards: (x) => (x.deck ? x.deck.length : 0) + (x.collection ? x.collection.length : 0)
+                            }
+                        })
+                        : sortArray(allUsers, {
+                            by: 'xp',
+                            order: 'desc'
+                        });
 
             if (leaderboard.length < 10) {
                 return M.reply('🟥 *Sorry, there are not enough users to create a leaderboard*');
@@ -81,10 +68,9 @@ module.exports = {
                 text += `🏮 *Username: ${username}*#${leaderboard[i].user.substring(3, 7)}\n`;
                 text += `〽️ *Level: ${level}*\n🎡 *Rank: ${rank}*\n`;
                 text += `💰 *Credit: ${leaderboard[i].credit + leaderboard[i].bank}*\n`;
-                text += `🃏 *Cards: ${leaderboard[i].totalCards}*\n`;
-                text += `🎮 *Pokémon: ${leaderboard[i].totalPokemon}*\n`;
-                text += `⭐ *Exp: ${experience}*\n🍥 *RequiredXpToLevelUp: ${requiredXpToLevelUp} exp required*`;
-
+                text += `🃏 *Cards: ${(leaderboard[i].deck ? leaderboard[i].deck.length : 0) + (leaderboard[i].collection ? leaderboard[i].collection.length : 0)}*\n`;
+                text += `⭐ *Exp: ${experience}*\n🍥 *RequiredXpToLevelUp: ${requiredXpToLevelUp} exp required*\n\n`;
+            }
             client.sendMessage(
                 M.from,
                 {
@@ -103,4 +89,3 @@ module.exports = {
         }
     }
 };
-              
