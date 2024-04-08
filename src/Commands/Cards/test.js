@@ -18,6 +18,7 @@ module.exports = {
       M.reply('No Deck Found');
       return;
     } 
+
     try {
       const maxCardsInDeck = 12;
       const cardsToMove = deck.slice(maxCardsInDeck);
@@ -25,10 +26,10 @@ module.exports = {
       const collection = await client.DB.get(`${M.sender}_Collection`) || [];
       await client.DB.set(`${M.sender}_Collection`, [...collection, ...cardsToMove]);
       await client.DB.set(`${M.sender}_Deck`, cardsToKeep);
+
       const bgPath = path.join(__dirname, '../../Helpers/bg.json');
       const bgData = require(bgPath);
       const backgroundTitle = await client.DB.get(`${M.sender}_BG`);
-
       let backgroundImageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmru1INQycEtNqouDSnB0XU7_CS3MzEpORvw&usqp=CAU';
 
       if (backgroundTitle) {
@@ -50,10 +51,10 @@ module.exports = {
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
           const cardUrl = cardData.url;
           let text = `🃏 Total Deck Cards: ${deck.length}\n\n🏮 Username: ${(await client.contact.getContact(M.sender, client)).username} \n*#${index + 1}*\n🃏 *Name:* ${card[0]}\n🪄 *Tier:* ${card[1]} \n`;
-          const file = await client.utils.getBuffer(cardUrl);
+
           if (cardUrl.endsWith('.gif')) {
-            const pngBuffer = await client.utils.gifToPng(file);
-            const pngDataUrl = `data:image/png;base64,${pngBuffer.toString('base64')}`;
+            const pngBuffers = await client.utils.gifToPng(await client.utils.getBuffer(cardUrl));
+            const pngDataUrl = `data:image/png;base64,${pngBuffers[0].toString('base64')}`;
             await client.sendMessage(M.from, {image: {url: pngDataUrl}, caption: text}, {quoted: M});
           } else {
             await client.sendMessage(M.from, {image: {url: cardUrl}, caption: text}, {quoted: M});
@@ -63,25 +64,29 @@ module.exports = {
         const images = [];
         let cardText = "";
         const cardSet = new Set();
+
         for (let i = 0; i < deck.length; i++) {
           const card = deck[i].split('-');
           const filePath = path.join(__dirname, '../../Helpers/card.json');
           const data = require(filePath);
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-          const cardKey = `${cardData.title}-${card[1]}-${cardData.url}-${i}`
+          const cardKey = `${cardData.title}-${card[1]}-${cardData.url}-${i}`;
           let cardUrl = cardData.url;
+
           if (cardUrl.endsWith('.gif')) {
-            const pngBuffer = await client.utils.gifToPng(await client.utils.getBuffer(cardUrl));
-            cardUrl = `data:image/png;base64,${pngBuffer.toString('base64')}`;
+            const pngBuffers = await client.utils.gifToPng(await client.utils.getBuffer(cardUrl));
+            cardUrl = `data:image/png;base64,${pngBuffers[0].toString('base64')}`;
           }
+
           if (!cardSet.has(cardKey)) {
             cardSet.add(cardKey);
             images.push(cardUrl);
           }
+
           cardText += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
         }
-        
+
         const canvasWidth = 1050;
         const canvasHeight = 1800;
         const canvas = createCanvas(canvasWidth, canvasHeight);
@@ -102,7 +107,7 @@ module.exports = {
           const y = yStart + Math.floor(i / imagesPerRow) * (imageHeight + imagePadding);
           ctx.drawImage(image, x, y, imageWidth, imageHeight);
         }
-        
+
         const directory = require('os').tmpdir();
         const filePath = path.join(directory, 'collage.png');
         const buffer = canvas.toBuffer('image/png');
@@ -119,3 +124,4 @@ module.exports = {
     }
   },
 };
+            
