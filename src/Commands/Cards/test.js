@@ -80,8 +80,10 @@ module.exports = {
             if (cardUrl.endsWith('.gif')) {
               // Convert GIF to PNG
               const pngBuffer = await client.utils.gifToPng(await client.utils.getBuffer(cardUrl));
-              const pngUrl = await client.utils.uploadImageToServer(pngBuffer);
-              images.push(pngUrl);
+              const directory = require('os').tmpdir();
+              const pngFilePath = path.join(directory, `card_${i}.png`);
+              fs.writeFileSync(pngFilePath, pngBuffer);
+              images.push(pngFilePath);
             } else {
               images.push(cardUrl);
             }
@@ -125,4 +127,4 @@ module.exports = {
       await client.sendMessage(M.from, {image: {url: `${client.utils.errorChan()}`}, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`});
     }
   },
-};
+  
