@@ -39,7 +39,7 @@ module.exports = {
                 const username = (await client.contact.getContact(topUsers[i].user, client)).username?.whatsapp?.net ?? 'Unknown'; // Ensure property exists before accessing it
                 
                 text += `\n\n*(${i + 1})*\n`;
-                text += `⛩ Username: ${username}#${topUsers[i].user.substring(3, 7)}\n`;
+                text += `⛩ Username: ${username}\n`;
                 text += `〽️ Level: ${level}\n`;
                 text += `🎡 Rank: ${rank}\n`;
                 text += `⭐ Exp: ${topUsers[i].xp}\n`;
