@@ -343,26 +343,25 @@ const convertMs = (ms, to = 'seconds') => {
 }
 
 /**
- * @param {string} file
- * @returns {Promise<Buffer>}
+ * Converts a GIF image to PNG format.
+ * @param {string} file - The URL or file path of the GIF image.
+ * @returns {Promise<Buffer[]>} - A promise that resolves to an array of PNG buffers representing each frame of the GIF.
  */
- const gifToPng = async (file) => {
+const gifToPng = async (file) => {
     try {
+        // Extract frames from the GIF
         const frames = await gifFrames({ url: file, frames: 'all', outputType: 'png', cumulative: true });
+        
+        // Encode each frame to PNG format
         const pngBuffers = await Promise.all(frames.map(frame => imageDataURI.encodeFromFile(frame)));
-        const tmpDir = tmpdir();
-        const filenames = [];
-        for (let i = 0; i < pngBuffers.length; i++) {
-            const filename = `${tmpDir}/${i}.png`;
-            await writeFile(filename, pngBuffers[i]);
-            filenames.push(filename);
-        }
-        return filenames.map(filename => fs.readFileSync(filename));
+
+        // Convert base64 strings to buffers
+        return pngBuffers.map(buffer => Buffer.from(buffer.split(';base64,').pop(), 'base64'));
     } catch (error) {
         throw new Error(`Failed to convert GIF to PNG: ${error.message}`);
     }
 };
-
+ 
 module.exports = {
     calculatePing,
     capitalize,
