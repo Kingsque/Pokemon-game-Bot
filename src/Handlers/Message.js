@@ -107,9 +107,9 @@ if (!command) {
                    // Check bot mode
 const mode = await client.DB.get(`mode`);
 
-if (mode === 'self' && !isSelf) {
-    return;
-}
+//if (mode === 'self' && !isSelf) {
+ //   return;
+//}
 
 if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
     return;
