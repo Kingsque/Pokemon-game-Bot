@@ -53,9 +53,14 @@ module.exports = {
           let text = `🃏 Total Deck Cards: ${deck.length}\n\n🏮 Username: ${(await client.contact.getContact(M.sender, client)).username} \n*#${index + 1}*\n🃏 *Name:* ${card[0]}\n🪄 *Tier:* ${card[1]} \n`;
 
           if (cardUrl.endsWith('.gif')) {
-            const pngBuffers = await client.utils.gifToPng(await client.utils.getBuffer(cardUrl));
-            const pngDataUrl = `data:image/png;base64,${pngBuffers[0].toString('base64')}`;
-            await client.sendMessage(M.from, {image: {url: pngDataUrl}, caption: text}, {quoted: M});
+            try {
+              const pngBuffers = await client.utils.gifToPng(cardUrl);
+              const pngDataUrl = `data:image/png;base64,${pngBuffers[0].toString('base64')}`;
+              await client.sendMessage(M.from, {image: {url: pngDataUrl}, caption: text}, {quoted: M});
+            } catch (error) {
+              console.error(error);
+              await client.sendMessage(M.from, {image: {url: `${client.utils.errorChan()}`}, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${error.message}`});
+            }
           } else {
             await client.sendMessage(M.from, {image: {url: cardUrl}, caption: text}, {quoted: M});
           }
@@ -75,8 +80,13 @@ module.exports = {
           let cardUrl = cardData.url;
 
           if (cardUrl.endsWith('.gif')) {
-            const pngBuffers = await client.utils.gifToPng(await client.utils.getBuffer(cardUrl));
-            cardUrl = `data:image/png;base64,${pngBuffers[0].toString('base64')}`;
+            try {
+              const pngBuffers = await client.utils.gifToPng(cardUrl);
+              cardUrl = `data:image/png;base64,${pngBuffers[0].toString('base64')}`;
+            } catch (error) {
+              console.error(error);
+              await client.sendMessage(M.from, {image: {url: `${client.utils.errorChan()}`}, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${error.message}`});
+            }
           }
 
           if (!cardSet.has(cardKey)) {
@@ -124,4 +134,3 @@ module.exports = {
     }
   },
 };
-            
