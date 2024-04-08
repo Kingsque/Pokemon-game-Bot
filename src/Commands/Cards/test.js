@@ -73,7 +73,7 @@ module.exports = {
           const data = require(filePath);
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-          const cardKey = `${cardData.title}-${card[1]}-${cardData.url}-${i}`
+          const cardKey = `${cardData.title}-${card[1]}-${cardData.url}-${i}`;
           let cardUrl = cardData.url;
           if (!cardSet.has(cardKey)) {
             cardSet.add(cardKey);
@@ -127,4 +127,5 @@ module.exports = {
       await client.sendMessage(M.from, {image: {url: `${client.utils.errorChan()}`}, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`});
     }
   },
-  
+};
+                                            
