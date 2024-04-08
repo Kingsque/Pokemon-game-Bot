@@ -10,6 +10,8 @@ const { sizeFormatter } = require('human-readable')
 const { readFile, unlink, writeFile } = require('fs-extra')
 const { removeBackgroundFromImageBase64 } = require('remove.bg')
 const cheerio = require("cheerio");
+const gifFrames = require('gif-frames');
+const imageDataURI = require('image-data-uri');
 const baseUrl = 'https://www.myinstants.com';
 const searchUrl = 'https://www.myinstants.com/search/?name=';
 
@@ -344,22 +346,18 @@ const convertMs = (ms, to = 'seconds') => {
  * @param {string} file
  * @returns {Promise<Buffer>}
  */
-const gifToPng = async (file) => {
-    const { exec } = require('child_process');
-    const { promisify } = require('util');
-    const { writeFile } = require('fs').promises;
-    const { tmpdir } = require('os');
-    const { readFile, unlink } = require('fs').promises;
-    
-    const execute = promisify(exec);
-    
+ const gifToPng = async (file) => {
     try {
-        const filename = `${tmpdir()}/${Math.random().toString(36)}.gif`;
-        await writeFile(filename, file);
-        await execute(`convert ${filename} ${filename.replace('.gif', '.png')}`);
-        const pngBuffer = await readFile(filename.replace('.gif', '.png'));
-        await Promise.all([unlink(filename), unlink(filename.replace('.gif', '.png'))]);
-        return pngBuffer;
+        const frames = await gifFrames({ url: file, frames: 'all', outputType: 'png', cumulative: true });
+        const pngBuffers = await Promise.all(frames.map(frame => imageDataURI.encodeFromFile(frame)));
+        const tmpDir = tmpdir();
+        const filenames = [];
+        for (let i = 0; i < pngBuffers.length; i++) {
+            const filename = `${tmpDir}/${i}.png`;
+            await writeFile(filename, pngBuffers[i]);
+            filenames.push(filename);
+        }
+        return filenames.map(filename => fs.readFileSync(filename));
     } catch (error) {
         throw new Error(`Failed to convert GIF to PNG: ${error.message}`);
     }
