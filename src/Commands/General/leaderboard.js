@@ -8,76 +8,50 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
-    usage: 'Use :lb --credit/--cards',
+    usage: 'Use :lb',
     description: "Displays global leaderboard of aurora bot in various types",
     async execute(client, arg, M) {
         try {
-            const allUsers =
-                (arg[1] ?? arg[0]) === '--credit'
-                    ? Object.values(await client.credit.all()).map((x) => ({
-                        user: x.id,
-                        credit: x.value.credit || 0,
-                        bank: x.value.bank || 0,
-                    }))
-                    : (arg[1] ?? arg[0]) === '--cards'
-                        ? Object.values(await client.DB.all()).map((x) => ({
-                            user: x.id,
-                            deck: x.value.deck || [],
-                            collection: x.value.collection || []
-                        }))
-                        : Object.values(await client.exp.all()).map((x) => ({ user: x.id, xp: x.value })) || [];
+            const exp = Object.values(await client.exp.all()) ?? [];
 
-            const leaderboard =
-                (arg[1] ?? arg[0]) === '--credit'
-                    ? sortArray(allUsers, {
-                        by: 'total',
-                        order: 'desc',
-                        computed: {
-                            total: (x) => x.credit + x.bank
-                        }
-                    })
-                    : (arg[1] ?? arg[0]) === '--cards'
-                        ? sortArray(allUsers, {
-                            by: 'totalCards',
-                            order: 'desc',
-                            computed: {
-                                totalCards: (x) => (x.deck ? x.deck.length : 0) + (x.collection ? x.collection.length : 0)
-                            }
-                        })
-                        : sortArray(allUsers, {
-                            by: 'xp',
-                            order: 'desc'
-                        });
+            const users = exp.map((x) => ({
+                user: x.id,
+                xp: x.value.whatsapp.net
+            }));
 
-            if (leaderboard.length < 10) {
-                return M.reply('🟥 *Sorry, there are not enough users to create a leaderboard*');
-            }
+            const lb = sortArray(users, {
+                by: 'xp',
+                order: 'desc'
+            });
 
-            const myPosition = leaderboard.findIndex((x) => x.user === M.sender.split('.whatsapp.net')[0]);
-            let text = `☆☆💥 LEADERBOARD 💥☆☆\n\n*${
-                (await client.contact.getContact(M.sender, client)).username
-            }'s Position is ${myPosition + 1}*`;
+            if (lb.length < 1) return M.reply('🟥 *There are no users with XP*');
+            
+            const myPosition = lb.findIndex((x) => x.user === M.sender.split('.whatsapp.net')[0]);
+            const topUsers = lb.slice(0, 10);
 
-            for (let i = 0; i < Math.min(10, leaderboard.length); i++) {
-                const level = (await client.DB.get(`${leaderboard[i].user}.whatsapp.net_LEVEL`)) || 1;
+            let text = `☆☆💥 GLOBAL LEADERBOARD 💥☆☆\n\nYour Position: ${myPosition + 1}\n`;
+
+            for (let i = 0; i < topUsers.length; i++) {
+                const level = (await client.DB.get(`${topUsers[i].user}.whatsapp.net_LEVEL`)) ?? 1;
                 const { requiredXpToLevelUp, rank } = getStats(level);
-                const username = (await client.contact.getContact(leaderboard[i].user, client)).username;
-                const experience = (await client.exp.get(leaderboard[i].user)) || 0;
-
-                text += `\n\n*>${i + 1}*\n`;
-                text += `🏮 *Username: ${username}*#${leaderboard[i].user.substring(3, 7)}\n`;
-                text += `〽️ *Level: ${level}*\n🎡 *Rank: ${rank}*\n`;
-                text += `💰 *Credit: ${leaderboard[i].credit + leaderboard[i].bank}*\n`;
-                text += `🃏 *Cards: ${(leaderboard[i].deck ? leaderboard[i].deck.length : 0) + (leaderboard[i].collection ? leaderboard[i].collection.length : 0)}*\n`;
-                text += `⭐ *Exp: ${experience}*\n🍥 *RequiredXpToLevelUp: ${requiredXpToLevelUp} exp required*\n\n`;
+                const username = (await client.contact.getContact(topUsers[i].user, client)).username.whatsapp.net;
+                
+                text += `\n\n*(${i + 1})*\n`;
+                text += `⛩ Username: ${username}#${topUsers[i].user.substring(3, 7)}\n`;
+                text += `〽️ Level: ${level}\n`;
+                text += `🎡 Rank: ${rank}\n`;
+                text += `⭐ Exp: ${topUsers[i].xp}\n`;
+                text += `🍥 RequiredXpToLevelUp: ${requiredXpToLevelUp} exp required\n`;
             }
+
             client.sendMessage(
                 M.from,
                 {
                     image: {
                         url: 'https://i.ibb.co/tPhb428/Aurora.jpg'
                     },
-                    caption: text
+                    caption: text,
+                    gifPlayback: true
                 },
                 {
                     quoted: M
@@ -85,7 +59,8 @@ module.exports = {
             );
         } catch (error) {
             console.error('Error in leaderboard command:', error);
-            M.reply('An error occurred while processing the command.');
+            M.reply('🟥 *An error occurred while fetching leaderboard.*');
         }
     }
 };
+                
