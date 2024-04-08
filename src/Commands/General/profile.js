@@ -30,12 +30,13 @@ module.exports = {
         try {
             bio = (await client.fetchStatus(user)).status;
         } catch {
-            bio = '';
+            bio = 'None'; // Set to 'None' if no bio is available
         }
 
         const level = (await client.DB.get(`${user}_LEVEL`)) || 1;
         const stats = getStats(level);
-        const username = (await client.contact.getContact(user, client)).formattedName;
+        const contact = await client.contact.getContact(user, client);
+        const username = (await client.contact.getContact(user, client)).username?.whatsapp?.net ?? 'Unknown';
         const experience = (await client.exp.get(user)) || 0;
         const banned = (await client.DB.get('banned')) || [];
 
