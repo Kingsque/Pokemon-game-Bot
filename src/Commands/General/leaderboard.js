@@ -8,15 +8,19 @@ module.exports = {
     exp: 5,
     cool: 4,
     react: "✅",
-    usage: 'Use :lb',
+    usage: 'Use :lb --credit/--cards',
     description: "Displays global leaderboard of aurora bot in various types",
     async execute(client, arg, M) {
         try {
             const exp = Object.values(await client.exp.all()) ?? [];
 
+            if (exp.length === 0) {
+                return M.reply('🟥 *There are no users with XP*');
+            }
+
             const users = exp.map((x) => ({
                 user: x.id,
-                xp: x.value.whatsapp.net
+                xp: x.value?.whatsapp?.net ?? 0 // Ensure property exists before accessing it
             }));
 
             const lb = sortArray(users, {
@@ -24,8 +28,6 @@ module.exports = {
                 order: 'desc'
             });
 
-            if (lb.length < 1) return M.reply('🟥 *There are no users with XP*');
-            
             const myPosition = lb.findIndex((x) => x.user === M.sender.split('.whatsapp.net')[0]);
             const topUsers = lb.slice(0, 10);
 
@@ -34,7 +36,7 @@ module.exports = {
             for (let i = 0; i < topUsers.length; i++) {
                 const level = (await client.DB.get(`${topUsers[i].user}.whatsapp.net_LEVEL`)) ?? 1;
                 const { requiredXpToLevelUp, rank } = getStats(level);
-                const username = (await client.contact.getContact(topUsers[i].user, client)).username.whatsapp.net;
+                const username = (await client.contact.getContact(topUsers[i].user, client)).username?.whatsapp?.net ?? 'Unknown'; // Ensure property exists before accessing it
                 
                 text += `\n\n*(${i + 1})*\n`;
                 text += `⛩ Username: ${username}#${topUsers[i].user.substring(3, 7)}\n`;
@@ -63,4 +65,3 @@ module.exports = {
         }
     }
 };
-                
