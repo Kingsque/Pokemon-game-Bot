@@ -339,6 +339,21 @@ const convertMs = (ms, to = 'seconds') => {
         hours
     }
 }
+
+/**
+ * Converts a GIF to PNG, with the first appearance of the GIF as an image.
+ * @param {Buffer} gif - The GIF buffer to convert.
+ * @returns {Promise<Buffer>} A promise that resolves to a buffer containing the generated PNG.
+ */
+const gifToPng = async (gif) => {
+    const filename = `${tmpdir()}/${Math.random().toString(36)}`;
+    await writeFile(`${filename}.gif`, gif);
+    await execute(`ffmpeg -i "${filename}.gif" -vframes 1 "${filename}.png"`);
+    const buffer = await readFile(`${filename}.png`);
+    await Promise.all([unlink(`${filename}.gif`), unlink(`${filename}.png`)]);
+    return buffer;
+};
+
  
 module.exports = {
     calculatePing,
@@ -362,5 +377,6 @@ module.exports = {
     getFormattedUrl,
     search,
     convertMs,
-    extractUrls
+    extractUrls,
+    gifToPng
 }
