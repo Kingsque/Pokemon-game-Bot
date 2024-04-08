@@ -80,15 +80,11 @@ module.exports = {
                 text += `\n\n*>${i + 1}*\n`;
                 text += `🏮 *Username: ${username}*#${leaderboard[i].user.substring(3, 7)}\n`;
                 text += `〽️ *Level: ${level}*\n🎡 *Rank: ${rank}*\n`;
-                if ((arg[1] ?? arg[0]) === '--credit') {
-                    text += `💰 *Credit: ${leaderboard[i].credit + leaderboard[i].bank}*\n`;
-                } else if ((arg[1] ?? arg[0]) === '--cards') {
-                    text += `🃏 *Cards: ${leaderboard[i].totalCards}*\n`;
-                } else if ((arg[1] ?? arg[0]) === '--pokemon') {
-                    text += `🎮 *Pokémon: ${leaderboard[i].totalPokemon}*\n`;
-                }
-                text += `⭐ *Exp: ${experience}*\n\n🍥 *RequiredXpToLevelUp: ${requiredXpToLevelUp} exp required*`;
-            }
+                text += `💰 *Credit: ${leaderboard[i].credit + leaderboard[i].bank}*\n`;
+                text += `🃏 *Cards: ${leaderboard[i].totalCards}*\n`;
+                text += `🎮 *Pokémon: ${leaderboard[i].totalPokemon}*\n`;
+                text += `⭐ *Exp: ${experience}*\n🍥 *RequiredXpToLevelUp: ${requiredXpToLevelUp} exp required*`;
+
             client.sendMessage(
                 M.from,
                 {
