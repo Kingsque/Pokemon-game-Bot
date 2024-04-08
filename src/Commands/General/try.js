@@ -1,5 +1,5 @@
 const sortArray = require('sort-array');
-const { getStats } = require('./stats.js'); // Assuming stats.js is in the same directory
+const { getStats } = require('../Helpers/Stats.js'); // Assuming stats.js is in the same directory
 
 module.exports = {
     name: 'try',
