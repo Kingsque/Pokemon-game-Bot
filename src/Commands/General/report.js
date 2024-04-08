@@ -17,7 +17,7 @@ module.exports = {
         let text = `Your report has been successfully sent to the Mods group. Hope the mods will reply soon.`;
 
         // Send the report message to the Mods group
-        await client.sendMessage("120363062645637432@g.us", { text: report }, { quoted: M });
+        await client.sendMessage("120363236615391329@g.us", { text: report }, { quoted: M });
         
         // Send a confirmation message to the user
         await client.sendMessage(M.from, { text: text }, { quoted: M });
