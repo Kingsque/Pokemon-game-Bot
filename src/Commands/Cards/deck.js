@@ -6,7 +6,7 @@ const { createDeflate } = require('zlib');
 
 module.exports = {
   name: 'deck',
-  aliases: ['decks'],
+  aliases: ['deck'],
   exp: 0,
   cool: 4,
   react: "✅",
@@ -73,11 +73,20 @@ module.exports = {
           const data = require(filePath);
           const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
           const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-          const cardKey = `${cardData.title}-${card[1]}-${cardData.url}-${i}`
+          const cardKey = `${cardData.title}-${card[1]}-${cardData.url}-${i}`;
           let cardUrl = cardData.url;
           if (!cardSet.has(cardKey)) {
             cardSet.add(cardKey);
-            images.push(cardUrl);
+            if (cardUrl.endsWith('.gif')) {
+              // Convert GIF to PNG
+              const pngBuffer = await client.utils.gifToPng(await client.utils.getBuffer(cardUrl));
+              const directory = require('os').tmpdir();
+              const pngFilePath = path.join(directory, `card_${i}.png`);
+              fs.writeFileSync(pngFilePath, pngBuffer);
+              images.push(pngFilePath);
+            } else {
+              images.push(cardUrl);
+            }
           }
           cardText += `🔰Card ${i+1}:\n🌟Tier: ${card[1]}\n💎Name ${card[0]}\n\n`;
         }
@@ -119,4 +128,4 @@ module.exports = {
     }
   },
 };
-            
+                                            
