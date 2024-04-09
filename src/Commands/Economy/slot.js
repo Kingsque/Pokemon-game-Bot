@@ -14,8 +14,8 @@ module.exports = {
         const symbols = [
             new SlotSymbol('a', {
                 display: '🍉',
-                points: 3,
-                weight: 30,
+                points: 1,
+                weight: 10,
             }),
             new SlotSymbol('b', {
                 display: '🥭',
@@ -24,8 +24,8 @@ module.exports = {
             }),
             new SlotSymbol('c', {
                 display: '🍇',
-                points: 1,
-                weight: 10,
+                points: 0,
+                weight: 0,
             }),
             new SlotSymbol('d', {
                 display: '🍓',
