@@ -32,7 +32,7 @@ module.exports = {
           return M.reply(`Invalid card index. Your deck has ${collection.length} cards.`);
         } else {
           const card = collection[index].split('-');
-          const filePath = path.join(__dirname, '../../helpers/card.json');
+          const filePath = path.join(__dirname, '../../Helpers/card.json');
           const data = require(filePath);
           const cardData = data.find((cardData) => cardData.title === card[0] && cardData.tier === card[1]);
           const cardUrl = cardData.url;
