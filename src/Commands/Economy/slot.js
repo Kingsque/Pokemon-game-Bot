@@ -20,7 +20,7 @@ module.exports = {
             new SlotSymbol('b', {
                 display: '🥭',
                 points: 1,
-                weight: 5,
+                weight: 1,
             }),
             new SlotSymbol('c', {
                 display: '🍇',
