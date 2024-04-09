@@ -56,7 +56,7 @@ module.exports = {
         const cardSet = new Set();
         for (let i = 0; i < collection.length; i++) {
           const card = collection[i].split('-');
-          const filePath = path.join(__dirname, '../../helpers/card.json');
+          const filePath = path.join(__dirname, '../../Helpers/card.json');
           const data = require(filePath);
           const cardData = data.find((cardData) => cardData.title === card[0] && cardData.tier === card[1]);
           let cardUrl = cardData.url;
