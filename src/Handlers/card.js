@@ -74,13 +74,13 @@ module.exports = CardHandler = async (client, m) => {
       if (obj.tier.includes('6')|| obj.tier.includes('S')) {
         const giif = await client.utils.getBuffer(obj.url);
         const cgif = await client.utils.gifToMp4(giif);
-        return client.sendMessage(jid, {
+        await client.sendMessage(jid, {
           video: cgif,
           caption: `*━『  🎊Finally a rare card has spawned🎊 』━*\n\n🎴 *Name:* ${obj.title}\n\n🎐 *Tier:* ${obj.tier}\n\n🪩 *Price:* ${price}\n\n🎴 *Source:* ${obj.source}\n\n🔖 Use *${client.prefix}collect* to claim the card, your card will be stored in you deck`,
           gifPlayback: true,
         });
       } else {
-        return client.sendMessage(jid, {
+        await client.sendMessage(jid, {
           image: {
             url: obj.url,
           },
