@@ -15,17 +15,15 @@ module.exports = {
     react: "✅",
     aliases: ['r', ...reactions],
     exp: 50,
-    cool:4,
+    cool: 4,
     usage: 'Use :<reaction>',
     async execute(client, arg, M) {
 
         const text = arg.trim();
-        const command = M.body.split(' ')[0].toLowerCase().slice(client.prefix.length).trim();
-        let flag = true;
-        
-        if (command === 'r' || command === 'reaction') flag = false;
-        
-        if (!flag && !text) {
+        const command = M.body.split(' ')[0].toLowerCase().slice(client.config.prefix.length).trim();
+        let raw = true;
+        if (command === 'r' || command === 'reaction') raw = false;
+        if (!raw && !text) {
             const reactionList = `🎃 *Available Reactions:*\n\n- ${reactions
                 .map((reaction) => client.utils.capitalize(reaction))
                 .join('\n- ')}\n🛠️ *Usage:* ${client.prefix}reaction (reaction) [tag/quote user] | ${
@@ -33,40 +31,28 @@ module.exports = {
             }(reaction) [tag/quote user]\nExample: ${client.prefix}pat`;
             return await M.reply(reactionList);
         }
-        
-        const reaction = flag ? command : text.split(' ')[0].trim().toLowerCase();
-        
-        if (!flag && !reactions.includes(reaction)) {
-            return M.reply(`Invalid reaction. Use *${client.prefix}react* to see all of the available reactions`);
-        }
-        
+        const reaction = raw ? command : text.split(' ')[0].trim().toLowerCase();
+        if (!raw && !reactions.includes(reaction))
+            return M.reply(`Invalid reaction. Use *${client.config.prefix}react* to see all of the available reactions`);
         const users = M.mentions;
-        
-        if (M.quoted && !users.includes(M.quoted.sender)) {
-            users.push(M.quoted.sender);
-        }
-        
-        while (users.length < 1) {
-            users.push(M.sender);
-        }
-        
+        if (M.quoted && !users.includes(M.quoted.sender)) users.push(M.quoted.sender);
+        while (users.length < 1) users.push(M.sender);
         const reactant = users[0];
         const single = reactant === M.sender;
         const { url } = await client.utils.fetch(`https://api.waifu.pics/sfw/${reaction}`);
         const result = await client.utils.getBuffer(url);
         const buffer = await client.utils.gifToMp4(result);
-        
         await client.sendMessage(
             M.from,
             {
                 video: buffer,
                 gifPlayback: true,
                 caption: `*@${M.sender.split('@')[0]} ${suitableWords[reaction]} ${
-                    single ? 'Themselves' : (reactant ? `@${reactant.split('@')[0]}` : 'Default');
+                    single ? 'Themselves' : `@${reactant.split('@')[0]}`
                 }*`,
                 mentions: [M.sender, reactant]
             },
             { quoted: M }
         );
     }
-};
+}
