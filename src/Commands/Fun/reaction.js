@@ -62,7 +62,7 @@ module.exports = {
                 video: buffer,
                 gifPlayback: true,
                 caption: `*@${M.sender.split('@')[0]} ${suitableWords[reaction]} ${
-                    single ? 'Themselves' : reactant ? `@${reactant.split('@')[0]}` : 'Default';
+                    single ? 'Themselves' : (reactant ? `@${reactant.split('@')[0]}` : 'Default');
                 }*`,
                 mentions: [M.sender, reactant]
             },
