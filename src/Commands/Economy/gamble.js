@@ -22,8 +22,7 @@ module.exports = {
 
         const result = Math.random() < 0.5 ? 'left' : 'right';
         await client.credit.add(`${M.sender}.wallet`, result === direction ? amount : -amount);
-        M.reply(result === direction ? `🎉 You won ${amount} credits` : `🥀 You lost ${amount} credits`);
-
+    
         const stickerUrl = result === 'right'
             ? 'https://i.ibb.co/SrtvnFH/ezgif-com-rotate.gif'
             : 'https://raw.githubusercontent.com/Dkhitman3/Hitman47/master/assets/gifs/left.gif';
@@ -37,5 +36,7 @@ module.exports = {
         });
 
         await client.sendMessage(M.from, { sticker: await sticker.build() }, { quoted: M });
+
+        M.reply(result === direction ? `🎉 You won ${amount} credits` : `🥀 You lost ${amount} credits`);
     }
 };
