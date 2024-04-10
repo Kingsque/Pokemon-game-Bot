@@ -19,8 +19,8 @@ module.exports = {
             }),
             new SlotSymbol('b', {
                 display: '🥭',
-                points: 1,
-                weight: 1,
+                points: 0,
+                weight: 7,
             }),
             new SlotSymbol('c', {
                 display: '🍇',
@@ -43,8 +43,9 @@ module.exports = {
         const credits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
 
         if (amount > credits) return M.reply('You don\'t have sufficient funds');
-        if (amount > 10000) return M.reply('You cannot bet more than 10000 gold in the slot machine');
-
+        if (amount > 20000) return M.reply('You cannot bet more than 20000 credits in the slot machine');
+        if (amount > 500) return M.reply('You cannot bet less than 500 credits in the slot machine');
+        
         const machine = new SlotMachine(3, symbols).play();
         const lines = machine.lines.filter((line) => !line.diagonal);
         const points = machine.lines.reduce((total, line) => total + line.points, 0);
@@ -52,18 +53,21 @@ module.exports = {
         let resultAmount = points <= 0 ? -amount : amount * points;
 
         const jackpotChance = Math.random();
-        if (jackpotChance <= 0.01) {
+        const allSameSymbols = symbols.every(symbol => machine.grid.flat().every(tile => tile.symbol === symbol.name));
+        if (jackpotChance <= 0.01 && allSameSymbols) {
             const jackpotWin = amount * 10;
-            resultAmount += jackpotWin;
+            resultAmount = jackpotWin; // Set the result amount to jackpot win
             M.reply(`🎉 Congratulations! You hit the jackpot and won ${jackpotWin} credits!`);
+        } else {
+            const luck = (await client.rpg.get(`${M.sender}.luckpotion`)) || 0;
+            const luckFactor = 1 + (Math.random() * luck) / 10; 
+
+            if (points > 0 || Math.random() < luckFactor) { // Introduce luck probability here
+                resultAmount *= luckFactor; // Multiply result amount by luck factor
+            }
         }
 
-        const luck = (await client.rpg.get(`${M.sender}.luckpotion`)) || 0;
-        const luckFactor = 1 + (Math.random() * luck) / 10; 
-
-        if (points > 0 || Math.random() < luckFactor) { // Introduce luck probability here
-            await client.credit.add(`${M.sender}.wallet`, resultAmount);
-        }
+        await client.credit.add(`${M.sender}.wallet`, resultAmount);
 
         let text = '🎰 *SLOT MACHINE* 🎰\n\n';
         text += machine.visualize();
