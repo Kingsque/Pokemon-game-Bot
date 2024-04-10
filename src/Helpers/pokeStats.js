@@ -8,8 +8,8 @@ const maxLevel = 100; // Maximum level for a Pokémon
  * @returns {number} - Experience points required to level up.
  */
 const calculatePokeExp = (currentLevel) => {
-    // Formula to calculate experience points required for level up
-    return Math.floor(100 + (currentLevel - 1) * 100 + (100 * (currentLevel - 1)));
+    // Increase experience points by 200 for each level
+    return 100 + (currentLevel - 1) * 200;
 };
 
 /**
