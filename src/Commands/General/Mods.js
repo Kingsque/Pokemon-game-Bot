@@ -13,7 +13,7 @@ module.exports = {
     
     for (let i = 0; i < mods.length; i++) {
       const contact = await client.contact.getContact(mods[i], client);
-      const pushname = contact.username?.whatsapp?.net || 'Unknown';
+      const pushname = contact.username?.whatsapp?.net.toString() || 'Unknown'; // Ensure pushname is always a string
       const tag = mods[i].split('@s.whatsapp.net')[0];
       mo += `\n#${i + 1}) *Name:* ${pushname}\n*Contact:* http://wa.me/+${mods[i]}\ntag: ${tag}`;
     }
@@ -29,4 +29,3 @@ module.exports = {
     );
   }
 };
-
