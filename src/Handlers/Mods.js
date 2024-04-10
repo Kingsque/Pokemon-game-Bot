@@ -1,10 +1,14 @@
-module.exports.groups = () => {
+const groups = () => {
     return {
-        casinoGroup: "120363281892304546@g.us",
+        casinoGroup: "120363265227464577@g.us",
         adminsGroup: "120363236615391329@g.us",
         supportGroup: "120363281892304546@g.us",
-        auctionGroup: "120363281892304546@g.us",
-        gamesGroup: "120363281892304546@g.us",
-        cshopGroup: "120363281892304546@g.us"
-    }
-}
+        auctionGroup: "uniqueID1",
+        gamesGroup: "uniqueID2",
+        cshopGroup: "uniqueID3"
+    };
+};
+
+module.exports = {
+    groups
+};
