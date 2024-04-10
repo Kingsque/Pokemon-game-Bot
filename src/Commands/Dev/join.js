@@ -8,7 +8,7 @@ module.exports = {
     description: 'Join a group using the link. eg group join (gclink)',
     async execute(client, arg, M) {
         try {
-            const link = arg
+            const link = arg;
 
             if (!link || !link.includes('https://chat.whatsapp.com/')) {
                 return M.reply('🚫 Oops! The provided link is not a valid group link.');
@@ -16,9 +16,12 @@ module.exports = {
 
             const joinCode = link.split('https://chat.whatsapp.com/')[1];
             client
-            .groupAcceptInvite(JoinCode)
+            .groupAcceptInvite(joinCode) // Fix: Use 'joinCode' instead of 'JoinCode'
             .then((res) => M.reply('🟩 *Joined*'))
-            .catch((res) => M.reply('🟨 *Something went wrong please check the link*'))
+            .catch((err) => {
+                console.error(err);
+                M.reply('🟨 *Something went wrong, please check the link.*');
+            });
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
