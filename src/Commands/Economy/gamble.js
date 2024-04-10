@@ -19,6 +19,7 @@ module.exports = {
         const credits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
         if ((credits - amount) < 0) return M.reply('You don\'t have that much in your wallet.');
         if (amount > 20000) return M.reply('You cannot gamble more than 20000.');
+        if (amount < 500) return M.reply('You cannot gamble less than 500')
 
         const result = Math.random() < 0.5 ? 'left' : 'right';
         await client.credit.add(`${M.sender}.wallet`, result === direction ? amount : -amount);
