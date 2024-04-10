@@ -21,8 +21,7 @@ module.exports = {
     await client.sendMessage(
       M.from,
       {
-        image: { url: "https://i.ibb.co/tPhb428/Aurora.jpg" },
-        caption: mo, // Use mo as the caption
+        text: mo, // Use mo as the caption
         mentions: mods.map(mod => ({ tag: mod, id: mods.indexOf(mod) }))
       },
       { quoted: M }
