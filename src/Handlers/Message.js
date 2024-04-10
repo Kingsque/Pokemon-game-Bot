@@ -161,7 +161,10 @@ if (disabledCmd) {
         if (!isGroup && command.category == 'moderation') return M.reply('This command is ment to use in groups')
         if (!isGroup && !client.mods.includes(sender.split('@')[0])) return M.reply("Bot can only be accessed in groups")
         if (isGroup && (command.name === 'slot' || command.name === 'gamble') && from !== client.groups.casinoGroup) {
-    return M.reply(`The slot and gamble commands can only be used in the casino group.`);
+    return M.reply(`The slot and gamble commands can only be used in the auction group.`);
+        }
+        if (isGroup && (command.name === 'auction' || command.name === 'bid') && from !== client.groups.auctionGroup) {
+    return M.reply(`The auction commands can only be used in the casino group.`);
         }
         if (!client.mods.includes(sender.split('@')[0]) && command.category == 'dev')
             return M.reply('This command only can be accessed by the mods')
