@@ -61,14 +61,14 @@ module.exports = {
         const luck = (await client.rpg.get(`${M.sender}.luckpotion`)) || 0;
         const luckFactor = 1 + (Math.random() * luck) / 10; 
 
-        if (points > 0 || luckFactor > 1) {
+        if (points > 0 || Math.random() < luckFactor) { // Introduce luck probability here
             await client.credit.add(`${M.sender}.wallet`, resultAmount);
         }
 
         let text = '🎰 *SLOT MACHINE* 🎰\n\n';
         text += machine.visualize();
         
-        if (points <= 0 && luck > 0) {
+        if (points <= 0 && luck > 0 && Math.random() < 0.5) { // Adjust the probability here
             resultAmount = 0;
             await client.rpg.sub(`${M.sender}.luckpotion`, 1);
             text += '\n\n🍀 You have been saved by your luck potion!';
