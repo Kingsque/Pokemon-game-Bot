@@ -21,25 +21,20 @@ module.exports = {
 
             for (const result of results) {
                 const text = `*「 ${client.name.toUpperCase()} BROADCAST 」*\n\n${arg}\n\n`;
-                const participants = group ? (await client.groupMetadata(result)).participants.map((x) => x.id) : [];
                 await client.sendMessage(result, {
                     text,
-                    mentions: participants.map((id) => ({
-                        tag: id,
-                        id,
-                        fromMe: false,
-                    })),
+                    mentions: group ? (await client.groupMetadata(result)).participants.map((x) => x.id) : []
                 });
             }
 
             const successMessage = `🟩 Successfully Broadcast in ${results.length} ${group ? 'groups' : 'DMs'}`;
             M.reply(successMessage);
-        } catch (err) {
-            console.error(err);
-            await client.sendMessage(M.from, {
-                image: { url: `${client.utils.errorChan()}` },
-                caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`
-            });
-        }
-    }
-}
+                } catch (err) {
+                    console.error(err);
+                    await client.sendMessage(M.from, {
+                        image: { url: `${client.utils.errorChan()}` },
+                        caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`
+                    });
+                }
+            }
+        }       

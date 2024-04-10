@@ -114,15 +114,16 @@ const mode = await client.DB.get(`mode`);
 if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
     return;
 } 
-        
-        // Disabled commands handling
+       // Disabled commands handling
 const disabledCommands = await client.DB.get('disable-commands') || [];
-if (disabledCommands.some(disabledCmd => disabledCmd.command === cmdName)) {
-    const disabledCommandInfo = disabledCommands.find(disabledCmd => disabledCmd.command === cmdName);
-    const disabledAt = new Date(disabledCommandInfo.disabledAt).toLocaleString();
-    const reason = disabledCommandInfo.reason || "No reason provided.";
-    const disabledBy = disabledCommandInfo.disabledBy || "Unknown user";
-    return M.reply(`This command is currently disabled by ${disabledBy}. Reason: ${reason}. Disabled at: ${disabledAt}`);
+const disabledCmd = disabledCommands.find(
+  (cmd) => cmd.command === cmdName || (command.aliases && command.aliases.includes(cmd.command))
+);
+if (disabledCmd) {
+  const disabledAt = new Date(disabledCmd.disabledAt).toLocaleString();
+  const reason = disabledCmd.reason || 'No reason provided.';
+  const disabledBy = client.contact.getContact(disabledCmd.disabledBy, client).username?.whatsapp?.net ?? 'Unknown';
+  return M.reply(`This command is currently disabled by ${disabledBy}. Reason: ${reason}. Disabled at: ${disabledAt}`);
 }
 
     // Cooldown handling

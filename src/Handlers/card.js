@@ -21,7 +21,7 @@ module.exports = CardHandler = async (client, m) => {
         const sOr6Interval = 10;
         const sOr6Limit = 100;
   
-        cron.schedule('*/15 * * * *', async () => {
+        cron.schedule('*/20 * * * *', async () => {
           try {
              const filePath = path.join(__dirname, '../Helpers/spawn.json');
 	     const data = require(filePath);
@@ -47,6 +47,8 @@ module.exports = CardHandler = async (client, m) => {
                   price = client.utils.getRandomInt(15000, 20000);
                   break;
               }
+              const code = client.utils.getRandomInt(11111, 99999);
+
               count++;
             sOr6Counter++;
               // if (count % 6 === 0) {
@@ -68,15 +70,18 @@ module.exports = CardHandler = async (client, m) => {
             console.log(`Sended:${obj.tier + "  Name:" + obj.title + "  For " + price + " in " + jid}`);
       await client.cards.set(`${jid}.card`, `${obj.title}-${obj.tier}`);
       await client.cards.set(`${jid}.card_price`, price);
+      await client.cards.set(`${jid}.code`, code);
      
   
-      
+      const storedCard = await client.cards.get(`${jid}.card`);
+      const storedPrice = await client.cards.get(`${jid}.card_price`);
+      if (storedCard && storedPrice) {
       if (obj.tier.includes('6')|| obj.tier.includes('S')) {
         const giif = await client.utils.getBuffer(obj.url);
         const cgif = await client.utils.gifToMp4(giif);
         await client.sendMessage(jid, {
           video: cgif,
-          caption: `*━『  🎊Finally a rare card has spawned🎊 』━*\n\n🎴 *Name:* ${obj.title}\n\n🎐 *Tier:* ${obj.tier}\n\n🪩 *Price:* ${price}\n\n🎴 *Source:* ${obj.source}\n\n🔖 Use *${client.prefix}collect* to claim the card, your card will be stored in you deck`,
+          caption: `*━『  🎊Finally a rare card has spawned🎊 』━*\n\n🎴 *Name:* ${obj.title}\n\n🎐 *Tier:* ${obj.tier}\n\n🪩 *Price:* ${price}\n\n🎴 *code:* ${code}\n\n🔖 Use *${client.prefix}collect <code>* to claim the card, your card will be stored in you deck`,
           gifPlayback: true,
         });
       } else {
@@ -84,16 +89,16 @@ module.exports = CardHandler = async (client, m) => {
           image: {
             url: obj.url,
           },
-          caption: `*━『 🎊A new card has spawned🎊 』━*\n\n🎴 *Name:* ${obj.title}\n\n🎐 *Tier:* ${obj.tier}\n\n🪩 *Price:* ${price}\n\n🎴 *Source:* ${obj.source}\n\n🔖 Use *${client.prefix}collect* to claim the card, your card will be stored in you deck`,
+          caption: `*━『 🎊A new card has spawned🎊 』━*\n\n🎴 *Name:* ${obj.title}\n\n🎐 *Tier:* ${obj.tier}\n\n🪩 *Price:* ${price}\n\n🎴 *code:* ${code}\n\n🔖 Use *${client.prefix}collect <code>* to claim the card, your card will be stored in you deck`,
         });
       } 
-     
+    }
     } catch (err) {
       console.log(err)
       await client.sendMessage(jid , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}`})
     }
   
-    cron.schedule('*/10 * * * *', async () => {
+    cron.schedule('*/15 * * * *', async () => {
      await client.cards.delete(`${jid}.card`);
      await client.cards.delete(`${jid}.card_price`);
       console.log(`Card deleted after 5minutes`)
