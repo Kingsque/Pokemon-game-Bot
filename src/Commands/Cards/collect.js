@@ -1,11 +1,11 @@
 module.exports = {
   name: "collect",
-  aliases: ["c"],
+  aliases: ["collect"],
   exp: 0,
   cool: 4,
   react: "✅",
   category: "card game",
-  usage: 'Use :c <code>',
+  usage: 'Use :collect <code>',
   description: "Claim the card that is spawned",
   async execute(client, arg, M) {
     try {
@@ -15,7 +15,7 @@ module.exports = {
       }
 
       // Check if the provided code matches the code stored in the database
-      const storedCode = await client.cards.get(`${M.from}.code`);
+      const storedCode = await client.cards.get(`${M.from}.code`) || []
       if (code !== storedCode) {
         return M.reply("Invalid code. Please check and try again.");
       }
