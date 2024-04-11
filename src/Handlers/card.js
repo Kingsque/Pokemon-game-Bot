@@ -72,7 +72,6 @@ module.exports = CardHandler = async (client, m) => {
       await client.cards.set(`${jid}.card_price`, price);
       await client.cards.set(`${jid}.code`, code);
      
-  
       if (obj.tier.includes('6')|| obj.tier.includes('S')) {
         const giif = await client.utils.getBuffer(obj.url);
         const cgif = await client.utils.gifToMp4(giif);
@@ -89,7 +88,6 @@ module.exports = CardHandler = async (client, m) => {
           caption: `*━『 🎊A new card has spawned🎊 』━*\n\n🎴 *Name:* ${obj.title}\n\n🎐 *Tier:* ${obj.tier}\n\n🪩 *Price:* ${price}\n\n🎴 *code:* ${code}\n\n🔖 Use *${client.prefix}collect <code>* to claim the card, your card will be stored in you deck`,
         });
       } 
-    }
     } catch (err) {
       console.log(err)
       await client.sendMessage(jid , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}`})
@@ -99,13 +97,16 @@ module.exports = CardHandler = async (client, m) => {
      await client.cards.delete(`${jid}.card`);
      await client.cards.delete(`${jid}.card_price`);
       console.log(`Card deleted after 5minutes`)
-    }
+  
     })
   
   });
   
   }
+    }
     
     } catch(error){
         console.log(error)
     }
+
+		  }
