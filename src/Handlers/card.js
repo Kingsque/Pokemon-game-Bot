@@ -73,9 +73,6 @@ module.exports = CardHandler = async (client, m) => {
       await client.cards.set(`${jid}.code`, code);
      
   
-      const storedCard = await client.cards.get(`${jid}.card`);
-      const storedPrice = await client.cards.get(`${jid}.card_price`);
-      if (storedCard && storedPrice) {
       if (obj.tier.includes('6')|| obj.tier.includes('S')) {
         const giif = await client.utils.getBuffer(obj.url);
         const cgif = await client.utils.gifToMp4(giif);
@@ -108,10 +105,7 @@ module.exports = CardHandler = async (client, m) => {
   });
   
   }
-    }
     
     } catch(error){
         console.log(error)
     }
-
-}
