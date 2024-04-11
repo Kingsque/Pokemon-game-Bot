@@ -15,16 +15,18 @@ module.exports = {
             const commandName = arg.toLowerCase(); // Ensure case insensitivity
             const disabledCommands = await client.DB.get('disable-commands') || [];
 
-            const disabledCommandIndex = disabledCommands.findIndex(disabledCmd => disabledCmd.command === commandName);
+            const disabledCmdIndex = disabledCommands.findIndex(
+              (cmd) => cmd.command === commandName || (command.aliases && command.aliases.includes(cmd.command))
+            );
 
-            if (disabledCommandIndex === -1) {
-                return M.reply('This command is not disabled.');
+            if (disabledCmdIndex !== -1) {
+              // Command is disabled, so remove it from the list of disabled commands
+              disabledCommands.splice(disabledCmdIndex, 1);
+              await client.DB.set('disable-commands', disabledCommands); // Update the disabled commands list
+              M.reply(`Command "${commandName}" has been enabled successfully.`);
+            } else {
+              M.reply('This command is not disabled.');
             }
-
-            disabledCommands.splice(disabledCommandIndex, 1); // Remove the disabled command
-
-            await client.DB.set('disable-commands', disabledCommands); // Update the disabled commands list
-            M.reply(`Command "${commandName}" has been enabled successfully.`);
         } catch (error) {
             console.error('Error in enabling command:', error);
             M.reply('An error occurred while enabling the command.');
