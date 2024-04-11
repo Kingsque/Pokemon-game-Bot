@@ -99,7 +99,7 @@ module.exports = CardHandler = async (client, m) => {
      await client.cards.delete(`${jid}.card`);
      await client.cards.delete(`${jid}.card_price`);
       console.log(`Card deleted after 5minutes`)
-  
+    }
     })
   
   });
