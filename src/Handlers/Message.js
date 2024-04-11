@@ -122,7 +122,7 @@ const disabledCmd = disabledCommands.find(
 if (disabledCmd) {
   const disabledAt = new Date(disabledCmd.disabledAt).toLocaleString();
   const reason = disabledCmd.reason || 'No reason provided.';
-  const disabledBy = client.contact.getContact(disabledCmd.disabledBy, client).username?.whatsapp?.net ?? 'Unknown';
+  const disabledBy = client.contact.getContact(disabledCmd.disabledBy, client).username
   return M.reply(`This command is currently disabled by ${disabledBy}. Reason: ${reason}. Disabled at: ${disabledAt}`);
 }
 
