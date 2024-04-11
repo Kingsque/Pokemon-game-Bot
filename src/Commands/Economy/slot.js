@@ -15,35 +15,35 @@ module.exports = {
             new SlotSymbol('a', {
                 display: '🍉',
                 points: 1,
-                weight: 3,
+                weight: 4, // Adjusted weight for winning approximately 4 out of 10 times
             }),
             new SlotSymbol('b', {
                 display: '🥭',
                 points: 0,
-                weight: 7,
+                weight: 3, // Adjusted weight
             }),
             new SlotSymbol('c', {
                 display: '🍇',
                 points: 0,
-                weight: 10,
+                weight: 2, // Adjusted weight
             }),
             new SlotSymbol('d', {
                 display: '🍓',
                 points: 1,
-                weight: 5,
+                weight: 1, // Adjusted weight
             }),
         ];
 
         if (!arg) return M.reply('Please provide the amount');
         const amount = parseInt(arg);
 
-        if (isNaN(amount) || amount <= 0) return M.reply('Please provide a valid amount');
+        if (isNaN(amount) || amount <= 0 || amount % 1 !== 0) return M.reply('Please provide a valid integer amount');
         if (arg.startsWith('-') || arg.startsWith('+')) return M.reply('Please provide a valid amount');
 
         const credits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
 
         if (amount > credits) return M.reply("You don't have sufficient funds");
-        if (amount > 20000) return M.reply('You cannot bet more than 20000 credits in the slot machine');
+        if (amount > 10000) return M.reply('You cannot bet more than 10000 credits in the slot machine');
         if (amount < 500) return M.reply('You cannot bet less than 500 credits in the slot machine');
 
         const machine = new SlotMachine(3, symbols).play();
@@ -56,10 +56,10 @@ module.exports = {
         const isJackpotTriggered = jackpotChance < 0.05; // Define jackpot triggering probability
         
         if (isJackpotTriggered) {
-            const jackpotWin = amount * 10;
-            resultAmount = jackpotWin; // Set the result amount to jackpot win
+            const jackpotWin = amount * 20;
+            resultAmount = Math.min(jackpotWin, 200000); // Set the result amount to jackpot win with max of 200000
             await client.credit.add(`${M.sender}.wallet`, resultAmount);
-            return M.reply(`🎉 Congratulations! You hit the jackpot and won ${jackpotWin} credits!`);
+            return M.reply(`🎉 Congratulations! You hit the jackpot and won ${resultAmount} credits!`);
         } else {
             const luck = (await client.rpg.get(`${M.sender}.luckpotion`)) || 0;
             const luckFactor = 1 + (Math.random() * luck) / 10;
@@ -69,6 +69,7 @@ module.exports = {
             }
         }
 
+        resultAmount = Math.round(resultAmount); // Round the result amount to an integer
         await client.credit.add(`${M.sender}.wallet`, resultAmount);
 
         let text = '🎰 *SLOT MACHINE* 🎰\n\n';
@@ -85,3 +86,4 @@ module.exports = {
         M.reply(text);
     },
 };
+                                           
