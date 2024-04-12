@@ -8,8 +8,10 @@ const maxLevel = 100; // Maximum level for a Pokémon
  * @returns {number} - Experience points required to level up.
  */
 const calculatePokeExp = (currentLevel) => {
-    // Increase experience points by 200 for each level
-    return 100 + (currentLevel - 1) * 200;
+    if (currentLevel <= 0 || currentLevel > maxLevel) {
+        return Infinity; // or any other appropriate value to indicate invalid level
+    }
+    return 100 + (currentLevel - 1) * 200; // Starting from 200, increase by 200 for each level
 };
 
 /**
@@ -60,21 +62,6 @@ const levelUpPokemon = (pokemon) => {
 };
 
 /**
- * Extract evolution details for a given Pokémon name.
- * @param {string} pokemonName - Name of the Pokémon.
- * @returns {Object|null} - Evolution details for the Pokémon, or null if not found.
- */
-const extractEvolution = async (pokemonName) => {
-    try {
-        const response = await axios.get(`https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/pokedex.json/${pokemonName}`);
-        return response.data.evolution;
-    } catch (error) {
-        console.error(`Error fetching evolution data for ${pokemonName}: ${error}`);
-        return null;
-    }
-};
-
-/**
  * Check if a Pokémon can evolve based on its level and species.
  * @param {Object} pokemon - The Pokémon object to check for evolution.
  * @returns {boolean} - True if the Pokémon can evolve, otherwise false.
@@ -86,22 +73,38 @@ const canPokemonEvolve = async (pokemon) => {
     }
     
     // Extract evolution details for the Pokémon
-    const evolutionDetails = await extractEvolution(pokemon.name);
-    
-    // Check if the Pokémon has evolution requirements
-    if (evolutionDetails && evolutionDetails.required_level) {
-        // Check if the Pokémon's level is high enough for evolution
-        return pokemon.level >= evolutionDetails.required_level;
+    const response = await axios.get(`https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/pokedex.json`);
+    const pokemonData = response.data.find(p => p.name.english.toLowerCase() === pokemon.name.toLowerCase());
+    if (pokemonData && pokemonData.evolution && pokemonData.evolution.next) {
+        const [nextId, requirement] = pokemonData.evolution.next[0];
+        const requiredLevel = parseInt(requirement.match(/\d+/)[0]); // Extract required level from the requirement string
+        return pokemon.level >= requiredLevel;
     } else {
         return false;
     }
 };
+
+/**
+ * Get the ID of the next evolution for a given Pokémon name.
+ * @param {string} pokemonName - Name of the Pokémon.
+ * @returns {string|null} - ID of the next evolution, or null if not found.
+ */
+const getNextId = async (pokemonName) => {
+    const response = await axios.get(`https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/pokedex.json`);
+    const pokemonData = response.data.find(p => p.name.english.toLowerCase() === pokemonName.toLowerCase());
+    if (pokemonData && pokemonData.evolution && pokemonData.evolution.next) {
+        return pokemonData.evolution.next[0][0]; // Return the ID of the next evolution
+    } else {
+        return null;
+    }
+};
+
 
 module.exports = {
     calculatePokeExp,
     requirePokeExpToLevelUp,
     getPokeStats,
     levelUpPokemon,
-    extractEvolution,
-    canPokemonEvolve
+    canPokemonEvolve,
+    getNextId
 };
