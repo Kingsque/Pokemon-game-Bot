@@ -14,15 +14,15 @@ module.exports = {
         return M.reply("Please provide the code to claim the card.");
       }
 
-      const code = client.cards.get(`${M.from}.code`);
-      const card = client.cards.get(`${M.from}.card`);
-      const price = client.cards.get(`${M.from}.price`);
+      const code = await client.cards.get(`${M.from}.code`); // Retrieve code from the database
+      const card = await client.cards.get(`${M.from}.card`);
+      const price = await client.cards.get(`${M.from}.cardPrice`); // Retrieve card price from the database
 
-      if (!card) {
+      if (!code) {
         return M.reply("There are no cards available to claim.");
       }
 
-      if (codes !== code) {
+      if (codes !== parseInt(code)) { // Compare provided code with the code from the database
         return M.reply("Invalid code. Please check and try again.");
       }
 
