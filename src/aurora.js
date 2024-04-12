@@ -52,7 +52,7 @@ const start = async () => {
     //Config
     client.name = process.env.NAME || 'Aurora-Private'
     client.prefix = process.env.PREFIX || ':'
-    client.mods = ('917903576495,916239664935,917980329866').split(',')
+    client.mods = ('917903576495,916239664935,917980329866,918999230502').split(',')
 
     //grouos
     client.groups = groups()
