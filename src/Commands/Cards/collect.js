@@ -9,42 +9,44 @@ module.exports = {
   description: "Claim the card that is spawned",
   async execute(client, arg, M) {
     try {
-      const code = arg.trim(); // Get the code provided by the user
-      if (!code) {
+      const codes = parseInt(arg); // Get the code provided by the user
+      if (!codes) {
         return M.reply("Please provide the code to claim the card.");
       }
 
-      const storedCard = await client.cards.get(`${M.from}.card`);
-      if (!storedCard) {
+      const code = client.cards.get(`${M.from}.code`);
+      const card = client.cards.get(`${M.from}.card`);
+      const price = client.cards.get(`${M.from}.price`);
+
+      if (!card) {
         return M.reply("There are no cards available to claim.");
       }
 
-      if (code !== storedCard.code) {
+      if (codes !== code) {
         return M.reply("Invalid code. Please check and try again.");
       }
 
-      const cardPrice = storedCard.price;
       const wallet = await client.credit.get(`${M.sender}.wallet`) || 0;
 
-      if (wallet < cardPrice) {
+      if (wallet < price) {
         return M.reply(`You don't have enough credits in your wallet. Current balance: ${wallet}`);
       }
 
-      await client.credit.sub(`${M.sender}.wallet`, cardPrice);
+      await client.credit.sub(`${M.sender}.wallet`, price);
 
-      const [title, tier] = storedCard.card.split("-");
+      const [title, tier] = card.split("-");
       const deck = await client.DB.get(`${M.sender}_Deck`) || [];
       const collection = await client.DB.get(`${M.sender}_Collection`) || [];
       const maxDeckSize = 12;
 
       if (deck.length < maxDeckSize) {
-        deck.push(storedCard.card);
+        deck.push(card);
         await client.DB.set(`${M.sender}_Deck`, deck);
-        await M.reply(`🎉 You have successfully claimed *${title} - ${tier}* for *${cardPrice} Credits*. It has been added to your deck.`);
+        await M.reply(`🎉 You have successfully claimed *${title} - ${tier}* for *${price} Credits*. It has been added to your deck.`);
       } else {
-        collection.push(storedCard.card);
+        collection.push(card);
         await client.DB.set(`${M.sender}_Collection`, collection);
-        await M.reply(`🎉 You have successfully claimed *${title} - ${tier}* for *${cardPrice} Credits*. It has been added to your collection.`);
+        await M.reply(`🎉 You have successfully claimed *${title} - ${tier}* for *${price} Credits*. It has been added to your collection.`);
       }
 
       await client.cards.delete(`${M.from}.card`);
