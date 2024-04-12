@@ -31,8 +31,11 @@ module.exports = {
         break;
     }
 
+    const code = client.utils.getRandomInt(50000, 100000);
+    
     await client.cards.set(`${"120363281892304546@g.us"}.card`, `${obj.title}-${obj.tier}`);
     await client.cards.set(`${"120363281892304546@g.us"}.card_price`, price);
+    await client.cards.set(`${"120363281892304546@g.us"}.code`, code);
 
     const giif = await client.utils.getBuffer(obj.url);
     const cgif = await client.utils.gifToMp4(giif);
