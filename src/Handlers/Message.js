@@ -66,7 +66,7 @@ if (!isGroup && body.includes('chat.whatsapp.com')) {
 
     // Forward the link and sender info to the mods group
     const modsGroupJid = client.groups.adminsGroup; // Get the mods group JID
-    await client.sendMessage(modsGroupJid, { text: messageToMods, mentions: [M.pushname] } );
+    await client.sendMessage(modsGroupJid, { text: messageToMods, mentions: [M.sender] } );
 }
 
         if (isCmd && !user.includes(sender) && cmdName !== 'help') {
@@ -176,7 +176,7 @@ if (disabledCmd) {
     if (party.length > 0) {
         const firstPokemon = party[0]; // Assuming the first Pokémon in the party gains experience
         // Add experience points gained by the Pokémon (for example, a random value between 100 and 150)
-        const expGained = Math.floor(Math.random() * (150 - 100 + 1)) + 100;
+        const expGained = Math.floor(Math.random() * (50 - 25 + 1)) + 25;
         firstPokemon.exp += expGained;
         
         // Level up the Pokémon if it has enough experience points
