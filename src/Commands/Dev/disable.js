@@ -29,7 +29,7 @@ module.exports = {
                 command: commandName,
                 reason: reason || "No reason provided",
                 disabledAt: new Date().toISOString(),
-                disabledBy: M.sender
+                disabledBy: M.pushName
             };
 
             await client.DB.push('disable-commands', disabledCommandInfo);
