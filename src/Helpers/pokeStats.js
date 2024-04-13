@@ -100,11 +100,40 @@ const getNextId = async (pokemonName) => {
 };
 
 
+const getNextStats = async (pokemonName) => {
+    const nextId = await getNextId(pokemonName);
+    if (!nextId) {
+        throw new Error("Failed to find evolution data for your Pokémon.");
+    }
+
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nextId}`);
+    const newData = response.data;
+
+    // Extract new stats and moves
+    const stats = {
+        hp: newData.stats.find(stat => stat.stat.name === 'hp').base_stat,
+        attack: newData.stats.find(stat => stat.stat.name === 'attack').base_stat,
+        defense: newData.stats.find(stat => stat.stat.name === 'defense').base_stat,
+        speed: newData.stats.find(stat => stat.stat.name === 'speed').base_stat,
+    };
+
+    const moves = newData.moves.map(move => ({
+        name: move.move.name,
+        power: move.move.power || 0,
+        accuracy: move.move.accuracy || 0,
+        pp: move.move.pp || 0,
+        type: move.move.type ? move.move.type.name : 'Normal',
+        description: move.move.description || ''
+    }));
+    return { stats, moves };
+};
+
 module.exports = {
     calculatePokeExp,
     requirePokeExpToLevelUp,
     getPokeStats,
     levelUpPokemon,
     canPokemonEvolve,
-    getNextId
+    getNextId,
+    getNextStats // Fixed typo here
 };

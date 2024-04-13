@@ -33,18 +33,15 @@ module.exports = PokeHandler = async (client, m) => {
               baseStats[stat.stat.name] = stat.base_stat;
             });
 
-            // Extracting beginning moves with their details
-            const moves = pokemon.moves.slice(0, 2).map(move => ({
+            const moves = pokemon.moves.map(move => ({
               name: move.move.name,
               power: move.move.power,
               accuracy: move.move.accuracy,
               pp: move.move.pp,
-              type: move.move.type.name,
-              drain: move.move.drain,
-              effect: move.move.effect,
-              healing: move.move.healing,
+              type: move.move.type ? move.move.type.name : 'Normal',
               description: move.move.description
-            }));
+          }));
+
 
             const pokemonData = { 
               name: name, 

@@ -25,8 +25,9 @@ module.exports = {
             
             const contact = await client.contact.getContact(M.sender, client);
             const username = contact && contact.username ? contact.username : 'there';
-            M.reply(`${greeting} ${username}`);
-
+            let { key } = await M.reply(`${greeting} ${username}`)
+        
+            setTimeout(async () => {
             await client.relayMessage(M.from, {
                 protocolMessage: {
                     key,
@@ -35,10 +36,12 @@ module.exports = {
                         conversation: `${hi} ${username}. How are you today?`
                     }
                 }
-            }, {})
+            },{})
+        }, 5000);
         } catch (error) {
             console.error('Error in executing hi command:', error);
             M.reply('An error occurred while executing the hi command.');
         }
     }
 }
+

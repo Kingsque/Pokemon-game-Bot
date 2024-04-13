@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { canPokemonEvolve, getNextId, getNextStats } = require('../../Helpers/pokeStats');
 
 module.exports = {
     name: "evolve",
@@ -32,12 +33,27 @@ module.exports = {
                 return M.reply("Failed to find evolution data for your Pokémon.");
             }
             
-            // Get new Pokémon data
+            // Get new Pokémon data and extract stats and moves
+            const { stats, moves } = await getNextStats(pokemon.name);
+            
+            // Update Pokémon name
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nextId}`);
             const newData = response.data;
+            pokemon.name = newData.name; // Assuming the stats object includes the new Pokémon name
             
-            // Update Pokémon name and species
-            pokemon.name = newData.name;
+            // Update Pokémon stats (hp, attack, defense, speed)
+            pokemon.hp = stats.hp;
+            pokemon.attack = stats.attack;
+            pokemon.defense = stats.defense;
+            pokemon.speed = stats.speed;
+            
+            // Initialize moves array if undefined
+            if (!pokemon.moves) {
+                pokemon.moves = [];
+            }
+            
+            // Push new moves to the Pokémon
+            pokemon.moves.push(...moves);
             
             // Notify user about evolution
             await client.sendMessage(M.from, {

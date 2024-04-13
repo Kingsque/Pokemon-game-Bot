@@ -60,28 +60,32 @@ module.exports = {
             await client.credit.add(`${M.sender}.wallet`, jackpotWin);
             return M.reply(`🎰 *SLOT MACHINE* 🎰\n 🍉 🍉 🍉\n🍉 🍉 🍉\n🍉 🍉 🍉 \nCongratulations! You hit the jackpot and won ${jackpotWin} credits!`);
         } else {
-            const luck = (await client.rpg.get(`${M.sender}.luckpotion`)) || 0;
+            let luck = 0; // Define luck variable
+            const luckData = await client.rpg.get(`${M.sender}.luckpotion`);
+            if (luckData) {
+                luck = luckData;
+            }
+
             const luckFactor = 0.6 + (Math.random() * luck) / 10; // Reduce luck factor to 60%
 
             if (points > 0 || Math.random() < luckFactor) { // Introduce luck probability here
                 resultAmount *= luckFactor; // Multiply result amount by luck factor
             }
+
+            await client.credit.add(`${M.sender}.wallet`, resultAmount);
+
+            let text = '🎰 *SLOT MACHINE* 🎰\n\n';
+            text += machine.visualize();
+
+            if (points <= 0 && luck > 0 && Math.random() < 0.5) { // Adjust the probability here
+                resultAmount = 0;
+                await client.rpg.sub(`${M.sender}.luckpotion`, 1);
+                text += '\n\n🍀 You have been saved by your luck potion!';
+            } else {
+                text += points <= 0 ? `\n\n📉 You lost ${amount} credits` : `\n\n📈 You won ${resultAmount} credits`;
+            }
+
+            M.reply(text);
         }
-
-        await client.credit.add(`${M.sender}.wallet`, resultAmount);
-
-        let text = '🎰 *SLOT MACHINE* 🎰\n\n';
-        text += machine.visualize();
-
-        if (points <= 0 && luck > 0 && Math.random() < 0.5) { // Adjust the probability here
-            resultAmount = 0;
-            await client.rpg.sub(`${M.sender}.luckpotion`, 1);
-            text += '\n\n🍀 You have been saved by your luck potion!';
-        } else {
-            text += points <= 0 ? `\n\n📉 You lost ${amount} credits` : `\n\n📈 You won ${resultAmount} credits`;
-        }
-
-        M.reply(text);
     },
 };
-
