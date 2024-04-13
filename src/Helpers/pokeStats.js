@@ -117,14 +117,15 @@ const getNextStats = async (pokemonName) => {
         speed: newData.stats.find(stat => stat.stat.name === 'speed').base_stat,
     };
 
-    const moves = newData.moves.map(move => ({
-        name: move.move.name,
-        power: move.move.power || 0,
-        accuracy: move.move.accuracy || 0,
-        pp: move.move.pp || 0,
-        type: move.move.type ? move.move.type.name : 'Normal',
-        description: move.move.description || ''
-    }));
+    const moves = newData.moves.filter(move => move.version_group_details.some(detail => detail.level_learned_at <= 1))
+                                .map(move => ({
+                                    name: move.move.name,
+                                    power: move.move.power || 0,
+                                    accuracy: move.move.accuracy || 0,
+                                    pp: move.move.pp || 0,
+                                    type: move.move.type ? move.move.type.name : 'Normal',
+                                    description: move.move.description || ''
+                                }));
     return { stats, moves };
 };
 
