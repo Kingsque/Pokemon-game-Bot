@@ -21,7 +21,7 @@ module.exports = CardHandler = async (client, m) => {
         const sOr6Interval = 10;
         const sOr6Limit = 100;
 
-        cron.schedule('*/16 * * * *', async () => { // Changed spawn time to 16 minutes
+        cron.schedule('*/16 * * * *', async () => {
           try {
             const filePath = path.join(__dirname, '../Helpers/spawn.json');
             const data = require(filePath);
@@ -72,6 +72,8 @@ module.exports = CardHandler = async (client, m) => {
             }
 
             console.log(`Sended:${obj.tier + "  Name:" + obj.title + "  For " + price + " in " + jid}`);
+            
+            // Setting card details including code for all tiers
             await client.cards.set(`${jid}.card`, `${obj.title}-${obj.tier}`);
             await client.cards.set(`${jid}.cardPrice`, price);
             await client.cards.set(`${jid}.code`, code);
@@ -93,7 +95,7 @@ module.exports = CardHandler = async (client, m) => {
               });
             }
 
-            cron.schedule('*/15 * * * *', async () => { // Moved card expiration to a new cron job
+            cron.schedule('*/15 * * * *', async () => {
               await client.cards.delete(`${jid}.card`);
               console.log(`Card deleted after 5 minutes`);
             }, { scheduled: false, timezone: "Asia/Tokyo" });
@@ -102,7 +104,7 @@ module.exports = CardHandler = async (client, m) => {
             console.log(err);
             await client.sendMessage(jid, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}` });
           }
-        }, { scheduled: false, timezone: "Asia/Tokyo" }); // Added timezone and disabled immediate scheduling
+        }, { scheduled: false, timezone: "Asia/Tokyo" });
       }
     }
 
