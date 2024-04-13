@@ -33,15 +33,16 @@ module.exports = PokeHandler = async (client, m) => {
               baseStats[stat.stat.name] = stat.base_stat;
             });
 
-            const moves = pokemon.moves.map(move => ({
-              name: move.move.name,
-              power: move.move.power,
-              accuracy: move.move.accuracy,
-              pp: move.move.pp,
-              type: move.move.type ? move.move.type.name : 'Normal',
-              description: move.move.description
-          }));
-
+            const moves = pokemon.moves
+              .filter(move => move.version_group_details[0].level_learned_at === 1) // Filter moves learned at level 1
+              .map(move => ({
+                name: move.move.name,
+                power: move.move.power,
+                accuracy: move.move.accuracy,
+                pp: move.move.pp,
+                type: move.move.type ? move.move.type.name : 'Normal',
+                description: move.move.description
+              }));
 
             const pokemonData = { 
               name: name, 
@@ -53,7 +54,7 @@ module.exports = PokeHandler = async (client, m) => {
               maxDefense: baseStats['defense'],
               maxSpeed: baseStats['speed'],
               type: types,
-              moves: moves, // Storing beginning moves with details
+              moves: moves,
               state: {
                 status: '',
                 movesUsed: 0
