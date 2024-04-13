@@ -171,23 +171,29 @@ if (disabledCmd) {
         command.execute(client, arg, M)
 
         //pokemon level up
-        if (command.category == 'pokemon') {
-        const party = await client.DB.get(`${sender}_Party`) || [];
+if (command.category == 'pokemon') {
+    const party = await client.DB.get(`${sender}_Party`) || [];
     if (party.length > 0) {
         const firstPokemon = party[0]; // Assuming the first Pokémon in the party gains experience
         // Add experience points gained by the Pokémon (for example, a random value between 100 and 150)
         const expGained = Math.floor(Math.random() * (50 - 25 + 1)) + 25;
         firstPokemon.exp += expGained;
         
-        // Level up the Pokémon if it has enough experience points
-        levelUpPokemon(firstPokemon);
-        
-        // Update the user's party in the database
-        await client.DB.set(`${sender}_Party`, party);
+        // Check if the Pokémon has enough experience points to level up
+        const { requiredXpToLevelUp } = getStats(firstPokemon);
+        if (firstPokemon.exp >= requiredXpToLevelUp) {
+            // Level up the Pokémon
+            levelUpPokemon(firstPokemon);
 
-     M.reply(`Congratulations! ${sender} your pokemon ${firstPokemon.name} has leveled up to level ${firstPokemon.level}! 🎉`);
-    }
+            // Update the user's party in the database
+            await client.DB.set(`${sender}_Party`, party);
+
+            // Send level up message
+            M.reply(`Congratulations! ${sender}, your Pokémon ${firstPokemon.name} has leveled up to level ${firstPokemon.level}! 🎉`);
         }
+    }
+}
+        
 
         //Will add exp according to the commands
         await client.exp.add(sender, command.exp)
