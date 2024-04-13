@@ -43,6 +43,7 @@ module.exports = PokeHandler = async (client, m) => {
               drain: move.move.drain,
               effect: move.move.effect,
               healing: move.move.healing,
+              description: move.move.description
             }));
 
             const pokemonData = { 
