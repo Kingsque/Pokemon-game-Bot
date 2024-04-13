@@ -34,7 +34,7 @@ module.exports = PokeHandler = async (client, m) => {
             });
 
             const moves = pokemon.moves
-              .filter(move => move.version_group_details[0].level_learned_at === 1) // Filter moves learned at level 1
+              .filter(move => move.version_group_details[0].level_learned_at <= level) // Filter moves based on level
               .map(move => ({
                 name: move.move.name,
                 power: move.move.power,
@@ -91,4 +91,3 @@ module.exports = PokeHandler = async (client, m) => {
     console.log(error);
   }
 };
-              
