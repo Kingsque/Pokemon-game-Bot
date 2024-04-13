@@ -13,11 +13,13 @@ module.exports = {
         // Check if the amount starts with a "-" sign
         if (wallet.toString().startsWith('-')) {
             wallet = 0; // Convert negative amount to 0
+            client.credit.set(`${M.sender}.wallet`, 0)
         }
         
         // Check if the amount contains a "." sign
         if (wallet.toString().includes('.')) {
             wallet = Math.round(wallet); // Round decimal or fraction amounts
+            client.credit.get(`${M.sender}.wallet`, wallet)
         }
         
         const contact = await client.contact.getContact(M.sender, client);
