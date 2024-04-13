@@ -24,7 +24,7 @@ module.exports = PokeHandler = async (client, m) => {
             const name = pokemon.name;
             const types = pokemon.types.map(type => type.type.name);
             const image = pokemon.sprites.other['official-artwork'].front_default;
-            const level = Math.floor(Math.random() * (30 - 15) + 15);
+            const level = Math.floor(Math.random() * (10 - 5) + 5);
             const requiredExp = calculatePokeExp(level);
             
             // Extracting base stats
