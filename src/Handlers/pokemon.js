@@ -34,16 +34,17 @@ module.exports = PokeHandler = async (client, m) => {
             });
 
             const moves = pokemon.moves
-              .filter(move => move.version_group_details[0].level_learned_at === level) // Filter moves based on level
-              .map(move => ({
-                name: move.move.name,
-                power: move.move.power,
-                accuracy: move.move.accuracy,
-                pp: move.move.pp,
-                type: move.move.type ? move.move.type.name : 'Normal',
-                description: move.move.description
-              }));
-
+  .filter(move => move.version_group_details[0].level_learned_at <= level) // Filter moves based on level
+  .slice(0, 4) // Select the first four moves
+  .map(move => ({
+    name: move.move.name,
+    power: move.move.power,
+    accuracy: move.move.accuracy,
+    pp: move.move.pp,
+    type: move.move.type ? move.move.type.name : 'Normal',
+    description: move.move.description
+  }));
+            
             const pokemonData = { 
               name: name, 
               level: level, 
