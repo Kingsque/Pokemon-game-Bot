@@ -33,24 +33,22 @@ module.exports = PokeHandler = async (client, m) => {
               baseStats[stat.stat.name] = stat.base_stat;
             });
 
-            const desc = pokemon && pokemon.moves ? pokemon.moves.filter((x) => x.language.name === 'en') : [];
-            const moves = pokemon.moves
-              .filter(move => move.version_group_details[0].level_learned_at <= level) // Filter moves based on level
-              .slice(0, 2) // Select the first two moves
-              .map(async move => {
-                const moveResponse = await axios.get(move.move.url); // Fetch move details from move URL
-                const moveData = moveResponse.data;
-                return {
-                  name: moveData.name,
-                  power: moveData.power || 0,
-                  accuracy: moveData.accuracy || 0,
-                  pp: moveData.pp || 5,
-                  type: moveData.type ? moveData.type.name : 'Normal',
-                  description: desc[0].flavor_text,
-                };
-              });
+            const dataResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+            const data = await dataResponse.json();
+            const moves = data.moves.slice(0, 2); // 
+            const movesDetails = await Promise.all(moves.map(async move => {
+              const moveName = move.move.name;
+              const moveUrl = move.move.url;
+              const moveDataResponse = await fetch(moveUrl);
+              const moveData = await moveDataResponse.json();
+              const movePower = moveData.power || 0;
+              const moveAccuracy = moveData.accuracy || 0;
+              const movePP = moveData.pp || 5,
+              const moveType = moveData.type ? moveData.type.name : 'Normal',
+              const moveDescription = moveData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
+              return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, type: moveType, description: moveDescription };
+            }));
 
-            const movesDetails = await Promise.all(moves);
             
             const pokemonData = { 
               name: name, 
