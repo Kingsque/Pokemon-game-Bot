@@ -33,7 +33,7 @@ module.exports = PokeHandler = async (client, m) => {
               baseStats[stat.stat.name] = stat.base_stat;
             });
 
-            const desc = pokemon.moves && pokemon.moves.filter((x) => x.language.name === 'en');
+            const desc = pokemon && pokemon.moves ? pokemon.moves.filter((x) => x.language.name === 'en') : [];
             const moves = pokemon.moves
               .filter(move => move.version_group_details[0].level_learned_at <= level) // Filter moves based on level
               .slice(0, 2) // Select the first two moves
