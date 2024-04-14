@@ -17,7 +17,7 @@ module.exports = PokeHandler = async (client, m) => {
       if (wild.includes(jid)) {
         cron.schedule('*/20 * * * *', async () => {
           try {
-            const id = Math.floor(Math.random() * 1025);
+            const id = Math.floor(Math.random() * 898) + 1; // Ensure ID is within valid range
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
             const pokemon = response.data;
 
@@ -82,8 +82,8 @@ module.exports = PokeHandler = async (client, m) => {
             });
           } catch (err) {
             console.log(err);
-            await client.sendMessage(jid, {
-              text: `Error occurred while spawning Pokémon.`
+            await client.sendMessage(M.from, {
+              text: `Error occurred while spawning Pokémon: ${err.message}`
             });
           }      
   
@@ -99,3 +99,4 @@ module.exports = PokeHandler = async (client, m) => {
     console.log(error);
   }
 };
+    
