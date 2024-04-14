@@ -43,8 +43,8 @@ module.exports = PokeHandler = async (client, m) => {
               const moveData = await moveDataResponse.json();
               const movePower = moveData.power || 0;
               const moveAccuracy = moveData.accuracy || 0;
-              const movePP = moveData.pp || 5,
-              const moveType = moveData.type ? moveData.type.name : 'Normal',
+              const movePP = moveData.pp || 5;
+              const moveType = moveData.type ? moveData.type.name : 'Normal';
               const moveDescription = moveData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
               return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, type: moveType, description: moveDescription };
             }));
