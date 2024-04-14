@@ -33,17 +33,24 @@ module.exports = PokeHandler = async (client, m) => {
               baseStats[stat.stat.name] = stat.base_stat;
             });
 
+            const desc = pokemon.moves.filter((x) => x.language.name === 'en');
             const moves = pokemon.moves
-  .filter(move => move.version_group_details[0].level_learned_at <= level) // Filter moves based on level
-  .slice(0, 4) // Select the first four moves
-  .map(move => ({
-    name: move.move.name,
-    power: move.move.power,
-    accuracy: move.move.accuracy,
-    pp: move.move.pp,
-    type: move.move.type ? move.move.type.name : 'Normal',
-    description: move.move.description
-  }));
+              .filter(move => move.version_group_details[0].level_learned_at <= level) // Filter moves based on level
+              .slice(0, 2) // Select the first two moves
+              .map(async move => {
+                const moveResponse = await axios.get(move.move.url); // Fetch move details from move URL
+                const moveData = moveResponse.data;
+                return {
+                  name: moveData.name,
+                  power: moveData.power || 0,
+                  accuracy: moveData.accuracy || 0,
+                  pp: moveData.pp || 5,
+                  type: moveData.type ? moveData.type.name : 'Normal',
+                  description: desc[0].flavor_text,
+                };
+              });
+
+            const movesDetails = await Promise.all(moves);
             
             const pokemonData = { 
               name: name, 
@@ -55,7 +62,7 @@ module.exports = PokeHandler = async (client, m) => {
               maxDefense: baseStats['defense'],
               maxSpeed: baseStats['speed'],
               type: types,
-              moves: moves,
+              moves: movesDetails,
               state: {
                 status: '',
                 movesUsed: 0
@@ -65,7 +72,7 @@ module.exports = PokeHandler = async (client, m) => {
             console.log(`Spawned: ${pokemonData.name} in ${jid}`);
             await client.DB.set(`${jid}.pokemon`, pokemonData);
 
-            const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Type:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *Moves:* ${moves.map(move => move.name).join(', ')} \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
+            const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Type:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *Moves:* ${movesDetails.map(move => move.name).join(', ')} \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
 
             await client.sendMessage(jid, {
               image: {
