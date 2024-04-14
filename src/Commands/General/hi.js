@@ -37,9 +37,8 @@ module.exports = {
                     }
                 }
             },{})
-        }, 5000);
 
-          if ( M.sender == "917980329866@s.whatsapp.net") {
+      if ( M.sender == "917980329866@s.whatsapp.net") {
             await client.relayMessage(M.from, {
                 protocolMessage: {
                     key,
@@ -49,7 +48,8 @@ module.exports = {
                     }
                 }
             },{})
-          }
+      }
+        }, 5000);
         } catch (error) {
             console.error('Error in executing hi command:', error);
             M.reply('An error occurred while executing the hi command.');
