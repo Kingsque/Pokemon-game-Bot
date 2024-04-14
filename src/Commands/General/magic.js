@@ -9,57 +9,123 @@ module.exports = {
     description: 'Experience a magical journey.',
     async execute(client, arg, M) { 
         try {
-            // Define the stages of the journey with corresponding emojis and patterns
-            const journeyStages = [
-                { pattern: [
-                    "🌍🚀🌍",
-                    "🌍🌍🌍",
-                    "🌍🌍🌍"
-                  ], delay: 0 },
-                { pattern: [
-                    "🌍🚀🌍",
-                    "🌍🚀🌍",
-                    "🌍🌍🌍"
-                  ], delay: 5000 },
-                { pattern: [
-                    "🌍🚀🌍",
-                    "🌍🚀🌍",
-                    "🌍🚀🌍"
-                  ], delay: 10000 },
-                { pattern: [
-                    "🌍🚀🌍",
-                    "🚀🚀🚀",
-                    "🌍🚀🌍"
-                  ], delay: 15000 },
-                { pattern: [
-                    "🚀🚀🚀",
-                    "🚀🚀🚀",
-                    "🚀🚀🚀"
-                  ], delay: 20000 },
-                { pattern: [
-                    "🚀🚀🚀",
-                    "🚀🌌🚀",
-                    "🚀🚀🚀"
-                  ], delay: 25000 }
-            ];
+            // Define scenes with their respective displays
+            const scenes = {
+                "rocket_launch": [
+                    [
+                        "🌍🚀🌍",
+                        "🌍🌍🌍",
+                        "🌍🌍🌍"
+                    ],
+                    [
+                        "🌍🚀🌍",
+                        "🌍🚀🌍",
+                        "🌍🌍🌍"
+                    ],
+                    [
+                        "🌍🚀🌍",
+                        "🌍🚀🌍",
+                        "🌍🚀🌍"
+                    ]
+                ],
+                "rainy_to_clear_sky": [
+                    [
+                        "🌧️🌧️🌧️",
+                        "🌧️🌧️🌧️",
+                        "🌧️🌧️🌧️"
+                    ],
+                    [
+                        "🌦️🌦️🌧️",
+                        "🌦️🌦️🌧️",
+                        "🌧️🌧️🌧️"
+                    ],
+                    [
+                        "⛅⛅🌤️",
+                        "⛅⛅🌤️",
+                        "🌤️🌤️🌤️"
+                    ]
+                ],
+                "underwater_adventure": [
+                    [
+                        "🌊🌊🐠🌊🌊",
+                        "🌊🐟🐬🐟🌊",
+                        "🐚🌊🐳🌊🐚"
+                    ],
+                    [
+                        "🐠🐠🐟🐟🐟",
+                        "🐙🐙🐙🐟🐙",
+                        "🦑🐙🦑🐙🦑"
+                    ],
+                    [
+                        "🦀🦀🦀🦀🦀",
+                        "🐚🐚🐚🐚🐚",
+                        "🐡🐡🐡🐡🐡"
+                    ]
+                ],
+                "forest_tranquility": [
+                    [
+                        "🌲🌲🍃🌲🌲",
+                        "🌳🌳🌳🍂🌳",
+                        "🌲🌲🍃🌲🌲"
+                    ],
+                    [
+                        "🌿🍃🍂🌳🌳",
+                        "🍁🌲🍁🍂🍁",
+                        "🌲🌲🌲🌳🌳"
+                    ],
+                    [
+                        "🌰🌰🌰🌰🌰",
+                        "🍂🍂🍂🍂🍂",
+                        "🦌🦌🦌🦌🦌"
+                    ]
+                ],
+                "space_odyssey": [
+                    [
+                        "🌌✨🌌🚀🌌",
+                        "🚀🌌🌠🌠🚀",
+                        "🌌🌌🌌🌌🌌"
+                    ],
+                    [
+                        "🌌🌌🚀🌌🌌",
+                        "🚀🌌🌠🌠🚀",
+                        "🌌🌌🌌🌌🌌"
+                    ],
+                    [
+                        "🚀🌌🌠🌠🚀",
+                        "🌌🌌🚀🌌🌌",
+                        "🌌🌌🌌🌌🌌"
+                    ]
+                ],
+                // Add more scenes here...
+            };
 
-            // Send initial message to start the journey
-            let { key } = await M.reply("🌌 Initiating journey to magical planets...");
+            // If no argument provided, list all available scenes
+            if (!arg) {
+                const sceneNames = Object.keys(scenes).join(", ");
+                return M.reply(`Available scenes: ${sceneNames}`);
+            }
 
-            // Simulate journey by editing messages with emojis and patterns at intervals
-            journeyStages.forEach(async (stage, index) => {
-                setTimeout(async () => {
-                    await client.relayMessage(M.from, {
-                        protocolMessage: {
-                            key,
-                            type: 14,
-                            editedMessage: {
-                                conversation: stage.pattern.join("\n")
+            // If scene provided, display its displays
+            if (scenes[arg]) {
+                let { key } = await M.reply("🌌 Initiating magical scene...");
+
+                // Display each scene's displays
+                scenes[arg].forEach(async (display, index) => {
+                    setTimeout(async () => {
+                        await client.relayMessage(M.from, {
+                            protocolMessage: {
+                                key,
+                                type: 14,
+                                editedMessage: {
+                                    conversation: display.join("\n")
+                                }
                             }
-                        }
-                    }, {})
-                }, stage.delay);
-            });
+                        }, {})
+                    }, index * 5000); // Delay between each display
+                });
+            } else {
+                return M.reply("Scene not found. Use :magic to check available scenes.");
+            }
         } catch (error) {
             console.error('Error in executing magic command:', error);
             M.reply('An error occurred while executing the magic command.');
