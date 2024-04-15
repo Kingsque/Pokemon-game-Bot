@@ -9,7 +9,7 @@ const axios = require('axios')
 const cron = require("node-cron")
 const { Collection } = require('discord.js')
 const cool=new Collection()
-const { bots } = require('./Mods.')
+const { bots } = require('./Mods')
 
 module.exports = MessageHandler = async (messages, client) => {
     try {
@@ -106,28 +106,25 @@ if (!command) {
     }
 }
 
-// Switch check code
-if (isCmd && cmdName && command.name !== 'switch') {
-    const activeBot = await client.DB.get(`activeBot`);
+//  Switch check code
+        if (isCmd && cmdName && command.name !== 'switch') {
+            const activeBot = await client.DB.get(`activeBot`);
 
-    if (activeBot === 'none') {
-        // No bot is active, so no reply
-        return;
-    } else {
-        // Specific bot is active, check if the sender matches the active bot
-        const requestedBot = bots().find(bot => bot.name.toLowerCase() === activeBot);
-        if (requestedBot) {
-            // Check if the sender matches the active bot's JID
-            if (M.key.fromMe === requestedBot.jid) {
-                // Sender matches the active bot, proceed
-                // Your logic here to process the command
-            } else {
-                // Sender doesn't match the active bot, don't reply
-                return;
+            if (activeBot && activeBot !== 'all') {
+                // Specific bot is active, check if the sender matches the active bot
+                const requestedBot = bots().find(bot => bot.name.toLowerCase() === activeBot);
+                if (requestedBot) {
+                    // Check if the sender matches the active bot's JID
+                    if (M.key.fromMe === requestedBot.jid) {
+                        // Sender matches the active bot, proceed
+                        // Your logic here to process the command
+                    } else {
+                        // Sender doesn't match the active bot, don't reply
+                        return;
+                    }
+                }
             }
         }
-    }
-}
         
         
        // Disabled commands handling
