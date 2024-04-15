@@ -9,14 +9,6 @@ const groups = () => {
     };
 };
 
-const bots = () => {
-    return [
-        { name: "mikasa", jid: "918146455323@s.whatsapp.net" },
-        { name: "hinata", jid: "918961331275@s.whatsapp.net" }
-    ];
-};
-
 module.exports = {
-    groups,
-    bots
+    groups
 };
