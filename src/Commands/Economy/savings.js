@@ -12,6 +12,18 @@ module.exports = {
     async execute(client, arg, M) {
         let bank = await client.credit.get(`${M.sender}.bank`) || 0;
 
+        // Convert negative amount to 0
+        if (bank < 0) {
+            bank = 0;
+            await client.credit.set(`${M.sender}.bank`, bank);
+        }
+
+        // Convert decimal or fraction amounts to nearest integer
+        if (!Number.isInteger(bank)) {
+            bank = Math.round(bank);
+            await client.credit.set(`${M.sender}.bank`, bank);
+        }
+
         if (bank > MAX_AMOUNT) {
             bank = MAX_AMOUNT;
             await client.credit.set(`${M.sender}.bank`, bank);
