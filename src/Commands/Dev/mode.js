@@ -1,39 +1,29 @@
+const { bots } = require('../Handlers/Mods');
+
 module.exports = {
-    name: 'mode',
-    aliases: ['mode'],
+    name: 'switch',
+    aliases: ['switch'],
     category: 'dev',
     exp: 5,
     cool: 4,
     react: "✅",
-    description: 'Change the mode of the bot (self, private, public)',
+    description: 'Switches the bot',
     async execute(client, arg, M) {
-        const validModes = ['self', 'private', 'public'];
-        const requestedMode = arg.toLowerCase().trim();
+        const requestedMode = arg ? arg.toLowerCase().trim() : 'none';
         
-        if (!validModes.includes(requestedMode)) {
-            return M.reply("Invalid mode! Please choose either 'self', 'private', or 'public'.");
-        }
-
-        const mode = await client.DB.get(`mode`);
-
-        if (requestedMode === 'self') {
-            if (mode === 'self') {
-                return M.reply('The mode is already self');
+        if (requestedMode === 'none') {
+            await client.DB.set(`activeBot`, 'none');
+            return M.reply('🟥 All bots are turned off');
+        } else if (requestedMode === 'all') {
+            await client.DB.set(`activeBot`, 'all');
+            return M.reply('⬜ All bots have been activated.');
+        } else {
+            const botNames = bots().map(bot => bot.name.toLowerCase());
+            if (!botNames.includes(requestedMode)) {
+                return M.reply(`No bot named '${requestedMode}' found.`);
             }
-            await client.DB.set(`mode`, 'self');
-            return M.reply('Now only the host of this bot can use commands');
-        } else if (requestedMode === 'private') {
-            if (mode === 'private') {
-                return M.reply('The mode is already private');
-            }
-            await client.DB.set(`mode`, 'private');
-            return M.reply('Now only mods of this bot can use commands');
-        } else if (requestedMode === 'public') {
-            if (mode === 'public') {
-                return M.reply('The mode is already public');
-            }
-            await client.DB.set(`mode`, 'public');
-            return M.reply('Now everyone on this bot can use commands');
+            await client.DB.set(`activeBot`, requestedMode);
+            return M.reply(`🟩 '${requestedMode}' has been activated.`);
         }
     }
 };
