@@ -9,6 +9,7 @@ const axios = require('axios')
 const cron = require("node-cron")
 const { Collection } = require('discord.js')
 const cool=new Collection()
+const { bots } = require('./Mods.')
 
 module.exports = MessageHandler = async (messages, client) => {
     try {
