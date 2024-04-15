@@ -19,13 +19,13 @@ module.exports = {
             const bank = await client.credit.get(`${M.sender}.bank`) || 0;
             const pokeballs = await client.rpg.get(`${M.sender}.pokeball`) || 0;
             
-            let text = '🗻 *INVENTORY* 🗻\n\n';
+            let text = '🎒 *INVENTORY* 🎒\n\n';
             text += `🌶️ *Pepper Spray:* ${pepper}\n`;
-            text += `🧧 *Luck Potion:* ${luck}\n`;
-            text += `🏀 *Pokeballs:* ${pokeballs}\n`;
-            text += `🎴 *Total cards:* ${deck.length + coll.length || 'None'}\n`;
-            text += `🎊 *Total pokemons:* ${party.length + pc.length || 'None'}\n`;
-            text += `💳 *Credits:* ${wallet + bank}`;
+            text += `🍀 *Luck Potion:* ${luck}\n`;
+            text += `⚽ *Pokeballs:* ${pokeballs}\n`;
+            text += `🃏 *Total Cards:* ${deck.length + coll.length || 'None'}\n`;
+            text += `🐾 *Total Pokemons:* ${party.length + pc.length || 'None'}\n`;
+            text += `💰 *Credits:* ${wallet + bank}`;
             
             M.reply(text);
         } catch (err) {
@@ -34,4 +34,3 @@ module.exports = {
         }
     }
 };
-        
