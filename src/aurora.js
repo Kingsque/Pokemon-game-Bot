@@ -16,7 +16,7 @@ const MessageHandler = require('./Handlers/Message')
 const CardHandler = require('./Handlers/card')
 const PokeHandler = require('./Handlers/pokemon')
 const EventsHandler = require('./Handlers/Events')
-const { groups } = require('./Handlers/Mods')
+const devs = require('./Handlers/Mods')
 
 const contact = require('./Structures/Contact')
 const utils = require('./Structures/Functions')
@@ -55,7 +55,7 @@ const start = async () => {
     client.mods = ('917903576495,916239664935,917980329866,918999230502').split(',')
 
     //grouos
-    client.groups = groups()
+    client.devs = devs
 
     //Database
     client.DB = new QuickDB({
