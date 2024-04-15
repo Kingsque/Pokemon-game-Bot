@@ -19,7 +19,7 @@ module.exports = {
 
         if (bonus !== null && bonusTimeout - (Date.now() - bonus) > 0) {
             const bonusTime = ms(bonusTimeout - (Date.now() - bonus));
-            text += `*You have already claimed your bonus reward. You cannot claim it again. Time left: ${bonusTime.days}d ${bonusTime.hours}h ${bonusTime.minutes}m ${bonusTime.seconds}s.*`;
+            text += `*You have already claimed your bonus reward. You cannot claim it again.*`;
         } else {
             text += `*Welcome to our Aurora family! We are really happy to have you as our member. You have claimed your bonus reward 🎉: ${bonusAmount}.*`;
 
