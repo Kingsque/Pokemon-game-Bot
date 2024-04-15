@@ -9,19 +9,19 @@ module.exports = {
     description: 'Shows the wallet value',
     async execute(client, arg, M) {
         let wallet = await client.credit.get(`${M.sender}.wallet`) || 0;
-        
-        // Check if the amount starts with a "-" sign
-        if (wallet.toString().startsWith('-')) {
-            wallet = 0; // Convert negative amount to 0
-            client.credit.set(`${M.sender}.wallet`, 0)
+
+        // Convert negative amount to 0
+        if (wallet < 0) {
+            wallet = 0;
+            client.credit.set(`${M.sender}.wallet`, 0);
         }
-        
-        // Check if the amount contains a "." sign
-        if (wallet.toString().includes('.')) {
-            wallet = Math.round(wallet); // Round decimal or fraction amounts
-            client.credit.get(`${M.sender}.wallet`, wallet)
+
+        // Convert decimal or fraction amounts to nearest integer
+        if (!Number.isInteger(wallet)) {
+            wallet = Math.round(wallet);
+            client.credit.set(`${M.sender}.wallet`, wallet);
         }
-        
+
         const contact = await client.contact.getContact(M.sender, client);
         const username = contact.username || 'Unknown';
         const tag = `#${M.sender.substring(3, 7)}`;
