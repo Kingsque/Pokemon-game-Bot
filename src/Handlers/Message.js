@@ -104,16 +104,31 @@ if (!command) {
         return M.reply('No such command found! BAKA');
     }
 }
-                   // Check bot mode
-const mode = await client.DB.get(`mode`);
 
-//if (mode === 'self' && !isSelf) {
- //   return;
-//}
+// Switch check code
+if (isCmd && cmdName && command.name !== 'switch') {
+    const activeBot = await client.DB.get(`activeBot`);
 
-if (mode === 'private' && !client.mods.includes(M.sender.split('@')[0])) {
-    return;
-} 
+    if (activeBot === 'none') {
+        // No bot is active, so no reply
+        return;
+    } else {
+        // Specific bot is active, check if the sender matches the active bot
+        const requestedBot = bots().find(bot => bot.name.toLowerCase() === activeBot);
+        if (requestedBot) {
+            // Check if the sender matches the active bot's JID
+            if (M.key.fromMe === requestedBot.jid) {
+                // Sender matches the active bot, proceed
+                // Your logic here to process the command
+            } else {
+                // Sender doesn't match the active bot, don't reply
+                return;
+            }
+        }
+    }
+}
+        
+        
        // Disabled commands handling
 const disabledCommands = await client.DB.get('disable-commands') || [];
 const disabledCmd = disabledCommands.find(
