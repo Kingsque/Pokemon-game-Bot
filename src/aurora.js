@@ -17,7 +17,6 @@ const CardHandler = require('./Handlers/card')
 const PokeHandler = require('./Handlers/pokemon')
 const EventsHandler = require('./Handlers/Events')
 const { groups } = require('./Handlers/Mods')
-const { bots } = require('./Handlers/Mods')
 
 const contact = require('./Structures/Contact')
 const utils = require('./Structures/Functions')
@@ -57,7 +56,6 @@ const start = async () => {
 
     //devs
     client.groups = groups()
-    client.bots = bots()
 
     //Database
     client.DB = new QuickDB({
