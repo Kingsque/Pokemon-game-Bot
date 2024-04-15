@@ -3,12 +3,23 @@ module.exports = {
     aliases: ['attack'],
     category: 'economy',
     exp: 5,
-    cool: 4,
+    cool: 5 , // Cooldown period in seconds (5 minutes)
     react: "✅",
     usage: 'Use rob @taguser',
     description: 'Attempt to rob the mentioned user',
     async execute(client, arg, M) {
         if (!M.mentions.length) return M.reply('*You must mention someone to attempt the robbery*');
+
+        const currentTime = Date.now();
+        const lastRobTime = (await client.cooldown.get(`${M.sender}.rob`)) || 0;
+        const cooldown = 5
+
+        // Check if the user is on cooldown
+        const cooldownRemaining = lastRobTime + (cooldown * 1000) - currentTime;
+        if (cooldownRemaining > 0) {
+            const remainingMinutes = Math.ceil(cooldownRemaining / (60 * 1000));
+            return M.reply(`*You are on cooldown! You can attempt to rob again in ${remainingMinutes} minutes.*`);
+        }
 
         const senderCredits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
         const mentionCredits = (await client.credit.get(`${M.mentions[0]}.wallet`)) || 0;
@@ -37,6 +48,9 @@ module.exports = {
         await client.credit.add(`${M.sender}.wallet`, result === 'success' ? targetAmount : -userAmount);
         await client.credit.add(`${M.mentions[0]}.wallet`, result === 'success' ? -targetAmount : userAmount);
 
+        // Update last robbery time for cooldown
+        await client.cooldown.set(`${M.sender}.rob`, currentTime);
+
         // Construct response text based on the result
         let text;
         if (result === 'caught') {
@@ -53,3 +67,4 @@ module.exports = {
         client.sendMessage(M.from, { text, mentions: [M.sender, M.mentions[0]] }, { quoted: M });
     }
 };
+            
