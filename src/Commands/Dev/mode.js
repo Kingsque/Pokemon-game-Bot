@@ -1,4 +1,4 @@
-const { bots } = require('../Handlers/Mods');
+const { bots } = require('../../Handlers/Mods');
 
 module.exports = {
     name: 'switch',
