@@ -1,17 +1,29 @@
 const axios = require('axios');
 
+// Constants
 const maxLevel = 100; // Maximum level for a Pokémon
 
 /**
  * Calculate the experience points required for a Pokémon to level up from the current level.
+ * Updated formula for leveling up:
+ * Level 1-10: 100 + (level - 1) * 100
+ * Level 11-50: 1000 + (level - 10) * 200
+ * Level 51-100: 9000 + (level - 50) * 300
  * @param {number} currentLevel - Current level of the Pokémon.
  * @returns {number} - Experience points required to level up.
  */
 const calculatePokeExp = (currentLevel) => {
     if (currentLevel <= 0 || currentLevel > maxLevel) {
-        return Infinity; // or any other appropriate value to indicate invalid level
+        return Infinity; // or any other appropriate value to indicate an invalid level
     }
-    return 100 + (currentLevel - 1) * 200; // Starting from 200, increase by 200 for each level
+
+    if (currentLevel <= 10) {
+        return 100 + (currentLevel - 1) * 100;
+    } else if (currentLevel <= 50) {
+        return 1000 + (currentLevel - 10) * 200;
+    } else {
+        return 9000 + (currentLevel - 50) * 300;
+    }
 };
 
 /**
@@ -32,7 +44,7 @@ const requirePokeExpToLevelUp = (currentExp, currentLevel) => {
  * @returns {Object} - Object containing Pokémon stats.
  */
 const getPokeStats = (level, exp) => {
-    // Ensure level doesn't exceed maximum level
+    // Ensure level doesn't exceed the maximum level
     level = Math.min(level, maxLevel);
     
     // Calculate required experience points for leveling up
@@ -66,18 +78,17 @@ const levelUpPokemon = (pokemon) => {
  * @param {Object} pokemon - The Pokémon object to check for evolution.
  * @returns {boolean} - True if the Pokémon can evolve, otherwise false.
  */
-const canPokemonEvolve = async (pokemon) => {
+const canEvolve = async (pokemon) => {
     // Check if the Pokémon has reached its maximum level
     if (pokemon.level >= maxLevel) {
         return false;
     }
     
-    // Extract evolution details for the Pokémon
-    const response = await axios.get(`https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/pokedex.json`);
-    const pokemonData = response.data.find(p => p.name.english.toLowerCase() === pokemon.name.toLowerCase());
-    if (pokemonData && pokemonData.evolution && pokemonData.evolution.next) {
-        const [nextId, requirement] = pokemonData.evolution.next[0];
-        const requiredLevel = parseInt(requirement.match(/\d+/)[0]); // Extract required level from the requirement string
+    // Fetch the evolution chain to determine if the Pokémon can evolve
+    const evolutionChain = await getEvolveChain(pokemon.name);
+    
+    if (evolutionChain.length > 1) {
+        const requiredLevel = evolutionChain[1].min_level;
         return pokemon.level >= requiredLevel;
     } else {
         return false;
@@ -85,31 +96,57 @@ const canPokemonEvolve = async (pokemon) => {
 };
 
 /**
- * Get the ID of the next evolution for a given Pokémon name.
+ * Get the evolution chain for a given Pokémon name.
  * @param {string} pokemonName - Name of the Pokémon.
- * @returns {string|null} - ID of the next evolution, or null if not found.
+ * @returns {Object[]} - Array of objects representing the evolution chain.
  */
-const getNextId = async (pokemonName) => {
-    const response = await axios.get(`https://raw.githubusercontent.com/Purukitto/pokemon-data.json/master/pokedex.json`);
-    const pokemonData = response.data.find(p => p.name.english.toLowerCase() === pokemonName.toLowerCase());
-    if (pokemonData && pokemonData.evolution && pokemonData.evolution.next) {
-        return pokemonData.evolution.next[0][0]; // Return the ID of the next evolution
-    } else {
+const getEvolveChain = async (pokemonName) => {
+    try {
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}/`);
+        const speciesData = response.data;
+        const evolutionChainUrl = speciesData.evolution_chain.url;
+        const evolutionChainResponse = await axios.get(evolutionChainUrl);
+        return evolutionChainResponse.data.chain;
+    } catch (error) {
+        console.error('Error fetching evolution chain:', error.message);
+        return [];
+    }
+};
+
+/**
+ * Get the name of the next evolved form for a given Pokémon name.
+ * @param {string} pokemonName - Name of the Pokémon.
+ * @returns {string|null} - Name of the next evolved form, or null if not found.
+ */
+const getNextEvolvedForm = async (pokemonName) => {
+    try {
+        const evolutionChain = await getEvolveChain(pokemonName);
+        if (evolutionChain.evolves_to.length > 0) {
+            return evolutionChain.evolves_to[0].species.name;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching next evolved form:', error.message);
         return null;
     }
 };
 
-
+/**
+ * Get the stats of the next evolved form for a given Pokémon name.
+ * @param {string} pokemonName - Name of the Pokémon.
+ * @returns {Object|null} - Stats of the next evolved form, or null if not found.
+ */
 const getNextStats = async (pokemonName) => {
-    const nextId = await getNextId(pokemonName);
-    if (!nextId) {
+    const nextEvolvedForm = await getNextEvolvedForm(pokemonName);
+    if (!nextEvolvedForm) {
         throw new Error("Failed to find evolution data for your Pokémon.");
     }
 
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nextId}`);
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nextEvolvedForm}`);
     const newData = response.data;
 
-    // Extract new stats and moves
+    // Extract new stats
     const stats = {
         hp: newData.stats.find(stat => stat.stat.name === 'hp').base_stat,
         attack: newData.stats.find(stat => stat.stat.name === 'attack').base_stat,
@@ -117,24 +154,60 @@ const getNextStats = async (pokemonName) => {
         speed: newData.stats.find(stat => stat.stat.name === 'speed').base_stat,
     };
 
-    const moves = newData.moves.filter(move => move.version_group_details.some(detail => detail.level_learned_at <= 1))
-                                .map(move => ({
-                                    name: move.move.name,
-                                    power: move.move.power || 0,
-                                    accuracy: move.move.accuracy || 0,
-                                    pp: move.move.pp || 0,
-                                    type: move.move.type ? move.move.type.name : 'Normal',
-                                    description: move.move.description || ''
-                                }));
-    return { stats, moves };
+    return { stats };
 };
+
+/**
+ * Get the move that a Pokémon learns when leveling up.
+ * @param {string} pokemonName - Name of the Pokémon.
+ * @param {number} level - Current level of the Pokémon.
+ * @returns {Object|null} - Object containing move details or null if no move is learned at the level.
+ */
+const levelUpMove = async (pokemonName, level) => {
+    try {
+        const response = await axios.get(`https://pokeapi.co/api/v2/evolution-trigger/level-up`);
+        const levelUpMethod = response.data.name;
+
+        const response2 = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}/encounters`);
+        const generation = response2.data[0].version_details[0].version_group.name;
+
+        const response3 = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}/`);
+        const moves = response3.data.moves.filter(move => move.version_group_details.some(detail => detail.move_learn_method.name === levelUpMethod && detail.version_group.name === generation && detail.level_learned_at === level));
+
+        const moveDetails = moves.length > 0 ? moves[0].move : null;
+
+        if (moveDetails) {
+            const moveResponse = await axios.get(moveDetails.url);
+            const moveData = moveResponse.data;
+
+            const move = {
+                name: moveData.name,
+                power: moveData.power || 0,
+                accuracy: moveData.accuracy || 0,
+                pp: moveData.pp || 0,
+                type: moveData.type.name,
+                description: moveData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text || ''
+            };
+
+            return move;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching level-up move:', error.message);
+        return null;
+    }
+};
+
 
 module.exports = {
     calculatePokeExp,
     requirePokeExpToLevelUp,
     getPokeStats,
     levelUpPokemon,
-    canPokemonEvolve,
-    getNextId,
-    getNextStats // Fixed typo here
+    canEvolve,
+    getEvolveChain,
+    getNextEvolvedForm,
+    getNextStats,
+    levelUpMove
 };
