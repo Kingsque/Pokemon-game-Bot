@@ -13,7 +13,7 @@ module.exports = {
         if (!robTarget) return M.reply('*You must mention someone to attempt the robbery*');
 
         const currentTime = Date.now();
-        const lastRobTime = (await client.DB.get(`${M.sender}.rob`)) || 0;
+        const lastRobTime = await client.DB.get(`${M.sender}.rob`)
         const cooldown = 5;
 
         // Check if the user is on cooldown
