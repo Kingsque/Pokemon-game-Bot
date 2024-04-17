@@ -8,7 +8,7 @@ module.exports = {
     usage: 'Use rob @taguser',
     description: 'Attempt to rob the mentioned user',
     async execute(client, arg, M) {
-        const robTarget = M.mentions[0] || (M.quoted && M.quoted.mentions[0]);
+        const robTarget = M.mentions[0] || (M.quoted && M.quoted.participant);
 
         if (!robTarget) return M.reply('*You must mention someone to attempt the robbery*');
 
