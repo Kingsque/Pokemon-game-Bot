@@ -4,7 +4,7 @@ const suitableWords = {
     happy: 'is Happied with', highfive: 'High-fived', hug: 'Hugged', kick: 'Kicked', kill: 'Killed', kiss: 'Kissed',
     lick: 'Licked', nom: 'Nomed', pat: 'Patted', poke: 'Poked', slap: 'Slapped', smile: 'Smiled at', smug: 'Smugged',
     wave: 'Waved at', wink: 'Winked at', yeet: 'Yeeted at'
-}
+};
 
 const reactions = Object.keys(suitableWords);
 
@@ -14,8 +14,8 @@ module.exports = {
     category: 'fun',
     react: "✅",
     aliases: ['r', ...reactions],
-    exp: 50,
-    cool:4,
+    exp: 30,
+    cool: 20,
     usage: 'Use :<reaction>',
     async execute(client, arg, M) {
 
@@ -46,11 +46,11 @@ module.exports = {
             users.push(M.quoted.sender);
         }
         
-        while (users.length < 1) {
+        if (users.length < 1) {
             users.push(M.sender);
         }
         
-        const reactant = users[0];
+        const reactant = M.mentions[0] || (M.quoted && M.quoted.participant);
         const single = reactant === M.sender;
         const { url } = await client.utils.fetch(`https://api.waifu.pics/sfw/${reaction}`);
         const result = await client.utils.getBuffer(url);
