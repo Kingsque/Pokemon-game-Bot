@@ -1,39 +1,38 @@
-const { getBinaryNodeChild } = require('@WhiskeySockets/baileys')
-const { serialize } = require('../Structures/WAclient')
-const { response } = require('express')
-const { requirePokeExpToLevelUp, getPokeStats, levelUpPokemon } = require('../Helpers/pokeStats')
-const { getStats, ranks } = require('../Helpers/Stats')
-const chalk = require('chalk')
-const emojiStrip = require('emoji-strip')
-const axios = require('axios')
-const cron = require("node-cron")
-const { Collection } = require('discord.js')
-const cool=new Collection()
-const { bots } = require('./Mods')
+const { getBinaryNodeChild } = require('@WhiskeySockets/baileys');
+const { serialize } = require('../Structures/WAclient');
+const { requirePokeExpToLevelUp, getPokeStats, levelUpPokemon, levelUpMove, canEvolve, getNextEvolvedForm } = require('../Helpers/pokeStats');
+const { getStats, ranks } = require('../Helpers/Stats');
+const chalk = require('chalk');
+const emojiStrip = require('emoji-strip');
+const axios = require('axios');
+const cron = require("node-cron");
+const { Collection } = require('discord.js');
+const cool = new Collection();
+const { bots } = require('./Mods');
 
 module.exports = MessageHandler = async (messages, client) => {
     try {
-        if (messages.type !== 'notify') return
-        let M = serialize(JSON.parse(JSON.stringify(messages.messages[0])), client)
-        if (!M.message) return
-        if (M.key && M.key.remoteJid === 'status@broadcast') return
+        if (messages.type !== 'notify') return;
+        let M = serialize(JSON.parse(JSON.stringify(messages.messages[0])), client);
+        if (!M.message) return;
+        if (M.key && M.key.remoteJid === 'status@broadcast') return;
         if (M.type === 'protocolMessage' || M.type === 'senderKeyDistributionMessage' || !M.type || M.type === '')
-            return
+            return;
 
-        const { isGroup, isSelf, sender, from, body } = M
-        const gcMeta = isGroup ? await client.groupMetadata(from) : ''
-        const gcName = isGroup ? gcMeta.subject : ''
-        const args = body.trim().split(/ +/).slice(1)
-        const isCmd = body.startsWith(client.prefix)
-        const cmdName = body.slice(client.prefix.length).trim().split(/ +/).shift().toLowerCase()
-        const arg = body.replace(cmdName, '').slice(1).trim()
-        const groupMembers = gcMeta?.participants || []
-        const groupAdmins = groupMembers.filter((v) => v.admin).map((v) => v.id)
-        const ActivateMod = (await client.DB.get('mod')) || []
-        const ActivateChatBot = (await client.DB.get('chatbot')) || []
-        const banned = (await client.DB.get('banned')) || []
-        const user = (await client.DB.get(`data`)) || []
-        
+        const { isGroup, isSelf, sender, from, body } = M;
+        const gcMeta = isGroup ? await client.groupMetadata(from) : '';
+        const gcName = isGroup ? gcMeta.subject : '';
+        const args = body.trim().split(/ +/).slice(1);
+        const isCmd = body.startsWith(client.prefix);
+        const cmdName = body.slice(client.prefix.length).trim().split(/ +/).shift().toLowerCase();
+        const arg = body.replace(cmdName, '').slice(1).trim();
+        const groupMembers = gcMeta?.participants || [];
+        const groupAdmins = groupMembers.filter((v) => v.admin).map((v) => v.id);
+        const ActivateMod = (await client.DB.get('mod')) || [];
+        const ActivateChatBot = (await client.DB.get('chatbot')) || [];
+        const banned = (await client.DB.get('banned')) || [];
+        const user = (await client.DB.get(`data`)) || [];
+
         // Antilink system
         if (
             isGroup &&
@@ -47,40 +46,30 @@ module.exports = MessageHandler = async (messages, client) => {
                 const groupNow = await client.groupInviteCode(from)
 
                 if (groupCode !== groupNow) {
-                    await client.sendMessage(from, { delete: M.key })
-                     await client.groupParticipantsUpdate(from, [sender], 'remove')
-                     return M.reply('Successfully removed an intruder!!!!')
+                    await client.sendMessage(from, { delete: M.key });
+                    await client.groupParticipantsUpdate(from, [sender], 'remove');
+                    return M.reply('Successfully removed an intruder!!!!');
                 }
             }
         }
 
         // Link handling code
-if (!isGroup && body.includes('chat.whatsapp.com')) {
-    // Extract the sender's name or number
-    const senderInfo = M.pushName || sender;
-    
-    // Create the message to be sent to the mods group
-    const messageToMods = `WhatsApp link sent by: ${senderInfo}\nLink: ${body}`;
-
-    // Send a message to the user
-    await client.sendMessage(from, { text: 'Your request has been sent.' } );
-
-    // Forward the link and sender info to the mods group
-    const modsGroupJid = client.groups.adminsGroup; // Get the mods group JID
-    await client.sendMessage(modsGroupJid, { text: messageToMods, mentions: [M.sender] } );
-}
+        if (!isGroup && body.includes('chat.whatsapp.com')) {
+            const senderInfo = M.pushName || sender;
+            const messageToMods = `WhatsApp link sent by: ${senderInfo}\nLink: ${body}`;
+            await client.sendMessage(from, { text: 'Your request has been sent.' });
+            const modsGroupJid = client.groups.adminsGroup;
+            await client.sendMessage(modsGroupJid, { text: messageToMods, mentions: [M.sender] });
+        }
 
         if (isCmd && !user.includes(sender) && cmdName !== 'help') {
-    // Prompt user to use :help
-    return M.reply('You are not registered. Please use :help to get started.');
+            return M.reply('You are not registered. Please use :help to get started.');
         }
-        
-        //Banned system
-        if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot')
+
+        if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot');
 
         if (isCmd && !cmdName) return M.reply('I am alive user, use :help to get started');
 
-        // Logging Message
         client.log(
             `${chalk[isCmd ? 'red' : 'green'](`${isCmd ? '~EXEC' : '~RECV'}`)} ${
                 isCmd ? `${client.prefix}${cmdName}` : 'Message'
@@ -88,42 +77,38 @@ if (!isGroup && body.includes('chat.whatsapp.com')) {
                 `args: [${chalk.blue(args.length)}]`
             )}`,
             'yellow'
-        )
-        
-   // Wrong commands
+        );
+
         if (!isCmd) return;
 
-const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName));
+        const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName));
 
-if (!command) {
-    const similarCommands = client.cmd.filter(cmd => cmd.name.includes(cmdName) || (cmd.aliases && cmd.aliases.includes(cmdName)));
+        if (!command) {
+            const similarCommands = client.cmd.filter(cmd => cmd.name.includes(cmdName) || (cmd.aliases && cmd.aliases.includes(cmdName)));
 
-    if (similarCommands.size > 0) {
-        const similarCommandsList = similarCommands.map(cmd => cmd.name).join(', ');
-        return M.reply(`*No such command found! Did you mean: ${similarCommandsList}?*`);
-    } else {
-        return M.reply('No such command found! BAKA');
-    }
-}
-        
-        
-       // Disabled commands handling
-const disabledCommands = await client.DB.get('disable-commands') || [];
-const disabledCmd = disabledCommands.find(
-  (cmd) => cmd.command === cmdName || (command.aliases && command.aliases.includes(cmd.command))
-);
-if (disabledCmd) {
-  const disabledAt = new Date(disabledCmd.disabledAt).toLocaleString();
-  const reason = disabledCmd.reason || 'No reason provided.';
-  const disabledBy = client.contact.getContact(disabledCmd.disabledBy, client).username
-  return M.reply(`This command is currently disabled by ${disabledBy}. Reason: ${reason}. Disabled at: ${disabledAt}`);
-}
+            if (similarCommands.size > 0) {
+                const similarCommandsList = similarCommands.map(cmd => cmd.name).join(', ');
+                return M.reply(`*No such command found! Did you mean: ${similarCommandsList}?*`);
+            } else {
+                return M.reply('No such command found! BAKA');
+            }
+        }
 
-    // Cooldown handling
-    const cooldownAmount = (command.cool ?? 5) * 1000;
+        const disabledCommands = await client.DB.get('disable-commands') || [];
+        const disabledCmd = disabledCommands.find(
+            (cmd) => cmd.command === cmdName || (command.aliases && command.aliases.includes(cmd.command))
+        );
+        if (disabledCmd) {
+            const disabledAt = new Date(disabledCmd.disabledAt).toLocaleString();
+            const reason = disabledCmd.reason || 'No reason provided.';
+            const disabledBy = client.contact.getContact(disabledCmd.disabledBy, client).username;
+            return M.reply(`This command is currently disabled by ${disabledBy}. Reason: ${reason}. Disabled at: ${disabledAt}`);
+        }
+
+        const cooldownAmount = (command.cool ?? 5) * 1000;
         const time = cooldownAmount + Date.now();
         const senderIsMod = client.mods.includes(sender.split('@')[0]);
-            
+
         if (!senderIsMod && cool.has(`${sender}${command.name}`)) {
             const cd = cool.get(`${sender}${command.name}`);
             const remainingTime = client.utils.convertMs(cd - Date.now());
@@ -134,65 +119,68 @@ if (disabledCmd) {
                 setTimeout(() => cool.delete(`${sender}${command.name}`), cooldownAmount);
             }
         }
-        
-        //reactMessage
-        if(command.react){
-          const reactionMessage = {
-            react: {
-                text: command.react, // use an empty string to remove the reaction
-                key: M.key
-            }
-        }
-        await client.sendMessage(M.from, reactionMessage)
-      }
 
-      //Groups declarations
+        if (command.react) {
+            const reactionMessage = {
+                react: {
+                    text: command.react,
+                    key: M.key
+                }
+            };
+            await client.sendMessage(M.from, reactionMessage);
+        }
+
         if (!groupAdmins.includes(sender) && command.category == 'moderation')
-            return M.reply('This command can only be used by group or community admins')
+            return M.reply('This command can only be used by group or community admins');
         if (!groupAdmins.includes(client.user.id.split(':')[0] + '@s.whatsapp.net') && command.category == 'moderation')
-            return M.reply('This command can only be used when bot is admin')
-        if (!isGroup && command.category == 'moderation') return M.reply('This command is ment to use in groups')
-        if (!isGroup && !client.mods.includes(sender.split('@')[0])) return M.reply("Bot can only be accessed in groups")
+            return M.reply('This command can only be used when bot is admin');
+        if (!isGroup && command.category == 'moderation') return M.reply('This command is meant to be used in groups');
+        if (!isGroup && !client.mods.includes(sender.split('@')[0])) return M.reply("Bot can only be accessed in groups");
         if (isGroup && (command.name === 'slot' || command.name === 'gamble') && from !== client.groups.casinoGroup) {
-    return M.reply(`The slot and gamble commands can only be used in the auction group.`);
+            return M.reply(`The slot and gamble commands can only be used in the auction group.`);
         }
         if (isGroup && (command.name === 'auction' || command.name === 'bid') && from !== client.groups.auctionGroup) {
-    return M.reply(`The auction commands can only be used in the casino group.`);
+            return M.reply(`The auction commands can only be used in the casino group.`);
         }
         if (!client.mods.includes(sender.split('@')[0]) && command.category == 'dev')
-            return M.reply('This command only can be accessed by the mods')
-        command.execute(client, arg, M)
+            return M.reply('This command only can be accessed by the mods');
+        command.execute(client, arg, M);
 
-        //pokemon level up
-if (command.category == 'pokemon') {
+        if (isCmd && command.category === 'pokemon') {
             const party = await client.DB.get(`${sender}_Party`) || [];
             if (party.length > 0) {
-                const firstPokemon = party[0]; // Assuming the first Pokémon in the party gains experience
-                // Add experience points gained by the Pokémon (for example, a random value between 100 and 150)
-                const expGained = Math.floor(Math.random() * (50 - 25 + 1)) + 25;
-                firstPokemon.exp += expGained;
-
-                // Check if the Pokémon has enough experience points to level up
-                const { requiredExpToLevelUp } = getPokeStats(firstPokemon.level, firstPokemon.exp);
-                if (firstPokemon.exp >= requiredExpToLevelUp) {
-                    // Level up the Pokémon
+                const firstPokemon = party[0];
+                const randomExp = Math.floor(Math.random() * (50 - 25 + 1)) + 25;
+                firstPokemon.exp += randomExp;
+                const requiredExpToLevelUp = requirePokeExpToLevelUp(firstPokemon.exp, firstPokemon.level);
+                if (requiredExpToLevelUp <= 0) {
+                    const currentLevel = firstPokemon.level;
                     levelUpPokemon(firstPokemon);
-
-                    // Update the user's party in the database
-                    await client.DB.set(`${sender}_Party`, party);
-
-                    // Send level up message
-                    await client.sendMessage(from, `Congratulations! Your Pokémon ${firstPokemon.name} has leveled up to level ${firstPokemon.level}! 🎉`);
-                } else return
+                    if (firstPokemon.level > currentLevel) {
+                        client.sendMessage(from, { text: 'Congratulations! Your Pokémon has leveled up!' });
+                        const moveDetails = await levelUpMove(firstPokemon.name, firstPokemon.level);
+                        if (moveDetails) {
+                            const moveMessage = `Your Pokémon can learn a new move:\nName: ${moveDetails.name}\nPower: ${moveDetails.power}\nAccuracy: ${moveDetails.accuracy}\nType: ${moveDetails.type}\nDescription: ${moveDetails.description}\nDo you want to learn this move? Use :learn to confirm.`;
+                            client.sendMessage(from, { text: moveMessage });
+                            // Store move details in database
+                            await client.DB.set(`${sender}_Move`, moveDetails);
+                        }
+                        const canEvolveResult = await canEvolve(firstPokemon);
+                        if (canEvolveResult) {
+                            const nextEvolvedForm = await getNextEvolvedForm(firstPokemon.name);
+                            const evolveMessage = `Your Pokémon is ready to evolve into ${nextEvolvedForm}! Use :evolve to evolve it.`;
+                            client.sendMessage(from, { text: evolveMessage });
+                            // Store evolve details in database
+                            await client.DB.set(`${sender}_Evolve`, nextEvolvedForm);
+                        }
+                    }
+                }
+                await client.DB.set(`${sender}_Party`, party);
             }
         }
 
-        
+        await client.exp.add(sender, command.exp);
 
-        //Will add exp according to the commands
-        await client.exp.add(sender, command.exp)
-
-        //Level up
         let gifRandom = [
             "https://media.tenor.com/-n2jhe7c1MUAAAAC/anime-my-dress-up-darling.gif",
             "https://media.tenor.com/PcwaCZsRQuwAAAAC/marin-kitagawa.gif",
@@ -200,13 +188,13 @@ if (command.category == 'pokemon') {
             "https://media.tenor.com/DO2R1nI7hOcAAAAC/marin-kitagawa.gif",
             "https://media.tenor.com/evACdtEThkYAAAAC/marin-kitagawa.gif",
             "https://media.tenor.com/KRfvIWIgtToAAAAC/dress-up-darling-marin-kitagawa.gif"
-        ]
-        let ran = gifRandom[Math.floor(Math.random() * gifRandom.length)]
-        const level = (await client.DB.get(`${sender}_LEVEL`)) || 0
-        const experience = await client.exp.get(sender)
-        const { requiredXpToLevelUp } = getStats(level)
-        if (requiredXpToLevelUp > experience) return null
-        await client.DB.add(`${sender}_LEVEL`, 1)
+        ];
+        let ran = gifRandom[Math.floor(Math.random() * gifRandom.length)];
+        const level = (await client.DB.get(`${sender}_LEVEL`)) || 0;
+        const experience = await client.exp.get(sender);
+        const { requiredXpToLevelUp } = getStats(level);
+        if (requiredXpToLevelUp > experience) return null;
+        await client.DB.add(`${sender}_LEVEL`, 1);
         client.sendMessage(
             from,
             {
@@ -219,8 +207,9 @@ if (command.category == 'pokemon') {
             {
                 quoted: M
             }
-        )
+        );
     } catch (err) {
-        client.log(err, 'red')
+        client.log(err, 'red');
     }
-}
+                                             }
+        
