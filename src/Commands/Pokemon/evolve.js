@@ -1,72 +1,40 @@
-const axios = require('axios');
-const { canPokemonEvolve, getNextId, getNextStats } = require('../../Helpers/pokeStats');
-
+// Evolve Command
 module.exports = {
     name: "evolve",
     aliases: ["evolve"],
-    exp: 0,
-    cool: 4,
-    react: "🔄",
     category: "pokemon",
-    description: "Evolve your Pokémon in the party if possible.",
+    description: "Evolve your Pokémon.",
     async execute(client, arg, M) {
         try {
-            const party = await client.DB.get(`${M.sender}_Party`) || [];
-            if (party.length === 0) {
-                return M.reply("📭 Your Pokémon party is empty!");
+            const nextEvolvedForm = await client.DB.get(`${M.sender}_Evolve`);
+            if (!nextEvolvedForm) return M.reply("No evolution details found.");
+            if (arg === "--cancel") {
+                await client.DB.delete(`${M.sender}_Evolve`);
+                return M.reply("Evolution cancelled.");
+            } else if (arg === "--confirm") {
+                // Retrieve the user's party from the database
+                const party = await client.DB.get(`${M.sender}_Party`) || [];
+                if (party.length > 0) {
+                    // Get the first Pokémon in the party
+                    const firstPokemon = party[0];
+                    // Update the Pokémon's details with the next evolved form
+                    firstPokemon.name = nextEvolvedForm.name;
+                    firstPokemon.type = nextEvolvedForm.type;
+                    firstPokemon.maxHP = nextEvolvedForm.maxHP;
+                    firstPokemon.maxAttack = nextEvolvedForm.maxAttack;
+                    firstPokemon.maxDefense = nextEvolvedForm.maxDefense;
+                    firstPokemon.maxSpeed = nextEvolvedForm.maxSpeed;
+                    firstPokemon.id = nextEvolvedForm.id; // Update the Pokémon's ID
+                    // Save the updated Pokémon details
+                    await client.DB.set(`${M.sender}_Party`, party);
+                    return M.reply(`Your Pokémon has evolved into ${nextEvolvedForm.name}!`);
+                }
             }
-            
-            const index = parseInt(arg) - 1;
-            if (isNaN(index) || index < 0 || index >= party.length) {
-                return M.reply("Please provide a valid party number.");
-            }
-            
-            const pokemon = party[index];
-            const canEvolve = await canPokemonEvolve(pokemon);
-            
-            if (!canEvolve) {
-                return M.reply("Your Pokémon cannot evolve at this time.");
-            }
-            
-            const nextId = await getNextId(pokemon.name);
-            if (!nextId) {
-                return M.reply("Failed to find evolution data for your Pokémon.");
-            }
-            
-            // Get new Pokémon data and extract stats and moves
-            const { stats, moves } = await getNextStats(pokemon.name);
-            
-            // Update Pokémon name
-            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nextId}`);
-            const newData = response.data;
-            pokemon.name = newData.name; // Assuming the stats object includes the new Pokémon name
-            
-            // Update Pokémon stats (hp, attack, defense, speed)
-            pokemon.hp = stats.hp;
-            pokemon.attack = stats.attack;
-            pokemon.defense = stats.defense;
-            pokemon.speed = stats.speed;
-            
-            // Initialize moves array if undefined
-            if (!pokemon.moves) {
-                pokemon.moves = [];
-            }
-            
-            // Push new moves to the Pokémon
-            pokemon.moves.push(...moves);
-            
-            // Notify user about evolution
-            await client.sendMessage(M.from, {
-                text: `${pokemon.name} evolved into ${newData.name}!`,
-            });
-            
-            // Save changes to the party
-            await client.DB.set(`${M.sender}_Party`, party);
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
-                text: "An error occurred while trying to evolve your Pokémon.",
+                text: "An error occurred while evolving your Pokémon."
             });
         }
-    },
+    }
 };
