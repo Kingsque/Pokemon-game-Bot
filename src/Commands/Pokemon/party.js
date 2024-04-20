@@ -22,7 +22,6 @@ module.exports = {
                 name: pokemon.name,
                 hp: pokemon.hp,
                 maxHp: pokemon.maxHp,
-                female: pokemon.female,
                 level: pokemon.level
             }));
 
