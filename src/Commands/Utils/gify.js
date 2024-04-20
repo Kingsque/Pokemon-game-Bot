@@ -1,50 +1,56 @@
-const axios = require('axios');
-const key = 'LIVDSRZULELA';
+const { partyScreen } = require('@shineiichijo/team-preview');
 
 module.exports = {
-    name: 'getgif',
-    aliases: ['searchgif'],
-    category: 'utils',
-    exp: 7,
-    react: "✅",
-    usage: 'Use :getgif <search_content>',
-    description: 'Searches for a gif from the web',
-    cool: 4, // Add cooldown time in seconds
+    name: "party",
+    aliases: ["party"],
+    exp: 0,
+    cool: 4,
+    react: "📋",
+    category: "pokemon",
+    party: 'Use :party',
+    description: "View your caught Pokémon in your party",
     async execute(client, arg, M) {
-        
         try {
-            if (!arg) return M.reply('Sorry, you did not provide any search term!');
-            
-            const response = await axios.get(`https://g.tenor.com/v1/search?q=${arg}&key=${key}&limit=8`);
-            
-            if (!response.data || !response.data.results || response.data.results.length === 0) {
-                return M.reply('No gifs found.');
-            }
-            
-            const randomIndex = Math.floor(Math.random() * response.data.results.length);
-            const gifUrl = response.data.results[randomIndex]?.media[0]?.mp4?.url;
+            const party = await client.DB.get(`${M.sender}_Party`) || [];
 
-            if (!gifUrl) {
-                return M.reply('Failed to retrieve gif URL.');
+            if (party.length === 0) {
+                return M.reply("📭 Your Pokémon party is empty!");
             }
-            M.reply('Searching gif from web....');
 
-            client.sendMessage(
+            const data = [];
+            let response = `📋 ${M.pushName.trim()}'s Party:\n`;
+
+            for (let i = 0; i < party.length; i++) {
+                const pokemon = party[i];
+                data.push({
+                    name: pokemon.name,
+                    hp: pokemon.hp,
+                    maxHp: pokemon.maxHp,
+                    female: pokemon.female,
+                    level: pokemon.level
+                });
+
+                response += `${i + 1}. ${pokemon.name}\nLevel: ${pokemon.level}\n\n`;
+            }
+
+            const buffer = await client.utils.gifToMp4(await partyScreen(data));
+
+            await client.sendMessage(
                 M.from,
                 {
-                    video: {
-                        url: gifUrl
-                    },
-                    caption: `Here is the search result for your gif search (${arg})`,
+                    video: buffer,
+                    caption: response,
                     gifPlayback: true
                 },
                 {
                     quoted: M
                 }
             );
-        } catch (error) {
-            console.error('Error fetching gif:', error);
-            M.reply('An error occurred while fetching the gif.');
+        } catch (err) {
+            console.error("Error:", err.message);
+            await client.sendMessage(M.from, {
+                text: "An error occurred while retrieving your Pokémon party."
+            });
         }
-    }
+    },
 };
