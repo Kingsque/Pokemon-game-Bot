@@ -27,7 +27,13 @@ module.exports = {
             }));
 
             const buffer = await Screens.party({
-                data: teamData.map((s) => Sets.importSet(s)),
+                data: teamData.map((s) => ({
+                    name: s.name,
+                    hp: s.hp,
+                    maxHp: s.maxHp,
+                    female: s.female,
+                    level: s.level
+                })),
                 anim: true,
             });
 
@@ -40,11 +46,8 @@ module.exports = {
             await client.sendMessage(
                 M.from,
                 {
-                    video: {
-                        url: buffer
-                    },
-                    caption: response,
-                    gifPlayback: true
+                    video: buffer,
+                    caption: response
                 },
                 {
                     quoted: M
