@@ -17,40 +17,40 @@ module.exports = {
                 return M.reply("📭 Your Pokémon party is empty!");
             }
 
-            const teamData = party.map(pokemon => ({
-                name: pokemon.name,
-                hp: pokemon.hp,
-                maxHp: pokemon.maxHp,
-                level: pokemon.level
-            }));
+            if (!arg) { // If no argument provided, display the party screen
+                const teamData = party.map(pokemon => ({
+                    name: pokemon.name,
+                    hp: pokemon.hp,
+                    maxHp: pokemon.maxHp,
+                    level: pokemon.level
+                }));
 
-            const buffer = await Screens.party({
-                data: teamData.map((s) => Sets.importSet(s)),
-                anim: true,
-            });
+                const buffer = await Screens.party({
+                    data: teamData.map((s) => Sets.importSet(s)),
+                    anim: true,
+                });
 
-            let pushname = M.pushName.trim();
-            let response = `📋 ${pushname}'s Party:\n`;
-            party.forEach((pokemon, index) => {
-                response += `${index + 1}. ${pokemon.name}\nLevel: ${pokemon.level}\n\n`;
-            });
+                let pushname = M.pushName.trim();
+                let response = `📋 ${pushname}'s Party:\n`;
+                party.forEach((pokemon, index) => {
+                    response += `${index + 1}. ${pokemon.name}\nLevel: ${pokemon.level}\n\n`;
+                });
 
-            await client.sendMessage(
-                M.from,
-                {
-                    video: buffer,
-                    caption: response,
-                    gifPlayback: true
-                },
-                {
-                    quoted: M
-                }
-            );
-
-            if (arg) {
+                await client.sendMessage(
+                    M.from,
+                    {
+                        video: buffer,
+                        caption: response,
+                        gifPlayback: true
+                    },
+                    {
+                        quoted: M
+                    }
+                );
+            } else { // If argument is provided, display the summary screen for the selected Pokémon
                 const argIndex = parseInt(arg);
-                if (!isNaN(argIndex) && argIndex >= 1 && argIndex <= 6) {
-                    const selectedPokemon = party[argIndex - 1]; // Subtract 1 to get the correct index
+                if (!isNaN(argIndex) && argIndex >= 1 && argIndex <= party.length) {
+                    const selectedPokemon = party[argIndex];
 
                     const moves = [];
                     for (const move of selectedPokemon.moves) {
@@ -85,6 +85,8 @@ module.exports = {
                             quoted: M
                         }
                     );
+                } else {
+                    return M.reply("Invalid Pokémon index. Please provide a valid index between 1 and the number of Pokémon in your party.");
                 }
             }
         } catch (err) {
