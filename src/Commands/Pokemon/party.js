@@ -27,13 +27,7 @@ module.exports = {
             }));
 
             const buffer = await Screens.party({
-                data: teamData.map((s) => ({
-                    name: s.name,
-                    hp: s.hp,
-                    maxHp: s.maxHp,
-                    female: s.female,
-                    level: s.level
-                })),
+                data: teamData.map((s) => Sets.importSet(s)),
                 anim: true,
             });
 
