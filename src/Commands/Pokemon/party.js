@@ -1,5 +1,6 @@
 const { Sets } = require('@pkmn/sets');
 const { Screens } = require('pkmn-screens');
+const { summaryScreen, partyScreen } = require('@shineiichijo/team-preview');
 
 module.exports = {
     name: "party",
@@ -48,38 +49,34 @@ module.exports = {
                     }
                 );
             } else { // If argument is provided, display the summary screen for the selected Pokémon
-                const argIndex = parseInt(arg);
-                if (!isNaN(argIndex) && argIndex >= 1 && argIndex <= party.length) {
-                    const selectedPokemon = party[argIndex];
+                const index = parseInt(arg) - 1;
+                if (!isNaN(index) && index >= 0 && index < party.length) {
+                    const selectedPokemon = party[index];
 
                     const moves = [];
                     for (const move of selectedPokemon.moves) {
                         moves.push({
                             name: move.name,
                             pp: move.pp,
-                            maxPp: move.maxPp,
-                            type: move.type
+                            type: move.type,
+                            maxPp: move.maxPp
                         });
                     }
 
-                    const summarySet = Sets.importSet(`
-                        ${selectedPokemon.name} @ ${selectedPokemon.item}
-                        Ability: ${selectedPokemon.ability}
-                        Level: ${selectedPokemon.level}
-                        ${selectedPokemon.shiny ? 'Shiny: Yes' : 'Shiny: No'}
-                        EVs: ${selectedPokemon.evs}
-                        Nature: ${selectedPokemon.nature}
-                        ${selectedPokemon.moves.map(move => `- ${move.name}`).join('\n')}
-                    `);
-
-                    const summaryBuffer = await Screens.moves({ data: summarySet, anim: true });
+                    const summaryBuffer = await Screens.moves({
+                        data: Sets.importSet({
+                            pokemon: { name: selectedPokemon.name, moves, level: selectedPokemon.level, female: selectedPokemon.female },
+                            pokeball: 'pokeball'
+                        }),
+                        anim: true
+                    });
 
                     await client.sendMessage(
                         M.from,
                         {
                             video: summaryBuffer,
                             caption: `Summary screen for ${selectedPokemon.name}:`,
-                            gifPlayback: true   
+                            gifPlayback: true
                         },
                         {
                             quoted: M
