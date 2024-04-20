@@ -50,7 +50,7 @@ module.exports = {
             if (arg) {
             const argIndex = parseInt(arg);
             if (!isNaN(argIndex) && argIndex >= 1 && argIndex <= 6) {
-                const selectedPokemon = party[argIndex - 1];
+                const selectedPokemon = party[argIndex];
 
                 const moves = [];
                 for (const move of selectedPokemon.moves) {
