@@ -47,7 +47,7 @@ module.exports = {
                 }
             );
 
-            // Check if arg is between 1 and 6
+            if (arg) {
             const argIndex = parseInt(arg);
             if (!isNaN(argIndex) && argIndex >= 1 && argIndex <= 6) {
                 const selectedPokemon = party[argIndex - 1];
@@ -85,6 +85,7 @@ module.exports = {
                         quoted: M
                     }
                 );
+            }
             }
         } catch (err) {
             console.error(err);
