@@ -48,44 +48,44 @@ module.exports = {
             );
 
             if (arg) {
-            const argIndex = parseInt(arg);
-            if (!isNaN(argIndex) && argIndex >= 1 && argIndex <= 6) {
-                const selectedPokemon = party[argIndex];
+                const argIndex = parseInt(arg);
+                if (!isNaN(argIndex) && argIndex >= 1 && argIndex <= 6) {
+                    const selectedPokemon = party[argIndex - 1]; // Subtract 1 to get the correct index
 
-                const moves = [];
-                for (const move of selectedPokemon.moves) {
-                    moves.push({
-                        name: move.name,
-                        pp: move.pp,
-                        maxPp: move.maxPp,
-                        type: move.type
-                    });
-                }
-
-                const summarySet = Sets.importSet(`
-                    ${selectedPokemon.name} @ ${selectedPokemon.item}
-                    Ability: ${selectedPokemon.ability}
-                    Level: ${selectedPokemon.level}
-                    ${selectedPokemon.shiny ? 'Shiny: Yes' : 'Shiny: No'}
-                    EVs: ${selectedPokemon.evs}
-                    Nature: ${selectedPokemon.nature}
-                    ${selectedPokemon.moves.map(move => `- ${move.name}`).join('\n')}
-                `);
-
-                const summaryBuffer = await Screens.moves({ data: summarySet, anim: true });
-
-                await client.sendMessage(
-                    M.from,
-                    {
-                        video: summaryBuffer,
-                        caption: `Summary screen for ${selectedPokemon.name}:`,
-                        gifPlayback: true   
-                    },
-                    {
-                        quoted: M
+                    const moves = [];
+                    for (const move of selectedPokemon.moves) {
+                        moves.push({
+                            name: move.name,
+                            pp: move.pp,
+                            maxPp: move.maxPp,
+                            type: move.type
+                        });
                     }
-                );
-            }
+
+                    const summarySet = Sets.importSet(`
+                        ${selectedPokemon.name} @ ${selectedPokemon.item}
+                        Ability: ${selectedPokemon.ability}
+                        Level: ${selectedPokemon.level}
+                        ${selectedPokemon.shiny ? 'Shiny: Yes' : 'Shiny: No'}
+                        EVs: ${selectedPokemon.evs}
+                        Nature: ${selectedPokemon.nature}
+                        ${selectedPokemon.moves.map(move => `- ${move.name}`).join('\n')}
+                    `);
+
+                    const summaryBuffer = await Screens.moves({ data: summarySet, anim: true });
+
+                    await client.sendMessage(
+                        M.from,
+                        {
+                            video: summaryBuffer,
+                            caption: `Summary screen for ${selectedPokemon.name}:`,
+                            gifPlayback: true   
+                        },
+                        {
+                            quoted: M
+                        }
+                    );
+                }
             }
         } catch (err) {
             console.error(err);
