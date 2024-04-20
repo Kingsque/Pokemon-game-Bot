@@ -1121,6 +1121,27 @@
     "@opencensus/core" "^0.0.8"
     uuid "^3.2.1"
 
+"@pkmn/data@^0.4.6":
+  version "0.4.26"
+  resolved "https://registry.yarnpkg.com/@pkmn/data/-/data-0.4.26.tgz#ac5b2b2d43dd67de3a64729dfd8c3c56c1a8eafa"
+  integrity sha512-zylVSKPSJAQyIq6opH1a//q8zs3Ign7pMkLud8Q+vMBcd5Uthx4thc3CbFrLtuiLY0ksMe+Yc3CEGk3yJ+/bkA==
+  dependencies:
+    "@pkmn/dex-types" "^0.4.26"
+
+"@pkmn/dex-types@^0.4.26":
+  version "0.4.26"
+  resolved "https://registry.yarnpkg.com/@pkmn/dex-types/-/dex-types-0.4.26.tgz#a4f9aef8644e63c40bf906d235c37e5792e835e3"
+  integrity sha512-oEkjr9hNuPZpoNw5i2KNQmO0b85QGOt/em7XBVSfnZMLJ2m7rE3BEfFtTyWShmkdYqV/lNNrnrdmeMMtihRU+g==
+  dependencies:
+    "@pkmn/types" "^2.0.0"
+
+"@pkmn/dex@^0.4.6":
+  version "0.4.26"
+  resolved "https://registry.yarnpkg.com/@pkmn/dex/-/dex-0.4.26.tgz#eb8110aed5b1f91616275d1c0a6f2c9b5cdd49ee"
+  integrity sha512-iQv40uwsHMTzhY1IPrXfwonISvs95Kw60uX76Ovz3IfeEAXz9/PKH5bIm6SiOoszERt9Z5X7VfIqLwLqw/klGQ==
+  dependencies:
+    "@pkmn/dex-types" "^0.4.26"
+
 "@pkmn/img@^0.1.7":
   version "0.1.20"
   resolved "https://registry.yarnpkg.com/@pkmn/img/-/img-0.1.20.tgz#7d0852319a03a48d6e742774aad3c76337aa8990"
@@ -1133,10 +1154,22 @@
   dependencies:
     "@pkmn/types" "^2.0.0"
 
+"@pkmn/sets@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@pkmn/sets/-/sets-5.1.2.tgz#bae652ad03d5b93e47691ce308f6a95b5507846a"
+  integrity sha512-eMChlYko92ZdvNKqjcJ2PkzDmSc5kIbaKSrPU/bOnjcrOq8ZGjod3b7KcDxeXrZXQAS027O0uVhwIJbdMDe/Yw==
+  dependencies:
+    "@pkmn/types" "^4.0.0"
+
 "@pkmn/types@^2.0.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@pkmn/types/-/types-2.1.0.tgz#390c2ba69685208d446dae0efd95ae91f8432201"
   integrity sha512-liqA1fGio93hTZqwfLzWIO++WJTFce4d253r6FkomNTu/0Edso0q9qvNeuud8gvA5UhoF2h6J45mCGemPvZyNg==
+
+"@pkmn/types@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@pkmn/types/-/types-4.0.0.tgz#5e8a2d2be3fd8c8f2f8eb642ceceec96223f8729"
+  integrity sha512-gR2s/pxJYEegek1TtsYCQupNR3d5hMlcJFsiD+2LyfKr4tc+gETTql47tWLX5mFSbPcbXh7f4+7txlMIDoZx/g==
 
 "@pm2/agent@~2.0.0":
   version "2.0.3"
@@ -6046,6 +6079,22 @@ pkg-dir@^4.1.0:
   dependencies:
     find-up "^4.0.0"
 
+pkmn-screens@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/pkmn-screens/-/pkmn-screens-2.0.0.tgz#587290b830cd138e78e932189e6afa40e25e3ac1"
+  integrity sha512-hjknxzBnHjU5/Httda5DS8jTcmmeIKiz0seWPuGbkRvdcy9cIJHiJXMh4D9hAU9GN/mpLayx2EPPYvU3J1oHjQ==
+  dependencies:
+    "@pkmn/data" "^0.4.6"
+    "@pkmn/dex" "^0.4.6"
+    "@pkmn/img" "^0.1.7"
+    "@pkmn/sets" "^2.0.0"
+    gif-frames "^1.0.1"
+    gifencoder "^2.0.1"
+    progress "^2.0.3"
+    skia-canvas "^0.9.21"
+    tslib "^2.2.0"
+    typescript "^4.5.5"
+
 pm2-axon-rpc@~0.7.0, pm2-axon-rpc@~0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/pm2-axon-rpc/-/pm2-axon-rpc-0.7.1.tgz#2daec5383a63135b3f18babb70266dacdcbc429a"
@@ -6173,6 +6222,11 @@ process@^0.11.1, process@^0.11.10:
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==
+
+progress@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
+  integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
 promptly@^2:
   version "2.2.0"

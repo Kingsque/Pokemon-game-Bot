@@ -1,4 +1,6 @@
-const { partyScreen } = require('@shineiichijo/team-preview');
+const { Sets } = ('@pkmn/sets');
+const { Screens } = require('pkmn-screens');
+const { summaryScreen, partyScreen } = require('pkmn-screens');
 
 module.exports = {
     name: "party",
@@ -16,31 +18,35 @@ module.exports = {
                 return M.reply("📭 Your Pokémon party is empty!");
             }
 
-                const data = party.map((pokemon, index) => ({
-                    name: pokemon.name,
-                    hp: pokemon.hp,
-                    maxHp: pokemon.maxHp,
-                    female: pokemon.female,
-                    level: pokemon.level
-                }));
-                const buffer = await client.utils.gifToMp4(await partyScreen(data));
+            const teamData = party.map(pokemon => ({
+                name: pokemon.name,
+                hp: pokemon.hp,
+                maxHp: pokemon.maxHp,
+                female: pokemon.female,
+                level: pokemon.level
+            }));
 
-                let pushname = M.pushName.trim();
-                let response = `📋 ${pushname}'s Party:\n`;
-                party.forEach((pokemon, index) => {
-                    response += `${index + 1}. ${pokemon.name}\nLevel: ${pokemon.level}\n\n`;
-                });
+            const buffer = await Screens.party({
+                data: teamData,
+                anim: true,
+            });
 
-                await client.sendMessage(
-                    M.from,
-                    {
-                        video: buffer,
-                        caption: response
-                    },
-                    {
-                        quoted: M
-                    }
-                );
+            let pushname = M.pushName.trim();
+            let response = `📋 ${pushname}'s Party:\n`;
+            party.forEach((pokemon, index) => {
+                response += `${index + 1}. ${pokemon.name}\nLevel: ${pokemon.level}\n\n`;
+            });
+
+            await client.sendMessage(
+                M.from,
+                {
+                    video: buffer,
+                    caption: response
+                },
+                {
+                    quoted: M
+                }
+            );
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
