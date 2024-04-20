@@ -1,6 +1,5 @@
 const { Sets } = require('@pkmn/sets');
 const { Screens } = require('pkmn-screens');
-const { summaryScreen, partyScreen } = require('pkmn-screens');
 
 module.exports = {
     name: "party",
@@ -40,12 +39,53 @@ module.exports = {
                 M.from,
                 {
                     video: buffer,
-                    caption: response
+                    caption: response,
+                    gifPlayback: true
                 },
                 {
                     quoted: M
                 }
             );
+
+            // Check if arg is between 1 and 6
+            const argIndex = parseInt(arg);
+            if (!isNaN(argIndex) && argIndex >= 1 && argIndex <= 6) {
+                const selectedPokemon = party[argIndex - 1];
+
+                const moves = [];
+                for (const move of selectedPokemon.moves) {
+                    moves.push({
+                        name: move.name,
+                        pp: move.pp,
+                        maxPp: move.maxPp,
+                        type: move.type
+                    });
+                }
+
+                const summarySet = Sets.importSet(`
+                    ${selectedPokemon.name} @ ${selectedPokemon.item}
+                    Ability: ${selectedPokemon.ability}
+                    Level: ${selectedPokemon.level}
+                    ${selectedPokemon.shiny ? 'Shiny: Yes' : 'Shiny: No'}
+                    EVs: ${selectedPokemon.evs}
+                    Nature: ${selectedPokemon.nature}
+                    ${selectedPokemon.moves.map(move => `- ${move.name}`).join('\n')}
+                `);
+
+                const summaryBuffer = await Screens.moves({ data: summarySet, anim: true });
+
+                await client.sendMessage(
+                    M.from,
+                    {
+                        video: summaryBuffer,
+                        caption: `Summary screen for ${selectedPokemon.name}:`,
+                        gifPlayback: true   
+                    },
+                    {
+                        quoted: M
+                    }
+                );
+            }
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
