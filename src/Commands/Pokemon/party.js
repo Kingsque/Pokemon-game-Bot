@@ -1,4 +1,4 @@
-const { Sets } = ('@pkmn/sets');
+const { Sets } = require('@pkmn/sets');
 const { Screens } = require('pkmn-screens');
 const { summaryScreen, partyScreen } = require('pkmn-screens');
 
@@ -27,7 +27,7 @@ module.exports = {
             }));
 
             const buffer = await Screens.party({
-                data: teamData,
+                data: teamData.map((s) => Sets.importSet(s)),
                 anim: true,
             });
 
@@ -40,8 +40,11 @@ module.exports = {
             await client.sendMessage(
                 M.from,
                 {
-                    video: buffer,
-                    caption: response
+                    video: {
+                        url: buffer
+                    },
+                    caption: response,
+                    gifPlayback: true
                 },
                 {
                     quoted: M
