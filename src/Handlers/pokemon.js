@@ -55,16 +55,15 @@ module.exports = PokeHandler = async (client, m) => {
               level: level, 
               pokexp: requiredExp,
               id: pokemon.id,
-              maxHP: baseStats['hp'],
+              hp: baseStats['hp'],
+              maxHp: baseStats['hp'],
               maxAttack: baseStats['attack'],
               maxDefense: baseStats['defense'],
               maxSpeed: baseStats['speed'],
               type: types,
               moves: movesDetails,
-              state: {
-                status: '',
-                movesUsed: 0
-              },
+              status: '',
+              movesUsed: 0
             };
 
             console.log(`Spawned: ${pokemonData.name} in ${jid}`);
