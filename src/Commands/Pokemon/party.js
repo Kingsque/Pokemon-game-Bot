@@ -1,3 +1,5 @@
+const { partyScreen } = require('@shineiichijo/team-preview');
+
 module.exports = {
     name: "party",
     aliases: ["party"],
@@ -13,22 +15,32 @@ module.exports = {
             if (party.length === 0) {
                 return M.reply("📭 Your Pokémon party is empty!");
             }
-            let pushname = M.pushName.trim()
-            let response = "📋 ${pushname}'s Party:\n";
-            party.forEach((pokemon, index) => {
-                response += `${index + 1}. ${pokemon.name}\nLevel: ${pokemon.level}\n\n`;
-            });
 
-            await client.sendMessage(
-          M.from,
-          {
-            image: { url: "https://i.ibb.co/kxvz1WD/Aurora-party.jpg" },
-            caption: response
-          },
-          {
-            quoted: M
-          }
-        );
+                const data = party.map((pokemon, index) => ({
+                    name: pokemon.name,
+                    hp: pokemon.hp,
+                    maxHp: pokemon.maxHp,
+                    female: pokemon.female,
+                    level: pokemon.level
+                }));
+                const buffer = await client.utils.gifToMp4(await partyScreen(data));
+
+                let pushname = M.pushName.trim();
+                let response = `📋 ${pushname}'s Party:\n`;
+                party.forEach((pokemon, index) => {
+                    response += `${index + 1}. ${pokemon.name}\nLevel: ${pokemon.level}\n\n`;
+                });
+
+                await client.sendMessage(
+                    M.from,
+                    {
+                        video: buffer,
+                        caption: response
+                    },
+                    {
+                        quoted: M
+                    }
+                );
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
