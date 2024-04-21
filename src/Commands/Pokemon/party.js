@@ -18,41 +18,6 @@ module.exports = {
                 return M.reply("📭 Your Pokémon party is empty!");
             }
 
-            if (arg) {
-                 const index = parseInt(arg) - 1;
-                if (!isNaN(index) && index >= 0 && index < party.length) {
-                    const selectedPokemon = party[index];
-
-                    const moves = [];
-                    for (const move of selectedPokemon.moves) {
-                        moves.push({
-                            name: move.name,
-                            pp: move.pp,
-                            type: move.type,
-                            maxPp: move.maxPp
-                        });
-                    }
-
-                    const summaryBuffer = await Screens.moves({
-                        data: Sets.importSet({
-                            pokemon: { name: selectedPokemon.name, moves, level: selectedPokemon.level, female: selectedPokemon.female },
-                            pokeball: 'pokeball'
-                        }),
-                        anim: true
-                    });
-
-                    await client.sendMessage(
-                        M.from,
-                        {
-                            video: summaryBuffer,
-                            caption: `Summary screen for ${selectedPokemon.name}:`,
-                            gifPlayback: true
-                        },
-                        {
-                            quoted: M
-                        }
-                    );
-            } else { // If argument is provided, display the summary screen for the selected Pokémon
                const teamData = party.map(pokemon => ({
                     name: pokemon.name,
                     hp: pokemon.hp,
@@ -81,9 +46,7 @@ module.exports = {
                     {
                         quoted: M
                     }
-                );
-                }
-            }
+            );
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
