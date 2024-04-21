@@ -1,6 +1,7 @@
 const { Sets } = require('@pkmn/sets');
 const { Screens } = require('pkmn-screens');
 const { summaryScreen, partyScreen } = require('@shineiichijo/team-preview');
+const { requirePokeExpToLevelUp } = require('../Helpers/pokeStats');
 
 module.exports = {
     name: "party",
@@ -17,8 +18,9 @@ module.exports = {
             if (party.length === 0) {
                 return M.reply("📭 Your Pokémon party is empty!");
             }
-
-               const teamData = party.map(pokemon => ({
+            
+            if (!arg) {
+                const teamData = party.map(pokemon => ({
                     name: pokemon.name,
                     hp: pokemon.hp,
                     maxHp: pokemon.maxHp,
@@ -46,7 +48,26 @@ module.exports = {
                     {
                         quoted: M
                     }
-            );
+                );
+            } else if (arg) {
+                const index = parseInt(arg);
+                const pokemon = party[index - 1];
+                const neededExp = requirePokeExpToLevelUp(pokemon.exp, pokemon.level);
+                let text = `🟩 *Name:* ${client.utils.capitalize(pokemon.name)}
+                \n\n🟧 *Types:* ${pokemon.types.map(client.utils.capitalize).join(', ')}\n\n🟨 *Level:* ${
+                    pokemon.level
+                }\n\n🟦 *XP:* ${pokemon.pokexp} / ${neededExp}
+                \n\n🟢 *HP:* ${pokemon.hp} / ${pokemon.maxHp}\n\n⬜ *Speed:* ${pokemon.speed} / ${
+                    pokemon.maxSpeed
+                }\n\n🛡 *Defense:* ${pokemon.defense} / ${pokemon.maxDefense}\n\n🟥 *Attack:* ${pokemon.attack} / ${
+                    pokemon.maxAttack
+                }\n\n⬛ *Moves:* ${pokemon.moves
+                    .map((x) => x.name.split('-').map(client.utils.capitalize).join(' '))
+                    .join(', ')}\n\n*[Use ${client.prefix}party ${
+                    index + 1
+                } --moves to see all of the moves of the pokemon with details]*`;
+                M.reply(text);
+            }
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
