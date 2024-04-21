@@ -14,7 +14,7 @@ module.exports = {
 
         const currentTime = Date.now();
         const lastRobTime = await client.DB.get(`${M.sender}.rob`)
-        const cooldown = 5;
+        const cooldown = 100;
 
         // Check if the user is on cooldown
         const cooldownRemaining = lastRobTime + (cooldown * 1000) - currentTime;
