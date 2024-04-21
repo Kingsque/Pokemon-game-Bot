@@ -1,7 +1,7 @@
 const { Sets } = require('@pkmn/sets');
 const { Screens } = require('pkmn-screens');
 const { summaryScreen, partyScreen } = require('@shineiichijo/team-preview');
-const { requirePokeExpToLevelUp } = require('../Helpers/pokeStats');
+const { requirePokeExpToLevelUp } = require('../../Helpers/pokeStats');
 
 module.exports = {
     name: "party",
