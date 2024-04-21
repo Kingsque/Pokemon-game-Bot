@@ -38,7 +38,7 @@ module.exports = {
                     response += `${index + 1}. ${pokemon.name}\nLevel: ${pokemon.level}\n\n`;
                 });
 
-                await client.sendMessage(
+                client.sendMessage(
                     M.from,
                     {
                         video: buffer,
