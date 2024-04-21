@@ -84,7 +84,7 @@ module.exports = {
                     level: pokemon.level
                 }));
 
-                const buffer = await this.client.utils.gifToMp4(await partyScreen(teamData))
+                const buffer = await client.utils.gifToMp4(await partyScreen(teamData))
 
                 let pushname = M.pushName.trim();
                 let response = `📋 ${pushname}'s Party:\n`;
