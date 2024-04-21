@@ -12,14 +12,35 @@ module.exports = {
     category: "pokemon",
     party: 'Use :party',
     description: "View your caught Pokémon in your party",
-     async execute(client, arg, M) {
+    async execute(client, arg, M) {
         try {
             const party = await client.DB.get(`${M.sender}_Party`) || [];
             if (party.length === 0) {
                 return M.reply("📭 Your Pokémon party is empty!");
             }
-            
-            if (!arg) {
+
+            if (arg) {
+                const index = parseInt(arg);
+                if (index <= 0 || index > party.length) {
+                    return M.reply("Invalid index. Please provide a valid index within your party range.");
+                }
+                const pokemon = party[index - 1];
+                const neededExp = requirePokeExpToLevelUp(pokemon.exp, pokemon.level);
+                let text = `🟩 *Name:* ${client.utils.capitalize(pokemon.name)}
+                \n\n🟧 *Types:* ${pokemon.types.map(client.utils.capitalize).join(', ')}\n\n🟨 *Level:* ${
+                    pokemon.level
+                }\n\n🟦 *XP:* ${pokemon.pokexp} / ${neededExp}
+                \n\n🟢 *HP:* ${pokemon.hp} / ${pokemon.maxHp}\n\n⬜ *Speed:* ${pokemon.speed} / ${
+                    pokemon.maxSpeed
+                }\n\n🛡 *Defense:* ${pokemon.defense} / ${pokemon.maxDefense}\n\n🟥 *Attack:* ${pokemon.attack} / ${
+                    pokemon.maxAttack
+                }\n\n⬛ *Moves:* ${pokemon.moves
+                    .map((x) => x.name.split('-').map(client.utils.capitalize).join(' '))
+                    .join(', ')}\n\n*[Use ${client.prefix}party ${
+                    index + 1
+                } --moves to see all of the moves of the pokemon with details]*`;
+                M.reply(text);
+            } else {
                 const teamData = party.map(pokemon => ({
                     name: pokemon.name,
                     hp: pokemon.hp,
@@ -49,27 +70,6 @@ module.exports = {
                         quoted: M
                     }
                 );
-            } else {
-                const index = parseInt(arg);
-                if (index <= 0 || index > party.length) {
-                    return M.reply("Invalid index. Please provide a valid index within your party range.");
-                }
-                const pokemon = party[index - 1];
-                const neededExp = requirePokeExpToLevelUp(pokemon.exp, pokemon.level);
-                let text = `🟩 *Name:* ${client.utils.capitalize(pokemon.name)}
-                \n\n🟧 *Types:* ${pokemon.types.map(client.utils.capitalize).join(', ')}\n\n🟨 *Level:* ${
-                    pokemon.level
-                }\n\n🟦 *XP:* ${pokemon.pokexp} / ${neededExp}
-                \n\n🟢 *HP:* ${pokemon.hp} / ${pokemon.maxHp}\n\n⬜ *Speed:* ${pokemon.speed} / ${
-                    pokemon.maxSpeed
-                }\n\n🛡 *Defense:* ${pokemon.defense} / ${pokemon.maxDefense}\n\n🟥 *Attack:* ${pokemon.attack} / ${
-                    pokemon.maxAttack
-                }\n\n⬛ *Moves:* ${pokemon.moves
-                    .map((x) => x.name.split('-').map(client.utils.capitalize).join(' '))
-                    .join(', ')}\n\n*[Use ${client.prefix}party ${
-                    index + 1
-                } --moves to see all of the moves of the pokemon with details]*`;
-                M.reply(text);
             }
         } catch (err) {
             console.error(err);
