@@ -6,11 +6,11 @@ const { requirePokeExpToLevelUp } = require('../../Helpers/pokeStats');
 module.exports = {
     name: "party",
     aliases: ["party"],
-    exp: 0,
-    cool: 4,
-    react: "📋",
+    exp:4,
+    cool: 5,
+    react: "🟩",
     category: "pokemon",
-    party: 'Use :party  or with an index',
+    party: 'Use :party',
     description: "View your caught Pokémon in your party",
     async execute(client, arg, M) {
         try {
