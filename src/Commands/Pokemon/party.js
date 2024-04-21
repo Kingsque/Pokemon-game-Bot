@@ -12,7 +12,7 @@ module.exports = {
     category: "pokemon",
     party: 'Use :party',
     description: "View your caught Pokémon in your party",
-    async execute(client, arg, M) {
+     async execute(client, arg, M) {
         try {
             const party = await client.DB.get(`${M.sender}_Party`) || [];
             if (party.length === 0) {
@@ -49,8 +49,11 @@ module.exports = {
                         quoted: M
                     }
                 );
-            } else if (arg) {
+            } else {
                 const index = parseInt(arg);
+                if (index <= 0 || index > party.length) {
+                    return M.reply("Invalid index. Please provide a valid index within your party range.");
+                }
                 const pokemon = party[index - 1];
                 const neededExp = requirePokeExpToLevelUp(pokemon.exp, pokemon.level);
                 let text = `🟩 *Name:* ${client.utils.capitalize(pokemon.name)}
