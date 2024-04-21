@@ -55,7 +55,7 @@ module.exports = PokeHandler = async (client, m) => {
               level: level, 
               pokexp: requiredExp,
               id: pokemon.id,
-              hp: baseStats['hp'],
+              hp: baseStats['hp'] - 20,
               maxHp: baseStats['hp'],
               maxAttack: baseStats['attack'],
               maxDefense: baseStats['defense'],
