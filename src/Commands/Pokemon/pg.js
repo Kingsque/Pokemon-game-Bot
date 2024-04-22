@@ -22,11 +22,11 @@ module.exports = {
                 return M.reply("Your Pokémon party is empty!");
             }
 
-            if (!arg || isNaN(arg)) {
+            if (!arg || isNaN(arg[0])) {
                 return M.reply("Please provide a valid index of the Pokémon you want to give.");
             }
 
-            const index = parseInt(arg);
+            const index = parseInt(arg[0]);
             if (index <= 0 || index > party.length) {
                 return M.reply("Invalid index. Please provide a valid index within your party range.");
             }
