@@ -25,9 +25,49 @@ module.exports = {
                     return M.reply("Invalid index. Please provide a valid index within your party range.");
                 }
                 const pokemon = party[index - 1];
-                const neededExp = pokemon.level + 1;
-                const need = calculatePokeExp(neededExp);
-                let text = `🟩 *Name:* ${client.utils.capitalize(pokemon.name)}
+
+                if (arg.includes('--moves')) {
+                    const moves = pokemon.moves.map(move => ({
+                        name: move.name,
+                        pp: move.pp,
+                        maxPp: move.maxPp,
+                        type: move.type,
+                        power: move.power,
+                        accuracy: move.accuracy,
+                        description: move.description
+                    }));
+
+                    const buffer = await client.utils.gifToMp4(
+                        await summaryScreen({
+                            pokemon: { name: pokemon.name, moves, level: pokemon.level, female: pokemon.female },
+                            pokeball: 'pokeball'
+                        })
+                    );
+
+                    let texto = `*Moves | ${client.utils.capitalize(pokemon.name)}*`;
+                    for (let i = 0; i < moves.length; i++) {
+                        texto += `\n\n*#${i + 1}*\n❓ *Move:* ${moves[i].name.split('-').map(client.utils.capitalize).join(' ')}\n
+〽 *PP:* ${moves[i].pp} / ${moves[i].maxPp}\n
+🎗 *Type:* ${client.utils.capitalize(moves[i].type)}\n
+🎃 *Power:* ${moves[i].power}\n
+🎐 *Accuracy:* ${moves[i].accuracy}\n
+🧧 *Description:* ${moves[i].description}`;
+                    }
+
+                    client.sendMessage(
+                        M.from,
+                        {
+                            video: buffer,
+                            caption: texto,
+                            gifPlayback: true,
+                            quoted: M
+                        }
+                    );
+                } else {
+                    // Normal text response without summary screen
+                    const neededExp = pokemon.level + 1;
+                    const need = calculatePokeExp(neededExp);
+                    let text = `🟩 *Name:* ${client.utils.capitalize(pokemon.name)}
                 
 🟧 *Types:* ${pokemon.type.map(client.utils.capitalize).join(', ')}\n
 🟨 *Level:* ${pokemon.level}\n
@@ -38,43 +78,8 @@ module.exports = {
 🟥 *Attack:* ${pokemon.attack} / ${pokemon.maxAttack}\n
 ⬛ *Moves:* ${pokemon.moves.map(move => move.name.split('-').map(client.utils.capitalize).join(' ')).join(', ')}
 \n\n*[Use ${client.prefix}party ${index + 1} --moves to see all of the moves of the pokemon with details]*`;
-                M.reply(text);
-
-                if (arg.includes('--moves')) {
-                    const moves = pokemon.moves.map(move => ({
-                        name: move.name,
-                        pp: move.pp,
-                        maxPp: move.maxPp,
-                        type: move.type
-                    }));
-                    const buffer = await client.utils.gifToMp4(
-                        await summaryScreen({
-                            pokemon: { name: pokemon.name, moves, level: pokemon.level, female: pokemon.female },
-                            pokeball: 'pokeball'
-                        })
-                    );
-
-                    let texto = `*Moves | ${client.utils.capitalize(pokemon.name)}*`;
-                    for (let i = 0; i < pokemon.moves.length; i++) {
-                        texto += `\n\n*#${i + 1}*\n❓ *Move:* ${pokemon.moves[i].name.split('-').map(client.utils.capitalize).join(' ')}\n
-〽 *PP:* ${pokemon.moves[i].pp} / ${pokemon.moves[i].maxPp}\n
-🎗 *Type:* ${client.utils.capitalize(pokemon.moves[i].type)}\n
-🎃 *Power:* ${pokemon.moves[i].power}\n
-🎐 *Accuracy:* ${pokemon.moves[i].accuracy}\n
-🧧 *Description:* ${pokemon.moves[i].description}`;
-                    }
-
-                    client.sendMessage(
-                        M.from,
-                        {
-                            video: buffer,
-                            caption: texto,
-                            gifPlayback: true
-                        },
-                        {
-                            quoted: M
-                        }
-                    );
+                    
+                    M.reply(text);
                 }
             } else {
                 const teamData = party.map(pokemon => ({
@@ -97,9 +102,7 @@ module.exports = {
                     {
                         video: buffer,
                         caption: response,
-                        gifPlayback: true
-                    },
-                    {
+                        gifPlayback: true,
                         quoted: M
                     }
                 );
@@ -112,3 +115,4 @@ module.exports = {
         }
     },
 };
+                        
