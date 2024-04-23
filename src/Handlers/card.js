@@ -21,7 +21,7 @@ module.exports = CardHandler = async (client, m) => {
         const sOr6Interval = 10;
         const sOr6Limit = 100;
   
-        cron.schedule('*/5 * * * *', async () => {
+        cron.schedule('*/40 * * * *', async () => {
           try {
              const filePath = path.join(__dirname, '../Helpers/spawn.json');
 	     const data = require(filePath);
@@ -68,8 +68,10 @@ module.exports = CardHandler = async (client, m) => {
               }
             
             console.log(`Sended:${obj.tier + "  Name:" + obj.title + "  For " + price + " in " + jid}`);
-      await client.cards.set(`${jid}.card`, { name: `${obj.title}-${obj.tier}`, price: price, code: code } );
-      
+      await client.cards.set(`${jid}.card`, `${obj.title}-${obj.tier}`);
+      await client.cards.set(`${jid}.cardPrice`, price);
+      await client.cards.set(`${jid}.code`, code);
+     
       if (obj.tier.includes('6')|| obj.tier.includes('S')) {
         const giif = await client.utils.getBuffer(obj.url);
         const cgif = await client.utils.gifToMp4(giif);
@@ -91,8 +93,10 @@ module.exports = CardHandler = async (client, m) => {
       await client.sendMessage(jid , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}`})
     }
   
-    cron.schedule('*/4 * * * *', async () => {
+    cron.schedule('*/30 * * * *', async () => {
      await client.cards.delete(`${jid}.card`);
+    await client.cards.set(`${jid}.cardPrice`, price);
+      await client.cards.set(`${jid}.code`, code);
       console.log(`Card deleted after 5minutes`)
     })
   
@@ -105,4 +109,4 @@ module.exports = CardHandler = async (client, m) => {
         console.log(error)
     }
 
-      }
+          }
