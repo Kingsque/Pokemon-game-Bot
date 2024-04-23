@@ -1,7 +1,8 @@
 const cron = require("node-cron");
 const axios = require('axios');
+const path = require('path');
 const { calculatePokeExp } = require('../Helpers/pokeStats');
-const fetch = require('node-fetch');
+require("./Message");
 
 module.exports = PokeHandler = async (client, m) => {
   try {
@@ -17,30 +18,24 @@ module.exports = PokeHandler = async (client, m) => {
         cron.schedule('*/20 * * * *', async () => {
           try {
             const id = Math.floor(Math.random() * 898) // Ensure ID is within valid range
-            
-            // Fetch Pokémon data
-            const pokemonDataResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
-            const pokemonData = pokemonDataResponse.data;
+            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+            const pokemon = response.data;
 
-            const name = pokemonData.name;
-            const types = pokemonData.types.map(type => type.type.name);
+            const name = pokemon.name;
+            const types = pokemon.types.map(type => type.type.name);
+            const image = pokemon.sprites.other['official-artwork'].front_default;
             const level = Math.floor(Math.random() * (10 - 5) + 5);
             const requiredExp = calculatePokeExp(level);
             
             // Extracting base stats
             const baseStats = {};
-            pokemonData.stats.forEach(stat => {
+            pokemon.stats.forEach(stat => {
               baseStats[stat.stat.name] = stat.base_stat;
             });
 
-            // Fetch Pokémon image
-            const imageResponse = await axios.get(pokemonData.sprites.other['official-artwork'].front_default);
-            const image = imageResponse.data;
-
-            // Fetch Pokémon moves
-            const movesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-            const movesData = await movesResponse.json();
-            const moves = movesData.moves.slice(0, 2); 
+            const dataResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+            const data = await dataResponse.json();
+            const moves = data.moves.slice(0, 2); // 
             const movesDetails = await Promise.all(moves.map(async move => {
               const moveName = move.move.name;
               const moveUrl = move.move.url;
@@ -54,11 +49,12 @@ module.exports = PokeHandler = async (client, m) => {
               return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, type: moveType, description: moveDescription };
             }));
 
-            const pokemonDataObject = { 
+            
+            const pokemonData = { 
               name: name, 
               level: level, 
               pokexp: requiredExp,
-              id: id, // Using the same ID generated for fetching
+              id: pokemon.id,
               hp: baseStats['hp'] - 20,
               maxHp: baseStats['hp'],
               maxAttack: baseStats['attack'],
@@ -70,8 +66,8 @@ module.exports = PokeHandler = async (client, m) => {
               movesUsed: 0
             };
 
-            console.log(`Spawned: ${pokemonDataObject.name} in ${jid}`);
-            await client.DB.set(`${jid}.pokemon`, pokemonDataObject);
+            console.log(`Spawned: ${pokemonData.name} in ${jid}`);
+            await client.DB.set(`${jid}.pokemon`, pokemonData);
 
             const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Types:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *Available Moves:* ${movesDetails.map(move => move.name).join(', ')} \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
 
@@ -100,4 +96,4 @@ module.exports = PokeHandler = async (client, m) => {
     console.log(error);
   }
 };
-              
+    
