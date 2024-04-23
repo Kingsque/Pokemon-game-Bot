@@ -1,8 +1,7 @@
 const cron = require("node-cron");
 const axios = require('axios');
-const path = require('path');
 const { calculatePokeExp } = require('../Helpers/pokeStats');
-require("./Message");
+const fetch = require('node-fetch');
 
 module.exports = PokeHandler = async (client, m) => {
   try {
@@ -35,7 +34,7 @@ module.exports = PokeHandler = async (client, m) => {
 
             const dataResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
             const data = await dataResponse.json();
-            const moves = data.moves.slice(0, 2); // 
+            const moves = data.moves.slice(0, 2); 
             const movesDetails = await Promise.all(moves.map(async move => {
               const moveName = move.move.name;
               const moveUrl = move.move.url;
@@ -49,12 +48,11 @@ module.exports = PokeHandler = async (client, m) => {
               return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, type: moveType, description: moveDescription };
             }));
 
-            
             const pokemonData = { 
               name: name, 
               level: level, 
               pokexp: requiredExp,
-              id: pokemon.id,
+              id: id, // Using the same ID generated for fetching
               hp: baseStats['hp'] - 20,
               maxHp: baseStats['hp'],
               maxAttack: baseStats['attack'],
@@ -96,4 +94,4 @@ module.exports = PokeHandler = async (client, m) => {
     console.log(error);
   }
 };
-    
+                
