@@ -32,9 +32,9 @@ module.exports = PokeHandler = async (client, m) => {
               baseStats[stat.stat.name] = stat.base_stat;
             });
 
-            const dataResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-            const data = await dataResponse.json();
-            const moves = data.moves.slice(0, 2); 
+            const movesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+            const movesData = await movesResponse.json();
+            const moves = movesData.moves.slice(0, 2); 
             const movesDetails = await Promise.all(moves.map(async move => {
               const moveName = move.move.name;
               const moveUrl = move.move.url;
@@ -94,4 +94,4 @@ module.exports = PokeHandler = async (client, m) => {
     console.log(error);
   }
 };
-                
+              
