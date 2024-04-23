@@ -18,10 +18,10 @@ module.exports = CardHandler = async (client, m) => {
 
         let count = 0;
         let sOr6Counter = 0;
-        const sOr6Interval = 10;
-        const sOr6Limit = 100;
+        const sOr6Interval = 1;
+        const sOr6Limit = 95;
   
-        cron.schedule('*/20 * * * *', async () => {
+        cron.schedule('*/2 * * * *', async () => {
           try {
              const filePath = path.join(__dirname, '../Helpers/spawn.json');
 	     const data = require(filePath);
