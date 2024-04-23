@@ -158,13 +158,6 @@ module.exports = MessageHandler = async (messages, client) => {
                     levelUpPokemon(firstPokemon);
                     if (firstPokemon.level > currentLevel) {
                         client.sendMessage(from, { text: 'Congratulations! Your Pokémon has leveled up!' });
-                        const moveDetails = await levelUpMove(firstPokemon.name, firstPokemon.level);
-                        if (moveDetails) {
-                            const moveMessage = `Your Pokémon can learn a new move:\nName: ${moveDetails.name}\nPower: ${moveDetails.power}\nAccuracy: ${moveDetails.accuracy}\nType: ${moveDetails.type}\nDescription: ${moveDetails.description}\nDo you want to learn this move? Use :learn to confirm.`;
-                            client.sendMessage(from, { text: moveMessage });
-                            // Store move details in database
-                            await client.DB.set(`${sender}_Move`, moveDetails);
-                        }
                         const canEvolveResult = await canEvolve(firstPokemon);
                         if (canEvolveResult) {
                             const nextEvolvedForm = await getNextEvolvedForm(firstPokemon.name);
