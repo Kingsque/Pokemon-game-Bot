@@ -23,8 +23,7 @@ module.exports = {
         );
       }
 
-      const { card_price, card_code, claimed } = card;
-      const Getcard = card.card
+      const { card_price, card_code, claimed, Getcard } = card;
 
       if (claimed) {
         return M.reply("🛑 Sorry, this card has already been claimed by another user.");
