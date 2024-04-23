@@ -152,50 +152,6 @@ const getNextStats = async (pokemonName) => {
     }
 };
 
-
-/**
- * Get the move that a Pokémon learns when leveling up.
- * @param {string} pokemonName - Name of the Pokémon.
- * @param {number} level - Current level of the Pokémon.
- * @returns {Object|null} - Object containing move details or null if no move is learned at the level.
- */
-const levelUpMove = async (pokemonName, level) => {
-    try {
-        const response = await axios.get(`https://pokeapi.co/api/v2/evolution-trigger/level-up`);
-        const levelUpMethod = response.data.name;
-
-        const response2 = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}/encounters`);
-        const generation = response2.data[0].version_details[0].version_group.name;
-
-        const response3 = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}/`);
-        const moves = response3.data.moves.filter(move => move.version_group_details.some(detail => detail.move_learn_method.name === levelUpMethod && detail.version_group.name === generation && detail.level_learned_at === level));
-
-        const moveDetails = moves.length > 0 ? moves[0].move : null;
-
-        if (moveDetails) {
-            const moveResponse = await axios.get(moveDetails.url);
-            const moveData = moveResponse.data;
-
-            const move = {
-                name: moveData.name,
-                power: moveData.power || 0,
-                accuracy: moveData.accuracy || 0,
-                pp: moveData.pp || 0,
-                type: moveData.type.name,
-                description: moveData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text || ''
-            };
-
-            return move;
-        } else {
-            return null;
-        }
-    } catch (error) {
-        console.error('Error fetching level-up move:', error.message);
-        return null;
-    }
-};
-
-
 module.exports = {
     calculatePokeExp,
     requirePokeExpToLevelUp,
@@ -204,7 +160,6 @@ module.exports = {
     canEvolve,
     getEvolveChain,
     getNextEvolvedForm,
-    getNextStats,
-    levelUpMove
+    getNextStats
 };
     
