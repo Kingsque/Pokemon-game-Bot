@@ -1,7 +1,9 @@
 const cron = require("node-cron");
 const axios = require('axios');
 const path = require('path');
-require("./Message");
+const {
+	Card
+} = require("../Database")
 
 module.exports = CardHandler = async (client, m) => {
   try {
@@ -18,8 +20,8 @@ module.exports = CardHandler = async (client, m) => {
 
         let count = 0;
         let sOr6Counter = 0;
-        const sOr6Interval = 1;
-        const sOr6Limit = 95;
+        const sOr6Interval = 3;
+        const sOr6Limit = 30;
   
         cron.schedule('*/2 * * * *', async () => {
           try {
@@ -68,10 +70,26 @@ module.exports = CardHandler = async (client, m) => {
               }
             
             console.log(`Sended:${obj.tier + "  Name:" + obj.title + "  For " + price + " in " + jid}`);
-      await client.cards.set(`${jid}.card`, `${obj.title}-${obj.tier}`);
-      await client.cards.set(`${jid}.cardPrice`, price);
-      await client.cards.set(`${jid}.code`, code);
-     
+
+           const existingCard = await Card.findOne({
+						jid: jid
+					});
+
+					if (existingCard) {
+						existingCard.Getcard = `${obj.title}-${obj.tier}`;
+						existingCard.card_price = price;
+						existingCard.card_code = code;
+						await existingCard.save();
+					} else {
+						const newCard = new Card({
+							jid: `${jid}`,
+							Getcard: `${obj.title}-${obj.tier}`,
+							card_price: price,
+							card_code: code
+						});
+						await newCard.save();
+					}
+		  
       if (obj.tier.includes('6')|| obj.tier.includes('S')) {
         const giif = await client.utils.getBuffer(obj.url);
         const cgif = await client.utils.gifToMp4(giif);
@@ -94,8 +112,19 @@ module.exports = CardHandler = async (client, m) => {
     }
   
     cron.schedule('*/15 * * * *', async () => {
-     await client.cards.delete(`${jid}.card`);
-      console.log(`Card deleted after 5minutes`)
+     await Card.findOneAndUpdate(
+							{ jid: jid },
+							{
+								$unset: {
+									Getcard: '',
+									card_price: '',
+									card_code: '',
+									claimed: ''
+								}
+							}
+							);
+	    
+	    console.log(`Card deleted after 5minutes`)
     })
   
   });
