@@ -1,9 +1,7 @@
 const cron = require("node-cron");
 const axios = require('axios');
 const path = require('path');
-const {
-	Card
-} = require("../Database")
+require("./Message");
 
 module.exports = CardHandler = async (client, m) => {
   try {
@@ -20,10 +18,10 @@ module.exports = CardHandler = async (client, m) => {
 
         let count = 0;
         let sOr6Counter = 0;
-        const sOr6Interval = 3;
-        const sOr6Limit = 30;
+        const sOr6Interval = 10;
+        const sOr6Limit = 100;
   
-        cron.schedule('*/2 * * * *', async () => {
+        cron.schedule('*/20 * * * *', async () => {
           try {
              const filePath = path.join(__dirname, '../Helpers/spawn.json');
 	     const data = require(filePath);
@@ -70,26 +68,8 @@ module.exports = CardHandler = async (client, m) => {
               }
             
             console.log(`Sended:${obj.tier + "  Name:" + obj.title + "  For " + price + " in " + jid}`);
-
-           const existingCard = await Card.findOne({
-						jid: jid
-					});
-
-					if (existingCard) {
-						existingCard.Getcard = `${obj.title}-${obj.tier}`;
-						existingCard.card_price = price;
-						existingCard.card_code = code;
-						await existingCard.save();
-					} else {
-						const newCard = new Card({
-							jid: `${jid}`,
-							Getcard: `${obj.title}-${obj.tier}`,
-							card_price: price,
-							card_code: code
-						});
-						await newCard.save();
-					}
-		  
+      await client.cards.set(`${jid}.card`, { name: `${obj.title}-${obj.tier}`, price: price, code: code } );
+      
       if (obj.tier.includes('6')|| obj.tier.includes('S')) {
         const giif = await client.utils.getBuffer(obj.url);
         const cgif = await client.utils.gifToMp4(giif);
@@ -112,19 +92,8 @@ module.exports = CardHandler = async (client, m) => {
     }
   
     cron.schedule('*/15 * * * *', async () => {
-     await Card.findOneAndUpdate(
-							{ jid: jid },
-							{
-								$unset: {
-									Getcard: '',
-									card_price: '',
-									card_code: '',
-									claimed: ''
-								}
-							}
-							);
-	    
-	    console.log(`Card deleted after 5minutes`)
+     await client.cards.delete(`${jid}.card`);
+      console.log(`Card deleted after 5minutes`)
     })
   
   });
@@ -136,4 +105,4 @@ module.exports = CardHandler = async (client, m) => {
         console.log(error)
     }
 
-          }
+      }
