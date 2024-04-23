@@ -74,28 +74,6 @@ const levelUpPokemon = (pokemon) => {
 };
 
 /**
- * Check if a Pokémon can evolve based on its level and species.
- * @param {Object} pokemon - The Pokémon object to check for evolution.
- * @returns {boolean} - True if the Pokémon can evolve, otherwise false.
- */
-const canEvolve = async (pokemon) => {
-    // Check if the Pokémon has reached its maximum level
-    if (pokemon.level >= maxLevel) {
-        return false;
-    }
-    
-    // Fetch the evolution chain to determine if the Pokémon can evolve
-    const evolutionChain = await getEvolveChain(pokemon.name);
-    
-    if (evolutionChain.length > 1) {
-        const requiredLevel = evolutionChain[1].min_level;
-        return pokemon.level >= requiredLevel;
-    } else {
-        return false;
-    }
-};
-
-/**
  * Get the evolution chain for a given Pokémon name.
  * @param {string} pokemonName - Name of the Pokémon.
  * @returns {Object[]} - Array of objects representing the evolution chain.
@@ -122,7 +100,11 @@ const getNextEvolvedForm = async (pokemonName) => {
     try {
         const evolutionChain = await getEvolveChain(pokemonName);
         if (evolutionChain.evolves_to.length > 0) {
-            return evolutionChain.evolves_to[0].species.name;
+            const nextForm = evolutionChain.evolves_to[0];
+            return {
+                name: nextForm.species.name,
+                levelRequired: nextForm.min_level
+            };
         } else {
             return null;
         }
@@ -133,29 +115,43 @@ const getNextEvolvedForm = async (pokemonName) => {
 };
 
 /**
- * Get the stats of the next evolved form for a given Pokémon name.
+ * Check if a Pokémon can evolve based on its level and species.
+ * @param {Object} pokemon - The Pokémon object to check for evolution.
+ * @returns {boolean} - True if the Pokémon can evolve, otherwise false.
+ */
+const canEvolve = async (pokemon, requiredLevel) => {
+    return pokemon.level >= requiredLevel && pokemon.level < maxLevel;
+};
+
+/**
+ * Get the name of the next evolved form for a given Pokémon name.
  * @param {string} pokemonName - Name of the Pokémon.
- * @returns {Object|null} - Stats of the next evolved form, or null if not found.
+ * @returns {string|null} - Name of the next evolved form, or null if not found.
  */
 const getNextStats = async (pokemonName) => {
-    const nextEvolvedForm = await getNextEvolvedForm(pokemonName);
-    if (!nextEvolvedForm) {
-        throw new Error("Failed to find evolution data for your Pokémon.");
+    try {
+        const nextEvolvedForm = await getNextEvolvedForm(pokemonName);
+        if (!nextEvolvedForm) {
+            throw new Error("Failed to find evolution data for your Pokémon.");
+        }
+
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nextEvolvedForm.name}`);
+        const newData = response.data;
+
+        const stats = {
+            hp: newData.stats.find(stat => stat.stat.name === 'hp').base_stat,
+            attack: newData.stats.find(stat => stat.stat.name === 'attack').base_stat,
+            defense: newData.stats.find(stat => stat.stat.name === 'defense').base_stat,
+            speed: newData.stats.find(stat => stat.stat.name === 'speed').base_stat,
+        };
+
+        return { stats };
+    } catch (error) {
+        console.error('Error fetching next evolved form stats:', error.message);
+        return null;
     }
-
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nextEvolvedForm}`);
-    const newData = response.data;
-
-    // Extract new stats
-    const stats = {
-        hp: newData.stats.find(stat => stat.stat.name === 'hp').base_stat,
-        attack: newData.stats.find(stat => stat.stat.name === 'attack').base_stat,
-        defense: newData.stats.find(stat => stat.stat.name === 'defense').base_stat,
-        speed: newData.stats.find(stat => stat.stat.name === 'speed').base_stat,
-    };
-
-    return { stats };
 };
+
 
 /**
  * Get the move that a Pokémon learns when leveling up.
@@ -211,3 +207,4 @@ module.exports = {
     getNextStats,
     levelUpMove
 };
+    
