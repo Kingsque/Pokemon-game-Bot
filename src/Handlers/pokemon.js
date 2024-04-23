@@ -17,21 +17,27 @@ module.exports = PokeHandler = async (client, m) => {
         cron.schedule('*/20 * * * *', async () => {
           try {
             const id = Math.floor(Math.random() * 898) // Ensure ID is within valid range
-            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
-            const pokemon = response.data;
+            
+            // Fetch Pokémon data
+            const pokemonDataResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+            const pokemonData = pokemonDataResponse.data;
 
-            const name = pokemon.name;
-            const types = pokemon.types.map(type => type.type.name);
-            const image = pokemon.sprites.other['official-artwork'].front_default;
+            const name = pokemonData.name;
+            const types = pokemonData.types.map(type => type.type.name);
             const level = Math.floor(Math.random() * (10 - 5) + 5);
             const requiredExp = calculatePokeExp(level);
             
             // Extracting base stats
             const baseStats = {};
-            pokemon.stats.forEach(stat => {
+            pokemonData.stats.forEach(stat => {
               baseStats[stat.stat.name] = stat.base_stat;
             });
 
+            // Fetch Pokémon image
+            const imageResponse = await axios.get(pokemonData.sprites.other['official-artwork'].front_default);
+            const image = imageResponse.data;
+
+            // Fetch Pokémon moves
             const movesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
             const movesData = await movesResponse.json();
             const moves = movesData.moves.slice(0, 2); 
@@ -48,7 +54,7 @@ module.exports = PokeHandler = async (client, m) => {
               return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, type: moveType, description: moveDescription };
             }));
 
-            const pokemonData = { 
+            const pokemonDataObject = { 
               name: name, 
               level: level, 
               pokexp: requiredExp,
@@ -64,8 +70,8 @@ module.exports = PokeHandler = async (client, m) => {
               movesUsed: 0
             };
 
-            console.log(`Spawned: ${pokemonData.name} in ${jid}`);
-            await client.DB.set(`${jid}.pokemon`, pokemonData);
+            console.log(`Spawned: ${pokemonDataObject.name} in ${jid}`);
+            await client.DB.set(`${jid}.pokemon`, pokemonDataObject);
 
             const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Types:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *Available Moves:* ${movesDetails.map(move => move.name).join(', ')} \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
 
