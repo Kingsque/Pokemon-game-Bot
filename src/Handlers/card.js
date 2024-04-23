@@ -20,7 +20,7 @@ module.exports = CardHandler = async (client, m) => {
                 const sOr6Interval = 10;
                 const sOr6Limit = 100;
 
-                cron.schedule('*/40 * * * *', async () => {
+                cron.schedule('*/10 * * * *', async () => {
                     try {
                         const filePath = path.join(__dirname, '../Helpers/spawn.json');
                         const data = require(filePath);
@@ -85,15 +85,15 @@ module.exports = CardHandler = async (client, m) => {
                             caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}`
                         });
                     }
-                });
 
                 // Cron job to delete card details after 30 minutes
-                cron.schedule('*/30 * * * *', async () => {
+                cron.schedule('*/5 * * * *', async () => {
                     await client.cards.delete(`${jid}.card`);
                     await client.cards.delete(`${jid}.cardPrice`);
                     await client.cards.delete(`${jid}.code`);
                     console.log(`Card deleted after 30 minutes`);
                 });
+                    });
             }
         }
     } catch (error) {
