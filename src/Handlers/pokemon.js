@@ -1,7 +1,7 @@
 const cron = require("node-cron")
 const axios = require('axios')
 const path = require('path')
-const { calculateRequiredExp } = require('../Helpers/pokeStats')
+const { calculatePokeExp } = require('../Helpers/pokeStats')
 require("./Message");
 module.exports = PokeHandler = async (client, m) => {
   try {
@@ -24,7 +24,7 @@ module.exports = PokeHandler = async (client, m) => {
             const types = pokemon.types.map(type => type.type.name);
             const image = pokemon.sprites.other['official-artwork'].front_default;
             const level = Math.floor(Math.random() * (30 - 15) + 15);
-            const requiredExp = calculateRequiredExp(level);
+            const requiredExp = calculatePokeExp(level);
 
             const pokemonData = { name: name, level: level, exp: requiredExp }; // Create an object with name, level, and exp
            console.log(`Spawned: ${pokemonData.name} in ${jid}`);
