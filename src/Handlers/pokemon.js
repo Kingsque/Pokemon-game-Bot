@@ -49,7 +49,7 @@ module.exports = PokeHandler = async (client, m) => {
      await client.DB.delete(`${jid}.pokemon`);
       console.log(`Pokemon deleted after 5minutes`)
   
-    })
+    });
   
   });
   
