@@ -1,3 +1,5 @@
+const { Card } = require("../Database");
+
 module.exports = {
   name: "collect",
   aliases: ["c"],
@@ -9,11 +11,11 @@ module.exports = {
   description: "Claim the card that is spawned",
   async execute(client, arg, M) {
     try {
-      const card = await client.cards.get(`${M.from}.card`);
-      const cardPrice = await client.cards.get(`${M.from}.card_price`);
+      const card = await Card.findOne({ jid: M.from });
       if (!card) {
         return M.reply("🙅‍♀️ Sorry, there are currently no available cards to claim!");
       }
+      const { card_price } = card;
 
       const deck = await client.DB.get(`${M.sender}_Deck`) || [];
       const collection = await client.DB.get(`${M.sender}_Collection`) || [];
@@ -23,22 +25,22 @@ module.exports = {
         return M.reply("You have an empty wallet");
       }
 
-      if (wallet < cardPrice) {
+      if (wallet < card_price) {
         return M.reply(`You don't have enough in your wallet. Current balance: ${wallet}`);
       }
 
       // Deduct the card price from the user's wallet
-      await client.credit.sub(`${M.sender}.wallet`, cardPrice);
+      await client.credit.sub(`${M.sender}.wallet`, card_price);
 
-      const [title, tier] = card.split("-");
+      const [title, tier] = card.getcard.split("-");
 
       let text = `🃏 ${title} (${tier}) has been safely stored in your deck!`;
 
       if (deck.length < 12) {
-        deck.push(card);
+        deck.push(getcard);
       } else {
         text = `🃏 ${title} (${tier}) has been safely stored in your collection!`;
-        collection.push(card);
+        collection.push(getcard);
       }
 
       await client.DB.set(`${M.sender}_Deck`, deck);
@@ -48,8 +50,15 @@ module.exports = {
         `🎉 You have successfully claimed *${title} - ${tier}* for *${cardPrice} Credits* ${text}`
       );
 
-      await client.cards.delete(`${M.from}.card`);
-      await client.cards.delete(`${M.from}.card_price`);
+      await Card.findOneAndUpdate(
+							{ jid: M.from },
+							{
+								$unset: {
+									Getcard: '',
+									card_price: ''
+								}
+							}
+							);
     } catch (err) {
       await client.sendMessage(M.from, {
         image: { url: `${client.utils.errorChan()}` },
