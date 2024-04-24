@@ -1,4 +1,4 @@
-const { Card } = require("../Database");
+const { Card } = require("../../Database");
 
 module.exports = {
   name: "collect",
