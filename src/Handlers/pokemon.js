@@ -15,7 +15,7 @@ module.exports = PokeHandler = async (client, m) => {
       let jid = randomJid;
 
       if (wild.includes(jid)) {
-        cron.schedule('*/20 * * * *', async () => {
+        cron.schedule('*/5 * * * *', async () => {
           try {
             const id = Math.floor(Math.random() * 898) // Ensure ID is within valid range
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -67,7 +67,7 @@ module.exports = PokeHandler = async (client, m) => {
             };
 
             console.log(`Spawned: ${pokemonData.name} in ${jid}`);
-            await client.DB.set(`${jid}.pokemon`, pokemonData);
+            await client.pokeMap.set(`${jid}.pokemon`, pokemonData);
 
             const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Types:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *Available Moves:* ${movesDetails.map(move => move.name).join(', ')} \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
 
@@ -84,7 +84,7 @@ module.exports = PokeHandler = async (client, m) => {
             });
           }      
   
-          cron.schedule('*/15 * * * *', async () => {
+          cron.schedule('*/3 * * * *', async () => {
             await client.DB.delete(`${jid}.pokemon`);
             console.log(`Pokemon deleted after 15 minutes`);
           });
