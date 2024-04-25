@@ -33,6 +33,15 @@ const { readdirSync, writeFileSync, unlink } = require('fs-extra')
 const port = process.env.PORT || 3000
 const driver = new MongoDriver(process.env.URL)
 const chalk = require('chalk')
+/**
+ * @type {Map<
+ * string, {
+ * price: number
+ * card: string
+ * }
+ * >}
+ */
+const cardResponse = new Map();
 
 const start = async () => {
     await mongoose.connect(process.env.URL);
@@ -56,6 +65,8 @@ const start = async () => {
 
     //devs
     client.groups = groups()
+
+    client.cardMap = cardResponse()
 
     //Database
     client.DB = new QuickDB({
