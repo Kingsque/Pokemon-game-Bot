@@ -43,6 +43,8 @@ const chalk = require('chalk')
  */
 const cardResponse = new Map();
 
+const pokemonResponse = new Map();
+
 const start = async () => {
     await mongoose.connect(process.env.URL);
 
@@ -67,6 +69,7 @@ const start = async () => {
     client.groups = groups()
 
     client.cardMap = cardResponse
+    client.pokeMap = pokemonResponse
 
     //Database
     client.DB = new QuickDB({
