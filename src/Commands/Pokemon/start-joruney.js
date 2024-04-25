@@ -12,7 +12,7 @@ async function getStarterPokemons() {
             const regionResponse = await axios.get(region.url);
             const regionData = regionResponse.data;
             const regionName = regionData.name;
-            // Check if the region data contains pokemon_species
+            // Ensure the region data contains pokemon_species
             const starters = regionData.pokemon_species ? regionData.pokemon_species.slice(0, 3).map(pokemon => pokemon.name) : [];
             startersByRegion[regionName] = starters;
         }
@@ -31,11 +31,9 @@ module.exports = {
     description: "Start your Pokémon journey by choosing a starter Pokémon.",
     async execute(client, arg, M) {
         try {
-            // Fetch starter Pokémon for each region
-            const startersByRegion = await getStarterPokemons();
-
             // If no argument is provided, list regions and starters
             if (!arg) {
+                const startersByRegion = await getStarterPokemons();
                 let message = "*Regions and Starter Pokémon:*\n";
                 for (const region in startersByRegion) {
                     const starters = startersByRegion[region].join(', ');
@@ -99,4 +97,3 @@ module.exports = {
         }
     }
 };
-                    
