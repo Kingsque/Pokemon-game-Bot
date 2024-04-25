@@ -66,7 +66,7 @@ const start = async () => {
     //devs
     client.groups = groups()
 
-    client.cardMap = cardResponse()
+    client.cardMap = cardResponse
 
     //Database
     client.DB = new QuickDB({
