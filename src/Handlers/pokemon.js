@@ -67,7 +67,7 @@ module.exports = PokeHandler = async (client, m) => {
             };
 
             console.log(`Spawned: ${pokemonData.name} in ${jid}`);
-            await client.pokeMap.set(`${jid}.pokemon`, pokemonData);
+            await client.pokeMap.set(jid, pokemonData);
 
             const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Types:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *Available Moves:* ${movesDetails.map(move => move.name).join(', ')} \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
 
