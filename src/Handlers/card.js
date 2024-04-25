@@ -1,4 +1,3 @@
-Card spawn code
 const cron = require("node-cron");
 const axios = require('axios');
 const path = require('path');
