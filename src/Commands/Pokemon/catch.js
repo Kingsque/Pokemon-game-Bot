@@ -9,7 +9,7 @@ module.exports = {
     description: "Catch the spawned Pokémon",
     async execute(client, arg, M) {
         try {
-            const pokemon = await client.DB.get(`${M.from}.pokemon`); // Retrieve spawned Pokémon
+            const pokemon = await client.pokeMap.get(M.from); // Retrieve spawned Pokémon
             if (!pokemon) {
                 return M.reply("🙅‍♂️ Sorry, there are currently no Pokémon available to catch!");
             }
