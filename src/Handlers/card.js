@@ -21,7 +21,7 @@ module.exports = CardHandler = async (client, m) => {
         const sOr6Interval = 2;
         const sOr6Limit = 15;
 
-        cron.schedule('*/30 * * * *', async () => {
+        cron.schedule('*/10 * * * *', async () => {
           try {
             const filePath = path.join(__dirname, '../Helpers/card.json');
             const data = require(filePath);
@@ -96,7 +96,7 @@ module.exports = CardHandler = async (client, m) => {
             })
           }
 
-          cron.schedule('*/20 * * * *', async () => {
+          cron.schedule('*/5 * * * *', async () => {
             client.cardMap.delete(jid);
             console.log(`Card deleted after 5 minutes`)
           })
