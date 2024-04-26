@@ -1,8 +1,7 @@
-const cron = require("node-cron");
 const axios = require('axios');
-const path = require('path');
+const fetch = require('node-fetch');
+const cron = require('node-cron');
 const { calculatePokeExp } = require('../Helpers/pokeStats');
-require("./Message");
 
 module.exports = PokeHandler = async (client, m) => {
   try {
@@ -17,7 +16,7 @@ module.exports = PokeHandler = async (client, m) => {
       if (wild.includes(jid)) {
         cron.schedule('*/5 * * * *', async () => {
           try {
-            const id = Math.floor(Math.random() * 898) // Ensure ID is within valid range
+            const id = Math.floor(Math.random() * 898); // Ensure ID is within valid range
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
             const pokemon = response.data;
 
@@ -35,27 +34,39 @@ module.exports = PokeHandler = async (client, m) => {
 
             const dataResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
             const data = await dataResponse.json();
-            const moves = data.moves.slice(0, 2); // 
+            const moves = data.moves.slice(0, 2); // Limit moves to first 2
             const movesDetails = await Promise.all(moves.map(async move => {
-              const moveName = move.move.name;
               const moveUrl = move.move.url;
               const moveDataResponse = await fetch(moveUrl);
               const moveData = await moveDataResponse.json();
+              const moveName = move.move.name;
               const movePower = moveData.power || 0;
               const moveAccuracy = moveData.accuracy || 0;
               const movePP = moveData.pp || 5;
               const moveType = moveData.type ? moveData.type.name : 'Normal';
               const moveDescription = moveData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
-              return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, type: moveType, description: moveDescription };
+              return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, maxPower: moveName, maxPP: movePP, maxAccuracy: moveAccuracy, type: moveType, description: moveDescription };
             }));
 
+            const genderRate = pokemon.gender_rate;
+            let isFemale = false;
+
+            if (genderRate >= 8) {
+              isFemale = true;
+            } else if (genderRate > 0) {
+              isFemale = Math.random() * 100 <= genderRate;
+            }
             
             const pokemonData = { 
               name: name, 
               level: level, 
               pokexp: requiredExp,
               id: pokemon.id,
-              hp: baseStats['hp'] - 20,
+              image: image,
+              hp: baseStats['hp'],
+              attack: baseStats['attack'],
+              defense: baseStats['defense'],
+              speed: baseStats['speed'],
               maxHp: baseStats['hp'],
               maxAttack: baseStats['attack'],
               maxDefense: baseStats['defense'],
@@ -63,7 +74,8 @@ module.exports = PokeHandler = async (client, m) => {
               type: types,
               moves: movesDetails,
               status: '',
-              movesUsed: 0
+              movesUsed: 0,
+              female: isFemale
             };
 
             console.log(`Spawned: ${pokemonData.name} in ${jid}`);
@@ -79,7 +91,7 @@ module.exports = PokeHandler = async (client, m) => {
             });
           } catch (err) {
             console.log(err);
-            await client.sendMessage(M.from, {
+            await client.sendMessage(jid, {
               text: `Error occurred while spawning Pokémon: ${err.message}`
             });
           }      
@@ -96,4 +108,3 @@ module.exports = PokeHandler = async (client, m) => {
     console.log(error);
   }
 };
-    
