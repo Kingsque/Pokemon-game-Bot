@@ -56,7 +56,12 @@ module.exports = PokeHandler = async (client, m) => {
             } else if (genderRate > 0) {
               isFemale = Math.random() * 100 <= genderRate;
             }
-            
+
+             const dataResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+            const speciesData = await dataResponse.json();
+            const catchRate = speciesData.capture_rate;
+            const ballNeeded = 'pokeball'
+
             const pokemonData = { 
               name: name, 
               level: level, 
@@ -75,7 +80,9 @@ module.exports = PokeHandler = async (client, m) => {
               moves: movesDetails,
               status: '',
               movesUsed: 0,
-              female: isFemale
+              female: isFemale,
+              catchrate: catchRate,
+              pokeball: ballNeeded
             };
 
             console.log(`Spawned: ${pokemonData.name} in ${jid}`);
