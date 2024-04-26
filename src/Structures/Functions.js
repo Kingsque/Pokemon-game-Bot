@@ -28,15 +28,23 @@ const drawHangMan = async (mistakes) => {
     ctx.fillStyle = '#ffffff'; // White background
     ctx.fillRect(0, 0, canvasSize, canvasSize);
 
-    // Draw Hangman pole and rope
+    // Draw basic elements
     ctx.strokeStyle = '#000000'; // Black color for lines
     ctx.lineWidth = 6;
+    // Draw horizontal line in the left corner
     ctx.beginPath();
-    ctx.moveTo(canvasSize / 2, 0); // Top of the canvas
-    ctx.lineTo(canvasSize / 2, canvasSize); // Bottom of the canvas
+    ctx.moveTo(20, 20);
+    ctx.lineTo(120, 20);
     ctx.stroke();
-    ctx.moveTo(canvasSize / 2, 20); // Attach rope at top
-    ctx.lineTo(canvasSize / 2, 80); // Rope length
+    // Draw vertical line connected to the horizontal line
+    ctx.beginPath();
+    ctx.moveTo(120, 20);
+    ctx.lineTo(120, 100);
+    ctx.stroke();
+    // Draw rope connected from the middle of the upper lines
+    ctx.beginPath();
+    ctx.moveTo(120, 20);
+    ctx.lineTo(canvasSize / 2, 20);
     ctx.stroke();
 
     // Draw Hangman based on number of mistakes
@@ -85,8 +93,6 @@ const drawHangMan = async (mistakes) => {
     // Return image as buffer
     return canvas.toBuffer();
 };
-
-
 
 
 
