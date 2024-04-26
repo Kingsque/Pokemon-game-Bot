@@ -10,11 +10,11 @@ module.exports = {
     async execute(client, arg, M) {
         if (!arg) return M.reply('Use :create ttt/hm');
         if (arg === 'ttt') {
-            const buffer = await client.utils.getBuffer(client.utils.drawTicTacToeBoard());
+            const buffer = await client.utils.getBuffer(client.utils.drawTTTBoard());
             await client.sendMessage(
                 M.from,
                 {
-                    image: { url: buffer },
+                    image: { url: `data:image/png;base64,${buffer.toString('base64')}` },
                     caption: "Here's the Tic Tac Toe board:"
                 },
                 {
