@@ -33,8 +33,12 @@ const calculatePokeExp = (currentLevel) => {
  * @returns {number} - Experience points required to level up.
  */
 const requirePokeExpToLevelUp = (currentExp, currentLevel) => {
-    const expToNextLevel = calculatePokeExp(currentLevel + 1);
-    return expToNextLevel - currentExp;
+    if (currentLevel <= 0 || currentLevel >= maxLevel) {
+        return Infinity; // or any other appropriate value to indicate an invalid level
+    }
+
+    const nextLevelExp = calculatePokeExp(currentLevel + 1);
+    return nextLevelExp - currentExp;
 };
 
 /**
