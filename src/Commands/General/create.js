@@ -1,5 +1,3 @@
-const { drawHangMan } = require('./your/drawHangMan/module/path');
-
 module.exports = {
     name: 'create',
     aliases: ['create'],
@@ -19,7 +17,7 @@ module.exports = {
             await client.sendMessage(M.from, { image: buffer, caption: `Your ttt` }, { quoted: M });
         } else if (gameType === 'hm') {
             const mistakes = Math.floor(Math.random() * 6) + 1; // Generate random mistakes from 1 to 6
-            const buffer = await drawHangMan(mistakes);
+            const buffer = await client.utils.drawHangMan(mistakes);
             await client.sendMessage(M.from, { image: buffer, caption: `Hangman with ${mistakes} mistake(s)` }, { quoted: M });
         } else {
             M.reply('Invalid game type. Use :create ttt/hm');
