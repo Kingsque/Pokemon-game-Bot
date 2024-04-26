@@ -14,6 +14,75 @@ const baseUrl = 'https://www.myinstants.com';
 const searchUrl = 'https://www.myinstants.com/search/?name=';
 
 /**
+ * Draws a Hangman image based on the number of mistakes.
+ * @param {number} mistakes - The number of mistakes (from 1 to 6).
+ * @returns {Promise<Buffer>} A promise that resolves to a buffer containing the generated image.
+ */
+const drawHangMan = async (mistakes) => {
+    // Define canvas size and context
+    const canvasSize = 400;
+    const canvas = createCanvas(canvasSize, canvasSize);
+    const ctx = canvas.getContext('2d');
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvasSize, canvasSize);
+
+    // Draw Hangman based on number of mistakes
+    switch (mistakes) {
+        case 1:
+            // Draw head
+            ctx.beginPath();
+            ctx.arc(canvasSize / 2, 100, 40, 0, Math.PI * 2);
+            ctx.stroke();
+            break;
+        case 2:
+            // Draw body
+            ctx.beginPath();
+            ctx.moveTo(canvasSize / 2, 140);
+            ctx.lineTo(canvasSize / 2, 300);
+            ctx.stroke();
+            break;
+        case 3:
+            // Draw left arm
+            ctx.beginPath();
+            ctx.moveTo(canvasSize / 2, 180);
+            ctx.lineTo(canvasSize / 2 - 50, 220);
+            ctx.stroke();
+            break;
+        case 4:
+            // Draw right arm
+            ctx.beginPath();
+            ctx.moveTo(canvasSize / 2, 180);
+            ctx.lineTo(canvasSize / 2 + 50, 220);
+            ctx.stroke();
+            break;
+        case 5:
+            // Draw left leg
+            ctx.beginPath();
+            ctx.moveTo(canvasSize / 2, 300);
+            ctx.lineTo(canvasSize / 2 - 40, 380);
+            ctx.stroke();
+            break;
+        case 6:
+            // Draw right leg
+            ctx.beginPath();
+            ctx.moveTo(canvasSize / 2, 300);
+            ctx.lineTo(canvasSize / 2 + 40, 380);
+            ctx.stroke();
+            break;
+        default:
+            // No mistakes, do nothing
+            break;
+    }
+
+    // Return image as buffer
+    return canvas.toBuffer();
+};
+
+
+
+
+/**
  * Draws a Tic Tac Toe (TTT) board with white background and colored grid lines.
  * @returns {Promise<Buffer>} A promise that resolves to a buffer containing the generated image.
  */
