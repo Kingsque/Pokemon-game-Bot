@@ -14,40 +14,42 @@ const baseUrl = 'https://www.myinstants.com';
 const searchUrl = 'https://www.myinstants.com/search/?name=';
 
 /**
- * Draws a Tic Tac Toe board on a canvas with white background and black grid lines.
- * @returns {Canvas} The canvas containing the Tic Tac Toe board.
+ * Draws a Tic Tac Toe (TTT) board with white background and colored grid lines.
+ * @returns {Buffer} A buffer containing the generated image.
  */
 const drawTTTBoard = () => {
-    const size = 3; // Default size is 3x3
-    const canvasSize = 300; // You can adjust the size of the canvas as needed
-    const cellSize = canvasSize / size;
-    
+    const canvasSize = 300;
+    const cellSize = canvasSize / 3;
+
     // Create canvas
     const canvas = createCanvas(canvasSize, canvasSize);
     const ctx = canvas.getContext('2d');
-    
-    // Draw background
-    ctx.fillStyle = '#fff'; // White background
+
+    // Draw white background
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvasSize, canvasSize);
-    
+
     // Draw grid lines
-    ctx.strokeStyle = '#000'; // Black grid lines
-    ctx.lineWidth = 2;
-    for (let i = 1; i < size; i++) {
-        // Vertical lines
-        ctx.beginPath();
-        ctx.moveTo(i * cellSize, 0);
-        ctx.lineTo(i * cellSize, canvasSize);
-        ctx.stroke();
-        
-        // Horizontal lines
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 4;
+
+    // Horizontal lines
+    for (let i = 1; i < 3; i++) {
         ctx.beginPath();
         ctx.moveTo(0, i * cellSize);
         ctx.lineTo(canvasSize, i * cellSize);
         ctx.stroke();
     }
-    
-    return canvas;
+
+    // Vertical lines
+    for (let j = 1; j < 3; j++) {
+        ctx.beginPath();
+        ctx.moveTo(j * cellSize, 0);
+        ctx.lineTo(j * cellSize, canvasSize);
+        ctx.stroke();
+    }
+
+    return canvas.toBuffer();
 };
 
 
