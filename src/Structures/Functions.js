@@ -13,31 +13,43 @@ const cheerio = require("cheerio");
 const baseUrl = 'https://www.myinstants.com';
 const searchUrl = 'https://www.myinstants.com/search/?name=';
 
-
-const drawTicTacToeBoard = () => {
-    const canvas = createCanvas(300, 300);
+/**
+ * Draws a Tic Tac Toe board on a canvas with white background and black grid lines.
+ * @returns {Canvas} The canvas containing the Tic Tac Toe board.
+ */
+const drawTTTBoard = () => {
+    const size = 3; // Default size is 3x3
+    const canvasSize = 300; // You can adjust the size of the canvas as needed
+    const cellSize = canvasSize / size;
+    
+    // Create canvas
+    const canvas = createCanvas(canvasSize, canvasSize);
     const ctx = canvas.getContext('2d');
-
-    // Draw white background
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Draw black grids
-    ctx.strokeStyle = '#000';
+    
+    // Draw background
+    ctx.fillStyle = '#fff'; // White background
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
+    
+    // Draw grid lines
+    ctx.strokeStyle = '#000'; // Black grid lines
     ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(100, 0);
-    ctx.lineTo(100, 300);
-    ctx.moveTo(200, 0);
-    ctx.lineTo(200, 300);
-    ctx.moveTo(0, 100);
-    ctx.lineTo(300, 100);
-    ctx.moveTo(0, 200);
-    ctx.lineTo(300, 200);
-    ctx.stroke();
-
-    return canvas.toBuffer();
+    for (let i = 1; i < size; i++) {
+        // Vertical lines
+        ctx.beginPath();
+        ctx.moveTo(i * cellSize, 0);
+        ctx.lineTo(i * cellSize, canvasSize);
+        ctx.stroke();
+        
+        // Horizontal lines
+        ctx.beginPath();
+        ctx.moveTo(0, i * cellSize);
+        ctx.lineTo(canvasSize, i * cellSize);
+        ctx.stroke();
+    }
+    
+    return canvas;
 };
+
 
   /**
  * Formats the URL for an instant sound effect on Myinstants.com.
@@ -382,7 +394,7 @@ const gifToPng = async (gif) => {
 
  
 module.exports = {
-    drawTicTacToeBoard,
+    drawTTTBoard,
     calculatePing,
     capitalize,
     execute,
