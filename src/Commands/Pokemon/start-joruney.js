@@ -8,43 +8,35 @@ module.exports = {
     async execute(client, arg, M) {
         try {
             const pokemonNames = {
-                1: "Bulbasaur",
-                4: "Charmander",
-                7: "Squirtle",
-                152: "Chikorita",
-                155: "Cyndaquil",
-                158: "Totodile",
-                252: "Treecko",
-                255: "Torchic",
-                258: "Mudkip",
-                387: "Turtwig",
-                390: "Chimchar",
-                393: "Piplup",
-                495: "Snivy",
-                498: "Tepig",
-                501: "Oshawott",
-                650: "Chespin",
-                653: "Fennekin",
-                656: "Froakie",
-                722: "Rowlet",
-                725: "Litten",
-                728: "Popplio",
-                810: "Grookey",
-                813: "Scorbunny",
-                816: "Sobble"
+                kanto: ['bulbasaur', 'charmander', 'squirtle'],
+                johto: ['chikorita', 'cyndaquil', 'totodile'],
+                hoenn: ['treecko', 'torchic', 'mudkip'],
+                sinnoh: ['turtwig', 'chimchar', 'piplup'],
+                unova: ['snivy', 'tepig', 'oshawott'],
+                kalos: ['chespin', 'fennekin', 'froakie'],
+                alola: ['rowlet', 'litten', 'popplio'],
+                galar: ['grookey', 'scorbunny', 'sobble']
             };
 
             if (!arg) {
                 let message = "*Regions and Starter Pokémon:*\n";
                 for (const region in pokemonNames) {
-                    message += `*${region}:* ${pokemonNames[region]}\n`;
+                    message += `*${region}:* ${pokemonNames[region].join(', ')}\n`;
                 }
                 return M.reply(message);
             }
             
             if (arg.startsWith('--')) {
                 const pokemonName = arg.split(' ')[0].slice(2); // Remove '--' prefix
-                if (!pokemonNames[pokemonName]) {
+                let allStarters = [];
+                let regionName;
+                for (const region in pokemonNames) {
+                    allStarters = allStarters.concat(pokemonNames[region]);
+                    if (pokemonNames[region].includes(pokemonName)) {
+                        regionName = region;
+                    }
+                }
+                if (!allStarters.includes(pokemonName)) {
                     return M.reply("Invalid Pokémon name.");
                 }
                 
@@ -63,16 +55,16 @@ module.exports = {
                         maxDefense: pokemonData.stats[2].base_stat,
                         maxSpeed: pokemonData.stats[5].base_stat,
                         type: types,
+                        region: regionName
                     };
     
                     let userParty = await client.DB.get(`${M.sender}_Party`) || [];
                     userParty.push(starterPokemon);
                     await client.DB.set(`${M.sender}_Party`, userParty);
     
-                    return M.reply(`Congratulations! You've started your journey with ${name}!`);
+                    return M.reply(`Congratulations! You've started your journey with ${name} from ${regionName}!`);
                 } else {
-                    const level = Math.floor(Math.random() * (15 - 10) + 10);
-                    const message = `*Starter Pokémon Details:*\n\n*Name:* ${name}\n*Types:* ${types.join(', ')}\n*Level:* ${level}`;
+                    const message = `*${name}* from *${regionName}*\n\n*Types:* ${types.join(', ')}`;
                     
                     await client.sendMessage(M.from, {
                         image: {
