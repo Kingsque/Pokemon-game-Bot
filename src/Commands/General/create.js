@@ -8,19 +8,19 @@ module.exports = {
     usage: 'Use :info',
     description: 'Get bot information',
     async execute(client, arg, M) {
-      if (!arg) M.reply('Use :create ttt/hm')
-      if (arg === 'ttt') {
-
-      const buffer = awai client.utils.getBuffer(client.utils.displayTicTacToeBoard())
-         await client.sendMessage(
-          M.from,
-          {
-            image: { url: bufer },
-            caption: text
-          },
-          {
-            quoted: M
-          }
-        );
+        if (!arg) return M.reply('Use :create ttt/hm');
+        if (arg === 'ttt') {
+            const buffer = await client.utils.getBuffer(client.utils.drawTicTacToeBoard());
+            await client.sendMessage(
+                M.from,
+                {
+                    image: { url: buffer },
+                    caption: "Here's the Tic Tac Toe board:"
+                },
+                {
+                    quoted: M
+                }
+            );
+        }
     }
-}; 
+};
