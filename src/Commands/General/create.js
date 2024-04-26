@@ -8,14 +8,12 @@ module.exports = {
     usage: 'Use :info',
     description: 'Get bot information',
     async execute(client, arg, M) {
-        if (!arg || arg.length < 1) return M.reply('Use :create ttt/hm');
+        if (!arg) return M.reply('Use :create ttt/hm');
 
-        const [gameType] = arg;
-
-        if (gameType === 'ttt') {
+        if (arg === 'ttt') {
             const buffer = await client.utils.drawTTTBoard();
             await client.sendMessage(M.from, { image: buffer, caption: `Your ttt` }, { quoted: M });
-        } else if (gameType === 'hm') {
+        } else if (arg === 'hm') {
             const mistakes = Math.floor(Math.random() * 6) + 1; // Generate random mistakes from 1 to 6
             const buffer = await client.utils.drawHangMan(mistakes);
             await client.sendMessage(M.from, { image: buffer, caption: `Hangman with ${mistakes} mistake(s)` }, { quoted: M });
