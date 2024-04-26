@@ -28,60 +28,64 @@ const drawHangMan = async (mistakes) => {
     ctx.fillStyle = '#ffffff'; // White background
     ctx.fillRect(0, 0, canvasSize, canvasSize);
 
-    // Draw Hangman based on number of mistakes
+    // Draw Hangman pole and rope
     ctx.strokeStyle = '#000000'; // Black color for lines
     ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(canvasSize / 2, 0); // Top of the canvas
+    ctx.lineTo(canvasSize / 2, canvasSize); // Bottom of the canvas
+    ctx.stroke();
+    ctx.moveTo(canvasSize / 2, 20); // Attach rope at top
+    ctx.lineTo(canvasSize / 2, 80); // Rope length
+    ctx.stroke();
 
-    switch (mistakes) {
-        case 1:
-            // Draw head
-            ctx.beginPath();
-            ctx.arc(canvasSize / 2, 140, 40, 0, Math.PI * 2);
-            ctx.stroke();
-            break;
-        case 2:
-            // Draw body
-            ctx.beginPath();
-            ctx.moveTo(canvasSize / 2, 180);
-            ctx.lineTo(canvasSize / 2, 300);
-            ctx.stroke();
-            break;
-        case 3:
-            // Draw left arm
-            ctx.beginPath();
-            ctx.moveTo(canvasSize / 2, 200);
-            ctx.lineTo(canvasSize / 2 - 60, 260);
-            ctx.stroke();
-            break;
-        case 4:
-            // Draw right arm
-            ctx.beginPath();
-            ctx.moveTo(canvasSize / 2, 200);
-            ctx.lineTo(canvasSize / 2 + 60, 260);
-            ctx.stroke();
-            break;
-        case 5:
-            // Draw left leg
-            ctx.beginPath();
-            ctx.moveTo(canvasSize / 2, 300);
-            ctx.lineTo(canvasSize / 2 - 50, 380);
-            ctx.stroke();
-            break;
-        case 6:
-            // Draw right leg
-            ctx.beginPath();
-            ctx.moveTo(canvasSize / 2, 300);
-            ctx.lineTo(canvasSize / 2 + 50, 380);
-            ctx.stroke();
-            break;
-        default:
-            // No mistakes, do nothing
-            break;
+    // Draw Hangman based on number of mistakes
+    if (mistakes >= 1) {
+        // Draw head
+        ctx.beginPath();
+        ctx.arc(canvasSize / 2, 120, 40, 0, Math.PI * 2);
+        ctx.stroke();
+    }
+    if (mistakes >= 2) {
+        // Draw body
+        ctx.beginPath();
+        ctx.moveTo(canvasSize / 2, 160);
+        ctx.lineTo(canvasSize / 2, 280);
+        ctx.stroke();
+    }
+    if (mistakes >= 3) {
+        // Draw left arm
+        ctx.beginPath();
+        ctx.moveTo(canvasSize / 2, 180);
+        ctx.lineTo(canvasSize / 2 - 50, 240);
+        ctx.stroke();
+    }
+    if (mistakes >= 4) {
+        // Draw right arm
+        ctx.beginPath();
+        ctx.moveTo(canvasSize / 2, 180);
+        ctx.lineTo(canvasSize / 2 + 50, 240);
+        ctx.stroke();
+    }
+    if (mistakes >= 5) {
+        // Draw left leg
+        ctx.beginPath();
+        ctx.moveTo(canvasSize / 2, 280);
+        ctx.lineTo(canvasSize / 2 - 40, 360);
+        ctx.stroke();
+    }
+    if (mistakes >= 6) {
+        // Draw right leg
+        ctx.beginPath();
+        ctx.moveTo(canvasSize / 2, 280);
+        ctx.lineTo(canvasSize / 2 + 40, 360);
+        ctx.stroke();
     }
 
     // Return image as buffer
     return canvas.toBuffer();
 };
+
 
 
 
