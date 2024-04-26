@@ -382,6 +382,7 @@ const gifToPng = async (gif) => {
 
  
 module.exports = {
+    drawTicTacToeBoard,
     calculatePing,
     capitalize,
     execute,
