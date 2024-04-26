@@ -16,7 +16,7 @@ module.exports = PokeHandler = async (client, m) => {
       if (wild.includes(jid)) {
         cron.schedule('*/5 * * * *', async () => {
           try {
-            const id = Math.floor(Math.random() * 898); // Ensure ID is within valid range
+            const id = Math.floor(Math.random() * 1025); // Ensure ID is within valid range
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
             const pokemon = response.data;
 
