@@ -33,14 +33,7 @@ const { readdirSync, writeFileSync, unlink } = require('fs-extra')
 const port = process.env.PORT || 3000
 const driver = new MongoDriver(process.env.URL)
 const chalk = require('chalk')
-/**
- * @type {Map<
- * string, {
- * price: number
- * card: string
- * }
- * >}
- */
+
 const cardResponse = new Map();
 
 const pokemonResponse = new Map();
@@ -85,7 +78,7 @@ const start = async () => {
     client.exp = client.DB.table('experience')
 
     //Cards
-    client.cards = client.DB.table('cards')
+    client.card = client.DB.table('cards')
 
     //Credits       `
     client.credit = client.DB.table('credit')
@@ -97,7 +90,7 @@ const start = async () => {
     client.bg = client.DB.table('bg')
 
     //evets
-    client.event = client.DB.table('event')
+    client.pkmn = client.DB.table('pkmn')
     
     //Commands
     client.cmd = new Collection()
