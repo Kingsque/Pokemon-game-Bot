@@ -25,49 +25,53 @@ const drawHangMan = async (mistakes) => {
     const ctx = canvas.getContext('2d');
 
     // Clear canvas
-    ctx.clearRect(0, 0, canvasSize, canvasSize);
+    ctx.fillStyle = '#ffffff'; // White background
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
 
     // Draw Hangman based on number of mistakes
+    ctx.strokeStyle = '#000000'; // Black color for lines
+    ctx.lineWidth = 6;
+
     switch (mistakes) {
         case 1:
             // Draw head
             ctx.beginPath();
-            ctx.arc(canvasSize / 2, 100, 40, 0, Math.PI * 2);
+            ctx.arc(canvasSize / 2, 140, 40, 0, Math.PI * 2);
             ctx.stroke();
             break;
         case 2:
             // Draw body
             ctx.beginPath();
-            ctx.moveTo(canvasSize / 2, 140);
+            ctx.moveTo(canvasSize / 2, 180);
             ctx.lineTo(canvasSize / 2, 300);
             ctx.stroke();
             break;
         case 3:
             // Draw left arm
             ctx.beginPath();
-            ctx.moveTo(canvasSize / 2, 180);
-            ctx.lineTo(canvasSize / 2 - 50, 220);
+            ctx.moveTo(canvasSize / 2, 200);
+            ctx.lineTo(canvasSize / 2 - 60, 260);
             ctx.stroke();
             break;
         case 4:
             // Draw right arm
             ctx.beginPath();
-            ctx.moveTo(canvasSize / 2, 180);
-            ctx.lineTo(canvasSize / 2 + 50, 220);
+            ctx.moveTo(canvasSize / 2, 200);
+            ctx.lineTo(canvasSize / 2 + 60, 260);
             ctx.stroke();
             break;
         case 5:
             // Draw left leg
             ctx.beginPath();
             ctx.moveTo(canvasSize / 2, 300);
-            ctx.lineTo(canvasSize / 2 - 40, 380);
+            ctx.lineTo(canvasSize / 2 - 50, 380);
             ctx.stroke();
             break;
         case 6:
             // Draw right leg
             ctx.beginPath();
             ctx.moveTo(canvasSize / 2, 300);
-            ctx.lineTo(canvasSize / 2 + 40, 380);
+            ctx.lineTo(canvasSize / 2 + 50, 380);
             ctx.stroke();
             break;
         default:
