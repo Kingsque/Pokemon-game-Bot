@@ -13,6 +13,32 @@ const cheerio = require("cheerio");
 const baseUrl = 'https://www.myinstants.com';
 const searchUrl = 'https://www.myinstants.com/search/?name=';
 
+
+const drawTicTacToeBoard = () => {
+    const canvas = createCanvas(300, 300);
+    const ctx = canvas.getContext('2d');
+
+    // Draw white background
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw black grids
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(100, 0);
+    ctx.lineTo(100, 300);
+    ctx.moveTo(200, 0);
+    ctx.lineTo(200, 300);
+    ctx.moveTo(0, 100);
+    ctx.lineTo(300, 100);
+    ctx.moveTo(0, 200);
+    ctx.lineTo(300, 200);
+    ctx.stroke();
+
+    return canvas.toBuffer();
+};
+
   /**
  * Formats the URL for an instant sound effect on Myinstants.com.
  * @param {string} url - The URL to format.
