@@ -465,6 +465,7 @@ const gifToPng = async (gif) => {
 
  
 module.exports = {
+    drawHangMan,
     drawTTTBoard,
     calculatePing,
     capitalize,
