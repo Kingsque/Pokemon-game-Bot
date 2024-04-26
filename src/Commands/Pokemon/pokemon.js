@@ -12,8 +12,8 @@ module.exports = {
             }
             
             const pokemonId = parseInt(arg);
-            if (isNaN(pokemonId) || pokemonId < 1 || pokemonId > 898) {
-                return M.reply("Invalid Pokémon ID. Please provide a number between 1 and 898.");
+            if (isNaN(pokemonId) || pokemonId < 1 ) {
+                return M.reply("Invalid Pokémon ID. Please provide a number between 1");
             }
             
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
