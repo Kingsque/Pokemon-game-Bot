@@ -15,7 +15,7 @@ const searchUrl = 'https://www.myinstants.com/search/?name=';
 
 /**
  * Draws a Tic Tac Toe (TTT) board with white background and colored grid lines.
- * @returns {Buffer} A buffer containing the generated image.
+ * @returns {Promise<Buffer>} A promise that resolves to a buffer containing the generated image.
  */
 const drawTTTBoard = () => {
     const canvasSize = 300;
