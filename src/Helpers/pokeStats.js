@@ -77,8 +77,6 @@ const levelUpPokemon = (pokemon) => {
     }
 };
 
-const axios = require('axios');
-
 /**
  * Get evolution details of a Pokémon including the level at which it evolves
  * and the stats of the next stage.
@@ -121,8 +119,6 @@ const pokemonEvolve = async (pokemonName, pokemonId, pokemonType) => {
     }
 };
 
-const axios = require('axios');
-
 /**
  * Check if a Pokémon can evolve based on its name and current level.
  * @param {string} pokemonName - Name of the Pokémon.
@@ -159,4 +155,3 @@ module.exports = {
     pokemonEvolve,
     canItEvolve
 };
-    
