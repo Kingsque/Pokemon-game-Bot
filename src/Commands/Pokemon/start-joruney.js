@@ -76,7 +76,7 @@ module.exports = {
                     const imagesPerRow = 3;
                     const rows = 4;
                     const xStart = (canvasWidth - (imageWidth * imagesPerRow + imagePadding * (imagesPerRow - 1))) / 2;
-                    const yStart = (canvasHeight - (imageHeight * rows + imagePadding * (rows - 1))) / 2;
+                    const yStart = (canvasHeight - (imageHeight * rows + imagePadding * (rows - 1)))) / 2; // Adjusted parentheses
 
                     for (let i = 0; i < imageUrls.length; i++) {
                         const imageUrl = imageUrls[i];
@@ -107,4 +107,4 @@ module.exports = {
         }
     }
 };
-                                                                 
+                    
