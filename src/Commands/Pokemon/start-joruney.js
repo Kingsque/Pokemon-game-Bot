@@ -60,8 +60,8 @@ module.exports = {
                         })
                     );
 
-                    const canvasWidth = 625;
-const canvasHeight = 1000;
+const canvasWidth = 1025;
+const canvasHeight = 1800;
 
 // Load region map as background
 const regionMapUrl = regionMaps[regionName];
