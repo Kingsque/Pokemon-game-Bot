@@ -60,8 +60,8 @@ module.exports = {
                         })
                     );
 
-                    const canvasWidth = 1050;
-                    const canvasHeight = 1800;
+                    const canvasWidth = 625;
+                    const canvasHeight = 1000;
                     const canvas = createCanvas(canvasWidth, canvasHeight);
                     const ctx = canvas.getContext('2d');
 
@@ -70,8 +70,8 @@ module.exports = {
                     const regionMap = await loadImage(regionMapUrl);
                     ctx.drawImage(regionMap, 0, 0, canvasWidth, canvasHeight);
 
-                    const imageWidth = 175; // Changed image width to half
-                    const imageHeight = 225; // Changed image height to half
+                    const imageWidth = 300; // Changed image width to half
+                    const imageHeight = 500; // Changed image height to half
                     const imagePadding = 10;
                     const imagesPerRow = 3;
                     const rows = 4;
