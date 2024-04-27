@@ -60,8 +60,8 @@ module.exports = {
                         })
                     );
 
-                    const canvasHeight = 1000;
-const canvasWidth = 625;
+                    const canvasWidth = 625;
+const canvasHeight = 1000;
 
 // Load region map as background
 const regionMapUrl = regionMaps[regionName];
@@ -73,8 +73,8 @@ const imagePadding = 10;
 const imagesPerRow = 3;
 const rows = Math.ceil(imageUrls.length / imagesPerRow); // Calculate the number of rows needed
 
-const totalHeightNeeded = rows * (imageHeight + imagePadding) - imagePadding; // Calculate the total height needed for all rows
-const yStart = (canvasHeight - totalHeightNeeded) / 2; // Adjust yStart based on total height needed
+const totalWidthNeeded = imagesPerRow * (imageWidth + imagePadding) - imagePadding; // Calculate the total width needed for all columns
+const xStart = (canvasWidth - totalWidthNeeded) / 2; // Adjust xStart based on total width needed
 
 const canvas = createCanvas(canvasWidth, canvasHeight);
 const ctx = canvas.getContext('2d');
@@ -89,6 +89,7 @@ for (let i = 0; i < imageUrls.length; i++) {
     const yOffset = i % 2 === 0 ? 0 : imageHeight / 2;
     ctx.drawImage(image, x, y + yOffset, imageWidth, imageHeight);
 }
+                    
                     
 
                     const directory = require('os').tmpdir();
