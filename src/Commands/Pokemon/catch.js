@@ -18,38 +18,42 @@ module.exports = {
         return M.reply("Please provide the name of the Pokémon you want to catch.");
       }
 
-      const catchRate = pokemon.catchrate;
-      let ball = '';
-      if (catchRate >= 200) {
-        ball = "Master Ball";
-      } else if (catchRate >= 100) {
-        ball = "Ultra Ball";
-      } else if (catchRate >= 50) {
-        ball = "Great Ball";
-      } else {
-        ball = "Pokeball";
-      }
-
       const pokemonName = arg.toLowerCase();
       if (pokemonName !== pokemon.name.toLowerCase()) {
         return M.reply(`You have provided the wrong name for the spawned Pokémon.`);
       }
 
-      const userPokeballs = await client.rpg.get(`${M.sender}.pokeball`);
-      if (userPokeballs <= 0) return M.reply('You do not have any Poké Balls to catch Pokémon.');
+      const catchRate = pokemon.catchrate;
+      let ball = '';
+      if (catchRate >= 200) {
+        ball = "masterball";
+      } else if (catchRate >= 100) {
+        ball = "ultraball";
+      } else if (catchRate >= 50) {
+        ball = "greatball";
+      } else {
+        ball = "pokeball";
+      }
 
-      let catchSuccess = false;
+      const userSpecificBallCount = await client.rpg.get(`${M.sender}.${ball}`) || 0;
+      const userPokeballs = await client.rpg.get(`${M.sender}.pokeball`) || 0;
+
+      if (userSpecificBallCount <= 0 && userPokeballs <= 0) {
+        return M.reply('You do not have any Poké Balls to catch Pokémon.');
+      }
+
       let usedBall = ball; // Default to the determined ball type
+      let attemptWithBall = true;
 
       // Check if the user has the specific type of ball to use
-      if (ball !== "Master Ball" && await client.rpg.get(`${M.sender}.${ball.split(' ').join('_').toLowerCase()}`) > 0) {
-        usedBall = ball.split(' ').join('_').toLowerCase(); // Use the specific ball if available
+      if (userSpecificBallCount > 0) {
+        usedBall = ball; // Use the specific ball if available
+      } else {
+        attemptWithBall = false; // User doesn't have the specific ball, attempt with regular Poké Balls
       }
 
       // Attempt to catch the Pokémon based on the catch rate
-      if (Math.random() * 100 <= catchRate) {
-        catchSuccess = true;
-      }
+      const catchSuccess = attemptWithBall ? Math.random() * 100 <= catchRate : Math.random() * 100 <= 50; // Assuming regular Poké Balls have a 50% catch rate
 
       if (catchSuccess) {
         const party = await client.DB.get(`${M.sender}_Party`) || [];
@@ -61,11 +65,19 @@ module.exports = {
           pc.push(pokemon); // Add Pokémon to PC
           await client.DB.set(`${M.sender}_PC`, pc);
         }
-        await client.rpg.sub(`${M.sender}.${usedBall}`, 1); // Subtract the used ball
+        if (attemptWithBall) {
+          await client.rpg.sub(`${M.sender}.${usedBall}`, 1); // Subtract the used ball
+        } else {
+          await client.rpg.sub(`${M.sender}.pokeball`, 1); // Subtract regular Poké Ball
+        }
         await M.reply(`🎉 You have successfully caught ${pokemon.name} (Level: ${pokemon.level}) and stored it accordingly!`);
       } else {
-        await client.rpg.sub(`${M.sender}.${usedBall}`, 1); // Subtract the used ball
-        await M.reply(`😢 Oh no! ${pokemon.name} broke free from your ${usedBall.split('_').join(' ')}!`);
+        if (attemptWithBall) {
+          await client.rpg.sub(`${M.sender}.${usedBall}`, 1); // Subtract the used ball
+        } else {
+          await client.rpg.sub(`${M.sender}.pokeball`, 1); // Subtract regular Poké Ball
+        }
+        await M.reply(`😢 Oh no! ${pokemon.name} broke free from your ${usedBall}!`);
       }
 
       // Delete the spawned Pokémon from the database
