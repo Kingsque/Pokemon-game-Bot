@@ -48,6 +48,10 @@ module.exports = PokeHandler = async (client, m) => {
               return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, maxPower: moveName, maxPP: movePP, maxAccuracy: moveAccuracy, type: moveType, description: moveDescription };
             }));
 
+            const dat = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+            const speciesData = await dat.json();
+            const catchRate = speciesData.capture_rate;
+
             const genderRate = pokemon.gender_rate;
             let isFemale = false;
 
@@ -56,20 +60,6 @@ module.exports = PokeHandler = async (client, m) => {
             } else if (genderRate > 0) {
               isFemale = Math.random() * 100 <= genderRate;
             }
-
-            if (catchRate >= 200) {
-    return "Master Ball";
-  } else if (catchRate >= 100) {
-    return "Ultra Ball";
-  } else if (catchRate >= 50) {
-    return "Great Ball";
-  } else {
-    return "Pokeball";
-            }
-
-             const dat = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-            const speciesData = await dat.json();
-            const catchRate = speciesData.capture_rate;
 
             const pokemonData = { 
               name: name, 
@@ -97,7 +87,7 @@ module.exports = PokeHandler = async (client, m) => {
             console.log(`Spawned: ${pokemonData.name} in ${jid}`);
             await client.pokeMap.set(jid, pokemonData);
 
-            const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Types:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *Available Moves:* ${movesDetails.map(move => move.name).join(', ')} \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
+            const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Types:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *Available Moves:* ${movesDetails.map(move => move.name).join(', ')} \n\n*ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
 
             await client.sendMessage(jid, {
               image: {
