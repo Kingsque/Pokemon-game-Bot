@@ -22,7 +22,7 @@ module.exports = {
             
             let response = `*Aurora Pokedex*\n⬛ *Username:* *${M.pushName}*\n🔑TOTAL POKEMON: ${party.length + pc.length}\n\n`
             pc.concat(party).forEach((pokemon, index) => {
-                response += `${index + 1}) ${pokemon.name}\n`;
+                response += `${index + 1}) ${pokemon.name}(pokemon.level)\n`;
             });
 
         await client.sendMessage(
