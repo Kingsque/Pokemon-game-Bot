@@ -77,82 +77,77 @@ const levelUpPokemon = (pokemon) => {
     }
 };
 
+const axios = require('axios');
+
 /**
- * Get the evolution chain for a given Pokémon name.
+ * Get evolution details of a Pokémon including the level at which it evolves
+ * and the stats of the next stage.
  * @param {string} pokemonName - Name of the Pokémon.
- * @returns {Object[]} - Array of objects representing the evolution chain.
+ * @param {number} pokemonId - ID of the Pokémon.
+ * @param {string} pokemonType - Type of the Pokémon.
+ * @returns {Object|null} - Object containing evolution details or null if not found.
  */
-const getEvolveChain = async (pokemonName) => {
+const pokemonEvolve = async (pokemonName, pokemonId, pokemonType) => {
     try {
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}/`);
         const speciesData = response.data;
         const evolutionChainUrl = speciesData.evolution_chain.url;
         const evolutionChainResponse = await axios.get(evolutionChainUrl);
-        return evolutionChainResponse.data.chain;
-    } catch (error) {
-        console.error('Error fetching evolution chain:', error.message);
-        return [];
-    }
-};
+        const evolutionChain = evolutionChainResponse.data.chain;
 
-/**
- * Get the name of the next evolved form for a given Pokémon name.
- * @param {string} pokemonName - Name of the Pokémon.
- * @returns {string|null} - Name of the next evolved form, or null if not found.
- */
-const getNextEvolvedForm = async (pokemonName) => {
-    try {
-        const evolutionChain = await getEvolveChain(pokemonName);
-        if (evolutionChain.evolves_to.length > 0) {
+        let evolutionLevel = 1;
+        let nextStageStats = null;
+
+        if (evolutionChain && evolutionChain.evolves_to.length > 0) {
             const nextForm = evolutionChain.evolves_to[0];
-            return {
-                name: nextForm.species.name,
-                levelRequired: nextForm.min_level
+            evolutionLevel = nextForm.min_level;
+
+            const nextFormName = nextForm.species.name;
+            const nextFormResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nextFormName}`);
+            const nextFormData = nextFormResponse.data;
+
+            nextStageStats = {
+                hp: nextFormData.stats.find(stat => stat.stat.name === 'hp').base_stat,
+                attack: nextFormData.stats.find(stat => stat.stat.name === 'attack').base_stat,
+                defense: nextFormData.stats.find(stat => stat.stat.name === 'defense').base_stat,
+                speed: nextFormData.stats.find(stat => stat.stat.name === 'speed').base_stat,
             };
-        } else {
-            return null;
         }
+
+        return { evolutionLevel, nextStageStats };
     } catch (error) {
-        console.error('Error fetching next evolved form:', error.message);
+        console.error('Error fetching evolution details:', error.message);
         return null;
     }
 };
 
+const axios = require('axios');
+
 /**
- * Check if a Pokémon can evolve based on its level and species.
- * @param {Object} pokemon - The Pokémon object to check for evolution.
+ * Check if a Pokémon can evolve based on its name and current level.
+ * @param {string} pokemonName - Name of the Pokémon.
+ * @param {number} currentLevel - Current level of the Pokémon.
  * @returns {boolean} - True if the Pokémon can evolve, otherwise false.
  */
-const canEvolve = async (pokemon, requiredLevel) => {
-    return pokemon.level >= requiredLevel && pokemon.level < maxLevel;
-};
-
-/**
- * Get the name of the next evolved form for a given Pokémon name.
- * @param {string} pokemonName - Name of the Pokémon.
- * @returns {string|null} - Name of the next evolved form, or null if not found.
- */
-const getNextStats = async (pokemonName) => {
+const canItEvolve = async (pokemonName, currentLevel) => {
     try {
-        const nextEvolvedForm = await getNextEvolvedForm(pokemonName);
-        if (!nextEvolvedForm) {
-            throw new Error("Failed to find evolution data for your Pokémon.");
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}/`);
+        const speciesData = response.data;
+        const evolutionChainUrl = speciesData.evolution_chain.url;
+        const evolutionChainResponse = await axios.get(evolutionChainUrl);
+        const evolutionChain = evolutionChainResponse.data.chain;
+
+        if (evolutionChain && evolutionChain.evolves_to.length > 0) {
+            const nextForm = evolutionChain.evolves_to[0];
+            const evolutionLevel = nextForm.min_level;
+
+            return currentLevel >= evolutionLevel;
         }
 
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nextEvolvedForm.name}`);
-        const newData = response.data;
-
-        const stats = {
-            hp: newData.stats.find(stat => stat.stat.name === 'hp').base_stat,
-            attack: newData.stats.find(stat => stat.stat.name === 'attack').base_stat,
-            defense: newData.stats.find(stat => stat.stat.name === 'defense').base_stat,
-            speed: newData.stats.find(stat => stat.stat.name === 'speed').base_stat,
-        };
-
-        return { stats };
+        return false; // No evolution chain found
     } catch (error) {
-        console.error('Error fetching next evolved form stats:', error.message);
-        return null;
+        console.error('Error checking evolution:', error.message);
+        return false; // Error occurred, assume evolution is not possible
     }
 };
 
@@ -161,9 +156,7 @@ module.exports = {
     requirePokeExpToLevelUp,
     getPokeStats,
     levelUpPokemon,
-    canEvolve,
-    getEvolveChain,
-    getNextEvolvedForm,
-    getNextStats
+    pokemonEvolve,
+    canItEvolve
 };
     
