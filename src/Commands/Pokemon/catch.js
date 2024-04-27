@@ -60,10 +60,14 @@ module.exports = {
         if (party.length < 6) {
           party.push(pokemon); // Add Pokémon to Party
           await client.DB.set(`${M.sender}_Party`, party);
+          party[0].pokeball = usedBall;
+          await client.DB.set(`${M.sender}_Party`, party);
         } else {
           const pc = await client.DB.get(`${M.sender}_PC`) || [];
           pc.push(pokemon); // Add Pokémon to PC
           await client.DB.set(`${M.sender}_PC`, pc);
+          pc[0].pokeball = usedBall
+           await client.DB.set(`${M.sender}_PC`, pc);
         }
         if (attemptWithBall) {
           await client.rpg.sub(`${M.sender}.${usedBall}`, 1); // Subtract the used ball
