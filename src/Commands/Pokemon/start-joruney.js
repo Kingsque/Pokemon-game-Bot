@@ -1,5 +1,7 @@
 const axios = require('axios');
 const { createCanvas, loadImage } = require('canvas');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
     name: "startjourney",
@@ -44,13 +46,25 @@ module.exports = {
                     const types = pokemonData.types.map(type => type.type.name);
                     const image = pokemonData.sprites.other['official-artwork'].front_default;
 
-                    const message = `*${name}*\n\n*Types:* ${types.join(', ')}`;
+                    const canvasWidth = 600;
+                    const canvasHeight = 800;
+                    const canvas = createCanvas(canvasWidth, canvasHeight);
+                    const ctx = canvas.getContext('2d');
+
+                    const backgroundImageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmru1INQycEtNqouDSnB0XU7_CS3MzEpORvw&usqp=CAU';
+                    const backgroundImage = await loadImage(backgroundImageUrl);
+                    ctx.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
+
+                    const pokemonImageUrl = await loadImage(image);
+                    ctx.drawImage(pokemonImageUrl, 50, 50, 500, 500);
+
+                    const filePath = path.join(__dirname, 'collage.png');
+                    const buffer = canvas.toBuffer('image/png');
+                    fs.writeFileSync(filePath, buffer);
 
                     await client.sendMessage(M.from, {
-                        image: {
-                            url: image,
-                        },
-                        caption: message,
+                        image: { url: filePath },
+                        caption: `*${name}*\n\n*Types:* ${types.join(', ')}`
                     });
                 } else if (flag === 'region') {
                     const regionName = args.slice(1).join(' ').toLowerCase();
@@ -68,28 +82,24 @@ module.exports = {
                         })
                     );
 
-                    const canvasWidth = 400;
-                    const canvasHeight = Math.ceil(pokemonList.length / 2) * 200;
-                    const canvas = createCanvas(canvasWidth, canvasHeight);
-                    const ctx = canvas.getContext('2d');
+                    const collageCanvas = createCanvas(600, 800);
+                    const collageCtx = collageCanvas.getContext('2d');
+                    const collageImageUrls = await Promise.all(
+                        pokemonImages.map(async (image, index) => {
+                            const x = index % 2 === 0 ? 0 : 300;
+                            const y = Math.floor(index / 2) * 400;
+                            collageCtx.drawImage(image, x, y, 300, 400);
+                            return collageCanvas.toDataURL();
+                        })
+                    );
 
-                    let x = 0;
-                    let y = 0;
-                    for (const image of pokemonImages) {
-                        ctx.drawImage(image, x, y, canvasWidth / 2, canvasHeight / Math.ceil(pokemonList.length / 2));
-                        x += canvasWidth / 2;
-                        if (x >= canvasWidth) {
-                            x = 0;
-                            y += canvasHeight / Math.ceil(pokemonList.length / 2);
-                        }
-                    }
+                    const filePath = path.join(__dirname, 'region_collage.png');
+                    const buffer = Buffer.from(collageImageUrls.join('\n'), 'base64');
+                    fs.writeFileSync(filePath, buffer);
 
-                    const collageImage = canvas.toDataURL('image/png');
                     await client.sendMessage(M.from, {
-                        image: {
-                            url: collageImage,
-                        },
-                        caption: `Pokémon from ${regionName} region.`,
+                        image: { url: filePath },
+                        caption: `Pokémon from ${regionName} region.`
                     });
                 } else {
                     return M.reply("Invalid argument. Please use '--pokemon' or '--region'.");
