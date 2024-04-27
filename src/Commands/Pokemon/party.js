@@ -37,10 +37,11 @@ module.exports = {
                         description: move.description
                     }));
 
+                    const ball = pokemon.pokeball
                     const buffer = await client.utils.gifToMp4(
                         await summaryScreen({
                             pokemon: { name: pokemon.name, moves, level: pokemon.level, female: pokemon.female },
-                            pokeball: 'pokeball'
+                            pokeball: 'ball'
                         })
                     );
 
@@ -49,8 +50,8 @@ module.exports = {
                         texto += `\n\n*#${i + 1}*\n❓ *Move:* ${moves[i].name.split('-').map(client.utils.capitalize).join(' ')}\n
 〽 *PP:* ${moves[i].pp} / ${moves[i].maxPp}\n
 🎗 *Type:* ${client.utils.capitalize(moves[i].type)}\n
-🎃 *Power:* ${moves[i].power}\n
-🎐 *Accuracy:* ${moves[i].accuracy}\n
+🎃 *Power:* ${moves[i].power} / ${moves[i].maxPower}\n
+🎐 *Accuracy:* ${moves[i].accuracy} / ${moves[i].maxAccuracy}\n
 🧧 *Description:* ${moves[i].description}`;
                     }
 
@@ -86,7 +87,8 @@ module.exports = {
                     name: pokemon.name,
                     hp: pokemon.hp,
                     maxHp: pokemon.maxHp,
-                    level: pokemon.level
+                    level: pokemon.level,
+                    female: pokemon.female
                 }));
 
                 const buffer = await client.utils.gifToMp4(await partyScreen(teamData))
