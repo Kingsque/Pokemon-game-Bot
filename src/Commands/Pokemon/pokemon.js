@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { calculateExp } = require('../../Helpers/pokeStats')
+const { calculatePokeExp } = require('../../Helpers/pokeStats')
 
 module.exports = {
     name: "pokemon",
@@ -27,7 +27,7 @@ module.exports = {
             const types = pokemon.types.map(type => type.type.name);
             const image = pokemon.sprites.other['official-artwork'].front_default;
             const level = Math.floor(Math.random() * (10 - 5) + 5);
-            const requiredExp = calculateExp(level);
+            const requiredExp = calculatePokeExp(level);
             
             // Extracting base stats
             const baseStats = {};
