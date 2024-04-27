@@ -49,17 +49,18 @@ module.exports = {
                         })
                     );
 
-                    const canvasWidth = 1050;
-                    const canvasHeight = 1800;
+                    const canvasWidth = 525; // Half of the previous size
+                    const canvasHeight = 900; // Half of the previous size
                     const canvas = createCanvas(canvasWidth, canvasHeight);
                     const ctx = canvas.getContext('2d');
 
-                    // Fill background with white color
-                    ctx.fillStyle = '#FFFFFF'; // White color
+                    // Fill background with region map decoration
+                    const backgroundPattern = await loadImage('path/to/region-map-decoration.png'); // Add the path to your region map decoration image
+                    ctx.fillStyle = ctx.createPattern(backgroundPattern, 'repeat');
                     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-                    const imageWidth = 350;
-                    const imageHeight = 450;
+                    const imageWidth = 175; // Half of the previous size
+                    const imageHeight = 225; // Half of the previous size
                     const imagePadding = 10;
                     const imagesPerRow = 3;
                     const rows = 4;
