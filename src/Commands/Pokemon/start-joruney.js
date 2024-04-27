@@ -1,10 +1,11 @@
 const axios = require('axios');
+const { createCanvas, loadImage } = require('canvas');
 
 module.exports = {
     name: "startjourney",
     aliases: ["startjourney"],
     category: "pokemon",
-    description: "Start your Pokémon journey by choosing a starter Pokémon.",
+    description: "Start your Pokémon journey by choosing a starter Pokémon or view Pokémon from a specific region.",
     async execute(client, arg, M) {
         try {
             const pokemonNames = {
@@ -25,60 +26,85 @@ module.exports = {
                 }
                 return M.reply(message);
             }
-            
+
             if (arg.startsWith('--')) {
-                const pokemonName = arg.split(' ')[0].slice(2); // Remove '--' prefix
-                let allStarters = [];
-                let regionName;
-                for (const region in pokemonNames) {
-                    allStarters = allStarters.concat(pokemonNames[region]);
-                    if (pokemonNames[region].includes(pokemonName)) {
-                        regionName = region;
+                const args = arg.split(' ');
+                const flag = args[0].slice(2); // Remove '--' prefix
+
+                if (flag === 'pokemon') {
+                    const pokemonName = args.slice(1).join(' ').toLowerCase();
+
+                    if (!isValidPokemon(pokemonName, pokemonNames)) {
+                        return M.reply("Invalid Pokémon name. Please choose from the list.");
                     }
-                }
-                if (!allStarters.includes(pokemonName)) {
-                    return M.reply("Invalid Pokémon name.");
-                }
-                
-                const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
-                const pokemonData = response.data;
-                const name = pokemonData.name;
-                const types = pokemonData.types.map(type => type.type.name);
-                const image = pokemonData.sprites.other['official-artwork'].front_default;
-                
-                if (arg.includes('--choose')) {
-                    const starterPokemon = {
-                        name: name,
-                        level: Math.floor(Math.random() * (15 - 10) + 10),
-                        maxHp: pokemonData.stats[0].base_stat,
-                        maxAttack: pokemonData.stats[1].base_stat,
-                        maxDefense: pokemonData.stats[2].base_stat,
-                        maxSpeed: pokemonData.stats[5].base_stat,
-                        type: types,
-                        region: regionName
-                    };
-    
-                    let userParty = await client.DB.get(`${M.sender}_Party`) || [];
-                    userParty.push(starterPokemon);
-                    await client.DB.set(`${M.sender}_Party`, userParty);
-    
-                    return M.reply(`Congratulations! You've started your journey with ${name} from ${regionName}!`);
-                } else {
-                    const message = `*${name}* from *${regionName}*\n\n*Types:* ${types.join(', ')}`;
-                    
+
+                    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+                    const pokemonData = response.data;
+                    const name = pokemonData.name;
+                    const types = pokemonData.types.map(type => type.type.name);
+                    const image = pokemonData.sprites.other['official-artwork'].front_default;
+
+                    const message = `*${name}*\n\n*Types:* ${types.join(', ')}`;
+
                     await client.sendMessage(M.from, {
                         image: {
                             url: image,
                         },
                         caption: message,
                     });
+                } else if (flag === 'region') {
+                    const regionName = args.slice(1).join(' ').toLowerCase();
+
+                    if (!pokemonNames.hasOwnProperty(regionName)) {
+                        return M.reply("Invalid region name. Please choose from the list of regions.");
+                    }
+
+                    const pokemonList = pokemonNames[regionName];
+                    const pokemonImages = await Promise.all(
+                        pokemonList.map(async (pokemon) => {
+                            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
+                            const imageData = response.data.sprites.other['official-artwork'].front_default;
+                            return loadImage(imageData);
+                        })
+                    );
+
+                    const canvasWidth = 400;
+                    const canvasHeight = Math.ceil(pokemonList.length / 2) * 200;
+                    const canvas = createCanvas(canvasWidth, canvasHeight);
+                    const ctx = canvas.getContext('2d');
+
+                    let x = 0;
+                    let y = 0;
+                    for (const image of pokemonImages) {
+                        ctx.drawImage(image, x, y, canvasWidth / 2, canvasHeight / Math.ceil(pokemonList.length / 2));
+                        x += canvasWidth / 2;
+                        if (x >= canvasWidth) {
+                            x = 0;
+                            y += canvasHeight / Math.ceil(pokemonList.length / 2);
+                        }
+                    }
+
+                    const collageImage = canvas.toDataURL('image/png');
+                    await client.sendMessage(M.from, {
+                        image: {
+                            url: collageImage,
+                        },
+                        caption: `Pokémon from ${regionName} region.`,
+                    });
+                } else {
+                    return M.reply("Invalid argument. Please use '--pokemon' or '--region'.");
                 }
             }
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
-                text: "An error occurred while starting your Pokémon journey."
+                text: "An error occurred while processing your request."
             });
         }
     }
 };
+
+function isValidPokemon(pokemonName, pokemonNames) {
+    const allPokemons = [].concat(...Object.values(pokemonNames));
+    return allPokemons.includes(pokemonName);
+}
