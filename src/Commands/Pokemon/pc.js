@@ -1,6 +1,6 @@
 module.exports = {
-    name: "pc",
-    aliases: ["pc"],
+    name: "pss",
+    aliases: ["pss"],
     exp: 0,
     cool: 4,
     react: "📋",
@@ -14,7 +14,7 @@ module.exports = {
                 return M.reply("📭 Your Pokémon collection is empty!");
             }
             const pushname = M.pushName.trim();
-            let response = "📋 ${pushname}'s PC:\n";
+            let response = `📋 ${pushname}'s PSS:\n`;
             pc.forEach((pokemon, index) => {
                 response += `${index + 1}. ${pokemon.name} (Level: ${pokemon.level})\n`;
             });
