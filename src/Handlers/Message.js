@@ -1,6 +1,6 @@
 const { getBinaryNodeChild } = require('@WhiskeySockets/baileys');
 const { serialize } = require('../Structures/WAclient');
-const { requirePokeExpToLevelUp, getPokeStats, levelUpPokemon, canEvolve, getNextEvolvedForm } = require('../Helpers/pokeStats');
+const { requirePokeExpToLevelUp, levelUpPokemon, canItEvolve, pokemonEvolve } = require('../Helpers/pokeStats');
 const { getStats, ranks } = require('../Helpers/Stats');
 const chalk = require('chalk');
 const emojiStrip = require('emoji-strip');
@@ -146,28 +146,33 @@ module.exports = MessageHandler = async (messages, client) => {
             return M.reply('This command only can be accessed by the mods');
         command.execute(client, arg, M);
 
-        if (isCmd && command.category === 'pokemon') {
+       if (isCmd && command.category === 'pokemon') {
             const party = await client.DB.get(`${sender}_Party`) || [];
             if (party.length > 0) {
                 const firstPokemon = party[0];
                 const randomExp = Math.floor(Math.random() * (50 - 25 + 1)) + 25;
                 firstPokemon.exp += randomExp;
+
+                // Level up logic
                 const requiredExpToLevelUp = requirePokeExpToLevelUp(firstPokemon.exp, firstPokemon.level);
                 if (requiredExpToLevelUp <= 0) {
                     const currentLevel = firstPokemon.level;
                     levelUpPokemon(firstPokemon);
                     if (firstPokemon.level > currentLevel) {
                         client.sendMessage(from, { text: 'Congratulations! Your Pokémon has leveled up!' });
-                        const canEvolveResult = await canEvolve(firstPokemon);
+
+                        // Evolution logic
+                        const canEvolveResult = await canItEvolve(firstPokemon.name, firstPokemon.level);
                         if (canEvolveResult) {
-                            const nextEvolvedForm = await getNextEvolvedForm(firstPokemon.name);
-                            const evolveMessage = `Your Pokémon is ready to evolve into ${nextEvolvedForm}! Use :evolve to evolve it.`;
-                            client.sendMessage(from, { text: evolveMessage });
-                            // Store evolve details in database
-                            await client.DB.set(`${sender}_Evolve`, nextEvolvedForm);
+                            const evolutionDetails = await pokemonEvolve(firstPokemon.name);
+                            if (evolutionDetails) {
+                                const evolveMessage = `Your Pokémon is ready to evolve into ${evolutionDetails.name}! Use :evolve 1 to evolve it.`;
+                                client.sendMessage(from, { text: evolveMessage });
+                            }
                         }
                     }
                 }
+
                 await client.DB.set(`${sender}_Party`, party);
             }
         }
