@@ -60,33 +60,36 @@ module.exports = {
                         })
                     );
 
-                    const canvasWidth = 625;
                     const canvasHeight = 1000;
-                    const canvas = createCanvas(canvasWidth, canvasHeight);
-                    const ctx = canvas.getContext('2d');
+const canvasWidth = 625;
 
-                    // Load region map as background
-                    const regionMapUrl = regionMaps[regionName];
-                    const regionMap = await loadImage(regionMapUrl);
-                    ctx.drawImage(regionMap, 0, 0, canvasWidth, canvasHeight);
+// Load region map as background
+const regionMapUrl = regionMaps[regionName];
+const regionMap = await loadImage(regionMapUrl);
 
-                    const imageWidth = 300; // Changed image width to half
-                    const imageHeight = 500; // Changed image height to half
-                    const imagePadding = 10;
-                    const imagesPerRow = 3;
-                    const rows = 4;
-                    const xStart = (canvasWidth - (imageWidth * imagesPerRow + imagePadding * (imagesPerRow - 1))) / 2;
-                    const yStart = (canvasHeight - (imageHeight * rows + imagePadding * (rows - 1))) / 2; // Adjusted parentheses
+const imageWidth = 300;
+const imageHeight = 500;
+const imagePadding = 10;
+const imagesPerRow = 3;
+const rows = Math.ceil(imageUrls.length / imagesPerRow); // Calculate the number of rows needed
 
-                    for (let i = 0; i < imageUrls.length; i++) {
-                        const imageUrl = imageUrls[i];
-                        const image = await loadImage(imageUrl);
-                        const x = xStart + (i % imagesPerRow) * (imageWidth + imagePadding);
-                        const y = yStart + Math.floor(i / imagesPerRow) * (imageHeight + imagePadding);
-                        // Implementing zigzag line representation
-                        const yOffset = i % 2 === 0 ? 0 : imageHeight / 2;
-                        ctx.drawImage(image, x, y + yOffset, imageWidth, imageHeight);
-                    }
+const totalHeightNeeded = rows * (imageHeight + imagePadding) - imagePadding; // Calculate the total height needed for all rows
+const yStart = (canvasHeight - totalHeightNeeded) / 2; // Adjust yStart based on total height needed
+
+const canvas = createCanvas(canvasWidth, canvasHeight);
+const ctx = canvas.getContext('2d');
+
+ctx.drawImage(regionMap, 0, 0, canvasWidth, canvasHeight);
+
+for (let i = 0; i < imageUrls.length; i++) {
+    const imageUrl = imageUrls[i];
+    const image = await loadImage(imageUrl);
+    const x = xStart + (i % imagesPerRow) * (imageWidth + imagePadding);
+    const y = yStart + Math.floor(i / imagesPerRow) * (imageHeight + imagePadding);
+    const yOffset = i % 2 === 0 ? 0 : imageHeight / 2;
+    ctx.drawImage(image, x, y + yOffset, imageWidth, imageHeight);
+}
+                    
 
                     const directory = require('os').tmpdir();
                     const filePath = path.join(directory, 'collage.png');
