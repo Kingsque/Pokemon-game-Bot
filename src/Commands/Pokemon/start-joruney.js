@@ -21,6 +21,17 @@ module.exports = {
                 galar: ['grookey', 'scorbunny', 'sobble']
             };
 
+            const regionMaps = {
+                kanto: 'https://archives.bulbagarden.net/media/upload/thumb/2/25/LGPE_Kanto_Map.png/300px-LGPE_Kanto_Map.png',
+                johto: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVPlheybsjIM1VRgTT_kH5KAyZN09HGAEpbOKzkIANMZBu5a02-sjAm-o&s=10',
+                hoenn: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoa5sCI9l7tI8NpjbEtlqoo4ZpOeedR-6y6FiO8IYp4A&s',
+                sinnoh: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNgftV7vj9vpXKjCDBd8qLAWEyo_TRI9qbOE_aYPyd7NfrvxzUsOVJpVs&s=10',
+                unova: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW5wz8KY5Zf0BVEpbiKvqWAPWFu5Mr_jCvm_IHEK5xpO3ZxuuYu0jLPZ-S&s=10',
+                kalos: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsg7x3Z5ds_nNpqby-jYeX8f8rzsFMQP0Y4szKYDnAJ8zFxUU6xRjwYBgS&s=10',
+                alola: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPyNRB92Ls2VqDvoRccbLZevXuPxB8XOaFS5vTrWkDPGlcjhmmH6UF6J4&s=10',
+                galar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaYXvUHrLahCwi_m7TfDWlvIYaR8w9kLGweMBgImUyXw&s'
+            };
+
             if (!arg) {
                 let message = "*Regions and Starter Pokémon:*\n";
                 for (const region in pokemonNames) {
@@ -49,18 +60,18 @@ module.exports = {
                         })
                     );
 
-                    const canvasWidth = 525; // Half of the previous size
-                    const canvasHeight = 900; // Half of the previous size
+                    const canvasWidth = 1050;
+                    const canvasHeight = 1800;
                     const canvas = createCanvas(canvasWidth, canvasHeight);
                     const ctx = canvas.getContext('2d');
 
-                    // Fill background with region map decoration
-                    const backgroundPattern = await loadImage('path/to/region-map-decoration.png'); // Add the path to your region map decoration image
-                    ctx.fillStyle = ctx.createPattern(backgroundPattern, 'repeat');
-                    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                    // Load region map as background
+                    const regionMapUrl = regionMaps[regionName];
+                    const regionMap = await loadImage(regionMapUrl);
+                    ctx.drawImage(regionMap, 0, 0, canvasWidth, canvasHeight);
 
-                    const imageWidth = 175; // Half of the previous size
-                    const imageHeight = 225; // Half of the previous size
+                    const imageWidth = 175; // Changed image width to half
+                    const imageHeight = 225; // Changed image height to half
                     const imagePadding = 10;
                     const imagesPerRow = 3;
                     const rows = 4;
@@ -72,7 +83,9 @@ module.exports = {
                         const image = await loadImage(imageUrl);
                         const x = xStart + (i % imagesPerRow) * (imageWidth + imagePadding);
                         const y = yStart + Math.floor(i / imagesPerRow) * (imageHeight + imagePadding);
-                        ctx.drawImage(image, x, y, imageWidth, imageHeight);
+                        // Implementing zigzag line representation
+                        const yOffset = i % 2 === 0 ? 0 : imageHeight / 2;
+                        ctx.drawImage(image, x, y + yOffset, imageWidth, imageHeight);
                     }
 
                     const directory = require('os').tmpdir();
@@ -94,3 +107,4 @@ module.exports = {
         }
     }
 };
+                                                                 
