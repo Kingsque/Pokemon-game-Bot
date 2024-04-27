@@ -1,7 +1,7 @@
-const axios = require('axios');
 const { createCanvas, loadImage } = require('canvas');
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
 
 module.exports = {
     name: "startjourney",
@@ -33,40 +33,7 @@ module.exports = {
                 const args = arg.split(' ');
                 const flag = args[0].slice(2); // Remove '--' prefix
 
-                if (flag === 'pokemon') {
-                    const pokemonName = args.slice(1).join(' ').toLowerCase();
-
-                    if (!isValidPokemon(pokemonName, pokemonNames)) {
-                        return M.reply("Invalid Pokémon name. Please choose from the list.");
-                    }
-
-                    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
-                    const pokemonData = response.data;
-                    const name = pokemonData.name;
-                    const types = pokemonData.types.map(type => type.type.name);
-                    const image = pokemonData.sprites.other['official-artwork'].front_default;
-
-                    const canvasWidth = 600;
-                    const canvasHeight = 800;
-                    const canvas = createCanvas(canvasWidth, canvasHeight);
-                    const ctx = canvas.getContext('2d');
-
-                    const backgroundImageUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmru1INQycEtNqouDSnB0XU7_CS3MzEpORvw&usqp=CAU';
-                    const backgroundImage = await loadImage(backgroundImageUrl);
-                    ctx.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
-
-                    const pokemonImageUrl = await loadImage(image);
-                    ctx.drawImage(pokemonImageUrl, 50, 50, 500, 500);
-
-                    const filePath = path.join(__dirname, 'collage.png');
-                    const buffer = canvas.toBuffer('image/png');
-                    fs.writeFileSync(filePath, buffer);
-
-                    await client.sendMessage(M.from, {
-                        image: { url: filePath },
-                        caption: `*${name}*\n\n*Types:* ${types.join(', ')}`
-                    });
-                } else if (flag === 'region') {
+                if (flag === 'region') {
                     const regionName = args.slice(1).join(' ').toLowerCase();
 
                     if (!pokemonNames.hasOwnProperty(regionName)) {
@@ -74,35 +41,48 @@ module.exports = {
                     }
 
                     const pokemonList = pokemonNames[regionName];
-                    const pokemonImages = await Promise.all(
+                    const imageUrls = await Promise.all(
                         pokemonList.map(async (pokemon) => {
                             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
                             const imageData = response.data.sprites.other['official-artwork'].front_default;
-                            return loadImage(imageData);
+                            return imageData;
                         })
                     );
 
-                    const collageCanvas = createCanvas(600, 800);
-                    const collageCtx = collageCanvas.getContext('2d');
-                    const collageImageUrls = await Promise.all(
-                        pokemonImages.map(async (image, index) => {
-                            const x = index % 2 === 0 ? 0 : 300;
-                            const y = Math.floor(index / 2) * 400;
-                            collageCtx.drawImage(image, x, y, 300, 400);
-                            return collageCanvas.toDataURL();
-                        })
-                    );
+                    const canvasWidth = 1050;
+                    const canvasHeight = 1800;
+                    const canvas = createCanvas(canvasWidth, canvasHeight);
+                    const ctx = canvas.getContext('2d');
 
-                    const filePath = path.join(__dirname, 'region_collage.png');
-                    const buffer = Buffer.from(collageImageUrls.join('\n'), 'base64');
+                    // Fill background with white color
+                    ctx.fillStyle = '#FFFFFF'; // White color
+                    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+                    const imageWidth = 350;
+                    const imageHeight = 450;
+                    const imagePadding = 10;
+                    const imagesPerRow = 3;
+                    const rows = 4;
+                    const xStart = (canvasWidth - (imageWidth * imagesPerRow + imagePadding * (imagesPerRow - 1))) / 2;
+                    const yStart = (canvasHeight - (imageHeight * rows + imagePadding * (rows - 1))) / 2;
+
+                    for (let i = 0; i < imageUrls.length; i++) {
+                        const imageUrl = imageUrls[i];
+                        const image = await loadImage(imageUrl);
+                        const x = xStart + (i % imagesPerRow) * (imageWidth + imagePadding);
+                        const y = yStart + Math.floor(i / imagesPerRow) * (imageHeight + imagePadding);
+                        ctx.drawImage(image, x, y, imageWidth, imageHeight);
+                    }
+
+                    const directory = require('os').tmpdir();
+                    const filePath = path.join(directory, 'collage.png');
+                    const buffer = canvas.toBuffer('image/png');
                     fs.writeFileSync(filePath, buffer);
 
-                    await client.sendMessage(M.from, {
+                    client.sendMessage(M.from, {
                         image: { url: filePath },
-                        caption: `Pokémon from ${regionName} region.`
+                        caption: `Starter Pokémon from ${regionName.charAt(0).toUpperCase() + regionName.slice(1)} region`
                     });
-                } else {
-                    return M.reply("Invalid argument. Please use '--pokemon' or '--region'.");
                 }
             }
         } catch (err) {
@@ -113,8 +93,3 @@ module.exports = {
         }
     }
 };
-
-function isValidPokemon(pokemonName, pokemonNames) {
-    const allPokemons = [].concat(...Object.values(pokemonNames));
-    return allPokemons.includes(pokemonName);
-}
