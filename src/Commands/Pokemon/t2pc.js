@@ -19,7 +19,8 @@ module.exports = {
             if (transferredPokemonIndex === -1) {
                 return M.reply(`Could not find a Pokémon named ${pokemonName} in your party.`);
             }
-
+            const companion = await client.pkmn.get(`${M.sender}_Companion`) || []
+            if ( transferredPokemonIndex.name === companion ) return M.reply('You cant move your starter to your pss')
             const transferredPokemon = party.splice(transferredPokemonIndex, 1)[0];
             const pc = await client.pkmn.get(`${M.sender}_PSS`) || [];
             pc.push(transferredPokemon);
