@@ -7,7 +7,7 @@ module.exports = {
     description: "Evolve your Pokémon.",
     async execute(client, arg, M) {
         try {
-            const party = await client.DB.get(`${M.sender}_Party`) || [];
+            const party = await client.pkmn.get(`${M.sender}_Party`) || [];
             if (party.length === 0) {
                 return M.reply("Your Pokémon party is empty!");
             }
@@ -45,7 +45,7 @@ module.exports = {
                 // You may need to update other properties based on the evolution details
                 
                 // Save the updated Pokémon details
-                await client.DB.set(`${M.sender}_Party`, party);
+                await client.pkmn.set(`${M.sender}_Party`, party);
                 
                 return M.reply(`Your Pokémon has evolved into ${evolutionDetails.name}!`);
             } else {
