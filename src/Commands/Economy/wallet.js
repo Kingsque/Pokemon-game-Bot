@@ -28,14 +28,14 @@ module.exports = {
         const tag = `#${M.sender.substring(3, 7)}`;
 
         const text = `💳 *Credits* 💳\n\n👤 *Name:* ${username}\n🔖 *Tag:* ${tag}\n💳 *Credits:* ${wallet}`;
-
+const y = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkrY9EZXUmbAxiSJdj8z8X_ZT4vXB9jXMDL6xOhAsMbRnjNshMBV_pK7SQ&s=10'
         await client.sendMessage(M.from, {
             text: text,
             contextInfo: {
                 externalAdReply: {
                     title: 'Help',
                     mediaType: 2,
-                    thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkrY9EZXUmbAxiSJdj8z8X_ZT4vXB9jXMDL6xOhAsMbRnjNshMBV_pK7SQ&s=10',
+                    thumbnail: y,
                     sourceUrl: 'https://athenabots.com'
                 }
             }
