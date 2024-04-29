@@ -24,31 +24,31 @@ module.exports = {
             }
 
             const ballType = pokemon.pokeball.toLowerCase();
-            const userBallCount = await client.rpg.get(`${M.sender}.${ballType}`);
+            const userBallCount = await client.item.get(`${M.sender}_${ballType}`);
             if (userBallCount <= 0) {
                 return M.reply(`You don't have any ${ballType}s left to catch this Pokémon!`);
             }
 
             // Check if the user has space in their party
-            const party = await client.DB.get(`${M.sender}_Party`) || [];
+            const party = await client.pkmn.get(`${M.sender}_Party`) || [];
             if (party.length < 6) {
                 // If party has space, add Pokémon to party
                 party.push(pokemon); // Add Pokémon to Party
-                await client.DB.set(`${M.sender}_Party`, party);
+                await client.pkmn.set(`${M.sender}_Party`, party);
             } else {
                 // If party is full, add Pokémon to PC
-                const pc = await client.DB.get(`${M.sender}_PC`) || [];
-                pc.push(pokemon); // Add Pokémon to PC
-                await client.DB.set(`${M.sender}_PC`, pc);
+                const pss = await client.pkmn.get(`${M.sender}_PSS`) || [];
+                pss.push(pokemon); // Add Pokémon to PC
+                await client.pkmn.set(`${M.sender}_PSS`, pc);
             }
 
             // Decrease the user's ball count
-            await client.rpg.sub(`${M.sender}.${ballType}`, 1);
+            await client.item.sub(`${M.sender}_${ballType}`, 1);
 
             await M.reply(`🎉 You have successfully caught ${pokemon.name} (Level: ${pokemon.level}) and stored it ${party.length < 6 ? 'in your Party' : 'in your PC'}!`);
 
             // Delete the spawned Pokémon from the database
-            await client.DB.delete(`${M.from}.pokemon`);
+            await client.pokeMap.delete(M.from);
         } catch (err) {
             console.error(err);
             await client.sendMessage(M.from, {
