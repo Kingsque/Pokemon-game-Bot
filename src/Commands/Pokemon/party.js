@@ -41,7 +41,7 @@ module.exports = {
                     const buffer = await client.utils.gifToMp4(
                         await summaryScreen({
                             pokemon: { name: pokemon.name, moves, level: pokemon.level, female: pokemon.female },
-                            pokeball: 'ball'
+                            pokeball: '${ball}'
                         })
                     );
 
@@ -77,6 +77,7 @@ module.exports = {
 ⬜ *Speed:* ${pokemon.speed} / ${pokemon.maxSpeed}\n
 🛡 *Defense:* ${pokemon.defense} / ${pokemon.maxDefense}\n
 🟥 *Attack:* ${pokemon.attack} / ${pokemon.maxAttack}\n
+🟫 *Rarity:* ${pokemon.rarity}
 ⬛ *Moves:* ${pokemon.moves.map(move => move.name.split('-').map(client.utils.capitalize).join(' ')).join(', ')}
 \n\n*[Use ${client.prefix}party ${index + 1} --moves to see all of the moves of the pokemon with details]*`;
                     
