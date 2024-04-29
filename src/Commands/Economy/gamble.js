@@ -1,5 +1,4 @@
-const { Sticker } = require('wa-sticker-formatter');
-
+// Gamble Command
 module.exports = {
     name: 'gamble',
     aliases: ['gb'],
@@ -24,7 +23,7 @@ module.exports = {
         // Check if the amount is within the allowed range
         if (amount < minBet || amount > maxBet) return M.reply(`You can only gamble between ${minBet} and ${maxBet} credits.`);
         
-        const credits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
+        const credits = (await client.gem.get(`${M.sender}.wallet`)) || 0;
         if (credits < amount) return M.reply('You don\'t have enough credits to gamble that much.');
 
         const result = Math.random() < 0.5 ? 'left' : 'right';
@@ -32,7 +31,7 @@ module.exports = {
 
         // Calculate the new wallet balance based on the result
         const newBalance = won ? credits + amount : credits - amount;
-        await client.credit.set(`${M.sender}.wallet`, newBalance);
+        await client.gem.set(`${M.sender}.wallet`, newBalance);
 
         // Determine sticker URL and message based on the result
         const stickerUrl = won
