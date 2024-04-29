@@ -25,7 +25,7 @@ module.exports = PokeHandler = async (client, m) => {
             const ultra = [793, 794, 795, 796, 797, 798, 799, 803, 805, 806, 807];
             let id;
             do {
-              id = Math.floor(Math.random() * 1025); // Ensure ID is within valid range
+              id = Math.floor(Math.random() * 898); // Ensure ID is within valid range
             } while (legendary.includes(id) || mythical.includes(id));
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
             const pokemon = response.data;
