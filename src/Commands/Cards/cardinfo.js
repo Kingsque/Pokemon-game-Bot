@@ -1,53 +1,50 @@
-const axios = require('axios');
-const { createCanvas, loadImage } = require('canvas');
-const fs = require('fs');
+//viewcard
+const axios = require("axios");
 const path = require('path');
-const { createDeflate } = require('zlib');
 
 module.exports = {
-  name: 'cardinfo',
-  aliases: ['cardinfo'],
+  name: "aboutcard",
+  aliases: ["acard"],
   exp: 0,
-  cool: 4,
   react: "✅",
-  category: 'card game',
-  usage: ':cardinfo <card name> <tier>',
-  description: 'Retrieve information about a specific card.',
-  async execute(client, arg, M) {
-    try {
-      if (!arg || arg.split(' ').length < 2) {
-        M.reply('Please provide both the card name and tier.');
-        return;
-      }
+  category: "card game",
+  usage: 'Use :aboutcard <cardName>',
+  description: "Views any card from the bot",
+  async execute(client, args, M) {
+    const [cardName, cardTier] = args.trim().split("-"); // Accept card name and tier as input
 
-      const [cardName, tier] = arg.split(' ');
-      
-      const filePath = path.join(__dirname, '../../Helpers/card.json');
-      const data = require(filePath);
-      const cardData = data.find((cardData) => cardData.title.toLowerCase() === cardName.toLowerCase() && cardData.tier.toLowerCase() === tier.toLowerCase());
-
-      if (!cardData) {
-        M.reply('Card not found.');
-        return;
-      }
-
-      const cardUrl = cardData.url;
-      const text = `🃏 Card Name: ${cardData.title}\n🪄 Tier: ${cardData.tier}\n🌟 Rarity: ${cardData.rarity}\n💥 Attack: ${cardData.attack}\n🛡️ Defense: ${cardData.defense}\n`;
-
-      if (cardUrl.endsWith('.gif')) {
-        const giffed = await client.utils.gifToMp4(file);
-        await client.sendMessage(M.from, {
-          video: giffed,
-          gifPlayback: true,
-          caption: text
-        });
-      } else {
-        await client.sendMessage(M.from, { image: { url: cardUrl }, caption: text }, { quoted: M });
-      }
-    } catch (err) {
-      console.log(err);
-      await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
+    const filePath = path.join(__dirname, '../../Helpers/card.json');
+    const data = require(filePath);
+    
+    let cardData;
+    if (cardTier) {
+      cardData = data.find((cardData) => cardData.title === cardName && cardData.tier === cardTier); // Search by card name and tier
+    } else {
+      cardData = data.find((cardData) => cardData.title === cardName); // Search by card name only
     }
-  },
-};
-        
+
+    if (!cardData) {
+      return M.reply("❗ Card data not found.");
+    }
+
+    const cardUrl = cardData.url;
+    const imageUrl = cardUrl;
+    const isGif = imageUrl.endsWith('.gif');
+    const file = await client.utils.getBuffer(imageUrl);
+    const text = `💎 Card Details 💎\n\n🌊 Name: ${cardName}\n\n🌟 Tier: ${cardData.tier}\n\n${cardData.description}`;
+
+    if (isGif) {
+      const giffed = await client.utils.gifToMp4(file);
+      await client.sendMessage(M.from, {
+        video: giffed,
+        gifPlayback: true,
+        caption: text
+      }, { quoted: M });
+    } else {
+      await client.sendMessage(M.from, {
+        image: file,
+        caption: text
+      }, { quoted: M });
+    }
+  }
+                               }
