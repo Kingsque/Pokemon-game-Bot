@@ -14,7 +14,7 @@ module.exports = {
 
         const bonusTimeout = 31536000000; 
         const bonusAmount = 100000;
-        const bonus = await client.credit.get(`${M.sender}.bonus`);
+        const bonus = await client.credits.get(`${M.sender}_bonus`);
         let text = '';
 
         if (bonus !== null && bonusTimeout - (Date.now() - bonus) > 0) {
@@ -23,8 +23,8 @@ module.exports = {
         } else {
             text += `*Welcome to our Aurora family! We are really happy to have you as our member. You have claimed your bonus reward 🎉: ${bonusAmount}.*`;
 
-            await client.credit.add(`${M.sender}.wallet`, bonusAmount);
-            await client.credit.set(`${M.sender}.bonus`, Date.now());
+            await client.credits.add(`${M.sender}_wallet`, bonusAmount);
+            await client.credits.set(`${M.sender}_bonus`, Date.now());
         }
 
       await client.sendMessage(
