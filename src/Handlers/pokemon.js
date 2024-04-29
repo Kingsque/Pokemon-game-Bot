@@ -123,7 +123,7 @@ module.exports = PokeHandler = async (client, m) => {
   
           // Schedule deletion of Pokémon after 15 minutes
           cron.schedule('*/8 * * * *', async () => {
-            await client.DB.delete(`${jid}.pokemon`);
+            await client.pokeMap.delete(jid)
             console.log(`Pokemon deleted after 15 minutes`);
           });
   
