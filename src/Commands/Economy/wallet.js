@@ -34,10 +34,10 @@ module.exports = {
             text: text,
             contextInfo: {
                 externalAdReply: {
-                    title: text,
+                    title: ${username}\n${wallet},
                     mediaType: 2,
                     thumbnail: y,
-                    sourceUrl: 'https://athenabots.com'
+                    sourceUrl: ''
                 }
             }
         });
