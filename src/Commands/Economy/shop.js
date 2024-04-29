@@ -1,4 +1,4 @@
-// shop command
+// Shop Command
 const itemsForSale = [
     { name: 'luckpotion', price: 15000, usage: 'Increases luck in slotting' },
     { name: 'pepperspray', price: 10000, usage: 'Self-defense against robbers' },
