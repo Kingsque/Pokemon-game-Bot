@@ -14,13 +14,13 @@ module.exports = {
         // Convert negative amount to 0
         if (wallet < 0) {
             wallet = 0;
-            client.gem.set(`${M.sender}.wallet`, 0);
+            await client.gem.set(`${M.sender}.wallet`, 0);
         }
 
         // Convert decimal or fraction amounts to nearest integer
         if (!Number.isInteger(wallet)) {
             wallet = Math.round(wallet);
-            client.gem.set(`${M.sender}.wallet`, wallet);
+            await client.gem.set(`${M.sender}.wallet`, wallet);
         }
 
         const contact = await client.contact.getContact(M.sender, client);
@@ -29,6 +29,16 @@ module.exports = {
 
         const text = `💳 *Credits* 💳\n\n👤 *Name:* ${username}\n🔖 *Tag:* ${tag}\n💳 *Credits:* ${wallet}`;
 
-        M.reply(text);
+        await client.sendMessage(M.from, {
+            text: text,
+            contextInfo: {
+                externalAdReply: {
+                    title: 'Help',
+                    mediaType: 2,
+                    thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkrY9EZXUmbAxiSJdj8z8X_ZT4vXB9jXMDL6xOhAsMbRnjNshMBV_pK7SQ&s=10',
+                    sourceUrl: 'https://athenabots.com'
+                }
+            }
+        });
     }
 };
