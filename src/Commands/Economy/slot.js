@@ -1,3 +1,4 @@
+// Slot Command
 const { SlotMachine, SlotSymbol } = require('slot-machine');
 
 module.exports = {
@@ -41,7 +42,7 @@ module.exports = {
         
         if (arg.startsWith('-') || arg.startsWith('+')) return M.reply('Please provide a valid amount.');
 
-        const credits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
+        const credits = (await client.gem.get(`${M.sender}.wallet`)) || 0;
 
         if (amount > credits) return M.reply("You don't have sufficient funds.");
         
@@ -59,7 +60,7 @@ module.exports = {
 
         if (isJackpotTriggered) {
             const jackpotWin = 200000; // Update jackpot win amount
-            await client.credit.add(`${M.sender}.wallet`, jackpotWin);
+            await client.gem.add(`${M.sender}.wallet`, jackpotWin);
             return M.reply(`🎰 *SLOT MACHINE* 🎰\n 🍉 🍉 🍉\n🍉 🍉 🍉\n🍉 🍉 🍉 \nCongratulations! You hit the jackpot and won ${jackpotWin} credits!`);
         } else {
             let luck = 0; // Define luck variable
@@ -77,7 +78,7 @@ module.exports = {
             resultAmount = Math.round(resultAmount);
             if (resultAmount > 150000) resultAmount = 150000;
 
-            await client.credit.add(`${M.sender}.wallet`, resultAmount);
+            await client.gem.add(`${M.sender}.wallet`, resultAmount);
 
             let text = '🎰 *SLOT MACHINE* 🎰\n\n';
             text += machine.visualize();
@@ -87,7 +88,7 @@ module.exports = {
                 await client.rpg.sub(`${M.sender}.luckpotion`, 1);
                 text += '\n\n🍀 You have been saved by your luck potion!';
             } else {
-                if (points <= 0) await client.credit.sub(`${M.sender}.wallet`, amount);
+                if (points <= 0) await client.gem.sub(`${M.sender}.wallet`, amount);
                 text += points <= 0 ? `\n\n📉 You lost ${amount} credits` : `\n\n📈 You won ${resultAmount} credits`;
             }
 
