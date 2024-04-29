@@ -33,6 +33,9 @@ module.exports = {
 
             const pokemonToGive = party[index - 1];
 
+            const companion = await client.pkmn.get(`${M.sender}_Companion`) || []
+            if ( pokemonToGive.name === companion ) return M.reply('You cant move your starter to your pss')
+            
             // Remove the Pokémon from sender's party
             party.splice(index - 1, 1);
             await client.pkmn.set(`${sender}_Party`, party);
