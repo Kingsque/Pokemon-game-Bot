@@ -11,8 +11,12 @@ module.exports = {
     category: "pokemon",
     description: "Start your Pokémon journey by choosing a starter Pokémon or view Pokémon from a specific region.",
     async execute(client, arg, M) {
-        const companion = client.DB.get(`${M.sender}_Companion`) || []
-        if (companion) return M.reply('You already started your journey');
+        const companion = client.DB.get(`${M.sender}_Companion`);
+
+        if (companion) {
+            return M.reply('You already started your journey with ' + companion);
+        }
+
         try {
             const pokemonNames = {
                 kanto: ['bulbasaur', 'charmander', 'squirtle'],
@@ -252,4 +256,4 @@ module.exports = {
         }
     }
 };
-                        
+                
