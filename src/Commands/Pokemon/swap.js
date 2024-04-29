@@ -10,7 +10,7 @@ module.exports = {
   async execute(client, arg, M) {
       try {
 
-      let pc = await client.DB.get(`${M.sender}_Party`) || [];
+      let pc = await client.pkmn.get(`${M.sender}_Party`) || [];
 
     if (!arg[0] || isNaN(arg[0]) || arg[0].includes("-") || arg[0].includes("+") || (pc.length - parseInt(arg[0])) < 0) {
         M.reply("Please provide a valid first pokemon index.");
@@ -35,11 +35,11 @@ module.exports = {
     newArray[index1] = newArray[index2];
     newArray[index2] = temp;
 
-    await client.DB.delete(`${M.sender}_Party`);
+    await client.pkmn.delete(`${M.sender}_Party`);
 
 
     for (let i = 0; i < pc.length; i++) {
-        await client.DB.push(`${M.sender}_Party`, newArray[i]);
+        await client.pkmn.push(`${M.sender}_Party`, newArray[i]);
       }
       
 
