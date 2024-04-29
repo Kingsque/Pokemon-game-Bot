@@ -9,7 +9,7 @@ module.exports = {
     description: "View your caught Pokémon in your PC",
     async execute(client, arg, M) {
         try {
-            const pc = await client.DB.get(`${M.sender}_PC`) || [];
+            const pc = await client.DB.get(`${M.sender}_PSS`) || [];
             if (pc.length === 0) {
                 return M.reply("📭 Your Pokémon collection is empty!");
             }
