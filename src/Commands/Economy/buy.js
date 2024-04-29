@@ -2,7 +2,9 @@
 const items = {
     luckpotion: 15000,
     pepperspray: 10000,
-    pokeball: 12000
+    pokeball: 12000,
+    greatball: 20000,
+    ultraball: 50000
 };
 
 module.exports = {
