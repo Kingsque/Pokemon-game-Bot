@@ -1,3 +1,4 @@
+// Deposit Command
 module.exports = {
     name: 'deposit',
     aliases: ["dt", "depo"],
@@ -13,11 +14,11 @@ module.exports = {
         const amount = parseInt(arg);
         if (amount <= 0) return M.reply('Please provide a positive amount.');
 
-        const wallet = (await client.credit.get(`${M.sender}.wallet`)) || 0;
+        const wallet = (await client.gem.get(`${M.sender}.wallet`)) || 0;
         if (wallet < amount) return M.reply('You don\'t have enough credits in your wallet.');
 
-        await client.credit.add(`${M.sender}.bank`, amount);
-        await client.credit.sub(`${M.sender}.wallet`, amount);
+        await client.gem.add(`${M.sender}.bank`, amount);
+        await client.gem.sub(`${M.sender}.wallet`, amount);
 
         M.reply(`You have successfully deposited ${amount} credits into your bank.`);
     }
