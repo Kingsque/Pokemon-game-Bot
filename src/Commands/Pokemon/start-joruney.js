@@ -2,6 +2,8 @@ const { createCanvas, loadImage } = require('canvas');
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
+const fetch = require('node-fetch');
+const { calculatePokeExp } = require('../../Helpers/pokeStats');
 
 module.exports = {
     name: "startjourney",
@@ -9,6 +11,8 @@ module.exports = {
     category: "pokemon",
     description: "Start your Pokémon journey by choosing a starter Pokémon or view Pokémon from a specific region.",
     async execute(client, arg, M) {
+        const companion = client.DB.get(`${M.sender}_Companion`);
+        if (companion) return M.reply('You already started your journey');
         try {
             const pokemonNames = {
                 kanto: ['bulbasaur', 'charmander', 'squirtle'],
@@ -42,7 +46,7 @@ module.exports = {
 
             if (arg.startsWith('--')) {
                 const args = arg.split(' ');
-                const flag = args[0].slice(2); // Remove '--' prefix
+                const flag = args[0].slice(2);
 
                 if (flag === 'region') {
                     const regionName = args.slice(1).join(' ').toLowerCase();
@@ -60,41 +64,34 @@ module.exports = {
                         })
                     );
 
-const canvasWidth = 1025;
-const canvasHeight = 1800;
+                    const canvasWidth = 1025;
+                    const canvasHeight = 1800;
+                    const regionMapUrl = regionMaps[regionName];
+                    const regionMap = await loadImage(regionMapUrl);
 
-// Load region map as background
-const regionMapUrl = regionMaps[regionName];
-const regionMap = await loadImage(regionMapUrl);
+                    const imageWidth = 300;
+                    const imageHeight = 500;
+                    const imagePadding = 10;
+                    const imagesPerRow = 3;
+                    const rows = Math.ceil(imageUrls.length / imagesPerRow);
+                    const totalWidthNeeded = imagesPerRow * (imageWidth + imagePadding) - imagePadding;
+                    const xStart = (canvasWidth - totalWidthNeeded) / 2;
+                    const totalHeightNeeded = rows * (imageHeight + imagePadding) - imagePadding;
+                    const yStart = (canvasHeight - totalHeightNeeded) / 2;
 
-const imageWidth = 300;
-const imageHeight = 500;
-const imagePadding = 10;
-const imagesPerRow = 3;
-const rows = Math.ceil(imageUrls.length / imagesPerRow); // Calculate the number of rows needed
+                    const canvas = createCanvas(canvasWidth, canvasHeight);
+                    const ctx = canvas.getContext('2d');
 
-const totalWidthNeeded = imagesPerRow * (imageWidth + imagePadding) - imagePadding; // Calculate the total width needed for all columns
-const xStart = (canvasWidth - totalWidthNeeded) / 2; // Adjust xStart based on total width needed
+                    ctx.drawImage(regionMap, 0, 0, canvasWidth, canvasHeight);
 
-const totalHeightNeeded = rows * (imageHeight + imagePadding) - imagePadding; // Calculate the total height needed for all rows
-const yStart = (canvasHeight - totalHeightNeeded) / 2; // Adjust yStart based on total height needed
-
-const canvas = createCanvas(canvasWidth, canvasHeight);
-const ctx = canvas.getContext('2d');
-
-ctx.drawImage(regionMap, 0, 0, canvasWidth, canvasHeight);
-
-for (let i = 0; i < imageUrls.length; i++) {
-    const imageUrl = imageUrls[i];
-    const image = await loadImage(imageUrl);
-    const x = xStart + (i % imagesPerRow) * (imageWidth + imagePadding);
-    const y = yStart + Math.floor(i / imagesPerRow) * (imageHeight + imagePadding);
-    const yOffset = i % 2 === 0 ? 0 : imageHeight / 2;
-    ctx.drawImage(image, x, y + yOffset, imageWidth, imageHeight);
-}
-                    
-                    
-                    
+                    for (let i = 0; i < imageUrls.length; i++) {
+                        const imageUrl = imageUrls[i];
+                        const image = await loadImage(imageUrl);
+                        const x = xStart + (i % imagesPerRow) * (imageWidth + imagePadding);
+                        const y = yStart + Math.floor(i / imagesPerRow) * (imageHeight + imagePadding);
+                        const yOffset = i % 2 === 0 ? 0 : imageHeight / 2;
+                        ctx.drawImage(image, x, y + yOffset, imageWidth, imageHeight);
+                    }
 
                     const directory = require('os').tmpdir();
                     const filePath = path.join(directory, 'collage.png');
@@ -105,6 +102,146 @@ for (let i = 0; i < imageUrls.length; i++) {
                         image: { url: filePath },
                         caption: `Starter Pokémon from ${regionName.charAt(0).toUpperCase() + regionName.slice(1)} region`
                     });
+                } else if (flag === 'pokemon') {
+                    const pkmmName = args.slice(1).join(' ').toLowerCase();
+
+                    if (!pokemonNames.hasOwnProperty(pkmmName)) {
+                        return M.reply("Invalid start pokemon. Please choose from the list of starters.");
+                    }
+                    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pkmmName}`);
+                    const pokemon = response.data;
+
+                    const name = pokemon.name;
+                    const types = pokemon.types.map(type => type.type.name);
+                    const image = pokemon.sprites.other['official-artwork'].front_default;
+                    const level = Math.floor(Math.random() * (10 - 5) + 5);
+                    const requiredExp = calculatePokeExp(level);
+
+                    const baseStats = {};
+                    pokemon.stats.forEach(stat => {
+                        baseStats[stat.stat.name] = stat.base_stat;
+                    });
+
+                    const moves = pokemon.moves.slice(0, 2);
+                    const movesDetails = await Promise.all(moves.map(async move => {
+                        const moveUrl = move.move.url;
+                        const moveDataResponse = await fetch(moveUrl);
+                        const moveData = await moveDataResponse.json();
+                        const moveName = move.move.name;
+                        const movePower = moveData.power || 0;
+                        const moveAccuracy = moveData.accuracy || 0;
+                        const movePP = moveData.pp || 5;
+                        const moveType = moveData.type ? moveData.type.name : 'Normal';
+                        const moveDescription = moveData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
+                        return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, maxPower: moveName, maxPP: movePP, maxAccuracy: moveAccuracy, type: moveType, description: moveDescription };
+                    }));
+
+                    const genderRate = pokemon.gender_rate;
+                    let isFemale = false;
+
+                    if (genderRate >= 8) {
+                        isFemale = true;
+                    } else if (genderRate > 0) {
+                        isFemale = Math.random() * 100 <= genderRate;
+                    }
+
+                    const pokemonData = {
+                        name: name,
+                        level: level,
+                        pokexp: requiredExp,
+                        id: pokemon.id,
+                        image: image,
+                        hp: baseStats['hp'],
+                        attack: baseStats['attack'],
+                        defense: baseStats['defense'],
+                        speed: baseStats['speed'],
+                        maxHp: baseStats['hp'],
+                        maxAttack: baseStats['attack'],
+                        maxDefense: baseStats['defense'],
+                        maxSpeed: baseStats['speed'],
+                        type: types,
+                        moves: movesDetails,
+                        status: '',
+                        movesUsed: 0,
+                        female: isFemale,
+                        pokeball: ''
+                    };
+
+                    client.sendMessage(M.from, {
+                        image: { url: image },
+                        caption: JSON.stringify(pokemonData)
+                    });
+                } else if (flag === 'choose') {
+                    const pName = args.slice(1).join(' ').toLowerCase();
+
+                    if (!pokemonNames.hasOwnProperty(pName)) {
+                        return M.reply("Invalid start pokemon. Please choose from the list of starters.");
+                    }
+                    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pName}`);
+                    const pokemon = response.data;
+
+                    const name = pokemon.name;
+                    const types = pokemon.types.map(type => type.type.name);
+                    const image = pokemon.sprites.other['official-artwork'].front_default;
+                    const level = Math.floor(Math.random() * (10 - 5) + 5);
+                    const requiredExp = calculatePokeExp(level);
+
+                    const baseStats = {};
+                    pokemon.stats.forEach(stat => {
+                        baseStats[stat.stat.name] = stat.base_stat;
+                    });
+
+                    const moves = pokemon.moves.slice(0, 2);
+                    const movesDetails = await Promise.all(moves.map(async move => {
+                        const moveUrl = move.move.url;
+                        const moveDataResponse = await fetch(moveUrl);
+                        const moveData = await moveDataResponse.json();
+                        const moveName = move.move.name;
+                        const movePower = moveData.power || 0;
+                        const moveAccuracy = moveData.accuracy || 0;
+                        const movePP = moveData.pp || 5;
+                        const moveType = moveData.type ? moveData.type.name : 'Normal';
+                        const moveDescription = moveData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
+                        return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, maxPower: moveName, maxPP: movePP, maxAccuracy: moveAccuracy, type: moveType, description: moveDescription };
+                    }));
+
+                    const genderRate = pokemon.gender_rate;
+                    let isFemale = false;
+
+                    if (genderRate >= 8) {
+                        isFemale = true;
+                    } else if (genderRate > 0) {
+                        isFemale = Math.random() * 100 <= genderRate;
+                    }
+
+                    const pokemonData = {
+                        name: name,
+                        level: level,
+                        pokexp: requiredExp,
+                        id: pokemon.id,
+                        image: image,
+                        hp: baseStats['hp'],
+                        attack: baseStats['attack'],
+                        defense: baseStats['defense'],
+                        speed: baseStats['speed'],
+                        maxHp: baseStats['hp'],
+                        maxAttack: baseStats['attack'],
+                        maxDefense: baseStats['defense'],
+                        maxSpeed: baseStats['speed'],
+                        type: types,
+                        moves: movesDetails,
+                        status: '',
+                        movesUsed: 0,
+                        female: isFemale,
+                        pokeball: ''
+                    };
+
+                    let party = client.DB.get(`${M.sender}_Party`);
+                    party.push(pokemonData);
+                    client.DB.set(`${M.sender}_Party`, party);
+                    client.DB.set(`${M.sender}_Companion`, pName);
+
+                    M.reply(`You have successfully started your journey with ${pName}`);
                 }
             }
         } catch (err) {
@@ -115,4 +252,4 @@ for (let i = 0; i < imageUrls.length; i++) {
         }
     }
 };
-                    
+                        
