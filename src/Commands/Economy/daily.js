@@ -33,18 +33,21 @@ module.exports = {
             // Increment streak if claimed within 24 hours
             if (streak === streakGoal - 1) {
                 await client.gem.add(`${M.sender}.streak`, 1);
+                await client.gem.add(`${M.sender}_Wallet`, dailyAmount); // Add daily amount to the wallet
                 await client.gem.set(`${M.sender}.daily`, Date.now());
                 await client.gem.set(`${M.sender}.missedDays`, 0);
 
                 text += `*Congratulations! You've completed a perfect streak!*`;
             } else if (streak >= streakGoal) {
                 await client.gem.set(`${M.sender}.streak`, 1);
+                await client.gem.add(`${M.sender}_Wallet`, dailyAmount); // Add daily amount to the wallet
                 await client.gem.set(`${M.sender}.daily`, Date.now());
                 await client.gem.set(`${M.sender}.missedDays`, 0);
 
                 text += `*You've started a new streak!*`;
             } else {
                 await client.gem.add(`${M.sender}.streak`, 1);
+                await client.gem.add(`${M.sender}_Wallet`, dailyAmount); // Add daily amount to the wallet
                 await client.gem.set(`${M.sender}.daily`, Date.now());
 
                 text += `*You have claimed your daily reward 🎉: ${dailyAmount}*`;
@@ -67,3 +70,4 @@ module.exports = {
         M.reply(`${text}\n${streakText}`);
     }
 };
+            
