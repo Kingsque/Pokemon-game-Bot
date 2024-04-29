@@ -11,7 +11,7 @@ module.exports = {
     category: "pokemon",
     description: "Start your Pokémon journey by choosing a starter Pokémon or view Pokémon from a specific region.",
     async execute(client, arg, M) {
-        const companion = client.DB.get(`${M.sender}_Companion`) || []
+        const companion = client.pkmn.get(`${M.sender}_Companion`) || []
 
         if (companion) {
             return M.reply('You already started your journey with ' + companion);
@@ -240,10 +240,10 @@ module.exports = {
                         pokeball: ''
                     };
 
-                    let party = client.DB.get(`${M.sender}_Party`);
+                    let party = client.pkmn.get(`${M.sender}_Party`);
                     party.push(pokemonData);
-                    client.DB.set(`${M.sender}_Party`, party);
-                    client.DB.set(`${M.sender}_Companion`, pName);
+                    client.pkmn.set(`${M.sender}_Party`, party);
+                    client.pkmn.set(`${M.sender}_Companion`, pName);
 
                     M.reply(`You have successfully started your journey with ${pName}`);
                 }
