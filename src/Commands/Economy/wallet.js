@@ -28,15 +28,15 @@ module.exports = {
         const tag = `#${M.sender.substring(3, 7)}`;
 
         const text = `💳 *Credits* 💳\n\n👤 *Name:* ${username}\n🔖 *Tag:* ${tag}\n💳 *Credits:* ${wallet}`;
-        const y = client.utils.getBuffer('https://i.ibb.co/tPhb428/Aurora.jpg');
+        const thumbnail = client.utils.getBuffer('https://i.ibb.co/tPhb428/Aurora.jpg');
         
         await client.sendMessage(M.from, {
             text: text,
             contextInfo: {
                 externalAdReply: {
-                    title: `${username}\n${wallet}`,
+                    title: `${username}: ${wallet}`,
                     mediaType: 2,
-                    thumbnail: y,
+                    thumbnail: thumbnail,
                     sourceUrl: ''
                 }
             }
