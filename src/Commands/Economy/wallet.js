@@ -20,7 +20,7 @@ module.exports = {
         // Convert decimal or fraction amounts to nearest integer
         if (!Number.isInteger(wallet)) {
             wallet = Math.round(wallet);
-            await client.gem.set(`${M.sender}_wallet`, wallet);
+            await client.gem.set(`${M.sender}.wallet`, wallet);
         }
 
         const contact = await client.contact.getContact(M.sender, client);
@@ -28,13 +28,13 @@ module.exports = {
         const tag = `#${M.sender.substring(3, 7)}`;
 
         const text = `💳 *Credits* 💳\n\n👤 *Name:* ${username}\n🔖 *Tag:* ${tag}\n💳 *Credits:* ${wallet}`;
-        const y = client.utils.getBuffer('https://i.ibb.co/tPhb428/Aurora.jpg')
+        const y = client.utils.getBuffer('https://i.ibb.co/tPhb428/Aurora.jpg');
         
         await client.sendMessage(M.from, {
             text: text,
             contextInfo: {
                 externalAdReply: {
-                    title: ${username}\n${wallet},
+                    title: `${username}\n${wallet}`,
                     mediaType: 2,
                     thumbnail: y,
                     sourceUrl: ''
