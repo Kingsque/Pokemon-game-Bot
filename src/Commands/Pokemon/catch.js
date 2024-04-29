@@ -20,11 +20,14 @@ module.exports = {
 
             const pokemonName = arg.toLowerCase();
             if (pokemonName !== pokemon.name.toLowerCase()) {
-                return M.reply(`You have provided wrong name for the spawned Pokémon.`);
+                return M.reply(`You have provided the wrong name for the spawned Pokémon.`);
             }
-        const pokeball = await client.rpg.get(`${M.sender}.pokeball`);
-            if (pokeball < 0) return M.reply('Go buy a pokeball first');
-    
+
+            const ballType = pokemon.pokeball.toLowerCase();
+            const userBallCount = await client.rpg.get(`${M.sender}.${ballType}`);
+            if (userBallCount <= 0) {
+                return M.reply(`You don't have any ${ballType}s left to catch this Pokémon!`);
+            }
 
             // Check if the user has space in their party
             const party = await client.DB.get(`${M.sender}_Party`) || [];
@@ -32,18 +35,17 @@ module.exports = {
                 // If party has space, add Pokémon to party
                 party.push(pokemon); // Add Pokémon to Party
                 await client.DB.set(`${M.sender}_Party`, party);
-                await client.rpg.sub(`${M.sender}.pokeball`, 1)
-
-                await M.reply(`🎉 You have successfully caught ${pokemon.name} (Level: ${pokemon.level}) and stored it in your Party!`);
             } else {
                 // If party is full, add Pokémon to PC
                 const pc = await client.DB.get(`${M.sender}_PC`) || [];
                 pc.push(pokemon); // Add Pokémon to PC
                 await client.DB.set(`${M.sender}_PC`, pc);
-                await client.rpg.sub(`${M.sender}.pokeball`, 1)
-
-                await M.reply(`🎉 You have successfully caught ${pokemon.name} (Level: ${pokemon.level}) and stored it in your PC!`);
             }
+
+            // Decrease the user's ball count
+            await client.rpg.sub(`${M.sender}.${ballType}`, 1);
+
+            await M.reply(`🎉 You have successfully caught ${pokemon.name} (Level: ${pokemon.level}) and stored it ${party.length < 6 ? 'in your Party' : 'in your PC'}!`);
 
             // Delete the spawned Pokémon from the database
             await client.DB.delete(`${M.from}.pokemon`);
@@ -56,4 +58,3 @@ module.exports = {
         }
     },
 };
-      
