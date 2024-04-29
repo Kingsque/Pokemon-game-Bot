@@ -78,7 +78,7 @@ const start = async () => {
     client.exp = client.DB.table('experience')
 
     //Cards
-    client.card = client.DB.table('cards')
+    client.card = client.DB.table('card')
 
     //Credits       `
     client.credit = client.DB.table('credit')
