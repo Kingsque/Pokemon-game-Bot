@@ -5,10 +5,6 @@ const maxLevel = 100; // Maximum level for a Pokémon
 
 /**
  * Calculate the experience points required for a Pokémon to level up from the current level.
- * Updated formula for leveling up:
- * Level 1-10: 100 + (level - 1) * 100
- * Level 11-50: 1000 + (level - 10) * 200
- * Level 51-100: 9000 + (level - 50) * 300
  * @param {number} currentLevel - Current level of the Pokémon.
  * @returns {number} - Experience points required to level up.
  */
@@ -17,13 +13,9 @@ const calculatePokeExp = (currentLevel) => {
         return Infinity; // or any other appropriate value to indicate an invalid level
     }
 
-    if (currentLevel <= 10) {
-        return 100 + (currentLevel - 1) * 100;
-    } else if (currentLevel <= 50) {
-        return 1000 + (currentLevel - 10) * 200;
-    } else {
-        return 9000 + (currentLevel - 50) * 300;
-    }
+    return currentLevel <= 10 ? 100 + (currentLevel - 1) * 100 :
+           currentLevel <= 50 ? 1000 + (currentLevel - 10) * 200 :
+           9000 + (currentLevel - 50) * 300;
 };
 
 /**
@@ -37,8 +29,7 @@ const requirePokeExpToLevelUp = (currentExp, currentLevel) => {
         return Infinity; // or any other appropriate value to indicate an invalid level
     }
 
-    const nextLevelExp = calculatePokeExp(currentLevel + 1);
-    return nextLevelExp - currentExp;
+    return calculatePokeExp(currentLevel + 1) - currentExp;
 };
 
 /**
@@ -47,19 +38,11 @@ const requirePokeExpToLevelUp = (currentExp, currentLevel) => {
  * @param {number} exp - Current experience points of the Pokémon.
  * @returns {Object} - Object containing Pokémon stats.
  */
-const getPokeStats = (level, exp) => {
-    // Ensure level doesn't exceed the maximum level
-    level = Math.min(level, maxLevel);
-    
-    // Calculate required experience points for leveling up
-    const requiredExpToLevelUp = requirePokeExpToLevelUp(exp, level);
-    
-    return {
-        level,
-        exp,
-        requiredExpToLevelUp,
-    };
-};
+const getPokeStats = (level, exp) => ({
+    level: Math.min(level, maxLevel),
+    exp,
+    requiredExpToLevelUp: requirePokeExpToLevelUp(exp, level)
+});
 
 /**
  * Level up a Pokémon if it has enough experience points to do so.
@@ -72,8 +55,7 @@ const levelUpPokemon = (pokemon) => {
     if (requiredExp <= 0 && level < maxLevel) {
         pokemon.level += 1;
         const remainingExp = Math.max(exp - calculatePokeExp(level), 0);
-        const nextLevelExp = calculatePokeExp(pokemon.level);
-        pokemon.exp = remainingExp + nextLevelExp;
+        pokemon.exp = remainingExp + calculatePokeExp(pokemon.level);
     }
 };
 
@@ -81,38 +63,22 @@ const levelUpPokemon = (pokemon) => {
  * Get evolution details of a Pokémon including the level at which it evolves
  * and the stats of the next stage.
  * @param {string} pokemonName - Name of the Pokémon.
- * @param {number} pokemonId - ID of the Pokémon.
- * @param {string} pokemonType - Type of the Pokémon.
  * @returns {Object|null} - Object containing evolution details or null if not found.
  */
-const pokemonEvolve = async (pokemonName, pokemonId, pokemonType) => {
+const pokemonEvolve = async (pokemonName) => {
     try {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}/`);
-        const speciesData = response.data;
-        const evolutionChainUrl = speciesData.evolution_chain.url;
-        const evolutionChainResponse = await axios.get(evolutionChainUrl);
-        const evolutionChain = evolutionChainResponse.data.chain;
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+        const pokemonData = response.data;
 
-        let evolutionLevel = 1;
-        let nextStageStats = null;
-
-        if (evolutionChain && evolutionChain.evolves_to.length > 0) {
-            const nextForm = evolutionChain.evolves_to[0];
-            evolutionLevel = nextForm.min_level;
-
-            const nextFormName = nextForm.species.name;
-            const nextFormResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${nextFormName}`);
-            const nextFormData = nextFormResponse.data;
-
-            nextStageStats = {
-                hp: nextFormData.stats.find(stat => stat.stat.name === 'hp').base_stat,
-                attack: nextFormData.stats.find(stat => stat.stat.name === 'attack').base_stat,
-                defense: nextFormData.stats.find(stat => stat.stat.name === 'defense').base_stat,
-                speed: nextFormData.stats.find(stat => stat.stat.name === 'speed').base_stat,
-            };
-        }
-
-        return { evolutionLevel, nextStageStats };
+        return {
+            evolutionLevel: pokemonData.evolve_to[0].evolve_level, // Assuming the API provides the evolution level
+            nextStageStats: {
+                hp: pokemonData.stats.find(stat => stat.stat.name === 'hp').base_stat,
+                attack: pokemonData.stats.find(stat => stat.stat.name === 'attack').base_stat,
+                defense: pokemonData.stats.find(stat => stat.stat.name === 'defense').base_stat,
+                speed: pokemonData.stats.find(stat => stat.stat.name === 'speed').base_stat,
+            }
+        };
     } catch (error) {
         console.error('Error fetching evolution details:', error.message);
         return null;
@@ -127,20 +93,10 @@ const pokemonEvolve = async (pokemonName, pokemonId, pokemonType) => {
  */
 const canItEvolve = async (pokemonName, currentLevel) => {
     try {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonName}/`);
-        const speciesData = response.data;
-        const evolutionChainUrl = speciesData.evolution_chain.url;
-        const evolutionChainResponse = await axios.get(evolutionChainUrl);
-        const evolutionChain = evolutionChainResponse.data.chain;
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+        const pokemonData = response.data;
 
-        if (evolutionChain && evolutionChain.evolves_to.length > 0) {
-            const nextForm = evolutionChain.evolves_to[0];
-            const evolutionLevel = nextForm.min_level;
-
-            return currentLevel >= evolutionLevel;
-        }
-
-        return false; // No evolution chain found
+        return currentLevel >= pokemonData.evolve_to[0].evolve_level;
     } catch (error) {
         console.error('Error checking evolution:', error.message);
         return false; // Error occurred, assume evolution is not possible
@@ -155,4 +111,3 @@ module.exports = {
     pokemonEvolve,
     canItEvolve
 };
-            
