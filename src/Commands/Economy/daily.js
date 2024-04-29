@@ -1,3 +1,4 @@
+// Daily Command
 const ms = require('parse-ms');
 
 module.exports = {
@@ -14,9 +15,9 @@ module.exports = {
         const dailyAmount = 3000; // Daily reward amount
         const streakGoal = 7; // Goal for a perfect streak
 
-        const lastClaimed = await client.credit.get(`${M.sender}.daily`);
-        let streak = await client.credit.get(`${M.sender}.streak`) || 0;
-        let missedDays = await client.credit.get(`${M.sender}.missedDays`) || 0;
+        const lastClaimed = await client.gem.get(`${M.sender}.daily`);
+        let streak = await client.gem.get(`${M.sender}.streak`) || 0;
+        let missedDays = await client.gem.get(`${M.sender}.missedDays`) || 0;
 
         let text = '';
 
@@ -26,25 +27,25 @@ module.exports = {
         } else {
             // Check if the streak has been reset due to missed days
             if (missedDays > 0 && streak < streakGoal) {
-                await client.credit.set(`${M.sender}.streak`, 0); // Reset streak if not a perfect streak
+                await client.gem.set(`${M.sender}.streak`, 0); // Reset streak if not a perfect streak
             }
 
             // Increment streak if claimed within 24 hours
             if (streak === streakGoal - 1) {
-                await client.credit.add(`${M.sender}.streak`, 1);
-                await client.credit.set(`${M.sender}.daily`, Date.now());
-                await client.credit.set(`${M.sender}.missedDays`, 0);
+                await client.gem.add(`${M.sender}.streak`, 1);
+                await client.gem.set(`${M.sender}.daily`, Date.now());
+                await client.gem.set(`${M.sender}.missedDays`, 0);
 
                 text += `*Congratulations! You've completed a perfect streak!*`;
             } else if (streak >= streakGoal) {
-                await client.credit.set(`${M.sender}.streak`, 1);
-                await client.credit.set(`${M.sender}.daily`, Date.now());
-                await client.credit.set(`${M.sender}.missedDays`, 0);
+                await client.gem.set(`${M.sender}.streak`, 1);
+                await client.gem.set(`${M.sender}.daily`, Date.now());
+                await client.gem.set(`${M.sender}.missedDays`, 0);
 
                 text += `*You've started a new streak!*`;
             } else {
-                await client.credit.add(`${M.sender}.streak`, 1);
-                await client.credit.set(`${M.sender}.daily`, Date.now());
+                await client.gem.add(`${M.sender}.streak`, 1);
+                await client.gem.set(`${M.sender}.daily`, Date.now());
 
                 text += `*You have claimed your daily reward 🎉: ${dailyAmount}*`;
             }
