@@ -8,7 +8,6 @@ const axios = require('axios');
 const cron = require("node-cron");
 const { Collection } = require('discord.js');
 const cool = new Collection();
-const { bots } = require('./Mods');
 
 module.exports = MessageHandler = async (messages, client) => {
     try {
@@ -32,7 +31,7 @@ module.exports = MessageHandler = async (messages, client) => {
         const ActivateChatBot = (await client.DB.get('chatbot')) || [];
         const banned = (await client.DB.get('banned')) || [];
         const user = (await client.DB.get(`data`)) || [];
-
+        const companion = await client.pkmn.get(`${sender}_Companion`);
         // Antilink system
         if (
             isGroup &&
@@ -144,8 +143,10 @@ module.exports = MessageHandler = async (messages, client) => {
         }
         if (!client.mods.includes(sender.split('@')[0]) && command.category == 'dev')
             return M.reply('This command only can be accessed by the mods');
+        if (command.category === 'pokemon' && !companion && command.name !=== 'start-journey') return M.reply('You fidnt started yiur journey')
+        
         command.execute(client, arg, M);
-
+       
         if (isCmd && command.category === 'pokemon') {
     const party = await client.DB.get(`${sender}_Party`) || [];
     if (party.length > 0) {
