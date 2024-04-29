@@ -15,7 +15,9 @@ module.exports = {
  
  
         if (companion) {
-        if (companion.length > 0) {
+        if (companion.length === 0) {
+            return M.reply('Yiu alreadystarted yiur journey')
+        }
 
         try {
             const pokemonNames = {
@@ -254,6 +256,5 @@ module.exports = {
                 text: "An error occurred while processing your request."
             });
         }
-    }
 };
                 
