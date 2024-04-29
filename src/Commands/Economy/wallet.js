@@ -20,7 +20,7 @@ module.exports = {
         // Convert decimal or fraction amounts to nearest integer
         if (!Number.isInteger(wallet)) {
             wallet = Math.round(wallet);
-            await client.gem.set(`${M.sender}.wallet`, wallet);
+            await client.gem.set(`${M.sender}_wallet`, wallet);
         }
 
         const contact = await client.contact.getContact(M.sender, client);
