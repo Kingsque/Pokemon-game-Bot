@@ -66,8 +66,8 @@ module.exports = PokeHandler = async (client, m) => {
               isFemale = Math.random() * 100 <= genderRate;
             }
 
-            let pokeball = 'standardball';
-            let rarity = '';
+            let pokeball = 'pokeball';
+            let rarity = 'common';
             if (pseudo1.includes(id)) {
               pokeball = 'ultraball';
               rarity = 'pseudo legendary';
