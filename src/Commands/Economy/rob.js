@@ -1,6 +1,7 @@
+// Rob Command
 module.exports = {
     name: 'rob',
-    aliases: ['attack'],
+    aliases: ['rob'],
     category: 'economy',
     exp: 5,
     cool: 5, // Cooldown period in seconds (5 minutes)
@@ -23,8 +24,8 @@ module.exports = {
             return M.reply(`*You are on cooldown! You can attempt to rob again in ${remainingMinutes} minutes.*`);
         }
 
-        const senderCredits = (await client.credit.get(`${M.sender}.wallet`)) || 0;
-        const targetCredits = (await client.credit.get(`${robTarget}.wallet`)) || 0;
+        const senderCredits = (await client.gem.get(`${M.sender}.wallet`)) || 0;
+        const targetCredits = (await client.gem.get(`${robTarget}.wallet`)) || 0;
 
         // Minimum credits required to attempt a robbery
         const minimumCreditsRequired = 500;
@@ -33,7 +34,7 @@ module.exports = {
         if (targetCredits < minimumCreditsRequired) return M.reply('*The user doesn\'t have much money in their wallet*');
 
         // Check if the user has pepper spray
-        const hasPepperSpray = await client.rpg.get(`${robTarget}.pepperspray`);
+        const hasPepperSpray = await client.gem.get(`${robTarget}.pepperspray`);
 
         // Adjust success probability based on whether the user has pepper spray
         const successProbability = hasPepperSpray ? 0.3 : 0.1;
@@ -47,8 +48,8 @@ module.exports = {
         if (targetCredits >= 10000) targetLost = Math.floor(Math.random() * 10000);
 
         // Update wallet balances based on the result
-        await client.credit.add(`${M.sender}.wallet`, result === 'success' ? amountRobbed : -targetLost);
-        await client.credit.add(`${robTarget}.wallet`, result === 'success' ? -amountRobbed : targetLost);
+        await client.gem.add(`${M.sender}.wallet`, result === 'success' ? amountRobbed : -targetLost);
+        await client.gem.add(`${robTarget}.wallet`, result === 'success' ? -amountRobbed : targetLost);
 
         // Update last robbery time for cooldown
         await client.DB.set(`${M.sender}.rob`, currentTime);
@@ -69,4 +70,4 @@ module.exports = {
         client.sendMessage(M.from, { text, mentions: [M.sender, robTarget] }, { quoted: M });
     }
 };
-                                    
+    
