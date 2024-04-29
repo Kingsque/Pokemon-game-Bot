@@ -12,11 +12,9 @@ module.exports = {
     description: "Start your Pokémon journey by choosing a starter Pokémon or view Pokémon from a specific region.",
     async execute(client, arg, M) {
         const companion = client.pkmn.get(`${M.sender}_Companion`) || [];
- 
- 
-        if (companion) {
+
         if (companion.length === 0) {
-            return M.reply('Yiu alreadystarted yiur journey')
+            return M.reply('You already started your journey');
         }
 
         try {
@@ -242,7 +240,7 @@ module.exports = {
                         pokeball: ''
                     };
 
-                    let party = client.pkmn.get(`${M.sender}_Party`);
+                    let party = client.pkmn.get(`${M.sender}_Party`) || [];
                     party.push(pokemonData);
                     client.pkmn.set(`${M.sender}_Party`, party);
                     client.pkmn.set(`${M.sender}_Companion`, pName);
@@ -256,5 +254,6 @@ module.exports = {
                 text: "An error occurred while processing your request."
             });
         }
+    }
 };
-                
+                    
