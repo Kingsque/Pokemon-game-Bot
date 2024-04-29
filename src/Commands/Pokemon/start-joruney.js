@@ -6,8 +6,8 @@ const fetch = require('node-fetch');
 const { calculatePokeExp } = require('../../Helpers/pokeStats');
 
 module.exports = {
-    name: "startjourney",
-    aliases: ["startjourney"],
+    name: "start-journey",
+    aliases: ["start-journey"],
     category: "pokemon",
     description: "Start your Pokémon journey by choosing a starter Pokémon or view Pokémon from a specific region.",
     async execute(client, arg, M) {
