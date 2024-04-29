@@ -48,20 +48,6 @@ module.exports = PokeHandler = async (client, m) => {
               return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, maxPower: moveName, maxPP: movePP, maxAccuracy: moveAccuracy, type: moveType, description: moveDescription };
             }));
 
-            const dat = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-            const speciesData = await dat.json();
-            const catchRate = speciesData.capture_rate;
-             let ball = '';
-      if (catchRate >= 200) {
-        ball = "masterball";
-      } else if (catchRate >= 100) {
-        ball = "ultraball";
-      } else if (catchRate >= 50) {
-        ball = "greatball";
-      } else {
-        ball = "pokeball";
-      }
-
 
             const genderRate = pokemon.gender_rate;
             let isFemale = false;
@@ -91,7 +77,6 @@ module.exports = PokeHandler = async (client, m) => {
               status: '',
               movesUsed: 0,
               female: isFemale,
-              catchrate: catchRate,
               pokeball: ''
             };
 
