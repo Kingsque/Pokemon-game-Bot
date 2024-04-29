@@ -10,13 +10,13 @@ module.exports = {
         try {
             const sender = M.sender;
             const mentionedUser = M.mentions[0];
-            const party = await client.DB.get(`${sender}_Party`) || [];
+            const party = await client.pkmn.get(`${sender}_Party`) || [];
 
             if (!mentionedUser) {
                 return M.reply("Please mention a user to give the Pokémon to.");
             }
 
-            const targetParty = await client.DB.get(`${mentionedUser}_Party`) || [];
+            const targetParty = await client.pkmn.get(`${mentionedUser}_Party`) || [];
 
             if (party.length === 0) {
                 return M.reply("Your Pokémon party is empty!");
@@ -35,11 +35,11 @@ module.exports = {
 
             // Remove the Pokémon from sender's party
             party.splice(index - 1, 1);
-            await client.DB.set(`${sender}_Party`, party);
+            await client.pkmn.set(`${sender}_Party`, party);
 
             // Add the Pokémon to the target user's party
             targetParty.push(pokemonToGive);
-            await client.DB.set(`${mentionedUser}_Party`, targetParty);
+            await client.pkmn.set(`${mentionedUser}_Party`, targetParty);
 
             return M.reply(`You have given ${pokemonToGive.name} to ${mentionedUser}.`);
         } catch (err) {
