@@ -80,11 +80,11 @@ module.exports = PokeHandler = async (client, m) => {
 
             // Construct the Pokémon data object
             const pokemonData = { 
-              name, 
-              level, 
+              name: level, 
+              level: level, 
               pokexp: requiredExp,
-              id,
-              image,
+              id: pokemon.id,
+              image: image,
               hp: baseStats['hp'],
               attack: baseStats['attack'],
               defense: baseStats['defense'],
@@ -98,8 +98,8 @@ module.exports = PokeHandler = async (client, m) => {
               status: '',
               movesUsed: 0,
               female: isFemale,
-              rarity,
-              pokeball
+              rarity: rarity,
+              pokeball: pokeball
             };
 
             // Store Pokémon data in the client's map
