@@ -81,7 +81,7 @@ const start = async () => {
     client.card = client.DB.table('card')
 
     //Credits       `
-    client.credit = client.DB.table('credit')
+    client.credits = client.DB.table('credit')
 
     //RPG
     client.rpg = client.DB.table('rpg_game')
