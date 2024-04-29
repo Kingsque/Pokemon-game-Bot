@@ -9,7 +9,7 @@ module.exports = {
     description: "Transfer a Pokémon from your PC to your party",
     async execute(client, arg, M) {
         try {
-            const pc = await client.DB.get(`${M.sender}_PC`) || [];
+            const pc = await client.pkmn.get(`${M.sender}_PSS`) || [];
             if (pc.length === 0) {
                 return M.reply("📭 Your Pokémon collection is empty!");
             }
@@ -21,11 +21,11 @@ module.exports = {
             }
 
             const transferredPokemon = pc.splice(transferredPokemonIndex, 1)[0];
-            const party = await client.DB.get(`${M.sender}_Party`) || [];
+            const party = await client.pkmn.get(`${M.sender}_Party`) || [];
             party.push(transferredPokemon);
 
-            await client.DB.set(`${M.sender}_PC`, pc);
-            await client.DB.set(`${M.sender}_Party`, party);
+            await client.pkmn.set(`${M.sender}_PSS`, pc);
+            await client.pkmn.set(`${M.sender}_Party`, party);
 
             await M.reply(`🔄 Successfully transferred ${transferredPokemon.name} to your party!`);
         } catch (err) {
