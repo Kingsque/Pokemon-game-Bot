@@ -40,6 +40,8 @@ module.exports = {
                 galar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaYXvUHrLahCwi_m7TfDWlvIYaR8w9kLGweMBgImUyXw&s'
             };
 
+            const starterPokemon = ['bulbasaur', 'charmander', 'squirtle', 'chikorita', 'cyndaquil', 'totodile', 'treecko', 'torchic', 'mudkip', 'turtwig', 'chimchar', 'piplup', 'snivy', 'tepig', 'oshawott', 'chespin', 'fennekin', 'froakie', 'rowlet', 'litten', 'popplio', 'grookey', 'scorbunny', 'sobble'];
+
             if (!arg) {
                 let message = "*Regions and Starter Pokémon:*\n";
                 for (const region in pokemonNames) {
@@ -109,7 +111,7 @@ module.exports = {
                 } else if (flag === 'pokemon') {
                     const pkmmName = args.slice(1).join(' ').toLowerCase();
 
-                    if (!pokemonNames.hasOwnProperty(pkmmName)) {
+                    if (!starterPokemon.includes(pkmmName)) {
                         return M.reply("Invalid start pokemon. Please choose from the list of starters.");
                     }
                     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pkmmName}`);
@@ -178,8 +180,77 @@ module.exports = {
                 } else if (flag === 'choose') {
                     const pName = args.slice(1).join(' ').toLowerCase();
 
+                    if (starterPokemon.includes(pName)) {
+                        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pName}`);
+                        const pokemon = response.data;
+
+                        const name = pokemon.name;
+                        const types = pokemon.types.map(type => type.type.name);
+                        const image = pokemon.sprites.other['official-artwork'].front_default;
+                        const level = Math.floor(Math.random() * (10 - 5) + 5);
+                        const requiredExp = calculatePokeExp(level);
+
+                        const baseStats = {};
+                        pokemon.stats.forEach(stat => {
+                            baseStats[stat.stat.name] = stat.base_stat;
+                        });
+
+                        const moves = pokemon.moves.slice(0, 2);
+                        const movesDetails = await Promise.all(moves.map(async move => {
+                            const moveUrl = move.move.url;
+                            const moveDataResponse = await fetch(moveUrl);
+                            const moveData = await moveDataResponse.json();
+                            const moveName = move.move.name;
+                            const movePower = moveData.power || 0;
+                            const moveAccuracy = moveData.accuracy || 0;
+                            const movePP = moveData.pp || 5;
+                            const moveType = moveData.type ? moveData.type.name : 'Normal';
+                            const moveDescription = moveData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
+                            return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, maxPower: moveName, maxPP: movePP, maxAccuracy: moveAccuracy, type: moveType, description: moveDescription };
+                        }));
+
+                        const genderRate = pokemon.gender_rate;
+                        let isFemale = false;
+
+                        if (genderRate >= 8) {
+                            isFemale = true;
+                        } else if (genderRate > 0) {
+                            isFemale = Math.random() * 100 <= genderRate;
+                        }
+
+                        const pokemonData = {
+                            name: name,
+                            level: level,
+                            pokexp: requiredExp,
+                            id: pokemon.id,
+                            image: image,
+                            hp: baseStats['hp'],
+                            attack: baseStats['attack'],
+                            defense: baseStats['defense'],
+                            speed: baseStats['speed'],
+                            maxHp: baseStats['hp'],
+                            maxAttack: baseStats['attack'],
+                            maxDefense: baseStats['defense'],
+                            maxSpeed: baseStats['speed'],
+                            type: types,
+                            moves: movesDetails,
+                            status: '',
+                            movesUsed: 0,
+                            female: isFemale,
+                            pokeball: ''
+                        };
+
+                        let party = client.pkmn.get(`${M.sender}_Party`) || [];
+                        party.push(pokemonData);
+                        client.pkmn.set(`${M.sender}_Party`, party);
+                        client.pkmn.set(`${M.sender}_Companion`, pName);
+
+                        return M.reply(`You have successfully started your journey with ${pName}`);
+                    }
+
+                    // If the chosen Pokémon is not from the starter list, proceed with the region-based selection
                     if (!pokemonNames.hasOwnProperty(pName)) {
-                        return M.reply("Invalid start pokemon. Please choose from the list of starters.");
+                        return M.reply("Invalid start pokemon. Please choose from the list of starters or regions.");
                     }
                     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pName}`);
                     const pokemon = response.data;
@@ -256,4 +327,4 @@ module.exports = {
         }
     }
 };
-                    
+                
