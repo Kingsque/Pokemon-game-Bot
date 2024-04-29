@@ -308,7 +308,8 @@ module.exports = {
                         status: '',
                         movesUsed: 0,
                         female: isFemale,
-                        pokeball: ''
+                        rarity: 'starter',
+                        pokeball: 'pokeball'
                     };
 
                     let party = client.pkmn.get(`${M.sender}_Party`) || [];
@@ -316,7 +317,7 @@ module.exports = {
                     client.pkmn.set(`${M.sender}_Party`, party);
                     client.pkmn.set(`${M.sender}_Companion`, pName);
 
-                    M.reply(`You have successfully started your journey with ${pName}`);
+                    return M.reply(`You have successfully started your journey with ${pName}`);
                 }
             }
         } catch (err) {
