@@ -1,25 +1,26 @@
+// Wallet Command
 module.exports = {
-    name: 'credit',
-    aliases: ['cr', 'credits'],
+    name: 'wallet',
+    aliases: ['credit', 'cr', 'credits'],
     category: 'economy',
     exp: 5,
     cool: 4,
     react: "✅",
-    usage: 'Use :credit',
+    usage: 'Use :wallet',
     description: 'Shows the wallet value',
     async execute(client, arg, M) {
-        let wallet = await client.credit.get(`${M.sender}.wallet`) || 0;
+        let wallet = await client.gem.get(`${M.sender}.wallet`) || 0;
 
         // Convert negative amount to 0
         if (wallet < 0) {
             wallet = 0;
-            client.credit.set(`${M.sender}.wallet`, 0);
+            client.gem.set(`${M.sender}.wallet`, 0);
         }
 
         // Convert decimal or fraction amounts to nearest integer
         if (!Number.isInteger(wallet)) {
             wallet = Math.round(wallet);
-            client.credit.set(`${M.sender}.wallet`, wallet);
+            client.gem.set(`${M.sender}.wallet`, wallet);
         }
 
         const contact = await client.contact.getContact(M.sender, client);
