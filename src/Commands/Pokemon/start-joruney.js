@@ -11,11 +11,11 @@ module.exports = {
     category: "pokemon",
     description: "Start your Pokémon journey by choosing a starter Pokémon or view Pokémon from a specific region.",
     async execute(client, arg, M) {
-        const companion = client.pkmn.get(`${M.sender}_Companion`) || []
-
+        const companion = client.pkmn.get(`${M.sender}_Companion`) || [];
+ 
+ 
         if (companion) {
-            return M.reply('You already started your journey with ' + companion);
-        }
+        if (companion.length > 0) {
 
         try {
             const pokemonNames = {
