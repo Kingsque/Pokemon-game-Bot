@@ -17,6 +17,8 @@ module.exports = {
         const userId = M.sender;
         const economy = await client.econ.findOne({ userId });
 
+        if (!economy) return M.reply('You do not have an economy entry. Please register first.');
+
         const treasury = economy.treasury || 0;
         if (treasury < amount) return M.reply('You don\'t have enough credits in your treasury.');
 
