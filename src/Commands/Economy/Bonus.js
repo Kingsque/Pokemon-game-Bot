@@ -11,21 +11,36 @@ module.exports = {
     usage: 'Use :bonus',
     description: 'Claims your bonus',
     async execute(client, arg, M) {
-        const userId = M.sender; // Fixed missing semicolon
+        const userId = M.sender;
         const economy = await client.econ.findOne({ userId });
         const bonusTimeout = 31536000000; 
         const bonusAmount = 100000;
         let text = '';
 
-        if (economy && economy.bonus !== null && bonusTimeout - (Date.now() - economy.bonus) > 0) { // Added check if economy exists
-            const bonusTime = ms(bonusTimeout - (Date.now() - economy.bonus));
+        if (economy && economy.lastBonus !== null && bonusTimeout - (Date.now() - economy.lastBonus) > 0) {
+            const bonusTime = ms(bonusTimeout - (Date.now() - economy.lastBonus));
             text += `*You have already claimed your bonus reward. You cannot claim it again.*`;
         } else {
             text += `*Welcome to our Aurora family! We are really happy to have you as our member. You have claimed your bonus reward 🎉: ${bonusAmount}.*`;
 
-            economy.gem += bonusAmount; // Fixed missing semicolon
-            economy.bonus = Date.now(); // Fixed incorrect capitalization of 'Date'
-            await economy.save();
+            if (!economy) {
+                const newEconomy = new client.econ({
+                    userId,
+                    gem: bonusAmount,
+                    treasury: 0,
+                    luckPotion: 0,
+                    pepperSpray: 0,
+                    pokeball: 0,
+                    lastBonus: Date.now(),
+                    lastDaily: null,
+                    lastRob: null
+                });
+                await newEconomy.save();
+            } else {
+                economy.gem += bonusAmount;
+                economy.lastBonus = Date.now();
+                await economy.save();
+            }
         }
 
         await client.sendMessage(
