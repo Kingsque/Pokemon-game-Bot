@@ -17,13 +17,6 @@ module.exports = {
         const userId = M.sender;
         const economy = await client.econ.findOne({ userId });
 
-        if (!economy) {
-            // If the user doesn't have an economy entry, create one
-            const newEconomy = new client.econ({ userId });
-            await newEconomy.save();
-            return M.reply("You don't have an economy entry yet. Your account has been created.");
-        }
-
         const treasury = economy.treasury || 0;
         if (treasury < amount) return M.reply('You don\'t have enough credits in your treasury.');
 
