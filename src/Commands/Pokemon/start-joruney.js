@@ -219,7 +219,7 @@ module.exports = {
                             isFemale = Math.random() * 100 <= genderRate;
                         }
 
-                        const pokemonData = {
+                        const pData = {
                             name: name,
                             level: level,
                             pokexp: requiredExp,
@@ -242,7 +242,7 @@ module.exports = {
                         };
 
                         let party = client.pkmn.get(`${M.sender}_Party`) || [];
-                        party.push(pokemonData);
+                        party.push(pData);
                         client.pkmn.set(`${M.sender}_Party`, party);
                         client.pkmn.set(`${M.sender}_Companion`, pName);
 
