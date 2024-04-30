@@ -14,13 +14,12 @@ module.exports = {
 
         let wallet = economy ? economy.gem : 0;
 
-        // Convert decimal or fraction amounts to nearest integer
-        if (!Number.isInteger(wallet)) {
-            wallet = Math.round(wallet);
-            if (economy) {
-                economy.gem = wallet;
-                await economy.save();
-            }
+        // Ensure wallet value is an integer
+        wallet = Math.round(wallet);
+
+        if (economy && economy.gem !== wallet) {
+            economy.gem = wallet;
+            await economy.save();
         }
 
         const contact = await client.contact.getContact(M.sender, client);
