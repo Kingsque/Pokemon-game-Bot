@@ -42,7 +42,10 @@ module.exports = {
         
         if (arg.startsWith('-') || arg.startsWith('+')) return M.reply('Please provide a valid amount.');
 
-        const credits = (await client.gem.get(`${M.sender}.wallet`)) || 0;
+        const userId = M.sender;
+        const economy = await client.econ.findOne({ userId });
+
+        const credits = economy.gem || 0;
 
         if (amount > credits) return M.reply("You don't have sufficient funds.");
         
@@ -60,13 +63,13 @@ module.exports = {
 
         if (isJackpotTriggered) {
             const jackpotWin = 200000; // Update jackpot win amount
-            await client.gem.add(`${M.sender}.wallet`, jackpotWin);
+            economy.gem += jackpotWin;
+            await economy.save();
             return M.reply(`🎰 *SLOT MACHINE* 🎰\n 🍉 🍉 🍉\n🍉 🍉 🍉\n🍉 🍉 🍉 \nCongratulations! You hit the jackpot and won ${jackpotWin} credits!`);
         } else {
             let luck = 0; // Define luck variable
-            const luckData = await client.rpg.get(`${M.sender}.luckpotion`);
-            if (luckData) {
-                luck = luckData;
+            if (economy.luckpotion) {
+                luck = economy.luckpotion;
             }
 
             const luckFactor = 0.6 + (Math.random() * luck) / 10; // Reduce luck factor to 60%
@@ -78,17 +81,22 @@ module.exports = {
             resultAmount = Math.round(resultAmount);
             if (resultAmount > 150000) resultAmount = 150000;
 
-            await client.gem.add(`${M.sender}.wallet`, resultAmount);
+            economy.gem += resultAmount;
+            await economy.save();
 
             let text = '🎰 *SLOT MACHINE* 🎰\n\n';
             text += machine.visualize();
 
             if (points <= 0 && luck > 0 && Math.random() < 0.5) { // Adjust the probability here
                 resultAmount = 0;
-                await client.rpg.sub(`${M.sender}.luckpotion`, 1);
+                economy.luckpotion -= 1;
+                await economy.save();
                 text += '\n\n🍀 You have been saved by your luck potion!';
             } else {
-                if (points <= 0) await client.gem.sub(`${M.sender}.wallet`, amount);
+                if (points <= 0) {
+                    economy.gem -= amount;
+                    await economy.save();
+                }
                 text += points <= 0 ? `\n\n📉 You lost ${amount} credits` : `\n\n📈 You won ${resultAmount} credits`;
             }
 
