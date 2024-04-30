@@ -13,7 +13,7 @@ module.exports = {
     async execute(client, arg, M) {
         const companion = client.pkmn.get(`${M.sender}_Companion`) || [];
 
-        if (companion.length === 0) {
+        if (companion.length !== 0) {
             return M.reply('You already started your journey');
         }
 
@@ -180,145 +180,19 @@ module.exports = {
                     });
                 } else if (flag === 'choose') {
                     const pName = args.slice(1).join(' ').toLowerCase();
-
-                    if (starterPokemon.includes(pName)) {
-                        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pName}`);
-                        const pokemon = response.data;
-
-                        const name = pokemon.name;
-                        const types = pokemon.types.map(type => type.type.name);
-                        const image = pokemon.sprites.other['official-artwork'].front_default;
-                        const level = Math.floor(Math.random() * (10 - 5) + 5);
-                        const requiredExp = calculatePokeExp(level);
-
-                        const baseStats = {};
-                        pokemon.stats.forEach(stat => {
-                            baseStats[stat.stat.name] = stat.base_stat;
-                        });
-
-                        const moves = pokemon.moves.slice(0, 2);
-                        const movesDetails = await Promise.all(moves.map(async move => {
-                            const moveUrl = move.move.url;
-                            const moveDataResponse = await fetch(moveUrl);
-                            const moveData = await moveDataResponse.json();
-                            const moveName = move.move.name;
-                            const movePower = moveData.power || 0;
-                            const moveAccuracy = moveData.accuracy || 0;
-                            const movePP = moveData.pp || 5;
-                            const moveType = moveData.type ? moveData.type.name : 'Normal';
-                            const moveDescription = moveData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
-                            return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, maxPower: moveName, maxPP: movePP, maxAccuracy: moveAccuracy, type: moveType, description: moveDescription };
-                        }));
-
-                        const genderRate = pokemon.gender_rate;
-                        let isFemale = false;
-
-                        if (genderRate >= 8) {
-                            isFemale = true;
-                        } else if (genderRate > 0) {
-                            isFemale = Math.random() * 100 <= genderRate;
-                        }
-
-                        const pData = {
-                            name: name,
-                            level: level,
-                            pokexp: requiredExp,
-                            id: pokemon.id,
-                            image: image,
-                            hp: baseStats['hp'],
-                            attack: baseStats['attack'],
-                            defense: baseStats['defense'],
-                            speed: baseStats['speed'],
-                            maxHp: baseStats['hp'],
-                            maxAttack: baseStats['attack'],
-                            maxDefense: baseStats['defense'],
-                            maxSpeed: baseStats['speed'],
-                            type: types,
-                            moves: movesDetails,
-                            status: '',
-                            movesUsed: 0,
-                            female: isFemale,
-                            pokeball: ''
-                        };
-
-                        let party = client.pkmn.get(`${M.sender}_Party`) || [];
-                        party.push(pData);
-                        client.pkmn.set(`${M.sender}_Party`, party);
-                        client.pkmn.set(`${M.sender}_Companion`, pName);
-
-                        return M.reply(`You have successfully started your journey with ${pName}`);
-                    }
-
                     // If the chosen Pokémon is not from the starter list, proceed with the region-based selection
                     if (!pokemonNames.hasOwnProperty(pName)) {
                         return M.reply("Invalid start pokemon. Please choose from the list of starters or regions.");
                     }
-                    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pName}`);
-                    const pokemon = response.data;
 
-                    const name = pokemon.name;
-                    const types = pokemon.types.map(type => type.type.name);
-                    const image = pokemon.sprites.other['official-artwork'].front_default;
-                    const level = Math.floor(Math.random() * (10 - 5) + 5);
-                    const requiredExp = calculatePokeExp(level);
+                    if (starterPokemon.includes(pName)) {
+                        let party = client.pkmn.get(`${M.sender}_Party`) || [];
+                        await party.push(pokemonData);
+                        await client.pkmn.set(`${M.sender}_Party`, party);
+                        await client.pkmn.set(`${M.sender}_Companion`, pName);
 
-                    const baseStats = {};
-                    pokemon.stats.forEach(stat => {
-                        baseStats[stat.stat.name] = stat.base_stat;
-                    });
-
-                    const moves = pokemon.moves.slice(0, 2);
-                    const movesDetail = await Promise.all(moves.map(async move => {
-                        const moveUrl = move.move.url;
-                        const moveDataResponse = await fetch(moveUrl);
-                        const moveData = await moveDataResponse.json();
-                        const moveName = move.move.name;
-                        const movePower = moveData.power || 0;
-                        const moveAccuracy = moveData.accuracy || 0;
-                        const movePP = moveData.pp || 5;
-                        const moveType = moveData.type ? moveData.type.name : 'Normal';
-                        const moveDescription = moveData.flavor_text_entries.find(entry => entry.language.name === 'en').flavor_text;
-                        return { name: moveName, power: movePower, accuracy: moveAccuracy, pp: movePP, maxPower: moveName, maxPP: movePP, maxAccuracy: moveAccuracy, type: moveType, description: moveDescription };
-                    }));
-
-                    const genderRate = pokemon.gender_rate;
-                    let isFemale = false;
-
-                    if (genderRate >= 8) {
-                        isFemale = true;
-                    } else if (genderRate > 0) {
-                        isFemale = Math.random() * 100 <= genderRate;
+                        return M.reply(`You have successfully started your journey with ${pName}`);
                     }
-
-                    const pData = {
-                        name: name,
-                        level: level,
-                        pokexp: requiredExp,
-                        id: pokemon.id,
-                        image: image,
-                        hp: baseStats['hp'],
-                        attack: baseStats['attack'],
-                        defense: baseStats['defense'],
-                        speed: baseStats['speed'],
-                        maxHp: baseStats['hp'],
-                        maxAttack: baseStats['attack'],
-                        maxDefense: baseStats['defense'],
-                        maxSpeed: baseStats['speed'],
-                        type: types,
-                        moves: movesDetail,
-                        status: '',
-                        movesUsed: 0,
-                        female: isFemale,
-                        rarity: 'starter',
-                        pokeball: 'pokeball'
-                    };
-
-                    let party = client.pkmn.get(`${M.sender}_Party`) || []
-                    await party.push(pData)
-                    await client.pkmn.set(`${M.sender}_Party`, party)
-                   await client.pkmn.set(`${M.sender}_Companion`, pName);
-
-                    return M.reply(`You have successfully started your journey with ${pName}`);
                 }
             }
         } catch (err) {
@@ -329,4 +203,4 @@ module.exports = {
         }
     }
 };
-                        
+            
