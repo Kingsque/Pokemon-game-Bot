@@ -23,7 +23,7 @@ module.exports = {
                 message = `*You have already claimed your daily reward. You have to wait ${dailyTime.hours} hour(s) ${dailyTime.minutes} minute(s), ${dailyTime.seconds} second(s).*`;
             } else {
                 message = `*You have claimed your daily reward 🎉: ${dailyAmount}.*`;
-                economy.wallet += dailyAmount;
+                economy.gem += dailyAmount;
                 economy.lastDaily = Date.now();
                 await economy.save();
             }
