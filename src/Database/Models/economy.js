@@ -8,12 +8,12 @@ const economySchema = new mongoose.Schema({
   },
   gem: {
     type: Number,
-    default: 100,
+    default: 0,
     max: Number.MAX_SAFE_INTEGER
   },
   treasury: {
     type: Number,
-    default: 50,
+    default: 0,
     max: Number.MAX_SAFE_INTEGER
   },
   luckpotion: {
@@ -55,27 +55,25 @@ const economySchema = new mongoose.Schema({
   }
 });
 
-economySchema.pre("save", async function (next) {
-  // Check if gem or treasury contains - or .
-  if (String(this.gem).includes('-')) {
-    this.gem = 0;
-  }
-  if (String(this.treasury).includes('-')) {
-    this.treasury = 0;
-  }
-  if (String(this.gem).includes('.')) {
-    this.gem = Math.round(this.gem);
-  }
-  if (String(this.treasury).includes('.')) {
-    this.treasury = Math.round(this.treasury);
-  }
-
+economySchema.pre("save", async function(next) {
   // Check if the user already exists in the database
   const existingUser = await Economy.findOne({ userId: this.userId });
   if (!existingUser) {
     // User does not exist, create a new one
     await Economy.create({ userId: this.userId });
   }
+
+  // Check if gem or treasury contains negative values
+  if (this.gem < 0) {
+    this.gem = 0;
+  }
+  if (this.treasury < 0) {
+    this.treasury = 0;
+  }
+
+  // Check if gem or treasury contains decimal points and round them
+  this.gem = Math.round(this.gem);
+  this.treasury = Math.round(this.treasury);
 
   next();
 });
