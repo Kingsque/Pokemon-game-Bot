@@ -32,7 +32,7 @@ module.exports = MessageHandler = async (messages, client) => {
         const banned = (await client.DB.get('banned')) || [];
         const user = (await client.DB.get(`data`)) || [];
         const companion = await client.pkmn.get(`${sender}_Companion`);
-        const economy = await client.econ.findOne({ sender });
+        const economy = await client.econ.findOne({ M.sender });
         
         // Antilink system
         if (
