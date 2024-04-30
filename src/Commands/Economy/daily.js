@@ -20,7 +20,7 @@ module.exports = {
             economy = new client.econ({ userId });
             await economy.save();
             // Notify the user that their account has been created
-            M.reply("Welcome to the economy system! 🎉 Congratulations on creating your account! You're all set up to start earning and managing your coins. 💰💳 Your account has been initialized. 💪 Thank you for joining our community, and we hope you enjoy your journey to financial success! 🚀");
+            await M.reply("Welcome to the economy system! 🎉 Congratulations on creating your account! You're all set up to start earning and managing your coins. 💰💳 Your account has been initialized. 💪 Thank you for joining our community, and we hope you enjoy your journey to financial success! 🚀");
             return;
         }
 
@@ -63,7 +63,7 @@ module.exports = {
                 text += `*You have claimed your daily reward 🎉: ${dailyAmount}*`;
             }
 
-            await economy.save();
+            await economy.save(); // Save the updated economy object
         }
 
         // Construct the daily streak representation
@@ -79,6 +79,6 @@ module.exports = {
         }
 
         // Send the response
-        M.reply(`${text}\n${streakText}`);
+        await M.reply(`${text}\n${streakText}`);
     }
 };
