@@ -7,19 +7,31 @@ module.exports = {
     cool: 4,
     react: "✅",
     usage: 'Use :withdraw <amount>',
-    description: 'Withdraws credits from your bank to your wallet',
+    description: 'Withdraws credits from your treasury to your wallet',
     async execute(client, arg, M) {
         if (!arg || isNaN(arg)) return M.reply('Please provide a valid amount.');
         
         const amount = parseInt(arg);
         if (amount <= 0) return M.reply('Please provide a positive amount.');
 
-        const bank = (await client.gem.get(`${M.sender}.bank`)) || 0;
-        if (bank < amount) return M.reply('You don\'t have enough credits in your bank.');
+        const userId = M.sender;
+        const economy = await client.econ.findOne({ userId });
 
-        await client.gem.add(`${M.sender}.wallet`, amount);
-        await client.gem.sub(`${M.sender}.bank`, amount);
+        if (!economy) {
+            // If the user doesn't have an economy entry, create one
+            const newEconomy = new client.econ({ userId });
+            await newEconomy.save();
+            return M.reply("You don't have an economy entry yet. Your account has been created.");
+        }
 
-        M.reply(`You have successfully withdrawn ${amount} credits from your bank.`);
+        const treasury = economy.treasury || 0;
+        if (treasury < amount) return M.reply('You don\'t have enough credits in your treasury.');
+
+        economy.gem += amount;
+        economy.treasury -= amount;
+
+        await economy.save();
+
+        M.reply(`You have successfully withdrawn ${amount} credits from your treasury to your wallet.`);
     }
 };
