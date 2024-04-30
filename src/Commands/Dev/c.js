@@ -23,8 +23,9 @@ module.exports = {
             const message = `🎊 A new card has spawned 🎊\n\n🏷 *Name:* ${title}\n🪄 *Tier:* ${tier}\n💎 *Price:* ${price}\n\nUse *${client.prefix}collect* to get this card for yourself`;
 
 
-                const vid = await client.utils.gifToMp4(image); // Assuming gifToMp4 is a valid function
-                await client.sendMessage(M.from, { video: vid, gifPlayback: true, caption: message });
+                const giif = await client.utils.getBuffer(image);
+              const cgif = await client.utils.gifToMp4(giif);
+                await client.sendMessage(M.from, { video: cgif, gifPlayback: true, caption: message });
      
         } catch (error) {
             console.error(error);
