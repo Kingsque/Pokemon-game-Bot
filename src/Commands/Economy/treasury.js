@@ -27,6 +27,8 @@ module.exports = {
         const tag = `#${M.sender.substring(3, 7)}`;
         const thumbnail = await client.utils.getBuffer('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRBfcfZ3LyY8EzPbH5LbHYOxOW0p7Ki5aIenqTSFm5YQ&s.jpg');
 
+        await economy.save(); // Save the updated economy object
+
         await client.sendMessage(M.from, {
             text: "",
             contextInfo: {
