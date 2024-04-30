@@ -11,7 +11,13 @@ module.exports = {
     async execute(client, arg, M) {
         const userId = M.sender;
 
-        const economy = await client.econ.findOne({ userId });
+        // Check if the user is already registered
+        let economy = await client.econ.findOne({ userId });
+        if (!economy) {
+            // If user is not registered, create a new economy record for them
+            economy = await client.econ.create({ userId });
+            M.reply('Yiu have been registered in the economy database')
+        }
 
         const treasury = economy.treasury;
 
