@@ -9,20 +9,25 @@ module.exports = {
     usage: 'Use :wallet',
     description: 'Shows the wallet value',
     async execute(client, arg, M) {
-        let wallet = await client.gem.get(`${M.sender}.wallet`) || 0;
-        
+        const userId = M.sender;
+        const economy = await client.econ.findOne({ userId });
+
+        let wallet = economy ? economy.gem : 0;
+
         // Convert decimal or fraction amounts to nearest integer
         if (!Number.isInteger(wallet)) {
             wallet = Math.round(wallet);
-            await client.gem.set(`${M.sender}.wallet`, wallet);
+            if (economy) {
+                economy.gem = wallet;
+                await economy.save();
+            }
         }
 
         const contact = await client.contact.getContact(M.sender, client);
         const username = contact.username || 'Unknown';
         const tag = `#${M.sender.substring(3, 7)}`;
 
-        const text = `💳 *Credits* 💳\n\n👤 *Name:* ${username}\n🔖 *Tag:* ${tag}\n💳 *Credits:* ${wallet}`;
-        const thumbnail = await client.utils.getBuffer('https://i.ibb.co/tPhb428/Aurora.jpg');
+        const thumbnail = await client.utils.getBuffer('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq_uWYBUlowQjCzGGpph4KKF_mLSI2pMwBJA&usqp=CAU.jpg');
         
         await client.sendMessage(M.from, {
             text: "",
@@ -37,3 +42,4 @@ module.exports = {
         });
     }
 };
+l
