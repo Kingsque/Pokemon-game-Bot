@@ -268,7 +268,7 @@ module.exports = {
                     });
 
                     const moves = pokemon.moves.slice(0, 2);
-                    const movesDetails = await Promise.all(moves.map(async move => {
+                    const movesDetail = await Promise.all(moves.map(async move => {
                         const moveUrl = move.move.url;
                         const moveDataResponse = await fetch(moveUrl);
                         const moveData = await moveDataResponse.json();
@@ -305,7 +305,7 @@ module.exports = {
                         maxDefense: baseStats['defense'],
                         maxSpeed: baseStats['speed'],
                         type: types,
-                        moves: movesDetails,
+                        moves: movesDetail,
                         status: '',
                         movesUsed: 0,
                         female: isFemale,
@@ -314,9 +314,8 @@ module.exports = {
                     };
 
                     let party = client.pkmn.get(`${M.sender}_Party`) || [];
-                    party.push(pData)
-                    client.pkmn.set(`${M.sender}_Party`, party);
-                    client.pkmn.set(`${M.sender}_Companion`, pName);
+                    await client.pkmn.push(`${M.sender}_Party`, pData);
+                   await client.pkmn.set(`${M.sender}_Companion`, pName);
 
                     return M.reply(`You have successfully started your journey with ${pName}`);
                 }
