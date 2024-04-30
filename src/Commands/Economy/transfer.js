@@ -17,20 +17,15 @@ module.exports = {
         if (isNaN(amount) || amount <= 0) return M.reply('Please provide a valid positive amount.');
 
         const userId = M.sender;
-        const economy = await client.econ.findOne({ userId });
+        const senderEconomy = await client.econ.findOne({ userId });
 
-        const senderWallet = economy.gem || 0;
+        const senderWallet = senderEconomy.gem || 0;
         if (senderWallet < amount) return M.reply('You don\'t have enough credits in your wallet.');
 
         const recipientEconomy = await client.econ.findOne({ userId: recipient });
-        if (!recipientEconomy) {
-            // If the recipient doesn't have an economy entry, create one
-            const newRecipientEconomy = new client.econ({ userId: recipient });
-            await newRecipientEconomy.save();
-        }
 
-        economy.gem -= amount;
-        await economy.save();
+        senderEconomy.gem -= amount;
+        await senderEconomy.save();
 
         recipientEconomy.gem += amount;
         await recipientEconomy.save();
