@@ -10,13 +10,7 @@ module.exports = {
     description: 'Shows the wallet value',
     async execute(client, arg, M) {
         let wallet = await client.gem.get(`${M.sender}.wallet`) || 0;
-
-        // Convert negative amount to 0
-        if (wallet < 0) {
-            wallet = 0;
-            await client.gem.set(`${M.sender}.wallet`, 0);
-        }
-
+        
         // Convert decimal or fraction amounts to nearest integer
         if (!Number.isInteger(wallet)) {
             wallet = Math.round(wallet);
@@ -28,7 +22,7 @@ module.exports = {
         const tag = `#${M.sender.substring(3, 7)}`;
 
         const text = `💳 *Credits* 💳\n\n👤 *Name:* ${username}\n🔖 *Tag:* ${tag}\n💳 *Credits:* ${wallet}`;
-        const thumbnail = client.utils.getBuffer('https://i.ibb.co/tPhb428/Aurora.jpg');
+        const thumbnail = await client.utils.getBuffer('https://i.ibb.co/tPhb428/Aurora.jpg');
         
         await client.sendMessage(M.from, {
             text: text,
