@@ -16,10 +16,8 @@ module.exports = {
 
         let treasury = economy ? economy.treasury : 0;
 
-        // Convert decimal or fraction amounts to nearest integer
-        if (!Number.isInteger(treasury)) {
-            treasury = Math.round(treasury);
-        }
+        // Ensure treasury value is an integer
+        treasury = Math.round(treasury);
 
         const contact = await client.contact.getContact(M.sender, client);
         const username = contact.username || 'Unknown';
