@@ -13,7 +13,7 @@ module.exports = {
     async execute(client, arg, M) {
         const companion = client.pkmn.get(`${M.sender}_Companion`) || [];
 
-        if (companion.length !== 0) {
+        if (!companion.length === 0) {
             return M.reply('You already started your journey' + companion);
         }
 
