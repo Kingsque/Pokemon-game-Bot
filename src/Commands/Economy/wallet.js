@@ -25,7 +25,7 @@ module.exports = {
         const thumbnail = await client.utils.getBuffer('https://i.ibb.co/tPhb428/Aurora.jpg');
         
         await client.sendMessage(M.from, {
-            text: text,
+            text: '',
             contextInfo: {
                 externalAdReply: {
                     title: `${username}: ${wallet}`,
