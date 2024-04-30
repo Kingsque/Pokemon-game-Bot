@@ -13,10 +13,9 @@ module.exports = {
     async execute(client, arg, M) {
         const companion = client.pkmn.get(`${M.sender}_Companion`) || [];
 
-        if (!companion.length === 0) {
+        if (!companion.length == 0) {
             return M.reply('You already started your journey' + companion);
         }
-
 
         try {
             const pokemonNames = {
@@ -172,7 +171,7 @@ module.exports = {
                         movesUsed: 0,
                         female: isFemale,
                         rarity: 'starter',
-                        pokeball: ''
+                        pokeball: 'pokeball'
                     };
 
                     client.sendMessage(M.from, {
@@ -182,7 +181,7 @@ module.exports = {
                 } else if (flag === 'choose') {
                     const pName = args.slice(1).join(' ').toLowerCase();
                     // If the chosen Pokémon is not from the starter list, proceed with the region-based selection
-                    if (!pokemonNames.hasOwnProperty(pName)) {
+                    if (!starterPokemon.includes(pName)) {
                         return M.reply("Invalid start pokemon. Please choose from the list of starters or regions.");
                     }
 
@@ -204,4 +203,3 @@ module.exports = {
         }
     }
 };
-            
