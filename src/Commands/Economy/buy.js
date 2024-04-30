@@ -3,8 +3,6 @@ const items = {
     luckpotion: 15000,
     pepperspray: 10000,
     pokeball: 12000,
-    greatball: 20000,
-    ultraball: 50000
 };
 
 module.exports = {
@@ -24,16 +22,21 @@ module.exports = {
         if (!items[itemName]) return M.reply('Please provide a valid item name.');
 
         const totalPrice = items[itemName] * quantity;
-        const userWallet = (await client.econ.findOne({ userId: M.sender }))?.gem || 0;
+        const userId = M.sender;
 
-        if (userWallet < totalPrice) {
+        const user = await client.econ.findOne({ userId });
+
+        if (!user) return M.reply('You need to set up your economy first.');
+
+        if (user.gem < totalPrice) {
             return M.reply(`You don't have enough credits to buy ${quantity} ${itemName}(s).`);
         }
 
-        const economy = await client.econ.findOne({ userId: M.sender });
-        economy.gem -= totalPrice;
-        economy[itemName] += quantity;
-        await economy.save();
+        user.gem -= totalPrice;
+        if (!user[itemName]) user[itemName] = 0;
+        user[itemName] += quantity;
+
+        await user.save();
 
         M.reply(`Thank you for your purchase! You now have ${quantity} ${itemName}(s).`);
     },
