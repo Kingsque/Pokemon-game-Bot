@@ -16,6 +16,21 @@ const economySchema = new mongoose.Schema({
     default: 50,
     max: Number.MAX_SAFE_INTEGER
   },
+  luckpotion: {
+    type: Number,
+    default: 0,
+    max: Number.MAX_SAFE_INTEGER
+  },
+  pepperspray: {
+    type: Number,
+    default: 0,
+    max: Number.MAX_SAFE_INTEGER
+  },
+  pokeball: {
+    type: Number,
+    default: 0,
+    max: Number.MAX_SAFE_INTEGER
+  },
   lastRobbed: {
     type: Date,
     default: null
@@ -24,6 +39,20 @@ const economySchema = new mongoose.Schema({
     type: Date,
     default: null
   },
+  bonus: {
+    type: Date,
+    default: null
+  },
+  missedDays: {
+    type: Number,
+    default: 0,
+    max: Number.MAX_SAFE_INTEGER
+  },
+  streak: {
+    type: Number,
+    default: 0,
+    max: Number.MAX_SAFE_INTEGER
+  }
 });
 
 economySchema.pre("save", async function (next) {
