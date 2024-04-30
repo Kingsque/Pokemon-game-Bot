@@ -14,8 +14,9 @@ module.exports = {
         const companion = client.pkmn.get(`${M.sender}_Companion`) || [];
 
         if (companion.length !== 0) {
-            return M.reply('You already started your journey');
+            return M.reply('You already started your journey' + companion);
         }
+
 
         try {
             const pokemonNames = {
