@@ -1,3 +1,13 @@
+// Middleware function to check if user is registered in economy
+async function checkEconomy(client, userId) {
+    let economy = await client.econ.findOne({ userId });
+    if (!economy) {
+        // If user is not registered, create a new economy record for them
+        economy = await client.econ.create({ userId });
+    }
+    return economy;
+}
+
 // Treasury Command
 module.exports = {
     name: 'treasury',
@@ -11,13 +21,8 @@ module.exports = {
     async execute(client, arg, M) {
         const userId = M.sender;
 
-        // Check if the user is already registered
-        let economy = await client.econ.findOne({ userId });
-        if (!economy) {
-            // If user is not registered, create a new economy record for them
-            economy = await client.econ.create({ userId });
-            M.reply('Yiu have been registered in the economy database')
-        }
+        // Check if the user is registered in economy
+        const economy = await checkEconomy(client, userId);
 
         const treasury = economy.treasury;
 
