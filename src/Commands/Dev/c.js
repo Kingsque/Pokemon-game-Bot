@@ -7,13 +7,17 @@ module.exports = {
     description: "Fetches a random card and displays its details.",
     async execute(client, args, M) {
         try {
-            const url = 'https://shit-api.vercel.app/cards/random';
+            let url = 'https://shit-api.vercel.app/cards/random';
             const response = await fetch(url);
             const cardData = await response.json();
             
             let { title, tier, source, id, image } = cardData;
             tier = tier.replace('tier ', ''); // Remove 'tier' prefix
             const price = await client.utils.getRandomInt(10000, 100); // Assuming calculatePrice is a valid function
+
+            if (tier !== '6' && tier !== 'S') {
+                url = 'https://shit-api.vercel.app/cards/'; // Reuse the API
+            }
 
             const message = `🎊 A new card has spawned 🎊\n\n🏷 *Name:* ${title}\n🪄 *Tier:* ${tier}\n💎 *Price:* ${price}\n\nUse *${client.prefix}collect* to get this card for yourself`;
 
