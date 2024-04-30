@@ -22,13 +22,10 @@ module.exports = {
 
             const message = `🎊 A new card has spawned 🎊\n\n🏷 *Name:* ${title}\n🪄 *Tier:* ${tier}\n💎 *Price:* ${price}\n\nUse *${client.prefix}collect* to get this card for yourself`;
 
-            if (image.endsWith('.gif')) {
+
                 const vid = await client.utils.gifToMp4(image); // Assuming gifToMp4 is a valid function
                 await client.sendMessage(M.from, { video: vid, gifPlayback: true, caption: message });
-            } else {
-                const buffer = await client.utils.getBuffer(image); // Assuming getBuffer is a valid function
-                await client.sendMessage(M.from, { image: buffer, caption: message });
-            }
+     
         } catch (error) {
             console.error(error);
             await client.sendMessage(M.from, { text: "An error occurred while fetching the card." });
