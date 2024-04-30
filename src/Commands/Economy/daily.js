@@ -14,15 +14,7 @@ module.exports = {
         const userId = M.sender;
         let economy = await client.econ.findOne({ userId });
 
-        // Check if the user has an economy entry
-        if (!economy) {
-            // If not, create a new economy entry
-            economy = new client.econ({ userId });
-            await economy.save();
-            // Notify the user that their account has been created
-            await M.reply("Welcome to the economy system! 🎉 Congratulations on creating your account! You're all set up to start earning and managing your coins. 💰💳 Your account has been initialized. 💪 Thank you for joining our community, and we hope you enjoy your journey to financial success! 🚀");
-        }
-
+        // Check if the user has an economy e
         const dailyTimeout = 86400000; // 24 hours in milliseconds
         const dailyAmount = 3000; // Daily reward amount
         const streakGoal = 7; // Goal for a perfect streak
