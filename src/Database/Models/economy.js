@@ -1,82 +1,16 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const economySchema = new mongoose.Schema({
-  userId: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  gem: {
-    type: Number,
-    default: 0,
-    max: Number.MAX_SAFE_INTEGER
-  },
-  treasury: {
-    type: Number,
-    default: 0,
-    max: Number.MAX_SAFE_INTEGER
-  },
-  luckpotion: {
-    type: Number,
-    default: 0,
-    max: Number.MAX_SAFE_INTEGER
-  },
-  pepperspray: {
-    type: Number,
-    default: 0,
-    max: Number.MAX_SAFE_INTEGER
-  },
-  pokeball: {
-    type: Number,
-    default: 0,
-    max: Number.MAX_SAFE_INTEGER
-  },
-  lastRobbed: {
-    type: Date,
-    default: null
-  },
-  daily: {
-    type: Date,
-    default: null
-  },
-  bonus: {
-    type: Date,
-    default: null
-  },
-  missedDays: {
-    type: Number,
-    default: 0,
-    max: Number.MAX_SAFE_INTEGER
-  },
-  streak: {
-    type: Number,
-    default: 0,
-    max: Number.MAX_SAFE_INTEGER
-  }
+  userId: String,
+  gem: { type: Number, default: 0, max: Number.MAX_SAFE_INTEGER },
+  treasury: { type: Number, default: 0, max: Number.MAX_SAFE_INTEGER },
+  luckPotion: { type: Number, default: 0, max: Number.MAX_SAFE_INTEGER },
+  pepperSpray: { type: Number, default: 0, max: Number.MAX_SAFE_INTEGER },
+  pokeball: { type: Number, default: 0, max: Number.MAX_SAFE_INTEGER },
+  lastBonus: { type: Date, default: null },
+  lastDaily: { type: Date, default: null },
+  lastRob: { type: Date, default: null }
 });
 
-economySchema.pre("save", async function(next) {
-  // Check if the user already exists in the database
-  const existingUser = await Economy.findOne({ userId: this.userId });
-  if (!existingUser) {
-    // User does not exist, create a new one
-    await Economy.create({ userId: this.userId });
-  }
-
-  // Check if gem or treasury contains negative values
-  if (this.gem < 0) {
-    this.gem = 0;
-  }
-  if (this.treasury < 0) {
-    this.treasury = 0;
-  }
-
-  // Check if gem or treasury contains decimal points and round them
-  this.gem = Math.round(this.gem);
-  this.treasury = Math.round(this.treasury);
-
-  next();
-});
-
-const Economy = mongoose.model("Economy", economySchema);
+const Economy = mongoose.model('Economy', economySchema);
 module.exports = Economy;
