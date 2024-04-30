@@ -1,13 +1,3 @@
-// Middleware function to check if user is registered in economy
-async function checkEconomy(client, userId) {
-    let economy = await client.econ.findOne({ userId });
-    if (!economy) {
-        // If user is not registered, create a new economy record for them
-        economy = await client.econ.create({ userId });
-    }
-    return economy;
-}
-
 // Treasury Command
 module.exports = {
     name: 'treasury',
@@ -17,14 +7,19 @@ module.exports = {
     cool: 4,
     react: "✅",
     usage: 'Use :treasury',
-    description: 'Shows the treasury value of user',
+    description: 'Shows the treasury value',
     async execute(client, arg, M) {
         const userId = M.sender;
 
-        // Check if the user is registered in economy
-        const economy = await checkEconomy(client, userId);
+        // Fetch the user's economy data directly without registration check
+        const economy = await client.econ.findOne({ userId });
 
-        const treasury = economy.treasury;
+        let treasury = economy ? economy.treasury : 0;
+
+        // Convert decimal or fraction amounts to nearest integer
+        if (!Number.isInteger(treasury)) {
+            treasury = Math.round(treasury);
+        }
 
         const contact = await client.contact.getContact(M.sender, client);
         const username = contact.username || 'Unknown';
