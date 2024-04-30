@@ -188,12 +188,16 @@ module.exports = {
                     }
 
                     if (starterPokemon.includes(pName)) {
-    let party = client.pkmn.get(`${M.sender}_Party`) || []; // Initialize party as an empty array if undefined
-    party.push(pokemonData); // Push pokemonData into the party array
-    await client.pkmn.set(`${M.sender}_Party`, party); // Save the updated party array
-    await client.pkmn.set(`${M.sender}_Companion`, pName); // Set the chosen Pokémon as the companion
+    let party = client.pkmn.get(`${M.sender}_Party`);
+    if (!Array.isArray(party)) {
+        party = []; // Initialize party as an empty array if it's not an array
+    }
+    party.push(pokemonData);
+    await client.pkmn.set(`${M.sender}_Party`, party);
+    await client.pkmn.set(`${M.sender}_Companion`, pName);
     return M.reply(`You have successfully started your journey with ${pName}`);
                     }
+                    
                 }
             }
         } catch (err) {
