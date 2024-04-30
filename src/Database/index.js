@@ -1,4 +1,3 @@
 module.exports = {
-    sessionSchema: require("./Models/session"),
-    Card: require("./Models/card")
+    sessionSchema: require("./Models/session")
 }
