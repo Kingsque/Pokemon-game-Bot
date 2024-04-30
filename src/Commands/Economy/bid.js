@@ -9,6 +9,7 @@ module.exports = {
   description: 'Bid an amount on an ongoing auction',
   async execute(client, arg, M) {
     try {
+      const eco =  await client.econ.findOne({ userId });
       const auctionInProgress = await client.DB.get(`${M.from}.auctionInProgress`);
       if (!auctionInProgress) {
         return M.reply("There is no ongoing auction at the moment.");
@@ -23,8 +24,7 @@ module.exports = {
         }
 
         const currentBid = (await client.credits.get(`${M.from}_bid`)) || 0;
-        const credits = (await client.credits.get(`${M.sender}_wallet`)) || 0;
-
+        const credits = eco.gem
         if (amount <= currentBid) {
           return M.reply("Your bid must be higher than the current highest bid.");
         } else if (amount > credits) {
