@@ -313,8 +313,9 @@ module.exports = {
                         pokeball: 'pokeball'
                     };
 
-                    let party = client.pkmn.get(`${M.sender}_Party`) || [];
-                    await client.pkmn.push(`${M.sender}_Party`, pData);
+                    let party = client.pkmn.get(`${M.sender}_Party`) || []
+                    await party.push(pData)
+                    await client.pkmn.set(`${M.sender}_Party`, party)
                    await client.pkmn.set(`${M.sender}_Companion`, pName);
 
                     return M.reply(`You have successfully started your journey with ${pName}`);
