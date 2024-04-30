@@ -23,31 +23,27 @@ module.exports = {
         // Check if the amount is within the allowed range
         if (amount < minBet || amount > maxBet) return M.reply(`You can only gamble between ${minBet} and ${maxBet} credits.`);
         
-        const credits = (await client.gem.get(`${M.sender}.wallet`)) || 0;
-        if (credits < amount) return M.reply('You don\'t have enough credits to gamble that much.');
+        const userId = M.sender;
+        const economy = await client.econ.findOne({ userId });
+
+        const wallet = economy.gem || 0;
+        if (wallet < amount) return M.reply('You don\'t have enough credits to gamble that much.');
 
         const result = Math.random() < 0.5 ? 'left' : 'right';
         const won = result === direction;
 
         // Calculate the new wallet balance based on the result
-        const newBalance = won ? credits + amount : credits - amount;
-        await client.gem.set(`${M.sender}.wallet`, newBalance);
+        const newBalance = won ? wallet + amount : wallet - amount;
+        economy.gem = newBalance;
+        await economy.save();
 
         // Determine sticker URL and message based on the result
         const stickerUrl = won
             ? 'https://i.ibb.co/SrtvnFH/ezgif-com-rotate.gif'
             : 'https://raw.githubusercontent.com/Dkhitman3/Hitman47/master/assets/gifs/left.gif';
-        
-        const sticker = new Sticker(stickerUrl, {
-            pack: 'Aurora',
-            author: 'By Aurora',
-            quality: 90,
-            type: 'full',
-            background: won ? '#00FF00FF' : '#FF0000FF' // Green for win, red for loss
-        });
 
         // Send the sticker
-        await client.sendMessage(M.from, { sticker: await sticker.build() }, { quoted: M });
+        await client.sendMessage(M.from, { image: stickerUrl }, { quoted: M });
 
         // Send the result message
         M.reply(won ? `🎉 Congratulations! You won ${amount} credits.` : `🥀 Better luck next time! You lost ${amount} credits.`);
