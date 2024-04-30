@@ -11,13 +11,15 @@ module.exports = {
     usage: 'daily',
     description: 'Claims your daily rewards',
     async execute(client, arg, M) {
+        const userId = M.sender; // Fixed missing semicolon
+        const economy = await client.econ.findOne({ userId });
         const dailyTimeout = 86400000; // 24 hours in milliseconds
         const dailyAmount = 3000; // Daily reward amount
         const streakGoal = 7; // Goal for a perfect streak
 
-        const lastClaimed = await client.gem.get(`${M.sender}.daily`);
-        let streak = await client.gem.get(`${M.sender}.streak`) || 0;
-        let missedDays = await client.gem.get(`${M.sender}.missedDays`) || 0;
+        const lastClaimed = economy.daily;
+        let streak = economy.streak;
+        let missedDays = economy.missedDays;
 
         let text = '';
 
@@ -27,28 +29,32 @@ module.exports = {
         } else {
             // Check if the streak has been reset due to missed days
             if (missedDays > 0 && streak < streakGoal) {
-                await client.gem.set(`${M.sender}.streak`, 0); // Reset streak if not a perfect streak
+                economy.streak = 0; // Reset streak if not a perfect streak
+                await economy.save();
             }
 
             // Increment streak if claimed within 24 hours
             if (streak === streakGoal - 1) {
-                await client.gem.add(`${M.sender}.streak`, 1);
-                await client.gem.add(`${M.sender}_Wallet`, dailyAmount); // Add daily amount to the wallet
-                await client.gem.set(`${M.sender}.daily`, Date.now());
-                await client.gem.set(`${M.sender}.missedDays`, 0);
+                economy.streak += 1;
+                economy.gem += dailyAmount; // Add daily amount to the wallet
+                economy.daily = Date.now();
+                economy.missedDays = 0;
+                await economy.save();
 
                 text += `*Congratulations! You've completed a perfect streak!*`;
             } else if (streak >= streakGoal) {
-                await client.gem.set(`${M.sender}.streak`, 1);
-                await client.gem.add(`${M.sender}_Wallet`, dailyAmount); // Add daily amount to the wallet
-                await client.gem.set(`${M.sender}.daily`, Date.now());
-                await client.gem.set(`${M.sender}.missedDays`, 0);
+                economy.streak = 1;
+                economy.gem += dailyAmount; // Add daily amount to the wallet
+                economy.daily = Date.now();
+                economy.missedDays = 0;
+                await economy.save();
 
                 text += `*You've started a new streak!*`;
             } else {
-                await client.gem.add(`${M.sender}.streak`, 1);
-                await client.gem.add(`${M.sender}_Wallet`, dailyAmount); // Add daily amount to the wallet
-                await client.gem.set(`${M.sender}.daily`, Date.now());
+                economy.streak += 1;
+                economy.gem += dailyAmount; // Add daily amount to the wallet
+                economy.daily = Date.now();
+                await economy.save();
 
                 text += `*You have claimed your daily reward 🎉: ${dailyAmount}*`;
             }
@@ -70,4 +76,3 @@ module.exports = {
         M.reply(`${text}\n${streakText}`);
     }
 };
-            
