@@ -170,6 +170,7 @@ module.exports = {
                         status: '',
                         movesUsed: 0,
                         female: isFemale,
+                        rarity: 'starter',
                         pokeball: ''
                     };
 
@@ -328,4 +329,4 @@ module.exports = {
         }
     }
 };
-                
+                        
