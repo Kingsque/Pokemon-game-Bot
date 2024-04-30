@@ -21,7 +21,6 @@ module.exports = {
             await economy.save();
             // Notify the user that their account has been created
             await M.reply("Welcome to the economy system! 🎉 Congratulations on creating your account! You're all set up to start earning and managing your coins. 💰💳 Your account has been initialized. 💪 Thank you for joining our community, and we hope you enjoy your journey to financial success! 🚀");
-            return;
         }
 
         const dailyTimeout = 86400000; // 24 hours in milliseconds
