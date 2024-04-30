@@ -1,7 +1,7 @@
 // Wallet Command
 module.exports = {
-    name: 'wallet',
-    aliases: ['credit', 'cr', 'credits'],
+    name: 'gem',
+    aliases: ['ag', 'gems'],
     category: 'economy',
     exp: 5,
     cool: 4,
