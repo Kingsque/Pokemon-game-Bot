@@ -22,6 +22,6 @@ module.exports = {
         });
         text += `\n🎴 Use ${client.prefix}buy <item_name> <item_quantity>`;
         text += `\n📗 Example: ${client.prefix}buy luckpotion 2`;
-        M.reply(text);
+        await M.reply(text);
     },
 };
