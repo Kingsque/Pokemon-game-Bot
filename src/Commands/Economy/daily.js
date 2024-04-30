@@ -11,15 +11,26 @@ module.exports = {
     usage: 'daily',
     description: 'Claims your daily rewards',
     async execute(client, arg, M) {
-        const userId = M.sender; // Fixed missing semicolon
-        const economy = await client.econ.findOne({ userId });
+        const userId = M.sender;
+        let economy = await client.econ.findOne({ userId });
+
+        // Check if the user has an economy entry
+        if (!economy) {
+            // If not, create a new economy entry
+            economy = new client.econ({ userId });
+            await economy.save();
+            // Notify the user that their account has been created
+            M.reply("Welcome to the economy system! 🎉 Congratulations on creating your account! You're all set up to start earning and managing your coins. 💰💳 Your account has been initialized. 💪 Thank you for joining our community, and we hope you enjoy your journey to financial success! 🚀");
+            return;
+        }
+
         const dailyTimeout = 86400000; // 24 hours in milliseconds
         const dailyAmount = 3000; // Daily reward amount
         const streakGoal = 7; // Goal for a perfect streak
 
-        const lastClaimed = economy.daily;
-        let streak = economy.streak;
-        let missedDays = economy.missedDays;
+        const lastClaimed = economy.daily || 0;
+        let streak = economy.streak || 0;
+        let missedDays = economy.missedDays || 0;
 
         let text = '';
 
@@ -30,7 +41,6 @@ module.exports = {
             // Check if the streak has been reset due to missed days
             if (missedDays > 0 && streak < streakGoal) {
                 economy.streak = 0; // Reset streak if not a perfect streak
-                await economy.save();
             }
 
             // Increment streak if claimed within 24 hours
@@ -39,25 +49,21 @@ module.exports = {
                 economy.gem += dailyAmount; // Add daily amount to the wallet
                 economy.daily = Date.now();
                 economy.missedDays = 0;
-                await economy.save();
-
                 text += `*Congratulations! You've completed a perfect streak!*`;
             } else if (streak >= streakGoal) {
                 economy.streak = 1;
                 economy.gem += dailyAmount; // Add daily amount to the wallet
                 economy.daily = Date.now();
                 economy.missedDays = 0;
-                await economy.save();
-
                 text += `*You've started a new streak!*`;
             } else {
                 economy.streak += 1;
                 economy.gem += dailyAmount; // Add daily amount to the wallet
                 economy.daily = Date.now();
-                await economy.save();
-
                 text += `*You have claimed your daily reward 🎉: ${dailyAmount}*`;
             }
+
+            await economy.save();
         }
 
         // Construct the daily streak representation
