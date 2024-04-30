@@ -42,6 +42,8 @@ module.exports = {
 
             const starterPokemon = ['bulbasaur', 'charmander', 'squirtle', 'chikorita', 'cyndaquil', 'totodile', 'treecko', 'torchic', 'mudkip', 'turtwig', 'chimchar', 'piplup', 'snivy', 'tepig', 'oshawott', 'chespin', 'fennekin', 'froakie', 'rowlet', 'litten', 'popplio', 'grookey', 'scorbunny', 'sobble'];
 
+            let pokemonData; // Declare pokemonData variable
+
             if (!arg) {
                 let message = "*Regions and Starter Pokémon:*\n";
                 for (const region in pokemonNames) {
@@ -151,7 +153,7 @@ module.exports = {
                         isFemale = Math.random() * 100 <= genderRate;
                     }
 
-                    const pokemonData = {
+                    pokemonData = {
                         name: name,
                         level: level,
                         pokexp: requiredExp,
@@ -203,3 +205,4 @@ module.exports = {
         }
     }
 };
+                
