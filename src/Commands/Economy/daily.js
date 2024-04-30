@@ -19,9 +19,9 @@ module.exports = {
         const dailyAmount = 3000; // Daily reward amount
         const streakGoal = 7; // Goal for a perfect streak
 
-        const lastClaimed = economy.daily || 0;
-        let streak = economy.streak || 0;
-        let missedDays = economy.missedDays || 0;
+        const lastClaimed = economy ? economy.daily : 0;
+        let streak = economy ? economy.streak : 0;
+        let missedDays = economy ? economy.missedDays : 0;
 
         let text = '';
 
