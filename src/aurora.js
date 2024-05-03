@@ -35,10 +35,6 @@ const port = process.env.PORT || 3000
 const driver = new MongoDriver(process.env.URL)
 const chalk = require('chalk')
 
-const cardResponse = new Map();
-
-const pokemonResponse = new Map();
-
 const start = async () => {
     await mongoose.connect(process.env.URL);
 
@@ -62,9 +58,6 @@ const start = async () => {
     //devs
     client.groups = groups()
 
-    client.cardMap = cardResponse
-    client.pokeMap = pokemonResponse
-
     //Database
     client.DB = new QuickDB({
         driver
@@ -79,7 +72,7 @@ const start = async () => {
     client.exp = client.DB.table('experience')
 
     //Cards
-    client.card = client.DB.table('card')
+    client.cards = client.DB.table('card')
 
     //ecnomy 
     client.econ = econ
