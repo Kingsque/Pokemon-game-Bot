@@ -54,7 +54,7 @@ module.exports = {
         await client.sendMessage(
           M.from,
           {
-            video:fs.readFileSync('./Access/Nier Automata.mp4'),gifPlayback:true,
+            video:fs.readFileSync('./assets/Nier Automata.mp4'),gifPlayback:true,
             caption: message
           },
           {
