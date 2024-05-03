@@ -16,7 +16,7 @@ module.exports = {
   exp: 10,
   cool: 4,
   react: "☃️",
-  usage: 'Use :help for helplist or :help <command_name> to get command info',
+  usage: 'Use -help for helplist or -help <command_name> to get command info',
   description: 'Displays the command list or specific command info',
   async execute(client, arg, M) {
     try {
@@ -48,13 +48,13 @@ module.exports = {
           commands += `*❯─『 ${client.utils.capitalize(category, true)} 』─❮* \n\`\`\`${categories[category].join(', ')}\`\`\`\n\n`;
         }
 
-        let message = `*${greeting}* ${pushName}. *Konnichiwa Sanpai How Are You..!?\n*𝓐𝓾𝓻𝓸𝓻𝓪 𝓫𝓸𝓽 𝄞*\n\n☃️ ʜᴇʀᴇ's ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛᴇᴅ ʙᴇʟᴏᴡ:\n\n${commands}`;
-        message += `© _Team Aurora𝄞 \n\n📒ɴᴏᴛᴇs: \n1. ғᴏʀ ᴏғғɪᴄɪᴀʟ ɢʀᴏᴜᴘ = ᴛʏᴘᴇ *${client.prefix}sᴜᴘᴘᴏʀᴛ*\n\n2.ғᴏʀ ᴄᴏᴍᴍᴀɴᴅs ɪɴғᴏ type = *:ᴄᴏᴍᴍᴀɴᴅ <ᴄᴏᴍᴍᴀɴᴅ_ɴᴀᴍᴇ>*`;
+        let message = `*${greeting}* ${pushName}. *Konnichiwa Sanpai How Are You..!?\n*𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆*\n\n☃️ ʜᴇʀᴇ's ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛᴇᴅ ʙᴇʟᴏᴡ:\n\n${commands}`;
+        message += `© 𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆 \n\n📒ɴᴏᴛᴇs: \n1. ғᴏʀ ᴏғғɪᴄɪᴀʟ ɢʀᴏᴜᴘ = ᴛʏᴘᴇ *${client.prefix}sᴜᴘᴘᴏʀᴛ*\n\n2.ғᴏʀ ᴄᴏᴍᴍᴀɴᴅs ɪɴғᴏ type = *:ᴄᴏᴍᴍᴀɴᴅ <ᴄᴏᴍᴍᴀɴᴅ_ɴᴀᴍᴇ>*`;
         
         await client.sendMessage(
           M.from,
           {
-            image: { url: "https://i.ibb.co/tPhb428/Aurora.jpg" },
+            video:fs.readFileSync('./Access/Nier Automata.mp4'),gifPlayback:true,
             caption: message
           },
           {
