@@ -50,14 +50,14 @@ const start = async () => {
         version: (await fetchLatestBaileysVersion()).version,
         auth: state,
         logger: P({ level: 'silent' }),
-        browser: ['AURORA', 'silent', '4.0.0'],
+        browser: ['REDZEOX', 'silent', '4.0.0'],
         printQRInTerminal: true
     })
 
     //Config
-    client.name = process.env.NAME || 'Aurora-Private'
-    client.prefix = process.env.PREFIX || ':'
-    client.mods = ('917903576495,916239664935,917980329866,918999230502').split(',')
+    client.name = process.env.NAME || '𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆'
+    client.prefix = process.env.PREFIX || '-'
+    client.mods = ('919529426293').split(',')
 
     //devs
     client.groups = groups()
