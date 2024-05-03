@@ -45,7 +45,7 @@ module.exports = {
         let commands = '';
 
         for (const category of commandList) {
-          commands += `*❯─『 ${client.utils.capitalize(category, true)} 』─❮* \n\`\`\`${categories[category].join(', ')}\`\`\`\n\n`;
+          commands += `*𓊈𒆜 ${client.utils.capitalize(category, true)} 𒆜𓊉* \n\`\`\`${categories[category].join(', ')}\`\`\`\n\n`;
         }
 
         let message = `*${greeting}* ${pushName}. *Konnichiwa Sanpai How Are You..!?\n*𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆*\n\n☃️ ʜᴇʀᴇ's ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅs ʟɪsᴛᴇᴅ ʙᴇʟᴏᴡ:\n\n${commands}`;
