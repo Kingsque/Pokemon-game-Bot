@@ -1,3 +1,4 @@
+const fs = require('fs'); 
 const now = new Date();
 const hour = now.getHours();
 let greeting;
