@@ -1,35 +1,52 @@
-const fetch = require('node-fetch');
+const path = require('path');
 
 module.exports = {
-    name: "getcard",
-    aliases: ["getcard"],
-    category: "dev",
-    description: "Fetches a random card and displays its details.",
-    async execute(client, args, M) {
-        try {
-            let url = 'https://shit-api.vercel.app/cards/random';
-            let cardData;
-            let tier;
+  name: 'spawn',
+  aliases: ['event'],
+  category: 'dev',
+  exp: 5,
+  react: "✅",
+  description: 'spawns cards',
+  async execute(client, arg, M) {
+    const cardsPath = path.join(__dirname, '../../Helpers/card.json');
+    const data = require(cardsPath);
+    const dataFilter = data.filter(card => card.tier === "S" || card.tier === "6");
 
-            do {
-                const response = await fetch(url);
-                cardData = await response.json();
-                tier = cardData.tier.replace('tier ', '');
-            } while (tier !== '6' && tier !== 'S');
+    console.log(dataFilter);
 
-            const { title, source, id, image } = cardData;
-            const price = await client.utils.getRandomInt(10000, 100); // Assuming calculatePrice is a valid function
+    const { Random } = require("random-js");
+    const random = new Random(); // uses the nativeMath engine
+    const value = random.integer(0, dataFilter.length - 1); // Adjusted to account for array index
+    const obj = dataFilter[value];
 
-            const message = `🎊 A new card has spawned 🎊\n\n🏷 *Name:* ${title}\n🪄 *Tier:* ${tier}\n💎 *Price:* ${price}\n\nUse *${client.prefix}collect* to get this card for yourself`;
+    console.log(obj);
 
-
-                const giif = await client.utils.getBuffer(image);
-              const cgif = await client.utils.gifToMp4(giif);
-                await client.sendMessage(M.from, { video: cgif, gifPlayback: true, caption: message });
-     
-        } catch (error) {
-            console.error(error);
-            await client.sendMessage(M.from, { text: "An error occurred while fetching the card." });
-        }
+    let price;
+    switch (obj.tier) {
+      case "6":
+        price = client.utils.getRandomInt(30000, 50000);
+        break;
+      case "S":
+        price = client.utils.getRandomInt(50000, 100000);
+        break;
     }
-};
+
+    await client.cards.set(`${M.from}.card`, `${obj.title}-${obj.tier}`);
+    await client.cards.set(`${M.from}.card_price`, price);
+
+    const giif = await client.utils.getBuffer(obj.url);
+    const cgif = await client.utils.gifToMp4(giif);
+
+    return client.sendMessage(M.from, {
+      video: cgif,
+      caption: `🎴 ━『 ANIME-CARD 』━ 🎴\n\n💮 Name: ${obj.title}\n\n💠 Tier: ${obj.tier}\n\n🏮 Price: ${price}\n\n📤 Info: This cards are originally owned by https://shoob.gg we are using it with all the required permissions.\n\n🔖 [ Use ${process.env.PREFIX}collect to claim the card, ${process.env.PREFIX}collection to see your Cards ]`,
+      gifPlayback: true,
+    });
+
+    setTimeout(() => {
+      client.cards.delete(`${M.from}.card`);
+      client.cards.delete(`${M.from}.card_price`);
+      console.log('card deleted');
+    }, 3000);
+  }
+}
