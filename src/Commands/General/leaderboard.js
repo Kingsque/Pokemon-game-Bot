@@ -7,9 +7,9 @@ module.exports = {
     category: 'general',
     exp: 5,
     cool: 4,
-    react: "✅",
+    react: "📢",
     usage: 'Use :lb --credit/--cards',
-    description: "Displays global leaderboard of aurora bot in various types",
+    description: "Displays global leaderboard of Mai Sakurajima bot in various types",
     async execute(client, arg, M) {
         try {
             const exp = Object.values(await client.exp.all()) ?? [];
@@ -50,7 +50,7 @@ module.exports = {
                 M.from,
                 {
                     image: {
-                        url: 'https://i.ibb.co/tPhb428/Aurora.jpg'
+                        url: 'https://i.ibb.co/dJSCxCC/wp6201939-sakurajima-mai-wallpapers.jpg'
                     },
                     caption: text,
                     gifPlayback: true
