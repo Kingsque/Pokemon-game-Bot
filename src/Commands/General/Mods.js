@@ -21,6 +21,7 @@ module.exports = {
     await client.sendMessage(
       M.from,
       {
+        image: { url: "https://i.ibb.co/5xCzppV/images-6.jpg" },
         text: mo, // Use mo as the caption
         mentions: mods.map(mod => ({ tag: mod, id: mods.indexOf(mod) }))
       },
