@@ -33,7 +33,7 @@ Click here<details Close>
 <summary></summary>
 
 <h4 align="center" >
-    <a href="https://heroku.com/deploy?template=https://github.com/REDZEOX/Aurora-New-Bot01">
+    <a href="https://heroku.com/deploy?template=https://github.com/REDZEOX/Nier_Automata">
     <img src="https://www.herokucdn.com/deploy/button.svg" width="150px" alt="Deploy on Heroku" >
     </a>
 
