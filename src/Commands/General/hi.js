@@ -2,11 +2,11 @@ const now = new Date();
 const hour = now.getHours();
 let greeting;
 if (hour >= 0 && hour < 12) {
-  greeting = "💕 Good Morning";
+  greeting = "Good Morning 🌄";
 } else if (hour >= 12 && hour < 18) {
-  greeting = "💕 Good Afternoon";
+  greeting = "Good Afternoon 🏜️";
 } else {
-  greeting = "💕 Good Evening";
+  greeting = "Good Evening 🌆";
 }
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
     category: 'general',
     exp: 0,
     cool: 4, // Cooldown in seconds
-    react: "🍥",
+    react: "🕘",
     usage: 'Use :hi to check bot',
     description: 'Says hi to the bot.',
     async execute(client, arg, M) { 
@@ -44,7 +44,7 @@ module.exports = {
                     key,
                     type: 14,
                     editedMessage: {
-                        conversation: `${hi} Master shisui, ${greeting} How are you today my master?`
+                        conversation: `${hi} Dear say.scotch , ${greeting} How are you today ?`
                     }
                 }
             },{})
