@@ -6,7 +6,7 @@ module.exports = {
     category: 'utils',
     exp: 15,
     cool: 4,
-    react: "✅",
+    react: "🌀",
     usage: 'Use :sticker by quoting a image/gif <pack_name>|<author_name>',
     description: 'sticker command helps you to convert images or gifs to an sticker',
     async execute(client, arg, M) {
@@ -27,8 +27,8 @@ module.exports = {
 
                 // Create a new sticker instance
                 const sticker = new Sticker(buffer, {
-                    pack: packName || '👾 Handcrafted for you by',
-                    author: authorName || 'aurora 👾',
+                    pack: packName || 'I Hope That Like You!! 🥰',
+                    author: authorName || '𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆',
                     type: StickerTypes.FULL,
                     categories: ['🤩', '🎉'],
                     quality: 70
