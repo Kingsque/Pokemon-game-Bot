@@ -4,7 +4,7 @@ module.exports = {
     category: 'general',
     exp: 0,
     cool: 4,
-    react: "✅",
+    react: "📢",
     usage: 'Use :info',
     description: 'Get bot information',
     async execute(client, arg, M) {
@@ -25,18 +25,18 @@ module.exports = {
         const modCount = client.mods.length;
         const website = 'coming soon...';
         
-        let text = `(¬‿¬) *${process.env.NAME}'s info*\n\n`;
-        text += `💠 *UPTIME:* ${uptime}\n`;
-        text += `💠 *USERS:* ${usersCounts || 0}\n`;
-        text += `💠 *COMMANDS:* ${client.cmd.size}\n`;
-        text += `💠 *Groups:* ${groupCount}\n`;
-        text += `💠 *Mods:* ${modCount}\n`;
-        text += `💠 *Website:* ${website}`;
+        let text = `*${process.env.NAME}'s info*\n\n`;
+        text += `🕘 *UPTIME:* ${uptime}\n`;
+        text += `👥 *USERS:* ${usersCounts || 0}\n`;
+        text += `🎟️ *COMMANDS:* ${client.cmd.size}\n`;
+        text += `🌐 *Groups:* ${groupCount}\n`;
+        text += `📢 *Mods:* ${modCount}\n`;
+        text += `🎭 *Website:* ${website}`;
 
          await client.sendMessage(
           M.from,
           {
-            image: { url: "https://i.ibb.co/41f2qnx/sakuramaji-mai-bunny-girl.gif" },
+            image: { url: "https://i.ibb.co/KsmPKys/images-4.jpg" },
             caption: text
           },
           {
