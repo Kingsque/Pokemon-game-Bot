@@ -10,7 +10,7 @@ module.exports = {
      async execute(client, arg, M) {
        try {
          
-         let supportG = `*━『 Support Group Links 』━*\n\n* [ Aurora Support ] :* https://chat.whatsapp.com/HQDeQvuH2pl3X3YEMUEbQ8\nDescription: This is theain griup of our beta version, here the slot commands and other ussble commands work.\n\n`;
+         let supportG = `*━『 Support Group Links 』━*\n\n* [ Mai Sakurajima Support ] : *https://chat.whatsapp.com/CGR50886j9Z2sr0aU7VlXg\nDescription: This is theain griup of our beta version, here the slot commands and other ussble commands work.\n\n`;
    
          let text = [
            "Together we rise, together we fall, but always together in this anime world we call home. Welcome to the support group.",
@@ -50,11 +50,11 @@ module.exports = {
    
          const final = supportG.concat(ran);
    
-         await client.sendMessage(M.from, { image: { url: 'https://i.ibb.co/tPhb428/Aurora.jpg' }, caption: `*Dmed you the group link*` }, { quoted: M });
-         await client.sendMessage(M.sender, { image: { url: 'https://i.ibb.co/tPhb428/Aurora.jpg' }, caption: final }, { quoted: M });
+         await client.sendMessage(M.from, { image: { url: 'https://i.ibb.co/jyfcX5S/wp4055471-mai-sakurajima-wallpapers.png' }, caption: `*Dmed you the group link*` }, { quoted: M });
+         await client.sendMessage(M.sender, { image: { url: 'https://i.ibb.co/wBtMqH0/sexy-bunny-girl-mai-sakurajima-ylebpdn9g53xoaza.webp' }, caption: final }, { quoted: M });
        } catch (error) {
          console.error('Error in support command:', error);
-         await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${error}` });
+         await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Mai Sakurajima Dis\n\nError:\n${error}` });
        }
      }
    };
