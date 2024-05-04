@@ -9,7 +9,7 @@ module.exports = {
   description: 'Here you can get the rules of our bot which is made to be maintained and breaking rules have punishments.',
   async execute(client, arg, M) {
 
-    const image = await client.utils.getBuffer('https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg');
+    const image = await client.utils.getBuffer('https://i.ibb.co/71dNXTc/mai-sakurajima-in-the-beach-bdasn7f5tld3d37z-1.webp');
 
     let text = ''; // Change const to let since it's being modified
     text += `👑Rules👑\n`;
