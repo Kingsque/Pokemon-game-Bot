@@ -187,12 +187,12 @@ module.exports = MessageHandler = async (messages, client) => {
         await client.exp.add(sender, command.exp);
 
         let gifRandom = [
-            "https://media.tenor.com/-n2jhe7c1MUAAAAC/anime-my-dress-up-darling.gif",
-            "https://media.tenor.com/PcwaCZsRQuwAAAAC/marin-kitagawa.gif",
-            "https://media.tenor.com/NJ7lf-8yDVsAAAAC/kitagawa-marin.gif",
-            "https://media.tenor.com/DO2R1nI7hOcAAAAC/marin-kitagawa.gif",
-            "https://media.tenor.com/evACdtEThkYAAAAC/marin-kitagawa.gif",
-            "https://media.tenor.com/KRfvIWIgtToAAAAC/dress-up-darling-marin-kitagawa.gif"
+            "https://i.ibb.co/FYkrfLC/images-8.jpg",
+            "https://i.ibb.co/9hbg7K9/images-7.jpg",
+            "https://i.ibb.co/NKvbSvy/images-9.jpg",
+            "https://i.ibb.co/1Q5w1hs/images-10.jpg",
+            "https://i.ibb.co/1J4H4Zz/images-11.jpg",
+            "https://i.ibb.co/qpzrv2h/images-12.jpg"
         ];
         let ran = gifRandom[Math.floor(Math.random() * gifRandom.length)];
         const level = (await client.DB.get(`${sender}_LEVEL`)) || 0;
