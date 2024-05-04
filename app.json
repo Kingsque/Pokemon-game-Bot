@@ -25,7 +25,7 @@
       "NAME":{
 
          "description":"Name of your bot",
-         "value":"Aurora",
+         "value":"𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆",
          "required":true
 
       },
@@ -33,7 +33,7 @@
       "PREFIX":{
 
          "description":"Prefix of your bot",
-         "value":":",
+         "value":"-",
          "required":true
 
       },
@@ -41,7 +41,7 @@
       "MODS":{
 
          "description":"The phone numbers of the users who you want to be admin for the bot (should be in international format without + and multiple numbers must be separated by a comma \",\")",
-         "value": "917980329866",
+         "value": "919529426293,918178640193",
          "required":true
 
       },
@@ -49,7 +49,7 @@
       "URL":{
 
          "description":"A secret String for Mongodb Connection.(Required)",
-         "value":"mongodb+srv://tan:tan@cluster0.mf0nmls.mongodb.net/?retryWrites=true&w=majority",
+         "value":"mongodb+srv://ancienthope8:AC97itFsNcdLMeKB@clusterhh.msyivv3.mongodb.net/?retryWrites=true&w=majority",
          "required":true
 
       },
