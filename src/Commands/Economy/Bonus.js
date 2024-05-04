@@ -21,7 +21,7 @@ module.exports = {
             const bonusTime = ms(bonusTimeout - (Date.now() - economy.lastBonus));
             text += `*You have already claimed your bonus reward. You cannot claim it again.*`;
         } else {
-            text += `*Welcome to our Aurora family! We are really happy to have you as our member. You have claimed your bonus reward 🎉: ${bonusAmount}.*`;
+            text += `*Welcome to our family! We are really happy to have you as our member. You have claimed your bonus reward 🎉: ${bonusAmount}.*`;
 
             if (!economy) {
                 const newEconomy = new client.econ({
@@ -46,7 +46,7 @@ module.exports = {
         await client.sendMessage(
             M.from,
             {
-                image: { url: "https://i.ibb.co/tPhb428/Aurora.jpg" },
+                image: { url: "https://i.ibb.co/2hfsX7Y/wp4055620-mai-sakurajima-wallpapers.jpg" },
                 caption: text
             },
             {
