@@ -3,7 +3,7 @@ const key = 'LIVDSRZULELA';
 
 module.exports = {
     name: 'getgif',
-    aliases: ['searchgif'],
+    aliases: ['gif'],
     category: 'utils',
     exp: 7,
     react: "✅",
