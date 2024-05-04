@@ -4,7 +4,7 @@ module.exports = {
   category: 'general',
   exp: 0,
   cool: 5,
-  react: "🔬",
+  react: "📢",
   usage: 'Use :mods',
   description: 'Get information about moderators',
   async execute(client, arg, M) {
@@ -22,7 +22,7 @@ module.exports = {
       M.from,
       {
         image: { url: "https://i.ibb.co/5xCzppV/images-6.jpg" },
-        text: mo, // Use mo as the caption
+        caption: text,
         mentions: mods.map(mod => ({ tag: mod, id: mods.indexOf(mod) }))
       },
       { quoted: M }
