@@ -3,7 +3,7 @@
 </div>
 <p align="center">
   
-  <img src="https://i.ibb.co/Q9Lf7T8/planb-edit-20240329-0001.jpg" width="400" border="400" alt="PFP">
+  <img src="https://i.ibb.co/Q9Lf7T8/planb-edit-20240329-0001.jpg" width="2050" border="0" alt="PFP">
 </h3>
 
 <p align="center">
