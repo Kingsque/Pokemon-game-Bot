@@ -290,7 +290,7 @@ return greetmsg
 }
 
 const errorChan = () => {
-    let chan = "https://i.ibb.co/2Mv6MX6/505aec0d43c436527f6d855cf775a72c.jpg"
+    let chan = "https://i.ibb.co/Htdgs0w/c8f67a2f49ebc5f6d7293e7649bc5ebd.jpg"
     return chan
 }
 
