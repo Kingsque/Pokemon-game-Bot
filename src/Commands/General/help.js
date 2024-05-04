@@ -55,7 +55,7 @@ module.exports = {
         await client.sendMessage(
           M.from,
           {
-            video:fs.readFileSync('./assets/Nier Automata.mp4'),gifPlayback:true,
+            video:fs.readFileSync('./assets/Mai_Sakutamaji.mp4'),gifPlayback:true,
             caption: message
           },
           {
@@ -73,7 +73,7 @@ module.exports = {
 
       M.reply(message);
     } catch (err) {
-      await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}` });
+      await client.sendMessage(M.from, { image: { url: `${client.utils.errorChan()}` }, caption: `${client.utils.greetings()} Mai Sakurajima Dis\n\nError:\n${err}` });
     }
   }
 };
