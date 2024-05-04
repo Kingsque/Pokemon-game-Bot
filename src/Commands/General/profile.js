@@ -23,7 +23,7 @@ module.exports = {
         try {
             pfp = await client.profilePictureUrl(user, 'image');
         } catch {
-            pfp = 'https://i.ibb.co/nbdh1ZM/Aurora-error.jpg';
+            pfp = 'https://i.ibb.co/jyfcX5S/wp4055471-mai-sakurajima-wallpapers.png';
         }
 
         let bio;
