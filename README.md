@@ -1,13 +1,13 @@
-<h1 align="center"> ᴀᴜʀᴏʀᴀ ʙᴏᴛ 
+<h1 align="center"> 𝔪𝔞𝔦 𝔖𝔞𝔨𝔲𝔯𝔞𝔧𝔦𝔪𝔞
 
 </div>
 <p align="center">
   
-  <img src="https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg" width="360" border="0" alt="PFP">
+  <img src="https://i.ibb.co/Q9Lf7T8/planb-edit-20240329-0001.jpg" width="400" border="400" alt="PFP">
 </h3>
 
 <p align="center">
-ᴀᴜʀᴏʀᴀ ʙᴏᴛ 
+𝔪𝔞𝔦 𝔖𝔞𝔨𝔲𝔯𝔞𝔧𝔦𝔪𝔞
 
 ᴀɴ ᴀᴅᴠᴀɴᴄᴇ ɴᴇᴡ ɢᴇɴᴇʀᴀᴛɪᴏɴ ʙᴏᴛ ᴄʀᴇᴀᴛᴇᴅ ʙʏ ᴛᴇᴀᴍ ᴀᴜʀᴏʀᴀ. ꜰʀᴏᴍ ᴏᴜʀ ᴅᴇᴠʟᴏᴘᴇʀs ʏᴏᴜ ɢᴜʏs ᴀʀᴇ ᴠᴇʀʏ ᴛʜᴀɴᴋᴇᴅ ꜰᴏʀ ᴜsɪɴɢ ᴏᴜʀ ᴘʀᴏᴊᴇᴄᴛ ᴀs ʏᴏᴜʀ ʙᴀsᴇ ʙᴏᴛ.
 <h3 align="center"> ᴄᴇʟᴇꜱᴛɪᴄ ʙᴏᴛ - ᴛʜᴇ ғᴜᴛᴜʀᴇ ɪꜱ ʜᴇʀᴇ
