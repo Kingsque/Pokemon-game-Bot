@@ -53,7 +53,7 @@ module.exports = {
     } catch (err) {
       await client.sendMessage(M.from, {
         image: { url: `${client.utils.errorChan()}` },
-        caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`
+        caption: `${client.utils.greetings()} Mai Sakurajima Dis\n\nError:\n${err}`
       });
     }
   },
