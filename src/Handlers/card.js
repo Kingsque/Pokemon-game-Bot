@@ -67,7 +67,7 @@ module.exports = CardHandler = async (client, m) => {
             
             console.log(`Sended:${obj.tier + "  Name:" + obj.title + "  For " + price + " in " + jid}`);
       client.cardMap.set(M.from, {
-	      card: `${obj.title-${obj.tier}`,
+	      card: `${obj.title}-${obj.tier}`,
 	      price: price
       }
   
