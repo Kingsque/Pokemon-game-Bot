@@ -66,9 +66,10 @@ module.exports = CardHandler = async (client, m) => {
               }
             
             console.log(`Sended:${obj.tier + "  Name:" + obj.title + "  For " + price + " in " + jid}`);
-      await client.cards.set(`${jid}.card`, `${obj.title}-${obj.tier}`);
-      await client.cards.set(`${jid}.card_price`, price);
-     
+      client.cardMap.set(M.from, {
+	      card: `${obj.title-${obj.tier}`,
+	      price: price
+      }
   
       
       if (obj.tier.includes('6')|| obj.tier.includes('S')) {
