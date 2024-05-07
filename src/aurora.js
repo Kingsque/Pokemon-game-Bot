@@ -17,7 +17,7 @@ const CardHandler = require('./Handlers/card')
 const PokeHandler = require('./Handlers/pokemon')
 const EventsHandler = require('./Handlers/Events')
 const econ = require("./Database/Models/economy")
-
+const cardMap = new Map()
 const contact = require('./Structures/Contact')
 const utils = require('./Structures/Functions')
 const YT = require('./lib/YT')
@@ -63,7 +63,7 @@ const start = async () => {
 
     //Contacts
     client.contact = contact
-
+    client.cardMap = cardMap
     //Experience
     client.exp = client.DB.table('experience')
 
