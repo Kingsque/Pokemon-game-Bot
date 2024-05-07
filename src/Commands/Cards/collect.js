@@ -9,9 +9,8 @@ module.exports = {
   description: "Claim the card that is spawned",
   async execute(client, arg, M) {
     try {
-      const card = await client.cards.get(`${M.from}.card`);
-      const cardPrice = await client.cards.get(`${M.from}.card_price`);
-      if (!card) {
+      const card = await client.cardMap.get(M.from);
+     if (!card) {
         return M.reply("🙅‍♀️ Sorry, there are currently no available cards to claim!");
       }
 
@@ -28,17 +27,17 @@ module.exports = {
       }
 
       // Deduct the card price from the user's wallet
-      await client.credit.sub(`${M.sender}.wallet`, cardPrice);
+      await client.credit.sub(`${M.sender}.wallet`, card.price);
 
-      const [title, tier] = card.split("-");
+      const [title, tier] = card.card.split("-");
 
       let text = `🃏 ${title} (${tier}) has been safely stored in your deck!`;
 
       if (deck.length < 12) {
-        deck.push(card);
+        deck.push(card.card);
       } else {
         text = `🃏 ${title} (${tier}) has been safely stored in your collection!`;
-        collection.push(card);
+        collection.push(card.card);
       }
 
       await client.DB.set(`${M.sender}_Deck`, deck);
