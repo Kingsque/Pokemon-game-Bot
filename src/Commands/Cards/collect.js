@@ -1,92 +1,59 @@
 module.exports = {
   name: "collect",
-  aliases: ["claim"],
+  aliases: ["c"],
   exp: 0,
+  cool: 4,
   react: "✅",
   category: "card game",
-  description: "Claim the card",
+  usage: 'Use :c',
+  description: "Claim the card that is spawned",
   async execute(client, arg, M) {
-    
-    const card = await client.cards.get(`${M.from}.card`);
-
-    const cardgame = (await client.DB.get('card-game')) || []
-
-    const cardPrice = await client.cards.get(`${M.from}.card_price`);
-    
-    const deck = await client.DB.get(`${M.sender}_Deck`) || [];
-    
-    const collection = await client.DB.get(`${M.sender}_Collection`) || [];
-    
-    let wallet = await client.cradit.get(`${M.sender}.wallet`) || 0
-
-     // Check if the card has already been claimed
-     const claimedCards = await client.DB.get('claimed-cards') || [];
-     if (claimedCards.includes(card)) {
-       return M.reply("This card has already been claimed by another user.");
-     }
- 
-     // Update the claimed cards list
-     claimedCards.push(card);
-     await client.DB.set('claimed-cards', claimedCards);
-     
-    if(!cardgame.includes(M.from)){
-      return M.reply("Card game is not enabled here")
-    }
-
-    try{
-      if (!card) {
-        return M.reply("🙅‍♀️ Sorry, there are currently no available cards to claim. Please try again later!");
+    try {
+      const card = await client.cardMap.get(M.from);
+     if (!card) {
+        return M.reply("🙅‍♀️ Sorry, there are currently no available cards to claim!");
       }
-  
-      if(wallet === 0) return M.reply("You can claim when you have 0 wallet")
-  
-      if ((wallet - cardPrice) < 0) return M.reply(`You dont have that much in your wallet ${wallet}`)
-      const [title, tier] = card.split("-");
-      
-      if (deck.includes(card)) {
-        return M.reply(`🛑 You already have the card 🃏 ${title} (Tier ${tier}) in your deck.`);
-      } else if (collection.includes(card)) {
-        return M.reply(`🛑 You already have the card 🃏 ${title} (Tier ${tier}) in your collection.`);
+
+      const deck = await client.DB.get(`${M.sender}_Deck`) || [];
+      const collection = await client.DB.get(`${M.sender}_Collection`) || [];
+      const wallet = await client.credit.get(`${M.sender}.wallet`) || 0;
+
+      if (wallet === 0) {
+        return M.reply("You have an empty wallet");
       }
-    
+
       if (wallet < cardPrice) {
-        M.reply("🤑 Sorry, it seems like you don't have enough funds in your wallet to complete this transaction. Perhaps you can try earning more coins by playing games on our bot!");
-      } else {
-        await client.cradit.sub(`${M.sender}.wallet`, cardPrice);
+        return M.reply(`You don't have enough in your wallet. Current balance: ${wallet}`);
       }
-      
-      let text = `🃏 ${title} (${tier}) have safely stored in your deck!`
 
+      // Deduct the card price from the user's wallet
+      await client.credit.sub(`${M.sender}.wallet`, card.price);
+
+      const [title, tier] = card.card.split("-");
+
+      let text = `🃏 ${title} (${tier}) has been safely stored in your deck!`;
 
       if (deck.length < 12) {
-        deck.push(card);
+        deck.push(card.card);
       } else {
-        text = `🃏 ${title} (${tier}) have safely stored in your collection!`
-        collection.push(card);
+        text = `🃏 ${title} (${tier}) has been safely stored in your collection!`;
+        collection.push(card.card);
       }
-      
+
       await client.DB.set(`${M.sender}_Deck`, deck);
-      
       await client.DB.set(`${M.sender}_Collection`, collection);
 
-      const collectionText = collection.reduce(
-        (acc, key) => `${acc}\n- ${client.cards.get(key)}`,"");
-        await M.reply(
-          '🎉 You have successfully claimed'.concat(
-            ' *',
-            title,
-            ' - ',
-            tier,
-            '* for *',
-            cardPrice,
-            ' Credits* ',
-            text
-            )
-            ) 
-          }catch(err){
-            await client.sendMessage(M.from , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`})
-          }
-        },
-      };
+      await M.reply(
+        `🎉 You have successfully claimed *${title} - ${tier}* for *${cardPrice} Credits* ${text}`
+      );
 
-  
+      await client.cards.delete(`${M.from}.card`);
+      await client.cards.delete(`${M.from}.card_price`);
+    } catch (err) {
+      await client.sendMessage(M.from, {
+        image: { url: `${client.utils.errorChan()}` },
+        caption: `${client.utils.greetings()} Mai Sakurajima Dis\n\nError:\n${err}`
+      });
+    }
+  },
+};
