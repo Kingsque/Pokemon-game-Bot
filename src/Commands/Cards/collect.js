@@ -25,12 +25,12 @@ module.exports = {
         return M.reply("You have an empty wallet");
       }
 
-      if (wallet < cardPrice) {
+      if (wallet < card.price) {
         return M.reply(`You don't have enough in your wallet. Current balance: ${wallet}`);
       }
 
       // Deduct the card price from the user's wallet
-      wallet -= cardPrice;
+      wallet -= card.price;
       
       const [title, tier] = card.card.split("-");
 
