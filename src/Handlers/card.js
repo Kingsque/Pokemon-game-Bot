@@ -20,7 +20,7 @@ module.exports = CardHandler = async (client, m) => {
         const sOr6Interval = 2;
         const sOr6Limit = 15;
 
-        cron.schedule('*/10 * * * *', async () => {
+        cron.schedule('*/1 * * * *', async () => {
           try {
             const filePath = path.join(__dirname, '../Helpers/card.json');
             const data = require(filePath);
@@ -88,7 +88,7 @@ module.exports = CardHandler = async (client, m) => {
 
           } catch (err) {
             console.log(err);
-            await client.sendMessage(jid , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nCommand no error wa:\n${err}`});
+            await client.sendMessage(jid , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Mai Sakurajima Dis\n\nCommand no error wa:\n${err}`});
           }
 
         cron.schedule('*/5 * * * *', async () => {
