@@ -20,7 +20,7 @@ module.exports = CardHandler = async (client, m) => {
         const sOr6Interval = 2;
         const sOr6Limit = 15;
 
-        cron.schedule('*/1 * * * *', async () => {
+        cron.schedule('*/5 * * * *', async () => {
           try {
             const filePath = path.join(__dirname, '../Helpers/card.json');
             const data = require(filePath);
@@ -64,10 +64,8 @@ module.exports = CardHandler = async (client, m) => {
             }
 
             console.log(`Sended:${obj.tier + "  Name:" + obj.title + "  For " + price + " in " + jid}`);
-            client.cardMap.set(M.from, {
-              card: `${obj.title}-${obj.tier}`,
-              price: price
-            });
+      await client.cards.set(`${jid}.card`, `${obj.title}-${obj.tier}`);
+      await client.cards.set(`${jid}.card_price`, price);
 
             if (obj.tier.includes('6') || obj.tier.includes('S')) {
               const giif = await client.utils.getBuffer(obj.url);
