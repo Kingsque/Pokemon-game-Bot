@@ -3,7 +3,7 @@ const axios = require('axios');
 const path = require('path');
 require("./Message");
 
-module.exports = CardHandler = async (client, m) => {
+module.exports = CardHandler = async (client, M) => {
   try {
     let cardgames = await client.DB.get('cards');
     const cardgame = cardgames || [];
