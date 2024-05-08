@@ -64,9 +64,10 @@ module.exports = CardHandler = async (client, m) => {
             }
 
             console.log(`Sended:${obj.tier + "  Name:" + obj.title + "  For " + price + " in " + jid}`);
-      await client.cards.set(`${jid}.card`, `${obj.title}-${obj.tier}`);
-      await client.cards.set(`${jid}.card_price`, price);
-
+      await client.cardMap.set(M.from, {
+	      card: `${obj.title}-${obj.tier}`,
+	      price: price
+      }
             if (obj.tier.includes('6') || obj.tier.includes('S')) {
               const giif = await client.utils.getBuffer(obj.url);
               const cgif = await client.utils.gifToMp4(giif);
