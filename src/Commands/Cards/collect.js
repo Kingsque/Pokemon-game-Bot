@@ -47,12 +47,11 @@ module.exports = {
       await client.DB.set(`${M.sender}_Collection`, collection);
 
       await M.reply(
-        `🎉 You have successfully claimed *${title} - ${tier}* for *${cardPrice} Credits* ${text}`
+        `🎉 You have successfully claimed *${title} - ${tier}* for *${card.price} Credits* ${text}`
       );
 
-      await client.cards.delete(`${M.from}.card`);
-      await client.cards.delete(`${M.from}.card_price`);
-      if (economy) {
+      await client.cardMap.delete(M.from);
+       if (economy) {
         economy.gem = wallet;
         await economy.save();
       }
