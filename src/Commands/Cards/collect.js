@@ -16,8 +16,11 @@ module.exports = {
 
       const deck = await client.DB.get(`${M.sender}_Deck`) || [];
       const collection = await client.DB.get(`${M.sender}_Collection`) || [];
-      const wallet = await client.credit.get(`${M.sender}.wallet`) || 0;
+      const userId = M.sender;
+      const economy = await client.econ.findOne({ userId });
 
+      let wallet = economy ? economy.gem : 0;
+      
       if (wallet === 0) {
         return M.reply("You have an empty wallet");
       }
@@ -27,8 +30,8 @@ module.exports = {
       }
 
       // Deduct the card price from the user's wallet
-      await client.credit.sub(`${M.sender}.wallet`, card.price);
-
+      wallet -= cardPrice;
+      
       const [title, tier] = card.card.split("-");
 
       let text = `🃏 ${title} (${tier}) has been safely stored in your deck!`;
@@ -49,6 +52,10 @@ module.exports = {
 
       await client.cards.delete(`${M.from}.card`);
       await client.cards.delete(`${M.from}.card_price`);
+      if (economy) {
+        economy.gem = wallet;
+        await economy.save();
+      }
     } catch (err) {
       await client.sendMessage(M.from, {
         image: { url: `${client.utils.errorChan()}` },
