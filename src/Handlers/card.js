@@ -73,7 +73,7 @@ module.exports = CardHandler = async (client, M) => {
               const cgif = await client.utils.gifToMp4(giif);
               return client.sendMessage(jid, {
                 video: cgif,
-                caption: `*🀄𓊈 ᴀ ʀᴀʀᴇ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉🀄*\n\n🥇 *ɴᴀᴍᴇ:* ${obj.title}\n\n🔰 *ᴛɪᴇʀ:* ${obj.tier}\n\n💰 *Price:* ${price}\n\n🔮 *ꜱᴏᴜʀᴄᴇ:* ${obj.source}\n\n🧑‍🧒 ᴜꜱᴇ *${client.prefix}collect* to claim the card, your card will be stored in you deck`,
+                caption: `*🀄𓊈 ᴀ ʀᴀʀᴇ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉🀄*\n\n🥇 *ɴᴀᴍᴇ:* ${obj.title}\n\n🔰 *ᴛɪᴇʀ:* ${obj.tier}\n\n💰 *Price:* ${price}\n\n🔮 *ꜱᴏᴜʀᴄᴇ:* ${obj.source}\n\n🧑‍🧒 ᴜꜱᴇ *${client.prefix}ᴄᴏʟʟᴇᴄᴛ* ᴛᴏ ᴄʟᴀɪᴍ ᴛʜᴇ ᴄᴀʀᴅ, ʏᴏᴜʀ ᴄᴀʀᴅ ᴡɪʟʟ ʙᴇ ꜱᴛᴏʀᴇᴅ ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ`,
                 gifPlayback: true,
               });
             } else {
@@ -81,7 +81,7 @@ module.exports = CardHandler = async (client, M) => {
                 image: {
                   url: obj.url,
                 },
-                caption: `*⚡𓊈ᴀ ɴᴇᴡ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ𓊉⚡*\n\n🏮 *ɴᴀᴍᴇ:* ${obj.title}\n\n🔰 *ᴛɪᴇʀ:* ${obj.tier}\n\n💰 *Price:* ${price}\n\n🔮 *ꜱᴏᴜʀᴄᴇ:* ${obj.source}\n\n🧑‍🧒 ᴜꜱᴇ *${client.prefix}collect* to claim the card, your card will be stored in you deck`,
+                caption: `*⚡𓊈 ᴀ ɴᴇᴡ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉⚡*\n\n🏮 *ɴᴀᴍᴇ:* ${obj.title}\n\n🔰 *ᴛɪᴇʀ:* ${obj.tier}\n\n💰 *Price:* ${price}\n\n🔮 *ꜱᴏᴜʀᴄᴇ:* ${obj.source}\n\n🧑‍🧒 ᴜꜱᴇ *${client.prefix}ᴄᴏʟʟᴇᴄᴛ* ᴛᴏ ᴄʟᴀɪᴍ ᴛʜᴇ ᴄᴀʀᴅ, ʏᴏᴜʀ ᴄᴀʀᴅ ᴡɪʟʟ ʙᴇ ꜱᴛᴏʀᴇᴅ ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ`,
               });
             }
 
