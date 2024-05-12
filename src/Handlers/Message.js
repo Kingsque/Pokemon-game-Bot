@@ -64,12 +64,12 @@ module.exports = MessageHandler = async (messages, client) => {
         }
 
         if (isCmd && !user.includes(sender) && cmdName !== 'help') {
-            return M.reply('You are not registered. Please use :help to get started.');
+            return M.reply('You are not registered. Please use -help to get started.');
         }
 
         if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot');
 
-        if (isCmd && !cmdName) return M.reply('I am alive user, use :help to get started');
+        if (isCmd && !cmdName) return M.reply('I am alive user, use -help to get started');
 
         client.log(
             `${chalk[isCmd ? 'red' : 'green'](`${isCmd ? '~EXEC' : '~RECV'}`)} ${
