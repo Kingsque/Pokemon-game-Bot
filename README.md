@@ -14,7 +14,7 @@
 <P align="center"> [ ϙʀ ꜱᴄᴀɴ ] ɪɴᴅɪʀᴇᴄᴛʟʏ ғʀᴏᴍ ʀᴇᴘᴏ ᴅᴇᴘʟᴏʏɪɴɢ
 </h4>
 
-## [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&color=FF0000&lines=ɪ'ᴍ+aurora-ʙᴏᴛ+ᴀɴ+ᴀɪ+ʙᴏᴛ;ᴍᴀᴅᴇ+ʙʏ+ᴛᴇᴀᴍ-aurora;ᴅᴇʟɪɢʜᴛ+ᴡᴇʟᴄᴏᴍᴇ+ᴛᴏ+ᴇᴠᴇʀʏᴏɴᴇ;ᴛʜᴇ+ғᴜᴛᴜʀᴇ+ɪꜱ+ʜᴇʀᴇ;ʜᴀᴠᴇ+ᴀ+ɢᴏᴏᴅ+ᴅᴀʏ;ᴛᴏ+ɢᴇᴛ+ʏᴏᴜʀ+ᴡʜᴀᴛꜱᴀᴘᴘ+ɴᴇꭗᴛ+ʟᴇᴠᴇʟ;aurora-ʙᴏᴛ+ᴍᴜʟᴛɪᴘʟᴇ+ᴅᴇᴠɪᴄᴇꜱ.)](https://git.io/typing-svg)
+## [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&color=FF0000&lines=ɪ'ᴍ+ʙᴏᴛ+ᴀɴ+ᴀɪ+ʙᴏᴛ;ᴍᴀᴅᴇ+ʙʏ+ᴛᴇᴀᴍ;ᴅᴇʟɪɢʜᴛ+ᴡᴇʟᴄᴏᴍᴇ+ᴛᴏ+ᴇᴠᴇʀʏᴏɴᴇ;ᴛʜᴇ+ғᴜᴛᴜʀᴇ+ɪꜱ+ʜᴇʀᴇ;ʜᴀᴠᴇ+ᴀ+ɢᴏᴏᴅ+ᴅᴀʏ;ᴛᴏ+ɢᴇᴛ+ʏᴏᴜʀ+ᴡʜᴀᴛꜱᴀᴘᴘ+ɴᴇꭗᴛ+ʟᴇᴠᴇʟ;ʙᴏᴛ+ᴍᴜʟᴛɪᴘʟᴇ+ᴅᴇᴠɪᴄᴇꜱ.)](https://git.io/typing-svg)
 <br>
 <div align="center">
 <a href="https://chat.whatsapp.com/DrY5MBaiDRS9BAcpCpJQCv" target="blank"><img src="https://img.shields.io/badge/GC link-000000?style=for-the-badge&logo=whatsapp&logoColor=white" height="25px"/></a>
@@ -33,12 +33,12 @@ Click here<details Close>
 <summary></summary>
 
 <h4 align="center" >
-    <a href="https://heroku.com/deploy?template=https://github.com/REDZEOX/Nier_Automata">
+    <a href="https://heroku.com/deploy?template=https://github.com/REDZEOX/mai_sakurajima">
     <img src="https://www.herokucdn.com/deploy/button.svg" width="150px" alt="Deploy on Heroku" >
     </a>
 
 <h4 align="center"> 
-<a href="https://app.koyeb.com/apps/deploy?type=docker&image=quay.io/Kingshisui/Aurora-Private:main&env[PORT]=3000&env[PREFIX]=-&&env[MONGODB]=mongodb://mongo:a2H5ECgq2f3z1eW8DwGY@containers-us-west-24.railway.app:5516&&env[SESSION]=enterYourSession&&env[MODS]=918961331275&&env[Chat_Bot_Url]=http://api.brainshop.ai/get?bid=[bid]&key=[key]&uid=[uid]&msg=[msg]">
+<a href="https://app.koyeb.com/apps/deploy?type=docker&image=quay.io/REDZEOX/mai_sakurajima:main&env[PORT]=3000&env[PREFIX]=-&&env[MONGODB]=mongodb://mongo:a2H5ECgq2f3z1eW8DwGY@containers-us-west-24.railway.app:5516&&env[SESSION]=enterYourSession&&env[MODS]=918961331275&&env[Chat_Bot_Url]=http://api.brainshop.ai/get?bid=[bid]&key=[key]&uid=[uid]&msg=[msg]">
     <img src="https://www.koyeb.com/static/images/deploy/button.svg" alt="Deploy on Koyeb" width="140px">
     </a>
 
@@ -408,37 +408,6 @@ since **whatsapp-bot** use [baileys](https://github.com/WhiskeySockets/Baileys) 
 - Try to use our official api from our api repo.
 
 <br>
-
----
-
-<h2 align="center">🔰 Meet Team Aurora🔰
-</h2>
-
-| [![Uchiha shisui](https://github.com/Kingshisui00.png)](https://github.com/Kingshisui00) shisui | [![The lost uchiha](https://github.com/GodxMadara.png)](https://github.com/GodxMadara) lucky |
-|--- | --- |
-| [shisui](https://github.com/Kingshisui00) Owner, developer, monthly maintainer,  function developer |  [lucky](https://github.com/Kingshisui00) co-Owner, developer, baileys and dependencies maintainer,  function developer |
-
-
-## ᴛʜᴀɴᴋꜱ ᴛᴏ
-* [`Shinei | Whatshell`](https://github.com/LuckyYam/) for his dependensies.
-* [`@WhiskeySocket/baileys`](https://github.com/WhiskeySockets/Baileys) for the whatsaap api.
-* [`Debanjan-San`](https://github.com/Debanjan-San/) for his old bot structure type.
-* [`Fantox`](https://github.com/FantoX/) for his content ideas.
-
-## USER DEPARTMENT (some are mandetory)
-- This is the miniature model of our private cardgame bot.
-- visit our website https://kingshisui00.github.io/web-aurora/
-- if you spot any comment statments which starts with // read those either they can be the details of that code or there you will be asked to replace or provide your values.
-- If you want to create commamds there is the command example file in src that will help you.
-- If you are facing problems at anything go through every md in our bot so that might help you.
-- If you are facing issues for the apis that are required dont forget to  check our aurora api repo for help.
-
-## UPDATES
-- Logo maker directory  may come soon.
-- some exclusive commands may come this month
-- bug fixes
-- monthly maintainance
-
 
 <a><img src="https://i.ibb.co/7Kk6XSg/Rainbow.gif" width="100%">
 
