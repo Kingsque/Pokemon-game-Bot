@@ -6,7 +6,7 @@ module.exports = {
     category: 'fun',
     exp: 9,
     cool: 4,
-    react: "😈","🎊","🥴","🤓","🤭","😳"
+    react: "🤓"
     usage: 'truth or dare game',
     description: 'Gives you truth or dare.',
     async execute(client, arg, message) {
