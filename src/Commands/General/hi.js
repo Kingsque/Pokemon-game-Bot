@@ -16,11 +16,11 @@ module.exports = {
     exp: 0,
     cool: 4, // Cooldown in seconds
     react: "🕘",
-    usage: 'Use :hi to check bot',
+    usage: 'Use ( -hi ) to check bot',
     description: 'Says hi to the bot.',
     async execute(client, arg, M) { 
         try {
-            const hello = ['konnichiwa', 'hello', 'hi', 'kya haal?', 'bonjour', 'hola', 'hallo', 'hey', 'yo', 'howdy', 'greetings'];
+            const hello = ['konnichiwa', 'hello senpai', 'hi senpai', 'bonjour', 'hola', 'hallo', 'hey', 'yo', 'howdy', 'greetings'];
             const hi = hello[Math.floor(Math.random() * hello.length)];
             
             const contact = await client.contact.getContact(M.sender, client);
