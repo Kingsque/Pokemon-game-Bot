@@ -2,17 +2,17 @@ const TD = require('better-tord');
 
 module.exports = {
     name: 'truth_dare',
-    aliases: ['truth','dare'],
+    aliases: ['td'],
     category: 'fun',
     exp: 9,
     cool: 4,
-    react: "🤓"
-    usage: 'truth or dare game',
+    react: "✅",
+    usage: 'Use :td truth or dare',
     description: 'Gives you truth or dare.',
     async execute(client, arg, message) {
         if (!arg) return message.reply('Please specify "truth" or "dare"!');
         
-        const availableOptions = ['truth','dare'];
+        const availableOptions = ['truth', 'dare'];
         const option = arg.trim().toLowerCase();
 
         if (!availableOptions.includes(option)) {
