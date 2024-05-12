@@ -1,14 +1,14 @@
 // prettier-ignore
-const checks = ['awesome', 'great', 'gay', 'cute', 'lesbian', 'horny', 'pretty', 'lovely', 'ugly', 'beautiful', 'handsome', 'character']
+const checks = ['awesome', 'great', 'gay', 'cute', 'lesbian', 'horny', 'pretty', 'mental', 'lovely', 'ugly', 'beautiful', 'handsome', 'character']
 
 module.exports = {
     name: 'checkuser',
-    aliases: ['cu', ...checks.map(check => `${check}check`)],
+    aliases: ['cu','check', ...checks.map(check => `${check}check`)],
     exp: 10,
     cool: 4,
     react: "✅",
     category: 'fun',
-    usage: 'Use :<Your_Check>check',
+    usage: 'Use <Your_Check>check',
     description: 'Checks on user',
     async execute(client, arg, M) {
         const text = arg.trim()
