@@ -1,9 +1,9 @@
 module.exports = {
   name: "collect",
-  aliases: ["c"],
+  aliases: ["c","claim","claimcard","collect"],
   exp: 0,
   cool: 4,
-  react: "✅",
+  react: "🎊",
   category: "card game",
   usage: 'Use :c',
   description: "Claim the card that is spawned",
