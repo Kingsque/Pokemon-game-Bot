@@ -1,4 +1,4 @@
-<h1lign="center"> 𝔪𝔞𝔦 𝔖𝔞𝔨𝔲𝔯𝔞𝔧𝔦𝔪𝔞
+<h1 align="center"> 𝔪𝔞𝔦 𝔖𝔞𝔨𝔲𝔯𝔞𝔧𝔦𝔪𝔞
 
 </div>
 <p align="center">
