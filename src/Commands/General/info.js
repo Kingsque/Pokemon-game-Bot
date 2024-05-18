@@ -26,13 +26,14 @@ module.exports = {
         const website = 'coming soon...';
         
         let text = `*┏─━══─| ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ |─══━─┓*\n`;
-        text += `🏮 *BOT INFO:* ${process.env.NAME}\n`;
-        text += `🕘 *UPTIME:* ${uptime}\n`;
-        text += `👥 *USERS:* ${usersCounts || 0}\n`;
-        text += `🎟️ *COMMANDS:* ${client.cmd.size}\n`;
-        text += `🌐 *Groups:* ${groupCount}\n`;
-        text += `📢 *Mods:* ${modCount}\n`;
-        text += `🎭 *Website:* ${website}\n`;
+        text += `*╏🏮 BOT INFO:* ${process.env.NAME}\n`;
+        text += `*╏🕘 UPTIME:* ${uptime}\n`;
+        text += `*╏👥 USERS:* ${usersCounts || 0}\n`;
+        text += `*╏🎟️ COMMANDS:* ${client.cmd.size}\n`;
+        text += `*╏🌐 GROUPS:* ${groupCount}\n`;
+        text += `*╏📢 MODS:* ${modCount}\n`;
+        text += `*╏🔥 OWNER:* @ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ\n`;
+        text += `*╏🎭 WEBSITE:* ${website}\n`;
         text += `*┗─══─━══─| ✾ |─══━─══─┛*`;
 
          await client.sendMessage(
