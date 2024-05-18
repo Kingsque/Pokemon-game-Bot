@@ -1,10 +1,11 @@
-// Gamble Command
+const { Sticker } = require('wa-sticker-formatter');
+
 module.exports = {
     name: 'gamble',
     aliases: ['gb'],
     category: 'economy',
     exp: 5,
-    cool: 8,
+    cool: 15,
     react: "✅",
     usage: 'Use :gamble <amount> <direction>',
     description: 'Gambles your credits to increase or decrease',
@@ -37,14 +38,27 @@ module.exports = {
         economy.gem = newBalance;
         await economy.save();
 
-        // Determine sticker URL and message based on the result
-        const stickerUrl = won
-            ? 'https://i.ibb.co/SrtvnFH/ezgif-com-rotate.gif'
-            : 'https://raw.githubusercontent.com/Dkhitman3/Hitman47/master/assets/gifs/left.gif';
-
-        // Send the sticker
-        await client.sendMessage(M.from, { image: stickerUrl }, { quoted: M });
-
+        const sticker = new Sticker(
+            result == 'right'
+                ? 'https://i.ibb.co/SrtvnFH/ezgif-com-rotate.gif'
+                : 'https://raw.githubusercontent.com/Dkhitman3/Hitman47/master/assets/gifs/left.gif',
+            {
+                pack: ' ', // The pack name
+                author: ' ', // The author name
+                quality: 90,
+                type: 'full', // The quality of the output file
+                background: '#0000ffff' // The sticker background color (only for full stickers)
+            }
+        )
+        await client.sendMessage(
+            M.from,
+            {
+                sticker: await sticker.build()
+            },
+            {
+                quoted: M
+            }
+        )
         // Send the result message
         M.reply(won ? `🎉 Congratulations! You won ${amount} credits.` : `🥀 Better luck next time! You lost ${amount} credits.`);
     }
