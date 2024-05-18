@@ -45,7 +45,7 @@ module.exports = {
         if (percentage < 40) sentence = `There's still time to reconsider your choices`
         else if (percentage < 60) sentence = `Good enough, I guess! 💫`
         else if (percentage < 75) sentence = `Stay together and you'll find a way ⭐️`
-        else if (percentage < 90) sentence = `Amazing! You two will be a good couple 💖 `
+        else if (percentage < 90) sentence = `Amazing! You two will be a good couple 💖`
         else sentence = `You two are fated to be together 💙`
 
         let caption = `\t*💖 Couples Matching..! 💖* \n`
@@ -53,7 +53,7 @@ module.exports = {
         caption += `*@${users[0].split('@')[0]}  x  @${users[1].split('@')[0]}*\n`
         caption += `---------------------------------\n`
         caption += `\t\t${percentage < 40 ? '💔' : percentage < 75 ? '🎊' : '🎐'} *ShipCent: ${percentage}%*\n\n`
-        caption += `💗 *Type:* *${text}\n\n*`
+        caption += `💝 *Type: ${text}\n\n*`
         caption += `*${sentence}*`
 
         const image = await new Ship(shipArray, percentage, text).build()
