@@ -25,13 +25,15 @@ module.exports = {
         const modCount = client.mods.length;
         const website = 'coming soon...';
         
-        let text = `*${process.env.NAME}'s info*\n\n`;
+        let text = `*┏─━══─| ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ |─══━─┓*\n`;
+        text += `🏮 *BOT INFO:* ${process.env.NAME}\n`;
         text += `🕘 *UPTIME:* ${uptime}\n`;
         text += `👥 *USERS:* ${usersCounts || 0}\n`;
         text += `🎟️ *COMMANDS:* ${client.cmd.size}\n`;
         text += `🌐 *Groups:* ${groupCount}\n`;
         text += `📢 *Mods:* ${modCount}\n`;
-        text += `🎭 *Website:* ${website}`;
+        text += `🎭 *Website:* ${website}\n`;
+        text += `*┗─══─━══─| ✾ |─══━─══─┛*`;
 
          await client.sendMessage(
           M.from,
