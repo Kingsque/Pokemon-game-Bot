@@ -24,7 +24,7 @@ module.exports = {
         try {
             pfp = await client.profilePictureUrl(user, 'image');
         } catch {
-            pfp = 'https://i.ibb.co/nbdh1ZM/Aurora-error.jpg';
+            pfp = 'https://i.ibb.co/BVpbBJm/Picsart-24-05-18-15-10-43-623.jpg';
         }
 
         let bio;
