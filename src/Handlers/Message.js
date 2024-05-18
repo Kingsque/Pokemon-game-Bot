@@ -182,7 +182,7 @@ module.exports = MessageHandler = async (messages, client) => {
 
         await client.exp.add(sender, command.exp);
 
-        let gifRandom = [
+        let imageRandom = [
             "https://i.ibb.co/FYkrfLC/images-8.jpg",
             "https://i.ibb.co/9hbg7K9/images-7.jpg",
             "https://i.ibb.co/NKvbSvy/images-9.jpg",
@@ -190,7 +190,7 @@ module.exports = MessageHandler = async (messages, client) => {
             "https://i.ibb.co/1J4H4Zz/images-11.jpg",
             "https://i.ibb.co/qpzrv2h/images-12.jpg"
         ];
-        let ran = gifRandom[Math.floor(Math.random() * gifRandom.length)];
+        let ran = imageRandom[Math.floor(Math.random() * imageRandom.length)];
         const level = (await client.DB.get(`${sender}_LEVEL`)) || 0;
         const experience = await client.exp.get(sender);
         const { requiredXpToLevelUp } = getStats(level);
@@ -199,14 +199,13 @@ module.exports = MessageHandler = async (messages, client) => {
         client.sendMessage(
             from,
             {
-                video: {
+                image: {
                     url: ran
                 },
                 caption: `\n\n\nCongratulations you leveled up from *${level} ---> ${level + 1}* 🎊\n\n\n`,
-                gifPlayback: false
             },
             {
-                quoted: M
+            quoted: M
             }
         );
     } catch (err) {
