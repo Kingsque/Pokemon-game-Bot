@@ -37,7 +37,7 @@ module.exports = {
         const level = (await client.DB.get(`${user}_LEVEL`)) || 1;
         const stats = getStats(level);
         const contact = await client.contact.getContact(user, client);
-        const username = (await client.contact.getContact(user, client)).username?.whatsapp?.net ?? 'Unknown';
+        const username = M.pushName
         const experience = (await client.exp.get(user)) || 0;
         const banned = (await client.DB.get('banned')) || [];
 
