@@ -14,16 +14,17 @@ module.exports = {
         const groupMembers = groupMetadata?.participants || [];
         const groupAdmins = groupMembers.filter((v) => v.isAdmin).map((v) => v.id);
         const user = M.quoted?.participant || M.mentions[0] || M.sender;
-        const collection = (await client.DB.get(`${user}_Collection`)) || [];
-        const deck = await client.DB.get(`${user}_Deck`);
-        let bank = await client.credit.get(`${user}.bank`) || 0;
-        let wallet = await client.credit.get(`${user}.wallet`) || 0;
+         const deck = await client.card.get(`${user}_Deck`) || [];
+        const userId = M.quoted?.participant || M.mentions[0] || M.sender;
+        const economy = await client.econ.findOne({ userId });
 
+        let wallet = economy ? economy.gem : 0;
+        
         let pfp;
         try {
             pfp = await client.profilePictureUrl(user, 'image');
         } catch {
-            pfp = 'https://i.ibb.co/jyfcX5S/wp4055471-mai-sakurajima-wallpapers.png';
+            pfp = 'https://i.ibb.co/nbdh1ZM/Aurora-error.jpg';
         }
 
         let bio;
