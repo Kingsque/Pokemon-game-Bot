@@ -53,7 +53,7 @@ module.exports = {
         caption += `*@${users[0].split('@')[0]}  x  @${users[1].split('@')[0]}*\n`
         caption += `---------------------------------\n`
         caption += `\t\t${percentage < 40 ? '💔' : percentage < 75 ? '🎊' : '🎐'} *ShipCent: ${percentage}%*\n\n`
-        caption += `💝 *Type: ${text}\n\n*`
+        caption += `💝 *Type:* ${text}\n\n`
         caption += `*${sentence}*`
 
         const image = await new Ship(shipArray, percentage, text).build()
