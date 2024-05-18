@@ -7,8 +7,8 @@ module.exports = {
     category: 'fun',
     exp: 5,
     cool: 5,
-    react: "✅",
-    usage: 'Use :ship @tag @tag',
+    react: "🎀",
+    usage: 'Use : relationship @tag @tag',
     description: 'Ship People! ♥',
     async execute(client, arg, M) {
         const shipArray = []
@@ -48,12 +48,12 @@ module.exports = {
         else if (percentage < 90) sentence = `Amazing! You two will be a good couple 💖 `
         else sentence = `You two are fated to be together 💙`
 
-        let caption = `\t❣️ *Matchmaking...* ❣️ \n`
+        let caption = `\t*💖 Couples Matching..! 💖* \n`
         caption += `---------------------------------\n`
         caption += `*@${users[0].split('@')[0]}  x  @${users[1].split('@')[0]}*\n`
         caption += `---------------------------------\n`
-        caption += `\t\t${percentage < 40 ? '💔' : percentage < 75 ? '❤' : '💗'} *ShipCent: ${percentage}%*\n\n`
-        caption += `💗 *Type:* ${text}\n\n`
+        caption += `\t\t${percentage < 40 ? '💔' : percentage < 75 ? '🎊' : '🎐'} *ShipCent: ${percentage}%*\n\n`
+        caption += `💗 *Type:* *${text}\n\n*`
         caption += `*${sentence}*`
 
         const image = await new Ship(shipArray, percentage, text).build()
