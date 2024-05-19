@@ -6,7 +6,7 @@ module.exports = {
     category: 'utils',
     exp: 10,
     cool: 4,
-    react: "✅",
+    react: "🔥",
     usage: 'Usage :steal attached or quoted to a sticker <pack_name>|<author_name>',
     description: 'Used for stealing stickers',
     async execute(client, arg, M) {
@@ -23,8 +23,8 @@ module.exports = {
 
                 // Create a new sticker instance
                 const sticker = new Sticker(buffer, {
-                    pack: packName || '👾 Handcrafted for you by',
-                    author: authorName || 'aurora 👾',
+                    pack: packName || '𓆩『 ʜᴀɴᴅᴄʀᴀғᴛᴇᴅ ғᴏʀ ʏᴏᴜ 』𓆪',
+                    author: authorName || '𓆩『 🅱🆄🅽🅽🆈 🅱🅾🆃 』𓆪',
                     type: StickerTypes.FULL,
                     categories: ['🤩', '🎉'],
                     quality: 70
