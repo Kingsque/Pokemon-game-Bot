@@ -5,7 +5,7 @@ module.exports = {
     aliases: ['animegirl'],
     category: 'weeb',
     exp: 7,
-    react: "✅",
+    react: "🤭",
     usage: 'Use :waifu',
     description: 'Sends an image of a random waifu',
     cool: 4, // Add cooldown time in seconds
@@ -19,7 +19,7 @@ module.exports = {
             }
             
             const waifuImage = response.data.images[0];
-            const caption = `Waifu sewrched from the web..\n\n© _Team Aurora𝄞`;
+            const caption = `✦͙͙͙*͙*❥⃝∗⁎.ʚ ᴡᴀɪғᴜ ғᴏʀ ʏᴏᴜ ғʀᴏᴍ ᴡᴇʙ ɞ.⁎∗❥⃝**͙✦͙͙͙\n\n© ᴍᴀɪ ꜱᴀᴋᴜʀᴀᴊɪᴍᴀ`;
 
             await client.sendMessage(M.from, {
                 image: {
