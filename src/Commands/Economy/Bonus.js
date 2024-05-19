@@ -3,7 +3,7 @@ const ms = require('parse-ms');
 
 module.exports = {
     name: 'bonus',
-    aliases: ['bonus','daily','today'],
+    aliases: ['bonus'],
     category: 'economy',
     exp: 5,
     cool: 4,
@@ -19,7 +19,7 @@ module.exports = {
 
         if (economy && economy.lastBonus !== null && bonusTimeout - (Date.now() - economy.lastBonus) > 0) {
             const bonusTime = ms(bonusTimeout - (Date.now() - economy.lastBonus));
-            text += `*┏─══──━══─| ʀᴇᴡᴀʀᴅ |─══━──══─┓*\n*╏ʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ʙᴏɴᴜꜱ ʀᴇᴡᴀʀᴅ*\n*╏ʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴄʟᴀɪᴍ ɪᴛ ᴀɢᴀɪɴ.!*\n*┗─══──━══─| ʀᴇᴡᴀʀᴅ |─══━──══─┛*`;
+            text += `*┏─══──━══─| ʀᴇᴡᴀʀᴅ |─══━──══─┓*\n*╏ʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ʙᴏɴᴜꜱ*\n*╏ʀᴇᴡᴀʀᴅ ʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴄʟᴀɪᴍ ɪᴛ ᴀɢᴀɪɴ.!*\n*┗─══──━══─| ʀᴇᴡᴀʀᴅ |─══━──══─┛*`;
         } else {
             text += `*Welcome to our family! We are really happy to have you as our member. You have claimed your bonus reward 🎉: ${bonusAmount}.*`;
 
