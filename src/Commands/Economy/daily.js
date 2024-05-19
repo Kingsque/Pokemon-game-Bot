@@ -20,7 +20,8 @@ module.exports = {
             const daily = economy.lastDaily;
             if (daily !== null && dailyTimeout - (Date.now() - daily) > 0) {
                 const dailyTime = ms(dailyTimeout - (Date.now() - daily));
-                message = `*You have already claimed your daily reward. You have to wait ${dailyTime.hours} hour(s) ${dailyTime.minutes} minute(s), ${dailyTime.seconds} second(s).*`;
+                message = `*┏─══──━══─| ʀᴇᴡᴀʀᴅ |─══━──══─┓*\n*╏🏮 ᴀʟʀᴇᴀᴅʏ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ʀᴇᴡᴀʀᴅ*\n*╏🕒 ʏᴏᴜ ʜᴀᴠᴇ ᴛᴏ ᴡᴀɪᴛ*\n*╏⏳ ʜᴏᴜʀꜱ 『 ${dailyTime.hours} 』*\n*╏⌛ ᴍɪɴᴜᴛᴇꜱ 『 ${dailyTime.minutes} 』*\n*
+┗─══──━══─| ʀᴇᴡᴀʀᴅ |─══━──══─┛*`;
             } else {
                 message = `*You have claimed your daily reward 🎉: ${dailyAmount}.*`;
                 economy.gem += dailyAmount;
