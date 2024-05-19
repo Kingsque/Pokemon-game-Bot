@@ -8,7 +8,7 @@ module.exports = {
     react: "✅",
     usage: 'Use :transfer <amount> @taguser',
     description: 'Transfer credits to your friend',
-    async execute(client, arg, M)}
+    async execute(client, arg, M){
         const recipient = M.mentions[0] || (M.quoted && M.quoted.participant);
 
         if (!recipient) return M.reply('You must mention someone to transfer credits to.');
@@ -38,5 +38,5 @@ module.exports = {
 
         await client.sendMessage(M.from, { text: message, mentions: [recipient] });
         await client.sendMessage("120363236615391329@g.us", { text: messageToAdmin });
-    {
+    }
 };
