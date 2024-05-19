@@ -19,7 +19,7 @@ module.exports = {
             }
             
             const waifuImage = response.data.images[0];
-            const caption = `✦͙͙͙*͙*❥⃝∗⁎.ʚ ᴡᴀɪғᴜ ғᴏʀ ʏᴏᴜ ғʀᴏᴍ ᴡᴇʙ ɞ.⁎∗❥⃝**͙✦͙͙͙\n\n© ᴍᴀɪ ꜱᴀᴋᴜʀᴀᴊɪᴍᴀ`;
+            const caption = `ʚ ᴡᴀɪғᴜ ғᴏʀ ʏᴏᴜ ғʀᴏᴍ ᴡᴇʙ ɞ`;
 
             await client.sendMessage(M.from, {
                 image: {
