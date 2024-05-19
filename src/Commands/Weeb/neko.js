@@ -19,7 +19,7 @@ module.exports = {
                 image: {
                     url: res.data.url
                 },
-                caption: '_Neko Neko Ni~_ \n\n © _Team Aurora𝄞'
+                caption: 'ɴᴇᴋᴏ ɴᴇɴɪ ꜱᴀɴ\n\nᴍᴀɪ ꜱᴀᴋᴜʀᴀᴊɪᴍᴀ'
             });
         } catch (err) {
             console.error('Error fetching neko image:', err);
