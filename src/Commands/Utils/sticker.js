@@ -23,12 +23,12 @@ module.exports = {
                 // Download the media
                 const buffer = isQuotedMedia ? await M.quoted.download() : await M.download();
 
-                M.reply('Processing.....');
+                M.reply('Processing...');
 
                 // Create a new sticker instance
                 const sticker = new Sticker(buffer, {
-                    pack: packName || 'I Hope That Like You!! 🥰',
-                    author: authorName || '𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆',
+                    pack: packName || '𓆩『 ʜᴀɴᴅᴄʀᴀғᴛᴇᴅ ғᴏʀ ʏᴏᴜ 』𓆪',
+                    author: authorName || '𓆩『 🅱🆄🅽🅽🆈 🅱🅾🆃 』𓆪',
                     type: StickerTypes.FULL,
                     categories: ['🤩', '🎉'],
                     quality: 70
