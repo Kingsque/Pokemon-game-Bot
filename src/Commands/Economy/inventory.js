@@ -5,7 +5,7 @@ module.exports = {
     category: 'economy',
     exp: 7,
     cool: 4,
-    react: "✅",
+    react: "🧭",
     usage: 'Use :inv',
     description: 'Gives you details about your inventory',
     async execute(client, arg, M) {
@@ -30,12 +30,13 @@ module.exports = {
             const totalGems = wallet + bank;
             const totalTreasuryValue = bank;
 
-            let text = '🎒 *INVENTORY* 🎒\n\n';
-            text += `🌶️ *Pepper Spray:* ${pepper}\n`;
-            text += `🍀 *Luck Potion:* ${luck}\n`;
-            text += `⚽ *Pokeballs:* ${pokeballs}\n`;
-            text += `💰 *Total Gems:* ${totalGems}\n`;
-            text += `💼 *Total Treasury Value:* ${totalTreasuryValue}\n`;
+            let text = '*┏─══─━══─| 💥 ɪɴᴠᴇɴᴛᴏʀʏ 💥 |─══━─══─┓*\n';
+            text += `*╏🌶️ ᴘᴇᴘᴘᴇʀ ꜱᴘʀᴀʏ:* ${pepper}\n`;
+            text += `*╏🍀 ʟᴜᴄᴋ ᴘᴏᴛɪᴏɴ:* ${luck}\n`;
+            text += `*╏🪩 ᴘᴏᴋᴇʙᴀʟʟꜱ:* ${pokeballs}\n`;
+            text += `*╏💎 ᴛᴏᴛᴀʟ ɢᴇᴍꜱ:* ${totalGems}\n`;
+            text += `*╏💰 ᴛᴏᴛᴀʟ ᴛʀᴇᴀꜱᴜʀʏ:* ${totalTreasuryValue}\n`;
+            text += `*┗─══─━══─| 💥 ɪɴᴠᴇɴᴛᴏʀʏ 💥 |─══━─══─┛*\n`;
 
             M.reply(text);
         } catch (err) {
