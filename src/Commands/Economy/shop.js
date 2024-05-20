@@ -18,7 +18,7 @@ module.exports = {
         let text = '*┏─═─━══─| ꜱʜᴏᴘ |─══━─═─∘⦿ꕹ᛫*';
         text += '\n';
         itemsForSale.forEach((item, index) => {
-            text += `*╏${index + 1} ] ɴᴀᴍᴇ:* ${item.name}\n*╏💰 ᴘʀɪᴄᴇ:* ${item.price}\n*╏🎴 ᴜꜱᴀɢᴇ:* ${item.usage}`;
+            text += `*╏${index + 1} ] ɴᴀᴍᴇ:* ${item.name}\n*╏💰 ᴘʀɪᴄᴇ:* ${item.price}\n*╏🎴 ᴜꜱᴀɢᴇ:* ${item.usage}\n`;
         });
         text += `\n*╏───────────────────┈ ⳹*`;
         text += `\n*╏🎴 ᴜꜱᴇ ${client.prefix}buy <item_name> <item_quantity>*`;
