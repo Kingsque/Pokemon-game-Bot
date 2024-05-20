@@ -18,12 +18,12 @@ module.exports = {
         let text = '*┏─═─━══─| ꜱʜᴏᴘ |─══━─═─∘⦿ꕹ᛫*';
         text += '\n';
         itemsForSale.forEach((item, index) => {
-            text += `*╏${index + 1} ] ɴᴀᴍᴇ:* ${item.name}\n*╏💰 ᴘʀɪᴄᴇ:* ${item.price}\n*╏🎴 ᴜꜱᴀɢᴇ:* ${item.usage}\n`;
+            text += `*╏${index + 1} ] ɴᴀᴍᴇ:* ${item.name}\n*╏💰 ᴘʀɪᴄᴇ:* ${item.price}\n*╏🎴 ᴜꜱᴀɢᴇ:* ${item.usage}`;
+        });
         text += `\n*╏───────────────────┈ ⳹*`;
         text += `\n*╏🎴 ᴜꜱᴇ ${client.prefix}buy <item_name> <item_quantity>*`;
         text += `\n*╏📗 ᴇꭗᴀᴍᴘʟᴇ: ${client.prefix}buy luckpotion 2*`;
         text += `\n*┗─═─━══─| ꜱʜᴏᴘ |─══━─═─∘⦿ꕹ᛫*`;
         await M.reply(text);
-        });
-    },
+     },
 };
