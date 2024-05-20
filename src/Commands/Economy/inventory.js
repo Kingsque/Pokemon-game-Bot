@@ -30,13 +30,13 @@ module.exports = {
             const totalGems = wallet + bank;
             const totalTreasuryValue = bank;
 
-            let text = '*┏─══─━══─| 💥 ɪɴᴠᴇɴᴛᴏʀʏ 💥 |─══━─══─┓*\n';
+            let text = '*┏─═─━══─| ɪɴᴠᴇɴᴛᴏʀʏ |─══━─═─∘⦿ꕹ᛫*\n';
             text += `*╏🌶️ ᴘᴇᴘᴘᴇʀ ꜱᴘʀᴀʏ:* ${pepper}\n`;
             text += `*╏🍀 ʟᴜᴄᴋ ᴘᴏᴛɪᴏɴ:* ${luck}\n`;
             text += `*╏🪩 ᴘᴏᴋᴇʙᴀʟʟꜱ:* ${pokeballs}\n`;
             text += `*╏💎 ᴛᴏᴛᴀʟ ɢᴇᴍꜱ:* ${totalGems}\n`;
             text += `*╏💰 ᴛᴏᴛᴀʟ ᴛʀᴇᴀꜱᴜʀʏ:* ${totalTreasuryValue}\n`;
-            text += `*┗─══─━══─| 💥 ɪɴᴠᴇɴᴛᴏʀʏ 💥 |─══━─══─┛*\n`;
+            text += `*┗─═─━══─| ɪɴᴠᴇɴᴛᴏʀʏ |─══━─═─∘⦿ꕹ᛫*\n`;
 
             M.reply(text);
         } catch (err) {
