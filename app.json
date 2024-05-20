@@ -1,6 +1,6 @@
 {
 
-   "name":"𝔪𝔞𝔦 𝔖𝔞𝔨𝔲𝔯𝔞𝔧𝔦𝔪𝔞",
+   "name":"Mai Sakurajima",
 
    "description":"A WhatsApp Bot With Multi Device Supported",
 
@@ -25,7 +25,7 @@
       "NAME":{
 
          "description":"Name of your bot",
-         "value":"𝔪𝔞𝔦 𝔖𝔞𝔨𝔲𝔯𝔞𝔧𝔦𝔪𝔞",
+         "value":"Mai Sakurajima",
          "required":true
 
       },
