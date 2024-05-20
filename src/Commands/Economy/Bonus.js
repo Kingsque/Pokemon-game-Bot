@@ -19,9 +19,9 @@ module.exports = {
 
         if (economy && economy.lastBonus !== null && bonusTimeout - (Date.now() - economy.lastBonus) > 0) {
             const bonusTime = ms(bonusTimeout - (Date.now() - economy.lastBonus));
-            text += `*┏─══──━══─| ʀᴇᴡᴀʀᴅ |─══━──══─∘⦿ꕹ᛫*\n*╏ʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ʙᴏɴᴜꜱ*\n*╏ʀᴇᴡᴀʀᴅ ʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴄʟᴀɪᴍ ɪᴛ ᴀɢᴀɪɴ.!*\n*┗─══──━══─| ʀᴇᴡᴀʀᴅ |─══━──══─∘⦿ꕹ᛫*`;
+            text += `*┏─═─━══─| ʀᴇᴡᴀʀᴅ |─══━─═─∘⦿ꕹ᛫*\n*╏ʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ʙᴏɴᴜꜱ*\n*╏ʀᴇᴡᴀʀᴅ ʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴄʟᴀɪᴍ ɪᴛ ᴀɢᴀɪɴ.!*\n*┗─═─━══─| ʀᴇᴡᴀʀᴅ |─══━─═─∘⦿ꕹ᛫*`;
         } else {
-            text += `*┏─══──━══─| ʀᴇᴡᴀʀᴅ |─══━──══─∘⦿ꕹ᛫*\n*╏ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴏᴜʀ ғᴀᴍɪʟʏ*\n*╏ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ʙᴏɴᴜꜱ ʀᴇᴡᴀʀᴅ*\n*╏『 ${bonusAmount} 』🎐*\n*┗─══──━══─| ʀᴇᴡᴀʀᴅ |─══━──══─∘⦿ꕹ᛫*`;
+            text += `*┏─═─━══─| ʀᴇᴡᴀʀᴅ |─══━─═─∘⦿ꕹ᛫*\n*╏ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴏᴜʀ ғᴀᴍɪʟʏ*\n*╏ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ʙᴏɴᴜꜱ ʀᴇᴡᴀʀᴅ*\n*╏『 ${bonusAmount} 』🎐*\n*┗─═─━══─| ʀᴇᴡᴀʀᴅ |─══━─═─∘⦿ꕹ᛫*`;
 
             if (!economy) {
                 const newEconomy = new client.econ({
@@ -46,7 +46,7 @@ module.exports = {
         await client.sendMessage(
             M.from,
             {
-                image: { url: "https://i.ibb.co/2hfsX7Y/wp4055620-mai-sakurajima-wallpapers.jpg" },
+                image: { url: "https://i.ibb.co/Ldd8bp7/1057308.jpg" },
                 caption: text
             },
             {
