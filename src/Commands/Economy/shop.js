@@ -15,13 +15,14 @@ module.exports = {
     usage: 'Use :shop',
     description: 'View items available for purchase',
     async execute(client, arg, M) {
-        let text = '*❯─『 SHOP 』─❮*';
-        text += '\n\n';
+        let text = '*┏─═─━══─| ꜱʜᴏᴘ |─══━─═─∘⦿ꕹ᛫*';
+        text += '\n';
         itemsForSale.forEach((item, index) => {
-            text += `${index + 1}) *Name:* ${item.name}\n💰 *Price:* ${item.price}\n🎴 *Usage:* ${item.usage}\n`;
+            text += `*╏${index + 1} ] ɴᴀᴍᴇ:* ${item.name}\n*╏💰 ᴘʀɪᴄᴇ:* ${item.price}\n*╏🎴 ᴜꜱᴀɢᴇ:* ${item.usage}\n`;
         });
-        text += `\n🎴 Use ${client.prefix}buy <item_name> <item_quantity>`;
-        text += `\n📗 Example: ${client.prefix}buy luckpotion 2`;
+        text += `\n*╏🎴 Use ${client.prefix}buy <item_name> <item_quantity>*`;
+        text += `\n*╏📗 Example: ${client.prefix}buy luckpotion 2*`;
+        text += `\n*┗─═─━══─| ꜱʜᴏᴘ |─══━─═─∘⦿ꕹ᛫`;
         await M.reply(text);
     },
 };
