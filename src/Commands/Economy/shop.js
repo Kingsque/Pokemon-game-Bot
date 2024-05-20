@@ -11,7 +11,7 @@ module.exports = {
     category: 'economy',
     exp: 10,
     cool: 4,
-    react: '✅',
+    react: '🛒',
     usage: 'Use :shop',
     description: 'View items available for purchase',
     async execute(client, arg, M) {
