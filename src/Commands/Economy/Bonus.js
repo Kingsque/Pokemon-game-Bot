@@ -1,58 +1,57 @@
-// Inventory Command
+// Bonus Command
+const ms = require('parse-ms');
+
 module.exports = {
-    name: 'inventory',
-    aliases: ['inv'],
+    name: 'bonus',
+    aliases: ['bonus'],
     category: 'economy',
-    exp: 7,
+    exp: 5,
     cool: 4,
-    react: "🧭",
-    usage: 'Use :inv',
-    description: 'Gives you details about your inventory',
+    react: "🏮",
+    usage: 'Use :bonus',
+    description: 'Claims your bonus',
     async execute(client, arg, M) {
-        try {
-            const userId = M.sender;
-            const economy = await client.econ.findOne({ userId });
+        const userId = M.sender;
+        const economy = await client.econ.findOne({ userId });
+        const bonusTimeout = 31536000000; 
+        const bonusAmount = 100000;
+        let text = '';
 
-            let pepper = 0;
-            let luck = 0;
-            let pokeballs = 0;
-            let wallet = 0;
-            let bank = 0;
+        if (economy && economy.lastBonus !== null && bonusTimeout - (Date.now() - economy.lastBonus) > 0) {
+            const bonusTime = ms(bonusTimeout - (Date.now() - economy.lastBonus));
+            text += `*┏─═─━══─| ʀᴇᴡᴀʀᴅ |─══━─═─∘⦿ꕹ᛫*\n*╏ʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ʙᴏɴᴜꜱ*\n*╏ʀᴇᴡᴀʀᴅ ʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴄʟᴀɪᴍ ɪᴛ ᴀɢᴀɪɴ.!*\n*┗─═─━══─| ʀᴇᴡᴀʀᴅ |─══━─═─∘⦿ꕹ᛫*`;
+        } else {
+            text += `*┏─═─━══─| ʀᴇᴡᴀʀᴅ |─══━─═─∘⦿ꕹ᛫*\n*╏ᴡᴇʟᴄᴏᴍᴇ ᴛᴏ ᴏᴜʀ ғᴀᴍɪʟʏ*\n*╏ᴄʟᴀɪᴍᴇᴅ ʏᴏᴜʀ ʙᴏɴᴜꜱ ʀᴇᴡᴀʀᴅ*\n*╏『 ${bonusAmount} 』🎐*\n*┗─═─━══─| ʀᴇᴡᴀʀᴅ |─══━─═─∘⦿ꕹ᛫*`;
 
-            if (economy) {
-                pepper = economy.pepperSpray || 0;
-                luck = economy.luckPotion || 0;
-                pokeballs = economy.pokeball || 0;
-                wallet = economy.gem || 0;
-                bank = economy.treasury || 0;
+            if (!economy) {
+                const newEconomy = new client.econ({
+                    userId,
+                    gem: bonusAmount,
+                    treasury: 0,
+                    luckPotion: 0,
+                    pepperSpray: 0,
+                    pokeball: 0,
+                    lastBonus: Date.now(),
+                    lastDaily: null,
+                    lastRob: null
+                });
+                await newEconomy.save();
+            } else {
+                economy.gem += bonusAmount;
+                economy.lastBonus = Date.now();
+                await economy.save();
             }
+        }
 
-            const totalGems = wallet + bank;
-            const totalTreasuryValue = bank;
-
-            let text = '*┏─═─━══─| ɪɴᴠᴇɴᴛᴏʀʏ |─══━─═─∘⦿ꕹ᛫*\n';
-            text += `*╏🌶️ ᴘᴇᴘᴘᴇʀ ꜱᴘʀᴀʏ:* ${pepper}\n`;
-            text += `*╏🍀 ʟᴜᴄᴋ ᴘᴏᴛɪᴏɴ:* ${luck}\n`;
-            text += `*╏🪩 ᴘᴏᴋᴇʙᴀʟʟꜱ:* ${pokeballs}\n`;
-            text += `*╏💎 ᴛᴏᴛᴀʟ ɢᴇᴍꜱ:* ${totalGems}\n`;
-            text += `*╏💰 ᴛᴏᴛᴀʟ ᴛʀᴇᴀꜱᴜʀʏ:* ${totalTreasuryValue}\n`;
-            text += `*┗─═─━══─| ɪɴᴠᴇɴᴛᴏʀʏ |─══━─═─∘⦿ꕹ᛫*\n`;
-            
-            await client.sendMessage(
+        await client.sendMessage(
             M.from,
             {
-                image: { url: "https://i.ibb.co/gdXngnq/Picsart-24-05-21-16-58-34-307.jpg" },
+                image: { url: "https://i.ibb.co/Ldd8bp7/1057308.jpg" },
                 caption: text
             },
             {
                 quoted: M
             }
         );
-        
-            M.reply(text);
-        } catch (err) {
-            console.error(err);
-            M.reply("An error occurred while fetching your inventory.");
-        }
     }
 };
