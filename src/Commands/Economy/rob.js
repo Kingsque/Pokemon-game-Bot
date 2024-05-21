@@ -58,12 +58,12 @@ module.exports = {
         let text;
         if (result === 'caught') {
             if (hasPepperSpray) {
-                text = `You got caught, but the user you attempted to rob had pepper spray and sprayed it on your eyes! You paid *${targetLost} gold* to *@${robTarget.split('@')[0]}*`;
+                text = `*┏─══─━══─| ʀᴏʙʙᴇʀʏ  |─══━─══─∘⦿ꕹ᛫*\n*╏ʏᴏᴜ ɢᴏᴛ ᴄᴀᴜɢʜᴛ, ʙᴜᴛ ᴛʜᴇ ᴜꜱᴇʀ*\n*╏ʏᴏᴜ ᴀᴛᴛᴇᴍᴘᴛᴇᴅ ᴛᴏ ʀᴏʙ ʜᴀᴅ ᴘᴇᴘᴘᴇʀ*\n*╏ꜱᴘʀᴀʏ ᴀɴᴅ ꜱᴘʀᴀʏᴇᴅ ɪᴛ ᴏɴ*\n*╏ʏᴏᴜʀ ᴇʏᴇꜱ! ʏᴏᴜ ᴘᴀɪᴅ*\n*╏${targetLost} ɢᴏʟᴅ* *ᴛᴏ* *@${robTarget.split('@')[0]}*\n*┗─══─━══─| ʀᴏʙʙᴇʀʏ |─══━─══─∘⦿ꕹ᛫*`;
             } else {
                 text = `*┏─══─━══─| ʀᴏʙʙᴇʀʏ  |─══━─══─∘⦿ꕹ᛫*\n*╏ʏᴏᴜ ɢᴏᴛ ᴄᴀᴜɢʜᴛ ᴀɴᴅ ᴘᴀɪᴅ*\n*╏${targetLost} ɢᴏʟᴅ* *ᴛᴏ* *@${robTarget.split('@')[0]}*\n*┗─══─━══─| ʀᴏʙʙᴇʀʏ |─══━─══─∘⦿ꕹ᛫*`;
             }
         } else {
-            text = `*┏─══─━══─| ʀᴏʙʙᴇʀʏ  |─══━─══─∘⦿ꕹ᛫*\n*╏@${M.sender.split('@')[0]}*\n*╏ꜱᴜᴄᴄᴇꜱꜱғᴜʟʟʏ ʀᴏʙʙᴇᴅ*\n*╏@${robTarget.split('@')[0]}*\n*╏ᴀɴᴅ ɢᴏᴛ ᴀᴡᴀʏ ᴡɪᴛʜ*\n*╏${amountRobbed} ᴄʀᴇᴅɪᴛꜱ!*`;
+            text = `*┏─══─━══─| ʀᴏʙʙᴇʀʏ  |─══━─══─∘⦿ꕹ᛫*\n*╏@${M.sender.split('@')[0]}*\n*╏ꜱᴜᴄᴄᴇꜱꜱғᴜʟʟʏ ʀᴏʙʙᴇᴅ*\n*╏@${robTarget.split('@')[0]}*\n*╏ᴀɴᴅ ɢᴏᴛ ᴀᴡᴀʏ ᴡɪᴛʜ*\n*╏${amountRobbed} ᴄʀᴇᴅɪᴛꜱ!*\n*┗─══─━══─| ʀᴏʙʙᴇʀʏ |─══━─══─∘⦿ꕹ᛫*`;
         }
         
         await client.sendMessage(
