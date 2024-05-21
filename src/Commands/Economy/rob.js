@@ -5,7 +5,7 @@ module.exports = {
     category: 'economy',
     exp: 5,
     cool: 5, // Cooldown period in seconds (5 minutes)
-    react: "💥",
+    react: "🚨",
     usage: 'Use rob @taguser',
     description: 'Attempt to rob the mentioned user',
     async execute(client, arg, M) {
@@ -76,5 +76,8 @@ module.exports = {
             quoted: M
           }
         );
+        
+        // Send the response
+        client.sendMessage(M.from, { text, mentions: [M.sender, robTarget] }, { quoted: M });
     }
-}; 
+};
