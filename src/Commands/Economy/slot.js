@@ -13,24 +13,39 @@ module.exports = {
     async execute(client, arg, M) {
         const symbols = [
             new SlotSymbol('a', {
-                display: '🥚',
+                display: '🍊',
                 points: 1,
                 weight: 3,
             }),
             new SlotSymbol('b', {
-                display: '💎',
+                display: '🍍',
                 points: 0,
                 weight: 7,
             }),
             new SlotSymbol('c', {
-                display: '🪙',
+                display: '🥭',
                 points: 0,
                 weight: 10,
             }),
             new SlotSymbol('d', {
-                display: '🌀',
+                display: '🍎',
+                points: 2,
+                weight: 3,
+            }),
+            new SlotSymbol('e', {
+                display: '🍑',
+                points: 0,
+                weight: 8,
+            }),
+            new SlotSymbol('f', {
+                display: '🍓',
                 points: 1,
                 weight: 5,
+            }),
+            new SlotSymbol('g', {
+                display: '🍌',
+                points: 1,
+                weight: 6,
             }),
         ];
 
@@ -65,7 +80,7 @@ module.exports = {
             const jackpotWin = 200000; // Update jackpot win amount
             economy.gem += jackpotWin;
             await economy.save();
-            return M.reply(`*☆::. 🎰𓊈 ꜱʟᴏᴛ ᴍᴀᴄʜɪɴᴇ 𓊉 🎰 .::.☆*\n 💎 💎 💎\n🪙 🪙 🪙\n🌀 🌀 🌀 \nCongratulations! You hit the jackpot and won ${jackpotWin} credits!`);
+            return M.reply(`*☆::. 🎰𓊈 ꜱʟᴏᴛ ᴍᴀᴄʜɪɴᴇ 𓊉 🎰 .::.☆*\n 🍎 🍎 🍎\n🍉 🍉 🍉\n🍑 🍑 🍑 \nCongratulations! You hit the jackpot and won ${jackpotWin} credits!`);
         } else {
             let luck = 0; // Define luck variable
             if (economy.luckpotion) {
