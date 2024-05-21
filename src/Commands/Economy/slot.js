@@ -7,28 +7,28 @@ module.exports = {
     category: 'economy',
     exp: 5,
     cool: 8,
-    react: "👍",
+    react: "🤑",
     usage: 'Use: !slot <amount>',
     description: 'Bets the given amount of credits in a slot machine',
     async execute(client, arg, M) {
         const symbols = [
             new SlotSymbol('a', {
-                display: '🍉',
+                display: '🥚',
                 points: 1,
                 weight: 3,
             }),
             new SlotSymbol('b', {
-                display: '🥭',
+                display: '💎',
                 points: 0,
                 weight: 7,
             }),
             new SlotSymbol('c', {
-                display: '🍇',
+                display: '🪙',
                 points: 0,
                 weight: 10,
             }),
             new SlotSymbol('d', {
-                display: '🍓',
+                display: '🌀',
                 points: 1,
                 weight: 5,
             }),
@@ -65,7 +65,7 @@ module.exports = {
             const jackpotWin = 200000; // Update jackpot win amount
             economy.gem += jackpotWin;
             await economy.save();
-            return M.reply(`🎰 *SLOT MACHINE* 🎰\n 🍉 🍉 🍉\n🍉 🍉 🍉\n🍉 🍉 🍉 \nCongratulations! You hit the jackpot and won ${jackpotWin} credits!`);
+            return M.reply(`*☆::. 🎰𓊈 ꜱʟᴏᴛ ᴍᴀᴄʜɪɴᴇ 𓊉 🎰 .::.☆*\n 💎 💎 💎\n🪙 🪙 🪙\n🌀 🌀 🌀 \nCongratulations! You hit the jackpot and won ${jackpotWin} credits!`);
         } else {
             let luck = 0; // Define luck variable
             if (economy.luckpotion) {
@@ -84,14 +84,14 @@ module.exports = {
             economy.gem += resultAmount;
             await economy.save();
 
-            let text = '🎰 *SLOT MACHINE* 🎰\n\n';
+            let text = '*☆::. 🎰𓊈 ꜱʟᴏᴛ ᴍᴀᴄʜɪɴᴇ 𓊉 🎰 .::.☆*\n\n';
             text += machine.visualize();
 
             if (points <= 0 && luck > 0 && Math.random() < 0.5) { // Adjust the probability here
                 resultAmount = 0;
                 economy.luckpotion -= 1;
                 await economy.save();
-                text += '\n\n🍀 You have been saved by your luck potion!';
+                text += '\n\nYou have been saved by your luck potion!🙂';
             } else {
                 if (points <= 0) {
                     economy.gem -= amount;
