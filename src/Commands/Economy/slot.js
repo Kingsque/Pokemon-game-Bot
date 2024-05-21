@@ -80,7 +80,7 @@ module.exports = {
             const jackpotWin = 200000; // Update jackpot win amount
             economy.gem += jackpotWin;
             await economy.save();
-            return M.reply(`*☆::. 🎰𓊈 ꜱʟᴏᴛ ᴍᴀᴄʜɪɴᴇ 𓊉 🎰 .::.☆*\n 🍎 🍎 🍎\n🍉 🍉 🍉\n🍑 🍑 🍑 \nCongratulations! You hit the jackpot and won ${jackpotWin} credits!`);
+            return M.reply(`*☆::. 🎰𓊈 ꜱʟᴏᴛ ᴍᴀᴄʜɪɴᴇ 𓊉 🎰 .::.☆*\n🍓 🍓 🍓\n🍉 🍉 🍉\n🍑 🍑 🍑\nCongratulations! You hit the jackpot and won ${jackpotWin} credits!`);
         } else {
             let luck = 0; // Define luck variable
             if (economy.luckpotion) {
