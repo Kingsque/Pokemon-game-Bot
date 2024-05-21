@@ -49,7 +49,6 @@ module.exports = {
             }
         );
         
-            M.reply(text);
         } catch (err) {
             console.error(err);
             M.reply("An error occurred while fetching your inventory.");
