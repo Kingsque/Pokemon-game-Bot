@@ -5,7 +5,7 @@ module.exports = {
     category: 'economy',
     exp: 5,
     cool: 5, // Cooldown period in seconds (5 minutes)
-    react: "🚨",
+    react: "💥",
     usage: 'Use rob @taguser',
     description: 'Attempt to rob the mentioned user',
     async execute(client, arg, M) {
@@ -69,15 +69,12 @@ module.exports = {
         await client.sendMessage(
           M.from,
           { 
-            image: { url: "https://i.ibb.co/KsmPKys/images-4.jpg" },
+            image: { url: "https://i.ibb.co/zmpvn2n/Picsart-24-05-21-11-48-41-829.jpg" },
             caption: text
           },
           {
             quoted: M
           }
         );
-        
-        // Send the response
-        client.sendMessage(M.from, { text, mentions: [M.sender, robTarget] }, { quoted: M });
     }
-};
+}; 
