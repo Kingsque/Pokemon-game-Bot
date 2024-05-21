@@ -37,7 +37,18 @@ module.exports = {
             text += `*╏💎 ᴛᴏᴛᴀʟ ɢᴇᴍꜱ:* ${totalGems}\n`;
             text += `*╏💰 ᴛᴏᴛᴀʟ ᴛʀᴇᴀꜱᴜʀʏ:* ${totalTreasuryValue}\n`;
             text += `*┗─═─━══─| ɪɴᴠᴇɴᴛᴏʀʏ |─══━─═─∘⦿ꕹ᛫*\n`;
-
+            
+            await client.sendMessage(
+            M.from,
+            {
+                image: { url: "https://i.ibb.co/gdXngnq/Picsart-24-05-21-16-58-34-307.jpg" },
+                caption: text
+            },
+            {
+                quoted: M
+            }
+        );
+        
             M.reply(text);
         } catch (err) {
             console.error(err);
