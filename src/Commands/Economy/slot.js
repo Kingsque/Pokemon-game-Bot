@@ -18,8 +18,8 @@ module.exports = {
                 weight: 3,
             }),
             new SlotSymbol('b', {
-                display: '🍍',
-                points: 0,
+                display: '🍉',
+                points: 3,
                 weight: 7,
             }),
             new SlotSymbol('c', {
@@ -43,7 +43,7 @@ module.exports = {
                 weight: 5,
             }),
             new SlotSymbol('g', {
-                display: '🍌',
+                display: '🍇',
                 points: 1,
                 weight: 6,
             }),
@@ -64,9 +64,9 @@ module.exports = {
 
         if (amount > credits) return M.reply("You don't have sufficient funds.");
         
-        if (amount > 20000) return M.reply('You cannot bet more than 20000 credits in the slot machine.');
+        if (amount > 200000) return M.reply('You cannot bet more than 200000 credits in the slot machine.');
         
-        if (amount < 500) return M.reply('You cannot bet less than 500 credits in the slot machine.');
+        if (amount < 300) return M.reply('You cannot bet less than 300 credits in the slot machine.');
 
         const machine = new SlotMachine(3, symbols).play();
         const points = machine.lines.reduce((total, line) => total + line.points, 0);
