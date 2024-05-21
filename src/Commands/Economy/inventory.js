@@ -44,9 +44,6 @@ module.exports = {
                 image: { url: "https://i.ibb.co/gdXngnq/Picsart-24-05-21-16-58-34-307.jpg" },
                 caption: text
             },
-            {
-                quoted: M
-            }
         );
         
         } catch (err) {
