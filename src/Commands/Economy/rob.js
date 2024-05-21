@@ -63,7 +63,7 @@ module.exports = {
                 text = `*┏─══─━══─| ʀᴏʙʙᴇʀʏ  |─══━─══─∘⦿ꕹ᛫*\n*╏ʏᴏᴜ ɢᴏᴛ ᴄᴀᴜɢʜᴛ ᴀɴᴅ ᴘᴀɪᴅ*\n*╏${targetLost} ɢᴏʟᴅ* *ᴛᴏ* *@${robTarget.split('@')[0]}*\n*┗─══─━══─| ʀᴏʙʙᴇʀʏ |─══━─══─∘⦿ꕹ᛫*`;
             }
         } else {
-            text = `*@${M.sender.split('@')[0]}* successfully robbed *@${robTarget.split('@')[0]}* and got away with *${amountRobbed} credits!*`;
+            text = `*┏─══─━══─| ʀᴏʙʙᴇʀʏ  |─══━─══─∘⦿ꕹ᛫*\n*╏@${M.sender.split('@')[0]}*\n*╏ꜱᴜᴄᴄᴇꜱꜱғᴜʟʟʏ ʀᴏʙʙᴇᴅ*\n*╏@${robTarget.split('@')[0]}*\n*╏ᴀɴᴅ ɢᴏᴛ ᴀᴡᴀʏ ᴡɪᴛʜ*\n*╏${amountRobbed} ᴄʀᴇᴅɪᴛꜱ!*`;
         }
         
         await client.sendMessage(
