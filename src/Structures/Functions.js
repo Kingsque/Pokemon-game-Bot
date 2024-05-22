@@ -281,9 +281,9 @@ let greetmsg = "";
 
 if (hour >= 0 && hour < 12) {
     greetmsg = "Good Morning 🌄"; //good morning
-} else if (hour >= 12 && hour < 16) {
+} else if (hour >= 12 && hour < 17) {
     greetmsg = "Good Afternoon 🏜️"; //good afternoon
-} else if (hour >= 16 && hour < 20) {
+} else if (hour >= 17 && hour < 20) {
     greetmsg = "Good Evening 🌆"; //good evening
 } else if (hour >= 20 && hour < 24) {
   greetmsg = "Good Night 🌃"; //good night
@@ -292,7 +292,7 @@ return greetmsg
 }
 
 const errorChan = () => {
-    let chan = "https://i.ibb.co/Htdgs0w/c8f67a2f49ebc5f6d7293e7649bc5ebd.jpg"
+    let chan = "https://i.ibb.co/1QmFLKt/Picsart-24-05-18-15-10-43-623.jpg"
     return chan
 }
 
