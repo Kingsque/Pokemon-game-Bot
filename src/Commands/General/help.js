@@ -1,3 +1,20 @@
+const greetings = () => {
+    const now = new Date();
+const hour = now.getHours();
+let greetmsg = "";
+
+if (hour >= 0 && hour < 12) {
+    greetmsg = "Good Morning 🌄"; //good morning
+} else if (hour >= 12 && hour < 16) {
+    greetmsg = "Good Afternoon 🏜️"; //good afternoon
+} else if (hour >= 16 && hour < 20) {
+    greetmsg = "Good Evening 🌆"; //good evening
+} else if (hour >= 20 && hour < 24) {
+  greetmsg = "Good Night 🌃"; //good night
+}
+return greetmsg
+}
+
 module.exports = {
   name: 'help',
   aliases: ['h', 'menu', 'list'],
@@ -43,7 +60,7 @@ module.exports = {
 ┌┤✑  Am I Forget Senpai!! 𖠌
 ││✑  𝕸𝖆𝖎 𝕾𝖆𝖐𝖚𝖗𝖆𝖏𝖎𝖒𝖆 !!
 │└───────────────┈ ⳹
-│ 「 *${greeting}* 」
+│ 「 *${greetings}* 」
 │✙ 「 ${client.prefix}Help 」
 └┬──────────────┈ ⳹
    │✑ 𝕾𝖆𝖞.𝕾𝖈𝖔𝖙𝖈𝖍 𑜱
@@ -62,20 +79,6 @@ module.exports = {
         );
         return;
       }
-
-const now = new Date();
-const hour = now.getHours();
-let greeting;
-if (hour >= 0 && hour < 12) {
-  greeting = "Good Morning 🌄";
-} else if (hour >= 12 && hour < 16) {
-  greeting = "Good Afternoon 🏜️";
-} else if (hour >= 16 && hour < 20) {
-  greeting = "Good Evening 🌆";
-}else if (hour >= 20 && hour < 24) {
-  greeting = "Good Night 🌃";
-  
-}
 
       const command = client.cmd.get(arg) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(arg));
 
