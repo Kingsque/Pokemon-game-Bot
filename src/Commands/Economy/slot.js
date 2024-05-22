@@ -114,17 +114,6 @@ module.exports = {
                 }
                 text += points <= 0 ? `\n\n📉 You lost ${amount} credits` : `\n\n📈 You won ${resultAmount} credits`;
             }
-            await client.sendMessage(
-          M.from,
-          {
-            video:fs.readFileSync('./assets/slot.mp4'),gifPlayback:true,
-            caption: message
-          },
-          {
-            quoted: M
-          }
-        );
-        return;
 
             M.reply(text);
         }
