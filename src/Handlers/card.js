@@ -73,7 +73,7 @@ module.exports = CardHandler = async (client, M) => {
               const cgif = await client.utils.gifToMp4(giif);
               return client.sendMessage(jid, {
                 video: cgif,
-                caption: `*🀄𓊈 ᴀ ʀᴀʀᴇ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉🀄*\n\n🥇 *ɴᴀᴍᴇ:* ${obj.title}\n\n🔰 *ᴛɪᴇʀ:* ${obj.tier}\n\n💰 *Price:* ${price}\n\n🔮 *ꜱᴏᴜʀᴄᴇ:* ${obj.source}\n\n🧑‍🧒 ᴜꜱᴇ *${client.prefix}ᴄᴏʟʟᴇᴄᴛ* ᴛᴏ ᴄʟᴀɪᴍ ᴛʜᴇ ᴄᴀʀᴅ, ʏᴏᴜʀ ᴄᴀʀᴅ ᴡɪʟʟ ʙᴇ ꜱᴛᴏʀᴇᴅ ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ`,
+                caption: `**┏─━═─|⚡ᴄᴀʀᴅ ꜱᴘᴀᴡɴ⚡|─═━─∘⦿ꕹ᛫*\n*╏𓊈 ᴀ ʀᴀʀᴇ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉*\n*╏🏮 ɴᴀᴍᴇ:* ${obj.title}\n*╏🔰 ᴛɪᴇʀ:* ${obj.tier}\n*╏💰 Price:* ${price}\n*╏🔮 ꜱᴏᴜʀᴄᴇ:* ${obj.source}\n*╏* 🧑‍🧒 ᴜꜱᴇ *${client.prefix}ᴄᴏʟʟᴇᴄᴛ* ᴛᴏ ᴄʟᴀɪᴍ ᴛʜᴇ ᴄᴀʀᴅ\n*╏* ʏᴏᴜʀ ᴄᴀʀᴅ ᴡɪʟʟ ʙᴇ\n*╏* ꜱᴛᴏʀᴇᴅ ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ\n*┗─━═─|⚡ᴄᴀʀᴅ ꜱᴘᴀᴡɴ⚡|─═━─∘⦿ꕹ᛫*`,
                 gifPlayback: true,
               });
             } else {
