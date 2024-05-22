@@ -3,9 +3,9 @@ const hour = now.getHours();
 let greeting;
 if (hour >= 0 && hour < 12) {
   greeting = "Good Morning 🌄";
-} else if (hour >= 12 && hour < 16) {
+} else if (hour >= 12 && hour < 17) {
   greeting = "Good Afternoon 🏜️";
-} else if (hour >= 16 && hour < 20) {
+} else if (hour >= 17 && hour < 20) {
   greeting = "Good Evening 🌆";
 }else if (hour >= 20 && hour < 24) {
   greeting = "Good Night 🌃";
