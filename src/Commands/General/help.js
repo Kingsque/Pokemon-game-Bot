@@ -6,9 +6,9 @@ if (hour >= 06 && hour < 12) {
   greeting = "Good Morning 🌅";
 } else if (hour >= 12 && hour < 14) {
   greeting = "Good Afternoon 🏜️";
-} else if (hour >= 14 && hour < 17) {
+} else if (hour >= 14 && hour < 15) {
   greeting = "Good Evening 🌌";
-} else if (hour >= 17 && hour < 22) {
+} else if (hour >= 15 && hour < 22) {
   greeting = "Good Night 🌃";
 }
 
