@@ -2,7 +2,7 @@ const fs = require('fs');
 const now = new Date();
 const hour = now.getHours();
 let greeting;
-if (hour >= 0 && hour < 12) {
+if (hour >= 06 && hour < 12) {
   greeting = "Good Morning 🌅";
 } else if (hour >= 12 && hour < 17) {
   greeting = "Good Afternoon 🏜️";
@@ -17,7 +17,7 @@ module.exports = {
   aliases: ['h', 'menu', 'list'],
   category: 'general',
   exp: 10,
-  cool: 4,
+  cool: 5,
   react: "🌩️",
   usage: 'Use -help for helplist or -help <command_name> to get command info',
   description: 'Displays the command list or specific command info',
