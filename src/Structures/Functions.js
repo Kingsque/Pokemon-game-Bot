@@ -280,11 +280,13 @@ const hour = now.getHours();
 let greetmsg = "";
 
 if (hour >= 0 && hour < 12) {
-    greetmsg = "🌅 Ohayou gozaimasu"; //good morning
-} else if (hour >= 12 && hour < 18) {
-    greetmsg = "🌞 Konnichiwa"; //good afternoon
-} else {
-    greetmsg = "🌇 Konbanwa"; //good evening
+    greetmsg = "Good Morning 🌄"; //good morning
+} else if (hour >= 12 && hour < 16) {
+    greetmsg = "Good Afternoon 🏜️"; //good afternoon
+} else if (hour >= 16 && hour < 20) {
+    greetmsg = "Good Evening 🌆"; //good evening
+} else if (hour >= 20 && hour < 24) {
+  greetmsg = "Good Night 🌃"; //good night
 }
 return greetmsg
 }
@@ -504,4 +506,4 @@ module.exports = {
     convertMs,
     extractUrls,
     gifToPng
-}
+    }
