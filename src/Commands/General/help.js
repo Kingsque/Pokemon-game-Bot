@@ -1,6 +1,6 @@
 const fs = require('fs'); 
 const now = new Date();
-const hour = now.getHours();
+const hour = now.getHours('asia/Kolkata');
 let greeting;
 if (hour >= 06 && hour < 12) {
   greeting = "Good Morning 🌅";
