@@ -9,7 +9,7 @@ if (hour >= 06 && hour < 12) {
 } else if (hour >= 05 && hour < 08) {
   greeting = "Good Evening 🌌";
 } else if (hour >= 08 && hour < 12) {
-  greeting= "Good Night 🌃 ";
+  greeting = "Good Night 🌃";
 }
 
 module.exports = {
