@@ -10,6 +10,10 @@ if (hour >= 06 && hour < 12) {
   greeting = "Good Evening 🌌";
 } else if (hour >= 15 && hour < 22) {
   greeting = "Good Night 🌃";
+} else if (hour >= 22 && hour < 24) {
+  greeting = "Sleeping Time 😴💤";
+} else if (hour >= 24 && hour < 06) {
+  greeting = "Go and Sleep dude";
 }
 
 module.exports = {
