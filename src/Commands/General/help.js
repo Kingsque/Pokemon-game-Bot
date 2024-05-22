@@ -1,14 +1,14 @@
 const fs = require('fs'); 
 const now = new Date();
-const hour = now.getHours('asia/Kolkata');
+const hour = now.getHours();
 let greeting;
 if (hour >= 06 && hour < 12) {
   greeting = "Good Morning 🌅";
-} else if (hour >= 12 && hour < 17) {
+} else if (hour >= 12 && hour < 0) {
   greeting = "Good Afternoon 🏜️";
-} else if (hour >= 17 && hour < 20) {
+} else if (hour >= 05 && hour < 08) {
   greeting = "Good Evening 🌌";
-} else if (hour >= 20 && hour < 24) {
+} else if (hour >= 08 && hour < 12) {
   greeting= "Good Night 🌃 ";
 }
 
