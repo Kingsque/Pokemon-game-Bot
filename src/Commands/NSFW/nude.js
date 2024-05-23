@@ -12,7 +12,7 @@ module.exports = {
     async execute(client, arg, M) { 
 
         try {
-            const response = await axios.get('https://fantox-apis.vercel.app/nude');
+            const response = await axios.get('https://api.waifu.im/search/?included_tags=nude');
             
             if (!response.data || !response.data.images || response.data.images.length === 0) {
                 throw new Error('No waifu images found.');
