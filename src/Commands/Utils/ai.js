@@ -1,8 +1,8 @@
 const fetch = require('node-fetch'); // Ensure node-fetch is installed and required
 
 module.exports = {
-    name: 'ai',
-    aliases: ['gpt4'],
+    name: 'chat-GPT',
+    aliases: ['gpt4','chatgpt','ai'],
     category: 'utility',
     exp: 5,
     cool: 4,
