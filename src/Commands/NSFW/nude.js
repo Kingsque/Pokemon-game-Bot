@@ -1,36 +1,26 @@
-const axios = require('axios');
+const axios = require("axios");
 
 module.exports = {
-    name: 'nude',
-    aliases: ['nudewaifu'],
-    category: 'NSFW',
-    exp: 7,
-    react: "🤭",
-    usage: 'Use :waifu',
-    description: 'Sends an image of a random waifu',
-    cool: 4, // Add cooldown time in seconds
-    async execute(client, arg, M) { 
+  name: "nude",
+  alias: ["nude","nudewaifu"],
+  desc: "Hentai picture of nude waifu", 
+  category: "Nsfw",
+  usage: `nude`,
+  react: "🍁",
+  start: async (Miku, m, { prefix,NSFWstatus }) => {
 
-        try {
-            const response = await axios.get('https://api.waifu.im/search/?included_tags=nude');
-            
-            if (!response.data || !response.data.images || response.data.images.length === 0) {
-                throw new Error('No waifu images found.');
-            }
-            
-            const waifuImage = response.data.images[0];
-            const caption = `ʚ ғᴏʀ ʏᴏᴜ ғʀᴏᴍ ᴡᴇʙ ɞ`;
-
-            await client.sendMessage(M.from, {
-                image: {
-                    url: waifuImage.url
-                },
-                caption: caption
-            });
-        } catch (error) {
-            console.error('Error fetching waifu image:', error);
-            M.reply('Failed to fetch waifu image.');
-            client.log(error, 'red');
-        }
-    }
+    if (NSFWstatus == "true") return m.reply(`*This group is not NSFW enabled!*`);
+    m.reply(mess.waiting)
+    let buff= await axios.get(`https://fantox-apis.vercel.app/nude`)
+    let imgURL = buff.data.url
+    
+    let bmffg = {
+      image: {url: imgURL},
+      caption: `\n*🎀 FantoX APIs 🎀*\n\n*🧩 API link:* \nhttps://fantox-api.vercel.app\n`,
+    };
+    
+    await Miku.sendMessage(m.from, bmffg, { quoted: m }).catch((err) => {
+      return "Error!";
+    });
+  },
 };
