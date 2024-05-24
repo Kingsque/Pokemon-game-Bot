@@ -27,10 +27,10 @@ module.exports = {
                 const newEconomy = new client.econ({
                     userId,
                     gem: bonusAmount,
-                    treasury: 0,
-                    luckPotion: 0,
-                    pepperSpray: 0,
-                    pokeball: 0,
+                    treasury: 15000,
+                    luckPotion: 2,
+                    pepperSpray: 1,
+                    pokeball: 1,
                     lastBonus: Date.now(),
                     lastDaily: null,
                     lastRob: null
