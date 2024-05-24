@@ -28,6 +28,17 @@ module.exports = {
                 await economy.save();
             }
         }
+        await client.sendMessage(
+            M.from,
+            {
+                image: { url: "https://i.ibb.co/Ldd8bp7/1057308.jpg" },
+                caption: text
+            },
+            {
+                quoted: M
+            }
+        );
+        
        M.reply(message);
     },
 };
