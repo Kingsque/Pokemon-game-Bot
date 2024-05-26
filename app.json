@@ -1,6 +1,6 @@
 {
 
-   "name":"𝔪𝔞𝔦 𝔖𝔞𝔨𝔲𝔯𝔞𝔧𝔦𝔪𝔞",
+   "name":"𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆",
 
    "description":"A WhatsApp Bot With Multi Device Supported",
 
@@ -12,11 +12,11 @@
 
    ],
 
-   "website":"https://github.com/REDZEOX/mai_sakurajima#readme",
+   "website":"https://github.com/Kingshisui00/Aurora-Private#readme",
 
-   "repository":"https://github.com/REDZEOX/mai_sakurajima.git",
+   "repository":"https://github.com/Kingshisui00/Aurora-Private.git",
 
-   "logo":"https://i.ibb.co/fN9Pb1x/c8f67a2f49ebc5f6d7293e7649bc5ebd.jpg",
+   "logo":"https://i.ibb.co/1sbf4Zn/Picsart-24-02-20-16-40-03-063.jpg",
 
    "success_url":"/",
 
@@ -25,7 +25,7 @@
       "NAME":{
 
          "description":"Name of your bot",
-         "value":"𝔪𝔞𝔦 𝔖𝔞𝔨𝔲𝔯𝔞𝔧𝔦𝔪𝔞",
+         "value":"𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆",
          "required":true
 
       },
@@ -55,7 +55,7 @@
       },
 
       "SESSION":{
-      "value":"Bulma",
+
          "description": "for me",
 
          "required": true
