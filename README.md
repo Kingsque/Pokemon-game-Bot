@@ -28,9 +28,10 @@
 <summary>🎐 ᴅᴇᴘʟᴏʏ ᴀɴʏ ᴘʟᴀᴛғᴏʀᴍ 🎐</summary>
 
 <h4 align="center" >
-    <a href="https://heroku.com/deploy?template=https://github.com/HELLRYZEN/mai_sakurajima">
-    <img src="https://www.herokucdn.com/deploy/button.svg" width="150px" alt="Deploy on Heroku" >
-    </a>
+  
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/HELLRYZEN/mai_sakurajima/)
+
+</a>
 
 <h4 align="center"> 
 <a href="https://app.koyeb.com/apps/deploy?type=docker&image=quay.io/lucky01u/project-test:main&env[PORT]=8000&env[PREFIX]=-&&env[MONGODB]=mongodb://mongo:a2H5ECgq2f3z1eW8DwGY@containers-us-west-24.railway.app:5516&&env[SESSION]=enterYourSession&&env[MODS]=919529426293&&env[Chat_Bot_Url]=http://api.brainshop.ai/get?bid=[bid]&key=[key]&uid=[uid]&msg=[msg]">
