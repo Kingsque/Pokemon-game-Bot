@@ -28,7 +28,7 @@
 <summary>🎐 ᴅᴇᴘʟᴏʏ ᴀɴʏ ᴘʟᴀᴛғᴏʀᴍ 🎐</summary>
 
 <h4 align="center" >
-    <a href="https://heroku.com/deploy?template=https://github.com/REDZEOX/mai_sakurajima">
+    <a href="https://heroku.com/deploy?template=https://github.com/HELLRYZEN/mai_sakurajima">
     <img src="https://www.herokucdn.com/deploy/button.svg" width="150px" alt="Deploy on Heroku" >
     </a>
 
