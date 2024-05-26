@@ -5,38 +5,48 @@ module.exports = {
     category: 'economy',
     exp: 5,
     cool: 4,
-    react: "✅",
+    react: "🖇️",
     usage: 'Use :transfer <amount> @taguser',
     description: 'Transfer credits to your friend',
-    async execute(client, arg, M){
-        const recipient = M.mentions[0] || (M.quoted && M.quoted.participant);
+    async execute(client, arg, M) {
+        try {
+            const recipient = M.mentions[0] || (M.quoted && M.quoted.participant);
 
-        if (!recipient) return M.reply('You must mention someone to transfer credits to.');
+            if (!recipient) return M.reply('You must mention someone to transfer credits to.');
 
-        const amount = parseInt(arg.split(' ')[0]);
-        if (isNaN(amount) || amount <= 0) return M.reply('Please provide a valid positive amount.');
+            const amount = parseInt(arg.split(' ')[0]);
+            if (isNaN(amount) || amount <= 0) return M.reply('Please provide a valid positive amount.');
 
-        const userId = M.sender;
-        const senderEconomy = await client.econ.findOne({ userId });
+            const userId = M.sender;
+            const senderEconomy = await client.econ.findOne({ userId });
 
-        const senderWallet = senderEconomy.gem || 0;
-        if (senderWallet < amount) return M.reply('You don\'t have enough credits in your wallet.');
+            if (!senderEconomy) return M.reply('You do not have an economy account.');
 
-        const recipientEconomy = await client.econ.findOne({ userId: recipient });
+            const senderWallet = senderEconomy.gem || 0;
+            if (senderWallet < amount) return M.reply('You don\'t have enough credits in your wallet.');
 
-        senderEconomy.gem -= amount;
-        await senderEconomy.save();
+            const recipientEconomy = await client.econ.findOne({ userId: recipient });
 
-        recipientEconomy.gem += amount;
-        await recipientEconomy.save();
+            if (!recipientEconomy) {
+                return M.reply('The recipient does not have an economy account.');
+            }
 
-        const senderName = M.sender.split('@')[0];
-        const recipientName = recipient.split('@')[0];
+            senderEconomy.gem -= amount;
+            await senderEconomy.save();
 
-        const messageToAdmin = `@${senderName} transferred ${amount} credits to @${recipientName}`;
-        const message = `You transferred *${amount}* credits to *@${recipientName}*`;
+            recipientEconomy.gem += amount;
+            await recipientEconomy.save();
 
-        await client.sendMessage(M.from, { text: message, mentions: [recipient] });
-        await client.sendMessage("120363236615391329@g.us", { text: messageToAdmin });
+            const senderName = M.sender.split('@')[0];
+            const recipientName = recipient.split('@')[0];
+
+            const message = `You transferred *${amount}* credits to *@${recipientName}*`;
+
+            await client.sendMessage(M.from, { text: message, mentions: [recipient] });
+          
+        } catch (err) {
+            console.error(err);
+            M.reply('An error occurred while processing the transfer.');
+        }
     }
 };
