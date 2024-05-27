@@ -26,9 +26,9 @@ module.exports = {
         const username = (await client.contact.getContact(user, client)).username;
         const experience = (await client.exp.get(user)) || 0;
 
-        const randomHexs = `#${(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')}`;
-        const randomHex = `#${(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')}`;
-        const randomHexz = `#${(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')}`;
+        const randomHexs = `#${(Math.random() * 0x0C090A << 0).toString(16).padStart(6, '0')}`;
+        const randomHex = `#${(Math.random() * 0x0C090A << 0).toString(16).padStart(6, '0')}`;
+        const randomHexz = `#${(Math.random() * 0x0C090A << 0).toString(16).padStart(6, '0')}`;
 
         const card = await new cx.Rank()
             .setAvatar(pfp)
