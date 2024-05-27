@@ -20,7 +20,7 @@ module.exports = {
   name: 'help',
   aliases: ['h', 'menu', 'list'],
   category: 'general',
-  exp: 10,
+  exp: 1000,
   cool: 5,
   react: "🌩️",
   usage: 'Use -help for helplist or -help <command_name> to get command info',
