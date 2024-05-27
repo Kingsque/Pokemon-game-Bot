@@ -5,9 +5,9 @@ module.exports = {
     name: 'rank',
     aliases: ['rk'],
     category: 'general',
-    exp: 5,
+    exp: 100,
     cool: 4,
-    react: "✅",
+    react: "⚡",
     usage: 'Use :rank',
     description: 'Gives you your rank card',
     async execute(client, arg, M) {
@@ -18,7 +18,7 @@ module.exports = {
         try {
             pfp = await client.profilePictureUrl(user, 'image');
         } catch {
-            pfp = 'https://i.ibb.co/nbdh1ZM/Aurora-error.jpg';
+            pfp = 'https://i.ibb.co/Ycg1s7q/Picsart-24-05-18-15-10-43-623.jpg';
         }
 
         const level = (await client.DB.get(`${user}_LEVEL`)) || 1;
@@ -50,7 +50,7 @@ module.exports = {
             M.from,
             {
                 image: card,
-                caption: `@${user.split("@")[0]}#${user.substring(3, 7)}'s rank card\n\n🎯 Exp: ${experience}/${requiredXpToLevelUp}\n❤️ Level: ${level}\n🔮 Rank: ${rank}`,
+                caption: `*┏─━══─| ʀᴀɴᴋ ᴄᴀʀᴅ |─══━─∘⦿ꕹ᛫*\n*╏ᴜꜱᴇʀ:* @${user.split("@")[0]}\n*╏🎯 ᴇꭗᴘ:* ${experience}/${requiredXpToLevelUp}\n*╏❤️ ʟᴇᴠᴇʟ:* ${level}\n*╏🔮 ʀᴀɴᴋ:* ${rank}\n*┗─══─━══─| ✾ |─══━─══─∘⦿ꕹ᛫*`,
                 mentions: [user]
             },
             {
