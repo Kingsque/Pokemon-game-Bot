@@ -25,7 +25,7 @@ module.exports = {
         const modCount = client.mods.length;
         const website = 'coming soon...';
         
-        let text = `*┏─━══─| ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ |─══━─┓*\n`;
+        let text = `*┏─━══─| ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ |─══━─∘⦿ꕹ᛫*\n`;
         text += `*╏🏮 BOT INFO:* ${process.env.NAME}\n`;
         text += `*╏🕘 UPTIME:* ${uptime}\n`;
         text += `*╏👥 USERS:* ${usersCounts || 0}\n`;
@@ -34,7 +34,7 @@ module.exports = {
         text += `*╏📢 MODS:* ${modCount}\n`;
         text += `*╏🔥 OWNER:* @ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ\n`;
         text += `*╏🎭 WEBSITE:* ${website}\n`;
-        text += `*┗─══─━══─| ✾ |─══━─══─┛*`;
+        text += `*┗─══─━══─| ✾ |─══━─══─∘⦿ꕹ᛫*`;
 
          await client.sendMessage(
           M.from,
