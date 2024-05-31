@@ -42,15 +42,17 @@ module.exports = {
         const banned = (await client.DB.get('banned')) || [];
 
         let text = '';
-        text += `🏮 *Username:* ${username}#${user.substring(3, 7)}\n`;
-        text += `🎫 *Bio:* ${bio}\n`;
-        text += `🍀 *Level:* ${level}\n`;
-        text += `🌟 *XP:* ${experience}\n`;
-        text += `🥇 *Rank:* ${stats.rank}\n`;
-        text += `👑 *Admin:* ${groupAdmins.includes(user) ? 'True' : 'False'}\n`;
-        text += `✖ *Ban:* ${banned.includes(user) ? 'True' : 'False'}\n`;
-        text += `💰 *Wallet:* ${wallet}\n`;
-        text += `🃏 *Deck:* ${deck ? deck.length : 0}\n`; // Check if deck is empty
+        text += `*┏─═─━══─| 🎀 ᴘʀᴏғɪʟᴇ 🎀 |─══━─═─∘⦿ꕹ᛫*\n`;
+        text += `*╏🏮 *Username:* ${username}\n`;
+        text += `*╏🎫 *Bio:* ${bio}\n`;
+        text += `*╏🍀 *Level:* ${level}\n`;
+        text += `*╏🌟 *XP:* ${experience}\n`;
+        text += `*╏🥇 *Rank:* ${stats.rank}\n`;
+        text += `*╏👑 *Admin:* ${groupAdmins.includes(user) ? 'True' : 'False'}\n`;
+        text += `*╏✖ *Ban:* ${banned.includes(user) ? 'True' : 'False'}\n`;
+        text += `*╏💰 *Wallet:* ${wallet}\n`;
+        text += `*╏🃏 Deck:* ${deck ? deck.length : 0}\n`; // Check if deck is empty
+        text += `*┗─═─━══─| 🎀 ᴘʀᴏғɪʟᴇ 🎀 |─══━─═─∘⦿ꕹ᛫*\n`;
 
         client.sendMessage(
             M.from,
