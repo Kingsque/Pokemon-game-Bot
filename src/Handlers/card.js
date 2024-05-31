@@ -20,7 +20,7 @@ module.exports = CardHandler = async (client, M) => {
         const sOr6Interval = 2;
         const sOr6Limit = 15;
 
-        cron.schedule('*/5 * * * *', async () => {
+        cron.schedule('*/20 * * * *', async () => {
           try {
             const filePath = path.join(__dirname, '../Helpers/card.json');
             const data = require(filePath);
@@ -31,19 +31,19 @@ module.exports = CardHandler = async (client, M) => {
             obj = data[index];
             switch (obj.tier) {
               case "1":
-                price = client.utils.getRandomInt(1000, 2000);
+                price = client.utils.getRandomInt(2000, 4000);
                 break;
               case "2":
-                price = client.utils.getRandomInt(2000, 3000);
+                price = client.utils.getRandomInt(4000, 5000);
                 break;
               case "3":
-                price = client.utils.getRandomInt(3000, 5000);
+                price = client.utils.getRandomInt(4000, 5000);
                 break;
               case "4":
-                price = client.utils.getRandomInt(5000, 8000);
+                price = client.utils.getRandomInt(8000, 10000);
                 break;
               case "5":
-                price = client.utils.getRandomInt(15000, 20000);
+                price = client.utils.getRandomInt(25000, 40000);
                 break;
             }
             count++;
@@ -55,10 +55,10 @@ module.exports = CardHandler = async (client, M) => {
               obj = filteredData[index];
               switch (obj.tier) {
                 case "6":
-                  price = client.utils.getRandomInt(30000, 60000);
+                  price = client.utils.getRandomInt(70000, 90000);
                   break;
                 case "S":
-                  price = client.utils.getRandomInt(60000, 100000);
+                  price = client.utils.getRandomInt(100000, 500000);
                   break;
               }
             }
@@ -90,7 +90,7 @@ module.exports = CardHandler = async (client, M) => {
             await client.sendMessage(jid , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Mai Sakurajima Dis\n\nCommand no error wa:\n${err}`});
           }
 
-        cron.schedule('*/4 * * * *', async () => {
+        cron.schedule('*/5 * * * *', async () => {
           await client.cards.delete(`${jid}.card`);
           await client.cards.delete(`${jid}.card_price`);
           console.log(`Card deleted after 5 minutes`);
