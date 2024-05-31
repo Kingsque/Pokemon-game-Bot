@@ -5,7 +5,7 @@ module.exports = {
   aliases: ['event'],
   category: 'dev',
   exp: 5,
-  react: "✅",
+  react: "🔮",
   description: 'spawns cards',
   async execute(client, arg, M) {
     const cardsPath = path.join(__dirname, '../../Helpers/card.json');
@@ -30,16 +30,9 @@ module.exports = {
         price = client.utils.getRandomInt(50000, 100000);
         break;
     }
-let code = client.utils.getRandomInt(10000, 99999)
-                      
+
     await client.cards.set(`${M.from}.card`, `${obj.title}-${obj.tier}`);
     await client.cards.set(`${M.from}.card_price`, price);
-client.cardMap.set(jid, {
-                            price: price,
-                            code: code,
-                            card: { name: obj.title, tier: obj.tier, image: obj.url}
-                        });
-
 
     const giif = await client.utils.getBuffer(obj.url);
     const cgif = await client.utils.gifToMp4(giif);
@@ -56,4 +49,5 @@ client.cardMap.set(jid, {
       console.log('card deleted');
     }, 3000);
   }
-      }
+                                }
+      
