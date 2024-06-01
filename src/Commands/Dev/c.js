@@ -5,7 +5,7 @@ module.exports = {
   aliases: ['event'],
   category: 'dev',
   exp: 5,
-  react: "✅",
+  react: "🔥",
   description: 'spawns cards',
   async execute(client, arg, M) {
     const cardsPath = path.join(__dirname, '../../Helpers/card.json');
@@ -24,13 +24,13 @@ module.exports = {
     let price;
     switch (obj.tier) {
       case "6":
-        price = client.utils.getRandomInt(30000, 50000);
+        price = client.utils.getRandomInt(200000, 500000);
         break;
       case "S":
-        price = client.utils.getRandomInt(50000, 100000);
+        price = client.utils.getRandomInt(500000, 1000000);
         break;
     }
-    let code = client.utils.getRandomInt(10000, 99999);
+    let code = client.utils.getRandomInt(100000, 999999);
 
     await client.cards.set(`${M.from}.card`, `${obj.title}-${obj.tier}`);
     await client.cards.set(`${M.from}.card_price`, price);
