@@ -5,7 +5,7 @@ module.exports = {
   aliases: ['event'],
   category: 'dev',
   exp: 5,
-  react: "🔮",
+  react: "✅",
   description: 'spawns cards',
   async execute(client, arg, M) {
     const cardsPath = path.join(__dirname, '../../Helpers/card.json');
@@ -30,16 +30,22 @@ module.exports = {
         price = client.utils.getRandomInt(50000, 100000);
         break;
     }
+    let code = client.utils.getRandomInt(10000, 99999);
 
     await client.cards.set(`${M.from}.card`, `${obj.title}-${obj.tier}`);
     await client.cards.set(`${M.from}.card_price`, price);
+    client.cardMap.set(M.from, {
+      price: price,
+      code: code,
+      card: { name: obj.title, tier: obj.tier, image: obj.url }
+    });
 
     const giif = await client.utils.getBuffer(obj.url);
     const cgif = await client.utils.gifToMp4(giif);
 
-    return client.sendMessage(M.from, {
+    await client.sendMessage(M.from, {
       video: cgif,
-      caption: `🎴 ━『 ANIME-CARD 』━ 🎴\n\n💮 Name: ${obj.title}\n\n💠 Tier: ${obj.tier}\n\n🏮 Price: ${price}\n\n📤 Info: This cards are originally owned by https://shoob.gg we are using it with all the required permissions.\n\n🔖 [ Use ${process.env.PREFIX}collect to claim the card, ${process.env.PREFIX}collection to see your Cards ]`,
+      caption: `🎴 ━『 ANIME-CARD 』━ 🎴\n\n💮 Name: ${obj.title}\n\n💠 Tier: ${obj.tier}\n\n🏮 Price: ${price}\n\n📤 Info: These cards are originally owned by https://shoob.gg, and we are using them with all the required permissions.\n\n🔖 [ Use ${process.env.PREFIX}collect to claim the card, ${process.env.PREFIX}collection to see your Cards ]`,
       gifPlayback: true,
     });
 
@@ -49,5 +55,4 @@ module.exports = {
       console.log('card deleted');
     }, 3000);
   }
-                                }
-      
+};
