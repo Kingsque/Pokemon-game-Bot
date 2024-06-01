@@ -32,14 +32,14 @@ module.exports = {
       // Deduct the card price from the user's wallet
       wallet -= card.price;
       
-      const [title, tier] = card.card.split("-");
+      
 
-      let text = `🃏 ${title} (${tier}) has been safely stored in your deck!`;
+      let text = `🃏 card has been safely stored in your deck!`;
 
       if (deck.length < 12) {
         deck.push(card.card);
       } else {
-        text = `🃏 ${title} (${tier}) has been safely stored in your collection!`;
+        text = `🃏card has been safely stored in your collection!`;
         collection.push(card.card);
       }
 
@@ -47,7 +47,7 @@ module.exports = {
       await client.DB.set(`${M.sender}_Collection`, collection);
 
       await M.reply(
-        `🎉 You have successfully claimed *${title} - ${tier}* for *${card.price} Credits* ${text}`
+        `🎉 You have successfully claimed the card for *${card.price} Credits* ${text}`
       );
 
       await client.cardMap.delete(M.from);
