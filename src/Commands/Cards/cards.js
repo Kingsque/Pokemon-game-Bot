@@ -1,85 +1,66 @@
-const axios = require("axios");
 const path = require('path');
 
 module.exports = {
-  name: "card",
-  aliases: ["cards"],
+  name: "cards",
+  aliases: ["cl"],
+  react: '📜',
   exp: 0,
   cool: 4,
-  react: "⚡",
   category: "card game",
-  usage: 'Use :cards --tier/--name',
-  description: "View all your cards, mixed from deck and collection",
+  description: "View all your collected cards and deck cards",
   async execute(client, arg, M) {
-    const collection = await client.DB.get(`${M.sender}_Collection`) || [];
-    const deck = await client.DB.get(`${M.sender}_Deck`) || [];
-    
     try {
-      if (collection.length === 0 && deck.length === 0) {
-        return M.reply("Sorry, you don't have any cards in your collection and deck.");
+      const collection = (await client.DB.get(`${M.sender}_Collection`)) || [];
+      const deck = (await client.DB.get(`${M.sender}_Deck`)) || [];
+      
+      const allCards = [...collection, ...deck];
+      if (allCards.length === 0) {
+        return M.reply("You currently don't have any cards in your collection or deck");
       }
 
+      const uniqueCards = allCards.filter((card, index) => allCards.indexOf(card) === index);
       let tag = M.sender.substring(3, 7);
-      let tr = `*🃏 Name:* ${(await client.contact.getContact(M.sender, client)).username} #${tag}*\n\n`;
+      let tr = `*Name:* ${(await client.contact.getContact(M.sender, client)).username}\n*🏷️ Tag:* #${tag}\n\n *🔖 Total unique cards:* ${uniqueCards.length}↯\n\n`;
 
-      // Sorting the cards based on the argument
-      if (arg === "--name") {
-        collection.sort();
-        deck.sort();
-        // Displaying cards normally with alphabetical sorting
-        [...deck, ...collection].forEach((card, index) => {
-          const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
-          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-          tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
-        });
-      } else if (arg === "--tier") {
-        // Grouping cards by tier
-        const tiers = {};
-        [...collection, ...deck].forEach(card => {
-          const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
-          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-          if (!tiers[tier]) tiers[tier] = [];
-          tiers[tier].push(name);
-        });
+      for (let i = 0; i < uniqueCards.length; i++) {
+        let card = uniqueCards[i].split("-");
+        const filePath = path.join(__dirname, '../../Helpers/card.json');
+        const data = require(filePath);
+        const obj = data.find((cardData) => cardData.title === card[0] && cardData.tier === card[1]);
+        tr += `*${i + 1}) Name: ${card[0]} (Tier: ${card[1]})*\n\n`;
+      }
 
-        // Displaying cards tier-wise, sorted from S to 1
-        ['S', '6', '5', '4', '3', '2', '1'].forEach(tier => {
-          if (tiers[tier]) {
-            tr += `Tier ${tier}:\n`;
-            tiers[tier].forEach((name, index) => {
-              tr += `${index + 1}. ${name}\n`;
+      if (arg) {
+        const index = parseInt(arg) - 1;
+        if (isNaN(index) || index < 0 || index >= uniqueCards.length) {
+          return M.reply(`Invalid card index. Your list has ${uniqueCards.length} unique cards.`);
+        } else {
+          const card = uniqueCards[index].split('-');
+          const filePath = path.join(__dirname, '../../Helpers/card.json');
+          const data = require(filePath);
+          const cardData = data.find((cardData) => cardData.title === card[0] && cardData.tier === card[1]);
+          const cardUrl = cardData.url;
+          let text = `🃏 Total Unique Cards: ${uniqueCards.length}\n\n🏮 Username: ${(await client.contact.getContact(M.sender, client)).username}`
+          text += `\n*#${index + 1}*\n🃏 *Name:* ${card[0]}\n🪄 *Tier:* ${card[1]}\n`;
+
+          const file = await client.utils.getBuffer(cardUrl);
+          if (cardUrl.endsWith('.gif')) {
+            const giffed = await client.utils.gifToMp4(file);
+            await client.sendMessage(M.from, {
+              video: giffed,
+              gifPlayback: true,
+              caption: text
             });
-            tr += '\n';
+          } else {
+            await client.sendMessage(M.from , {image: {url: cardUrl} , caption: text}, {quoted: M});
           }
-        });
+        }
       } else {
-        // Displaying cards normally without sorting
-        [...deck, ...collection].forEach((card, index) => {
-         const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
-          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
-          tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
-        });
+        await client.sendMessage(M.from, tr);
       }
-
-      // Select the image or link of the first card in deck
-      const firstDeckCard = deck.length > 0 ? deck[0].split("-") : null;
-      const filePath = path.join(__dirname, '../../Helpers/card.json');
-      const data = require(filePath);
-      const matchingCards = data.filter(function (cardData) {
-        return cardData.tier == firstDeckCard[1] && cardData.title == firstDeckCard[0];
-      });
-      const imageUrl = matchingCards.length > 0 ? matchingCards[0].url : '';
-
-      if (imageUrl.endsWith(".gif")) {
-        return await client.sendMessage(M.from, { video: { url: imageUrl }, caption: tr, gifPlayback: true }, { quoted: M });
-      } else if (imageUrl) {
-        return await client.sendMessage(M.from, { image: { url: imageUrl }, caption: arg === "--name" ? null : tr }, { quoted: M });
-      } else {
-        return M.reply("Error: Unable to find an image for the first card in your deck.");
-      }
-    } catch(err) {
-      await client.sendMessage(M.from , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} mai Sakurajima\n\nError:\n${err}`});
+    } catch (err) {
+      console.log(err);
+      await client.sendMessage(M.from, {image: {url: `${client.utils.errorChan()}`}, caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`});
     }
   },
 };
-                                            
