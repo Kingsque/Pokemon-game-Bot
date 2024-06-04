@@ -28,14 +28,16 @@ module.exports = {
         deck.sort();
         // Displaying cards normally with alphabetical sorting
         [...deck, ...collection].forEach((card, index) => {
-          const [name, tier] = cardData.tier ("-");
+          const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
+          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
           tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
         });
       } else if (arg === "--tier") {
         // Grouping cards by tier
         const tiers = {};
         [...collection, ...deck].forEach(card => {
-          const [name, tier] = cardData.tier ("-");
+          const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
+          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
           if (!tiers[tier]) tiers[tier] = [];
           tiers[tier].push(name);
         });
@@ -53,7 +55,8 @@ module.exports = {
       } else {
         // Displaying cards normally without sorting
         [...deck, ...collection].forEach((card, index) => {
-          const [name, tier] = cardData.tier ("-");
+         const cardsInTier = data.filter((cardData) => cardData.tier === card[1]);
+          const cardData = cardsInTier.find((cardData) => cardData.title === card[0]);
           tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
         });
       }
@@ -79,4 +82,4 @@ module.exports = {
     }
   },
 };
-        
+                                            
