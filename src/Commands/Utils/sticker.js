@@ -18,7 +18,7 @@ module.exports = {
 
             if (isMedia || isQuotedMedia) {
                 // Split pack and author from the argument
-                const [packName, authorName] = arg.split('|').map(part => part.trim('360'));
+                const [packName, authorName] = arg.split('|').map(part => part.trim());
                 // Download the media
                 const buffer = isQuotedMedia ? await M.quoted.download() : await M.download();
 
@@ -30,7 +30,7 @@ module.exports = {
                     author: authorName || '𓆩『 🅱🆄🅽🅽🆈 🅱🅾🆃 』𓆪',
                     type: StickerTypes.FULL,
                     categories: ['🤩', '🎉'],
-                    quality: 70
+                    quality: 60
                 });
 
                 // Build and send the sticker
