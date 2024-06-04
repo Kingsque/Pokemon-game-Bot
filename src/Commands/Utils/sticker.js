@@ -19,7 +19,6 @@ module.exports = {
             if (isMedia || isQuotedMedia) {
                 // Split pack and author from the argument
                 const [packName, authorName] = arg.split('|').map(part => part.trim());
-                canvas.width = image.width = '360';
                 canvas.height = image.height = '360';
 
                 // Download the media
