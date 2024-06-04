@@ -18,9 +18,7 @@ module.exports = {
 
             if (isMedia || isQuotedMedia) {
                 // Split pack and author from the argument
-                const [packName, authorName] = arg.split('|').map(part => part.trim());
-                canvas.height = image.height = '360';
-
+                const [packName, authorName] = arg.split('|').map(part => part.trim('360'));
                 // Download the media
                 const buffer = isQuotedMedia ? await M.quoted.download() : await M.download();
 
