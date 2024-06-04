@@ -6,7 +6,7 @@ module.exports = {
   aliases: ["cards"],
   exp: 0,
   cool: 4,
-  react: "✅",
+  react: "⚡",
   category: "card game",
   usage: 'Use :cards --tier/--name',
   description: "View all your cards, mixed from deck and collection",
@@ -28,14 +28,14 @@ module.exports = {
         deck.sort();
         // Displaying cards normally with alphabetical sorting
         [...deck, ...collection].forEach((card, index) => {
-          const [name, tier] = card[index].split("-");
+          const [name, tier] = card.splaying("-");
           tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
         });
       } else if (arg === "--tier") {
         // Grouping cards by tier
         const tiers = {};
         [...collection, ...deck].forEach(card => {
-          const [name, tier] = card[index].split("-");
+          const [name, tier] = card.splaying("-");
           if (!tiers[tier]) tiers[tier] = [];
           tiers[tier].push(name);
         });
@@ -53,7 +53,7 @@ module.exports = {
       } else {
         // Displaying cards normally without sorting
         [...deck, ...collection].forEach((card, index) => {
-          const [name, tier] = card[index].split("-");
+          const [name, tier] = card.splaying("-");
           tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
         });
       }
@@ -75,7 +75,8 @@ module.exports = {
         return M.reply("Error: Unable to find an image for the first card in your deck.");
       }
     } catch(err) {
-      await client.sendMessage(M.from , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Error-Chan Dis\n\nError:\n${err}`});
+      await client.sendMessage(M.from , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} mai Sakurajima\n\nError:\n${err}`});
     }
   },
 };
+    
