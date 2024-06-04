@@ -52,7 +52,7 @@ const start = async () => {
     //Config
     client.name = process.env.NAME || '𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆'
     client.prefix = process.env.PREFIX || '-'
-    client.mods = ('919529426293,918178640193').split(',')
+    client.mods = ('919529426293,917980329866').split(',')
 
     //Database
     client.DB = new QuickDB({
