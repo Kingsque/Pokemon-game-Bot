@@ -28,14 +28,14 @@ module.exports = {
         deck.sort();
         // Displaying cards normally with alphabetical sorting
         [...deck, ...collection].forEach((card, index) => {
-          const [name, tier] = card.splaying("-");
+          const [name, tier] = ("-");
           tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
         });
       } else if (arg === "--tier") {
         // Grouping cards by tier
         const tiers = {};
         [...collection, ...deck].forEach(card => {
-          const [name, tier] = card.splaying("-");
+          const [name, tier] = ("-");
           if (!tiers[tier]) tiers[tier] = [];
           tiers[tier].push(name);
         });
@@ -53,7 +53,7 @@ module.exports = {
       } else {
         // Displaying cards normally without sorting
         [...deck, ...collection].forEach((card, index) => {
-          const [name, tier] = card.splaying("-");
+          const [name, tier] = ("-");
           tr += `${index + 1}. ${name} (Tier: ${tier})\n`;
         });
       }
@@ -79,4 +79,4 @@ module.exports = {
     }
   },
 };
-    
+                 
