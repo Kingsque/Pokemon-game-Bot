@@ -19,10 +19,8 @@ module.exports = {
             if (isMedia || isQuotedMedia) {
                 // Split pack and author from the argument
                 const [packName, authorName] = arg.split('|').map(part => part.trim());
-                
-                // img crop media
-                canvas.width = image.width;
-                canvas.height = image.height;
+                canvas.width = image.width = '360';
+                canvas.height = image.height = '360';
 
                 // Download the media
                 const buffer = isQuotedMedia ? await M.quoted.download() : await M.download();
