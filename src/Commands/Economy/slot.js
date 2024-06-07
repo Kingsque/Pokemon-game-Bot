@@ -48,7 +48,19 @@ module.exports = {
                 weight: 4,
             }),
         ];
-
+        
+        await client.sendMessage(
+          M.from,
+          {
+            video: {url: "https://telegra.ph/file/e4706cccddd9697a24dae.mp4"},
+            caption: message,
+            gifPlayback: true
+          },
+          {
+            quoted: M
+          }
+          )
+        
         if (!arg) return M.reply('Please provide the amount.');
         
         const amount = parseInt(arg);
