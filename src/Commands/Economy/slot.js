@@ -46,11 +46,14 @@ module.exports = {
                 display: '🍇',
                 points: 0,
                 weight: 4,
-            }), {
-            video: {url: "https://telegra.ph/file/e4706cccddd9697a24dae.mp4"},
-            gifPlayback: true
-          },
+            }),
         ];
+        
+        ({
+            video: {url: "https://graph.org/file/d2662e4c6a394dba9df06.mp4"},
+            caption: message,
+            gifPlayback: true
+        })
         
         if (!arg) return M.reply('Please provide the amount.');
         
