@@ -6,7 +6,7 @@ module.exports = {
     name: 'getimg',
     aliases: ['searchimg'],
     category: 'utils',
-    exp: 7,
+    exp: 1,
     react: "✅",
     usage: 'Use :getimg <context>',
     description: 'Searches image from google.com',
@@ -17,7 +17,7 @@ module.exports = {
             if (!arg) return M.reply('Sorry, you did not provide any search term!');
             
             // Perform a Google Image search
-            const response = await axios.get(`https://www.googleapis.com/customsearch/v1?q=${arg}&searchType=image&key=YOUR_API_KEY&cx=YOUR_CUSTOM_SEARCH_ENGINE_ID`);
+            const response = await axios.get(`https://www.googleapis.com/customsearch/v1?q=${arg}&searchType=image&key=${Apikey}&cx=${cx}`);
             
             // Check if the response is successful
             if (!response.data || !response.data.items || response.data.items.length === 0) {
