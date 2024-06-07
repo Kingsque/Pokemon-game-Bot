@@ -2,20 +2,19 @@ const fs = require('fs');
 function wish () {
   const hour_now = moment.tz('Asia/Kolkata').
  format('HH')
- let greetings;
  var wishWishes = 'Good Morning 🌅'
  if (hour_now >= '06' && hour_now <= '12') {
    wishWishes = 'Good Morning 🌅' }
    else if (hour_now >= '12' && hour_now <= '17') {
      wishWishes = 'Good Afternoon 🏜️' }
    else if (hour_now >= '17' && hour_now <= '19') {
-     wishWishes = 'Good Evening 🌆'}
+     wishWishes = 'Good Evening 🌆' }
    else if (hour_now >= '19' && hour_now <= '23') {
      wishWishes = 'Good Night 🌃' }
    else if (hour_now >= '23' && hour_now <= '05') {
      wishWishes = 'Sweet Dreams 💖 Sleep Well' }
    else if (hour_now >= '05' &- hour_now <= '06') {
-     wishWishes = 'Go and sleep 😴'}
+     wishWishes = 'Go and sleep 😴' }
    else { 
     wishWishes = 'Good Night.!!!' }
    return wishWishes }
@@ -24,7 +23,7 @@ module.exports = {
   name: 'help',
   aliases: ['h', 'menu', 'list'],
   category: 'general',
-  exp: 500,
+  exp: 100,
   cool: 5,
   react: "🌩️",
   usage: 'Use -help for helplist or -help <command_name> to get command info',
@@ -65,7 +64,7 @@ module.exports = {
 ┌┤✑  Am I Forget Senpai!! 𖠌
 ││✑  𝕸𝖆𝖎 𝕾𝖆𝖐𝖚𝖗𝖆𝖏𝖎𝖒𝖆 !!
 │└───────────────┈ ⳹
-│ 「 *${greetings}* 」
+│ 「 *${hour_now}* 」
 │✙ 「 ${client.prefix}Help 」
 └┬──────────────┈ ⳹
    │✑ ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ 𑜱
