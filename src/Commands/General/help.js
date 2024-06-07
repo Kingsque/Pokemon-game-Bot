@@ -43,8 +43,12 @@ module.exports = {
         if (pushName.split(' ').length === 1) {
           pushName = `${pushName} san`;
         }
+        const getGroups = await client.groupFetchAllParticipating();
+        const groups = Object.entries(getGroups).map((entry) => entry[1]);
+        const groupCount = groups.length;
          const usersCount = await client.DB.get(`data`) || []
          const usersCounts = usersCount.length
+         const uptime = formatTime(process.uptime());
         const categories = client.cmd.reduce((obj, cmd) => {
           const category = cmd.category || 'Uncategorized';
           obj[category] = obj[category] || [];
@@ -112,4 +116,4 @@ module.exports = {
     }
   }
 };
-          
+            
