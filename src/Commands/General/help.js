@@ -43,7 +43,8 @@ module.exports = {
         if (pushName.split(' ').length === 1) {
           pushName = `${pushName} san`;
         }
-
+         const usersCount = await client.DB.get(`data`) || []
+         const usersCounts = usersCount.length
         const categories = client.cmd.reduce((obj, cmd) => {
           const category = cmd.category || 'Uncategorized';
           obj[category] = obj[category] || [];
@@ -69,14 +70,14 @@ module.exports = {
 │✠│ │✑『 ᴄᴀꜱɪɴᴏ 』
 │✠│ │✑「 ${client.prefix}Help 」
 │✠│ └──────────────┈ ⳹
-│✠│⚡ *USER'S: 「 ${usersCounts || 0} 」*
+│✠│⚡ *USER'S: 「 ${usersCounts} 」*
 │✠│🕒 *UPTIME: 「  ${uptime} 」*
 │✠│🌐 *GROUPS:「  ${groupCount} 」*
 │✠│🔥 *OWNER: 「 @say.scotch 」*
 │✠│─┬──────────────┈ ⳹
-│✠│ │✧ *ʀᴀꜱᴄᴀʟ ᴅᴏᴇꜱ ɴᴏᴛ ᴅʀᴇᴀᴍ!!*
-│✠│ │✧ *ꜱᴇɪꜱʜᴜɴ ʙᴜᴛᴀ ʏᴀʀᴏᴜ ᴡᴀ*
-│✠│ │✧ *ʙᴜɴɴʏ ɢɪʀʟ ꜱᴇɴᴘᴀɪ 𖠌*
+│✠│ │✧ *ʀᴀsᴄᴀʟ ᴅᴏᴇꜱ ɴᴏᴛ ᴅʀᴇᴀᴍ!!*
+│✠│ │✧ *sᴇɪsʜᴜɴ ʙᴜᴛᴀ ʏᴀʀᴏᴜ ᴡᴀ*
+│✠│ │✧ *ʙᴜɴɴʏ ɢɪʀʟ sᴇɴᴘᴀɪ 𖠌*
 │✠│ │✧ ${wish()}
 │✠└──────────────────
 └─────────────────────┈ ⳹
@@ -111,4 +112,4 @@ module.exports = {
     }
   }
 };
-   
+          
