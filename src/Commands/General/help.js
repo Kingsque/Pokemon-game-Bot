@@ -25,7 +25,7 @@ module.exports = {
   category: 'general',
   exp: 100,
   cool: 5,
-  react: "🌩️",
+  react: "🤡",
   usage: 'Use -help for helplist or -help <command_name> to get command info',
   description: 'Displays the command list or specific command info',
   async execute(client, arg, M) {
@@ -64,7 +64,7 @@ module.exports = {
 ┌┤✑  Am I Forget Senpai!! 𖠌
 ││✑  𝕸𝖆𝖎 𝕾𝖆𝖐𝖚𝖗𝖆𝖏𝖎𝖒𝖆 !!
 │└───────────────┈ ⳹
-│ 「 *${hour_now}* 」
+│ 「 *${wish}* 」
 │✙ 「 ${client.prefix}Help 」
 └┬──────────────┈ ⳹
    │✑ ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ 𑜱
