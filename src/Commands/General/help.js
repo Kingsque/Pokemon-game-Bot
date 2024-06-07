@@ -2,6 +2,7 @@ const fs = require('fs');
 function wish () {
   const hour_now = moment.tz('Asia/Kolkata').
  format('HH')
+ let greetings;
  var wishWishes = 'Good Morning 🌅'
  if (hour_now >= '06' && hour_now <= '12') {
    wishWishes = 'Good Morning 🌅' }
@@ -64,7 +65,7 @@ module.exports = {
 ┌┤✑  Am I Forget Senpai!! 𖠌
 ││✑  𝕸𝖆𝖎 𝕾𝖆𝖐𝖚𝖗𝖆𝖏𝖎𝖒𝖆 !!
 │└───────────────┈ ⳹
-│ 「 *${wish}* 」
+│ 「 *${greetings}* 」
 │✙ 「 ${client.prefix}Help 」
 └┬──────────────┈ ⳹
    │✑ ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ 𑜱
