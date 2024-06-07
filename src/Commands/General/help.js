@@ -64,7 +64,7 @@ module.exports = {
 ┌┤✑  Am I Forget Senpai!! 𖠌
 ││✑  𝕸𝖆𝖎 𝕾𝖆𝖐𝖚𝖗𝖆𝖏𝖎𝖒𝖆 !!
 │└───────────────┈ ⳹
-│ 「 *${wish}* 」
+│ 「 ${wish} 」
 │✙ 「 ${client.prefix}Help 」
 └┬──────────────┈ ⳹
    │✑ ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ 𑜱
@@ -74,7 +74,7 @@ module.exports = {
         await client.sendMessage(
           M.from,
           {
-            video: {url: "https://telegra.ph/file/db042f94c3e5d829835e8.mp4"},
+            video: {url: "https://telegra.ph/file/179feae8eb90678728ad2.mp4"},
             caption: message,
             gifPlayback: true
           },
