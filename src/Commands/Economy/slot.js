@@ -49,11 +49,11 @@ module.exports = {
             }),
         ];
         
+        // Slot image changing section 
         await client.sendMessage(
           M.from,
           {
             video: {url: "https://telegra.ph/file/e4706cccddd9697a24dae.mp4"},
-            caption: message,
             gifPlayback: true
           },
           {
