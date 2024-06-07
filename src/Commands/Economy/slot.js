@@ -51,7 +51,7 @@ module.exports = {
         
         ({
             video: {url: "https://graph.org/file/d2662e4c6a394dba9df06.mp4"},
-            caption: slotSymbol,
+            caption: symbols,
             gifPlayback: true
         })
         
