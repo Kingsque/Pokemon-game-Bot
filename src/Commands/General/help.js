@@ -1,21 +1,24 @@
 const fs = require('fs'); 
-const now = new Date();
-const hour = now.getHours();
-let greeting;
-if (hour >= 06 && hour < 12) {
-  greeting = "Good Morning 🌅";
-} else if (hour >= 12 && hour < 14) {
-  greeting = "Good Afternoon 🏜️";
-} else if (hour >= 14 && hour < 15) {
-  greeting = "Good Evening 🌌";
-} else if (hour >= 15 && hour < 22) {
-  greeting = "Good Night 🌃";
-} else if (hour >= 22 && hour < 24) {
-  greeting = "Sleeping Time 😴💤";
-} else if (hour >= 24 && hour < 06) {
-  greeting = "Go and Sleep dude";
-}
-
+function wish () {
+  const hour_now = moment.tz('Asia/Kolkata').
+ format('HH')
+ var wishWishes = 'Good Morning 🌅'
+ if (hour_now >= '06' && hour_now <= '12') {
+   wishWishes = 'Good Morning 🌅' }
+   else if (hour_now >= '12' && hour_now <= '17') {
+     wishWishes = 'Good Afternoon 🏜️' }
+   else if (hour_now >= '17' && hour_now <= '19') {
+     wishWishes = 'Good Evening 🌆'}
+   else if (hour_now >= '19' && hour_now <= '23') {
+     wishWishes = 'Good Night 🌃' }
+   else if (hour_now >= '23' && hour_now <= '05') {
+     wishWishes = 'Sweet Dreams 💖 Sleep Well' }
+   else if (hour_now >= '05' &- hour_now <= '06') {
+     wishWishes = 'Go and sleep 😴'}
+   else { 
+    wishWishes = 'Good Night.!!!' }
+   return wishWishes }
+   
 module.exports = {
   name: 'help',
   aliases: ['h', 'menu', 'list'],
@@ -61,7 +64,7 @@ module.exports = {
 ┌┤✑  Am I Forget Senpai!! 𖠌
 ││✑  𝕸𝖆𝖎 𝕾𝖆𝖐𝖚𝖗𝖆𝖏𝖎𝖒𝖆 !!
 │└───────────────┈ ⳹
-│ 「 *${greeting}* 」
+│ 「 *${wishWishes}* 」
 │✙ 「 ${client.prefix}Help 」
 └┬──────────────┈ ⳹
    │✑ ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ 𑜱
@@ -71,13 +74,14 @@ module.exports = {
         await client.sendMessage(
           M.from,
           {
-            video:fs.readFileSync('./assets/Mai_Sakutamaji.mp4'),gifPlayback:true,
-            caption: message
+            video: {url: "https://telegra.ph/file/db042f94c3e5d829835e8.mp4"},
+            caption: message,
+            gifPlayback: true
           },
           {
             quoted: M
           }
-        );
+          );
         return;
       }
 
