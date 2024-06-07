@@ -49,11 +49,6 @@ module.exports = {
             }),
         ];
         
-        ({
-            video: {url: "https://graph.org/file/d2662e4c6a394dba9df06.mp4"},
-            gifPlayback: true
-        })
-        
         if (!arg) return M.reply('Please provide the amount.');
         
         const amount = parseInt(arg);
