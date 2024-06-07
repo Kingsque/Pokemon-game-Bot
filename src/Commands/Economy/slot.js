@@ -46,20 +46,11 @@ module.exports = {
                 display: '🍇',
                 points: 0,
                 weight: 4,
-            }),
-        ];
-        
-        // Slot image changing section 
-        await client.sendMessage(
-          M.from,
-          {
+            }), {
             video: {url: "https://telegra.ph/file/e4706cccddd9697a24dae.mp4"},
             gifPlayback: true
           },
-          {
-            quoted: M
-          }
-          )
+        ];
         
         if (!arg) return M.reply('Please provide the amount.');
         
