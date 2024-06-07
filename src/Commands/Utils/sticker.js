@@ -4,11 +4,11 @@ module.exports = {
     name: 'sticker',
     aliases: ['s'],
     category: 'utils',
-    exp: 15,
+    exp: 1,
     cool: 4,
-    react: "🌀",
-    usage: 'Use :sticker by quoting a image/gif <pack_name>|<author_name>',
-    description: 'sticker command helps you to convert images or gifs to an sticker',
+    react: "🕒",
+    usage: 'Use :sticker by quoting an image/gif <pack_name>|<author_name>',
+    description: 'Sticker command helps you to convert images or gifs to a sticker',
     async execute(client, arg, M) {
         try {
             const content = JSON.stringify(M.quoted);
@@ -18,19 +18,32 @@ module.exports = {
 
             if (isMedia || isQuotedMedia) {
                 // Split pack and author from the argument
-                const [packName, authorName] = arg.split('|').map(part => part.trim());
+                const [packAuthor, ...flagParts] = arg.split(' ');
+                const [packName, authorName] = packAuthor.split('|').map(part => part.trim());
+                const flags = flagParts.join(' ');
+
+                // Determine sticker type from flags
+                let stickerType = StickerTypes.FULL;
+                if (flags.includes('--c') || flags.includes('--crop') || flags.includes('--cropped')) {
+                    stickerType = StickerTypes.CROPPED;
+                } else if (flags.includes('--s') || flags.includes('--stretch') || flags.includes('--stretched')) {
+                    stickerType = StickerTypes.DEFAULT;
+                } else if (flags.includes('--circle') || flags.includes('--r') || flags.includes('--round') || flags.includes('--rounded')) {
+                    stickerType = StickerTypes.CIRCLE;
+                }
+
                 // Download the media
                 const buffer = isQuotedMedia ? await M.quoted.download() : await M.download();
 
-                M.reply('⚡✨🔥🚏');
+                M.reply('✨⚡🔥❤️🥳');
 
                 // Create a new sticker instance
                 const sticker = new Sticker(buffer, {
                     pack: packName || '𓆩『 ʜᴀɴᴅᴄʀᴀғᴛᴇᴅ ғᴏʀ ʏᴏᴜ 』𓆪',
                     author: authorName || '𓆩『 🅱🆄🅽🅽🆈 🅱🅾🆃 』𓆪',
-                    type: StickerTypes.FULL,
+                    type: stickerType,
                     categories: ['🤩', '🎉'],
-                    quality: 60
+                    quality: 70
                 });
 
                 // Build and send the sticker
