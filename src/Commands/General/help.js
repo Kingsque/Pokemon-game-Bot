@@ -37,7 +37,6 @@ module.exports = {
         if (!m.includes(user)) {
             await client.DB.push(`data`, m);
         }
-      
       if (!arg) {
         let pushName = M.pushName.trim();
         if (pushName.split(' ').length === 1) {
@@ -46,9 +45,18 @@ module.exports = {
         const getGroups = await client.groupFetchAllParticipating();
         const groups = Object.entries(getGroups).map((entry) => entry[1]);
         const groupCount = groups.length;
-         const usersCount = await client.DB.get(`data`) || []
-         const usersCounts = usersCount.length
-         const uptime = formatTime(process.uptime());
+        const pad = (s) => (s < 10 ? '0' : '') + s;
+        const formatTime = (seconds) => {
+            const hours = Math.floor(seconds / (60 * 60));
+            const minutes = Math.floor((seconds % (60 * 60)) / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
+        };
+        const uptime = formatTime(process.uptime());
+        const usersCount = await client.DB.get(`data`) || []
+        const usersCounts = usersCount.length
+        const modCount = client.mods.length;
+        const website = 'coming soon...';
         const categories = client.cmd.reduce((obj, cmd) => {
           const category = cmd.category || 'Uncategorized';
           obj[category] = obj[category] || [];
@@ -74,7 +82,7 @@ module.exports = {
 │✠│ │✑『 ᴄᴀꜱɪɴᴏ 』
 │✠│ │✑「 ${client.prefix}Help 」
 │✠│ └──────────────┈ ⳹
-│✠│⚡ *USER'S: 「 ${usersCounts} 」*
+│✠│⚡ *USER'S: 「 ${usersCounts || 0} 」*
 │✠│🕒 *UPTIME: 「  ${uptime} 」*
 │✠│🌐 *GROUPS:「  ${groupCount} 」*
 │✠│🔥 *OWNER: 「 @say.scotch 」*
@@ -116,4 +124,4 @@ module.exports = {
     }
   }
 };
-            
+     
