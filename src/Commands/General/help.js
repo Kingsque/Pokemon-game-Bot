@@ -1,4 +1,5 @@
 const fs = require('fs'); 
+const moment = require('moment-timezone')
 function wish () {
   const hour_now = moment.tz('Asia/Kolkata').
  format('HH')
