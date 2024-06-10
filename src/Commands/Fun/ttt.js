@@ -35,7 +35,7 @@ module.exports = {
   exp: 5,
   cool: 5,
   react: "🥳",
-  category: "Fun",
+  category: "games",
   description: "Use :ttt start @tag / :ttt join / :ttt mark (number) / :ttt forfeit / :ttt reject / :ttt guide",
   async execute(client, arg, M) {
     const args = arg.split(' ');
