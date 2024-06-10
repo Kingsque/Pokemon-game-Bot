@@ -1,17 +1,23 @@
-const now = new Date();
-const hour = now.getHours();
-let greeting;
-if (hour >= 0 && hour < 12) {
-  greeting = "Good Morning 🌄";
-} else if (hour >= 12 && hour < 17) {
-  greeting = "Good Afternoon 🏜️";
-} else if (hour >= 17 && hour < 20) {
-  greeting = "Good Evening 🌆";
-}else if (hour >= 20 && hour < 24) {
-  greeting = "Good Night 🌃";
-
-}
-
+const moment = require('moment-timezone')
+function wish () {
+  const hour_now = moment.tz('Asia/Kolkata').
+ format('HH')
+ var wishWishes = 'Good Morning 🌅'
+ if (hour_now >= '06' && hour_now <= '12') {
+   wishWishes = 'Good Morning 🌅' }
+   else if (hour_now >= '12' && hour_now <= '17') {
+     wishWishes = 'Good Afternoon 🏜️' }
+   else if (hour_now >= '17' && hour_now <= '19') {
+     wishWishes = 'Good Evening 🌆' }
+   else if (hour_now >= '19' && hour_now <= '23') {
+     wishWishes = 'Good Night 🌃' }
+   else if (hour_now >= '23' && hour_now <= '05') {
+     wishWishes = 'Sweet Dreams 💖 Sleep Well' }
+   else if (hour_now >= '05' &- hour_now <= '06') {
+     wishWishes = 'Go and sleep 😴' }
+   else { 
+    wishWishes = 'Good Night.!!!' }
+   return wishWishes }
 module.exports = {
     name: 'hi',
     aliases: ['hello'],
@@ -47,7 +53,7 @@ module.exports = {
                     key,
                     type: 14,
                     editedMessage: {
-                        conversation: `${hi} Dear say.scotch , ${greeting} How are you today ?`
+                        conversation: `${hi} Dear say.scotch , ${wish ()} How are you today ?`
                     }
                 }
             },{})
