@@ -53,9 +53,7 @@ module.exports = MessageHandler = async (messages, client) => {
                 }
             }
         }
-
-        if ( body === 'test' || body === 'Test') return M.reply(`Everything is working fine ${M.pushName}`)
-      
+        
         // Link handling code
         if (!isGroup && body.includes('chat.whatsapp.com')) {
             const senderInfo = M.pushName || sender;
