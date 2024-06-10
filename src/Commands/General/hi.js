@@ -34,7 +34,7 @@ module.exports = {
             
             const contact = await client.contact.getContact(M.sender, client);
             const username = contact && contact.username ? contact.username : 'there';
-            let { key } = await M.reply(`${greeting} ${username}`)
+            let { key } = await M.reply(`${wish()} ${username}`)
         
             setTimeout(async () => {
             await client.relayMessage(M.from, {
