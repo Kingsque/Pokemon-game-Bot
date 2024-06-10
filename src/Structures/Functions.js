@@ -274,29 +274,23 @@ const generateCreditCardImage = async (cardName, expiryDate) => {
   };
   
 
-const moment = require('moment-timezone')
-function wish () {
-  const hour_now = moment.tz('Asia/Kolkata').
- format('HH')
- var wishWishes = 'Good Morning 🌅'
- if (hour_now >= '06' && hour_now <= '12') {
-   wishWishes = 'Good Morning 🌅' }
-   else if (hour_now >= '12' && hour_now <= '17') {
-     wishWishes = 'Good Afternoon 🏜️' }
-   else if (hour_now >= '17' && hour_now <= '19') {
-     wishWishes = 'Good Evening 🌆' }
-   else if (hour_now >= '19' && hour_now <= '23') {
-     wishWishes = 'Good Night 🌃' }
-   else if (hour_now >= '23' && hour_now <= '05') {
-     wishWishes = 'Sweet Dreams 💖 Sleep Well' }
-   else if (hour_now >= '05' &- hour_now <= '06') {
-     wishWishes = 'Go and sleep 😴' }
-   else { 
-    wishWishes = 'Good Night.!!!' }
-   return wishWishes }
+const greetings = () => {
+    const now = new Date();
+const hour = now.getHours();
+let greetmsg = "";
+
+if (hour >= 0 && hour < 12) {
+    greetmsg = "🌅 Ohayou gozaimasu"; //good morning
+} else if (hour >= 12 && hour < 18) {
+    greetmsg = "🌞 Konnichiwa"; //good afternoon
+} else {
+    greetmsg = "🌇 Konbanwa"; //good evening
+}
+return greetmsg
+}
 
 const errorChan = () => {
-    let chan = "https://i.ibb.co/1QmFLKt/Picsart-24-05-18-15-10-43-623.jpg"
+    let chan = "https://i.ibb.co/Htdgs0w/c8f67a2f49ebc5f6d7293e7649bc5ebd.jpg"
     return chan
 }
 
@@ -510,4 +504,4 @@ module.exports = {
     convertMs,
     extractUrls,
     gifToPng
-    }
+}
