@@ -18,7 +18,7 @@ module.exports = {
             await client.sendMessage(
                 M.from,
                 {   image: {
-                        url: `https://i.ytimg.com/vi/${videoDetails.videoId}/maxresdefault.jpg`
+                        url: `https://i.ytimg.com/vi/maxresdefault.jpg`
                         },
                     audio: audioBuffer,
                     mimetype: 'audio/mpeg',
