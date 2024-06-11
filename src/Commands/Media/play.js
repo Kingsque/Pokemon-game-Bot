@@ -15,23 +15,11 @@ module.exports = {
             if (!videos || !videos.length) return M.reply(`No matching songs found | *"${arg}"*`);
             const audioBuffer = await YT.getBuffer(videos[0].url, 'audio');
             
-            // Sending thumbnail and video details
-            client.sendMessage(
-                M.from,
-                {
-                    image: {
-                        url: `https://i.ytimg.com/vi/${videoDetails.videoId}/maxresdefault.jpg`
-                        },
-                    caption: text
-                },
-                {
-                    quoted: M
-                }
-            );
-            
             await client.sendMessage(
                 M.from,
-                {
+                {   image: {
+                        url: `https://i.ytimg.com/vi/${videoDetails.videoId}/maxresdefault.jpg`
+                        },
                     audio: audioBuffer,
                     mimetype: 'audio/mpeg',
                     fileName: `${videos[0].title}.mp3`
@@ -46,4 +34,3 @@ module.exports = {
         }
     }
 };
-                    
