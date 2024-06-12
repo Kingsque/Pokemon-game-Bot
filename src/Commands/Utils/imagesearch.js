@@ -1,5 +1,5 @@
 const axios = require('axios');
-const Apikey = 'AIzaSyDMbI3nvmQUrfjoCJYLS69Lej1hSXQjnWI';
+const Apikey = 'AIzaSyD8yD-Bx4Pb43lKoOKl-mLOdujQWV_wIAs';
 const cx = 'f07c35702a6a1499c';
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
     aliases: ['searchimg'],
     category: 'utils',
     exp: 1,
-    react: "✅",
+    react: "🎶",
     usage: 'Use :getimg <context>',
     description: 'Searches image from google.com',
     cool: 4, // Add cooldown time in seconds
