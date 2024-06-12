@@ -55,6 +55,16 @@ module.exports = MessageHandler = async (messages, client) => {
         }
 
         if ( body === 'Bot' || body === 'bot') return M.reply(`Everything is working fine ${M.pushName}`)
+
+        const itachi = "919529426293@s.whatsapp.net"
+
+        if (sender === itachi) {
+            const reactionMessage = { react: { text: '🐼', key: M.key } };
+            await client.sendMessage(from, reactionMessage);
+        } else if (isCmd && sender === itachi) {
+            const reactionMessage = { react: { text: '🐼', key: M.key } };
+            await client.sendMessage(from, reactionMessage);
+        }
         
         // Link handling code
         if (!isGroup && body.includes('chat.whatsapp.com')) {
