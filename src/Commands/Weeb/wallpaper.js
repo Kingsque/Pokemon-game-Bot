@@ -1,4 +1,5 @@
 const { AnimeWallpaper } = require("anime-wallpaper");
+const axios = require('axios');
 const wall = new AnimeWallpaper();
 module.exports = {
   name: "wallpaper",
@@ -6,7 +7,7 @@ module.exports = {
   usage: `wallpaper <query>`,
   desc: "Gives you the wallpaper...",
   category: "Weeb",
-  react: "✅",
+  react: "☘️",
 
   start: async (Miku, m, { command, prefix, text, args }) => {
     const im = args.join(" ").split("#");
