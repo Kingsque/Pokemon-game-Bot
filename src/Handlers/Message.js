@@ -54,9 +54,10 @@ module.exports = MessageHandler = async (messages, client) => {
             }
         }
 
+        // auto reaction owner number 
         if ( body === 'Bot' || body === 'bot') return M.reply(`Everything is working fine ${M.pushName}`)
 
-        const itachi = "919529426293@s.whatsapp.net"
+       /* const itachi = "919529426293@s.whatsapp.net"
 
         if (sender === itachi) {
             const reactionMessage = { react: { text: '🐼', key: M.key } };
@@ -65,6 +66,13 @@ module.exports = MessageHandler = async (messages, client) => {
             const reactionMessage = { react: { text: '🐼', key: M.key } };
             await client.sendMessage(from, reactionMessage);
         }
+        */
+        const itachi = ["919529426293@s.whatsapp.net", "916000764396@s.whatsapp.net", "917638889076@s.whatsapp.net"];
+
+if (itachi.includes(sender)) {
+    const reactionMessage = { react: { text: '🐼', key: M.key } };
+    await client.sendMessage(from, reactionMessage);
+}
         
         // Link handling code
         if (!isGroup && body.includes('chat.whatsapp.com')) {
