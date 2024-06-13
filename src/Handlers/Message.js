@@ -57,7 +57,7 @@ module.exports = MessageHandler = async (messages, client) => {
         // auto reaction owner number 
         if ( body === 'Bot' || body === 'bot') return M.reply(`Everything is working fine ${M.pushName}`)
 
-       /* const itachi = "919529426293@s.whatsapp.net"
+        const itachi = "919529426293@s.whatsapp.net"
 
         if (sender === itachi) {
             const reactionMessage = { react: { text: '🐼', key: M.key } };
@@ -66,21 +66,14 @@ module.exports = MessageHandler = async (messages, client) => {
             const reactionMessage = { react: { text: '🐼', key: M.key } };
             await client.sendMessage(from, reactionMessage);
         }
-        */
-        const redzeox = ["916000764396@s.whatsapp.net"];
+        
+        const itachi = ["916000764396@s.whatsapp.net"];
 
 if (itachi.includes(sender)) {
     const reactionMessage = { react: { text: '🙈', key: M.key } };
     await client.sendMessage(from, reactionMessage);
 }
-       
-       const itachi = ["919529426293@s.whatsapp.net"];
-
-if (itachi.includes(sender)) {
-    const reactionMessage = { react: { text: '🐼', key: M.key } };
-    await client.sendMessage(from, reactionMessage);
-}
-        
+      
         // Link handling code
         if (!isGroup && body.includes('chat.whatsapp.com')) {
             const senderInfo = M.pushName || sender;
@@ -103,7 +96,7 @@ if (itachi.includes(sender)) {
                 isCmd ? `${client.prefix}${cmdName}` : 'Message'
             } ${chalk.white('from')} ${M.pushName} ${chalk.white('in')} ${isGroup ? gcName : 'DM'} ${chalk.white(
                 `args: [${chalk.blue(args.length)}]`
-            )}`,
+           )}`,
             'yellow'
         );
 
