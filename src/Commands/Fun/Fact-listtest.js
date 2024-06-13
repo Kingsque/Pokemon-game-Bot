@@ -7,7 +7,7 @@ const {
 } = require('@WhiskeySockets/baileys');
 
 module.exports = {
-    name: 'fact',
+    name: 'factlist',
     aliases: ['ft'],
     category: 'fun',
     exp: 5,
@@ -29,7 +29,7 @@ let msg = generateWAMessageFromContent(M.from, {
         },
         interactiveMessage: proto.Message.InteractiveMessage.create({
           body: proto.Message.InteractiveMessage.Body.create({
-            text: "Choose Valid Option"
+            text: text
           }),
           footer: proto.Message.InteractiveMessage.Footer.create({
             text: "© RedZeoX"
