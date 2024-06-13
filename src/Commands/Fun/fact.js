@@ -4,7 +4,7 @@ const {
     generateWAMessage,
     areJidsSameUser,
     generateWAMessageFromContent
-} = require('@shizoweb/baileys');
+} = require('@WhiskeySockets/baileys');
 
 module.exports = {
     name: 'fact',
