@@ -21,7 +21,7 @@ module.exports = {
             const text = `Fact for you: ${response.data.fact}`;
             M.reply(text);
             
-  let msg = generateWAMessageFromContent(m.chat, {
+  let msg = generateWAMessageFromContent(M.from, {
   viewOnceMessage: {
     message: {
         "messageContextInfo": {
