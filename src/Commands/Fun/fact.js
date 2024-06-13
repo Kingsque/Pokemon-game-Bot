@@ -12,7 +12,7 @@ module.exports = {
     category: 'fun',
     exp: 5,
     cool: 4,
-    react: "✅",
+    react: "🍥",
     usage: 'Use :fact',
     description: 'Sends random facts',
     async execute(client, arg, M) { 
@@ -32,7 +32,7 @@ module.exports = {
             text: `${text}`
           }),
           footer: proto.Message.InteractiveMessage.Footer.create({
-            text: "© RedZeoX"
+            text: "© ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡"
           }),
           header: proto.Message.InteractiveMessage.Header.create({
             title: "",
@@ -42,8 +42,8 @@ module.exports = {
           nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
             buttons: [
               {
-                "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"quick_reply\",\"id\":\"/#menu\"}"
+                "name": "Next Fact",
+                "buttonParamsJson": "{\"display_text\":\"Next Fact\",\"id\":\"/-fact\"}"
               }
            ],
           })
