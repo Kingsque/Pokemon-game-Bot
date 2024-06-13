@@ -67,7 +67,14 @@ module.exports = MessageHandler = async (messages, client) => {
             await client.sendMessage(from, reactionMessage);
         }
         */
-        const itachi = ["919529426293@s.whatsapp.net", "916000764396@s.whatsapp.net", "917638889076@s.whatsapp.net"];
+        const redzeox = ["916000764396@s.whatsapp.net"];
+
+if (itachi.includes(sender)) {
+    const reactionMessage = { react: { text: '🙈', key: M.key } };
+    await client.sendMessage(from, reactionMessage);
+}
+       
+       const itachi = ["919529426293@s.whatsapp.net"];
 
 if (itachi.includes(sender)) {
     const reactionMessage = { react: { text: '🐼', key: M.key } };
@@ -231,4 +238,4 @@ if (itachi.includes(sender)) {
     } catch (err) {
         client.log(err, 'red');
     }
-}
+            }
