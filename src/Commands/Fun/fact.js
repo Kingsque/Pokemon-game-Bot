@@ -43,7 +43,7 @@ module.exports = {
             buttons: [
               {
                 "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"Next Fact\",\"id\":\"/-fact\"}"
+                "buttonParamsJson": "{\"display_text\":\"Next Fact\",\"id\":\"-fact\"}"
               }
            ],
           })
