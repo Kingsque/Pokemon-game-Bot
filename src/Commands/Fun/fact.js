@@ -19,7 +19,6 @@ module.exports = {
         try {
             const response = await axios.get('https://nekos.life/api/v2/fact');
             const text = `Fact for you: ${response.data.fact}`;
-            M.reply(text);
             
   let msg = generateWAMessageFromContent(M.from, {
   viewOnceMessage: {
