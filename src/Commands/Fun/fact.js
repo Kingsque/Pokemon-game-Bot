@@ -32,7 +32,7 @@ module.exports = {
             text: `${text}`
           }),
           footer: proto.Message.InteractiveMessage.Footer.create({
-            text: "© ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡"
+            text: "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻"
           }),
           header: proto.Message.InteractiveMessage.Header.create({
             title: "",
