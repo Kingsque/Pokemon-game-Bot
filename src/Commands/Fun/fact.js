@@ -42,7 +42,7 @@ module.exports = {
           nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
             buttons: [
               {
-                "name": "Next Fact",
+                "name": "quick_reply",
                 "buttonParamsJson": "{\"display_text\":\"Next Fact\",\"id\":\"/-fact\"}"
               }
            ],
