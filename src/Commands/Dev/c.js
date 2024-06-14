@@ -37,7 +37,7 @@ module.exports = {
     client.cardMap.set(M.from, {
       price: price,
       code: code,
-      card: `${obj.title}-${obj.tier}`
+      card: { name: obj.title, tier: obj.tier, image: obj.url }
     });
 
     const giif = await client.utils.getBuffer(obj.url);
