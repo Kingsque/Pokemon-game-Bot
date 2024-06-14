@@ -29,7 +29,7 @@
 
 <h4 align="center" >
   
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/HELLRYZEN/mai_sakurajima/)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/HELLRYZEN/mai_sakurajima)
 
 </a>
 
