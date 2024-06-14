@@ -1,8 +1,14 @@
 const cron = require("node-cron");
 const axios = require('axios');
 const path = require('path');
-require("./Message");
-
+const {
+    proto,
+    generateWAMessage,
+    areJidsSameUser,
+    generateWAMessageFromContent
+} = require('@WhiskeySockets/baileys');
+    require("./Message");
+    
 module.exports = CardHandler = async (client, M) => {
   try {
     let cardgames = await client.DB.get('cards');
@@ -20,7 +26,7 @@ module.exports = CardHandler = async (client, M) => {
         const sOr6Interval = 2;
         const sOr6Limit = 15;
 
-        cron.schedule('*/10 * * * *', async () => {
+        cron.schedule('*/5 * * * *', async () => {
           try {
             const filePath = path.join(__dirname, '../Helpers/card.json');
             const data = require(filePath);
@@ -84,16 +90,52 @@ module.exports = CardHandler = async (client, M) => {
                 caption: `*┏─━═─|⚡ᴄᴀʀᴅ ꜱᴘᴀᴡɴ⚡|─═━─∘⦿ꕹ᛫*\n*╏𓊈 ᴀ ɴᴇᴡ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉*\n*╏🏮 ɴᴀᴍᴇ:* ${obj.title}\n*╏🔰 ᴛɪᴇʀ:* ${obj.tier}\n*╏💰 Price:* ${price}\n*╏📤 ɪɴғᴏ: ᴛʜɪꜱ ᴄᴀʀᴅ'ꜱ ᴀʀᴇ*\n*╏ᴏʀɪɢɪɴᴀʟʟʏ ᴏᴡɴᴇᴅ ʙʏ*\n*╏ʜᴛᴛᴘꜱ://ꜱʜᴏᴏʙ.ɢɢ ᴡᴇ ᴀʀᴇ ᴜꜱɪɴɢ*\n*╏ɪᴛ ᴡɪᴛʜ ᴠᴇʀꜱɪᴏɴ 𝟐𝟎𝟐𝟒-𝟐𝟓*\n*╏ᴄᴀʀᴅ.ᴊꜱᴏɴ ғɪʟᴇ ꜱᴜᴘᴘᴏʀᴛᴇᴅ*\n*╏ᴍᴀᴅᴇ ʙʏ ᴏᴜʀ ᴛᴇᴀᴍ*\n*╏ᴛʜᴀɴᴋ ʏᴏᴜ ᴜꜱᴇʀ'ꜱ ᴋɴᴡ ᴇɴᴊᴏʏ.!!*\n*╏━━━━━━•❅•°•❈•°•❅•━━━━━━*\n*╏🔮 ᴜꜱᴇ ${client.prefix}ᴄᴏʟʟᴇᴄᴛ* ᴛᴏ ᴄʟᴀɪᴍ\n*╏ᴛʜᴇ ᴄᴀʀᴅ ʏᴏᴜʀ ᴄᴀʀᴅ ᴡɪʟʟ ʙᴇ*\n*╏ꜱᴛᴏʀᴇᴅ ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ*\n*┗─━═─|⚡ᴄᴀʀᴅ ꜱᴘᴀᴡɴ⚡|─═━─∘⦿ꕹ᛫*`,
               });
             }
-
+            
+            // Buttons for claim don't touch this part 🚫
+          let msg = generateWAMessageFromContent(M.from, {
+  viewOnceMessage: {
+    message: {
+        "messageContextInfo": {
+          "deviceListMetadata": {},
+          "deviceListMetadataVersion": 2
+        },
+        interactiveMessage: proto.Message.InteractiveMessage.create({
+          body: proto.Message.InteractiveMessage.Body.create({
+            text: `${text}`
+          }),
+          footer: proto.Message.InteractiveMessage.Footer.create({
+            text: "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻"
+          }),
+          header: proto.Message.InteractiveMessage.Header.create({
+            title: "",
+            subtitle: "",
+            hasMediaAttachment: false
+          }),
+          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+            buttons: [
+              {
+                /* "name": "quick_reply",
+                "buttonParamsJson": "{\"display_text\":\"💥 Claim 💥\",\"id\":\"-claim\"}" */
+                
+                "name": "single_select",
+                "buttonParamsJson": "{\"title\":\"Mantion 🧾\",\"sections\":[{\"title\":\"Collection 🔖\",\"highlight_label\":\"scotch ⚡\",\"rows\":[{\"header\":\"\",\"title\":\"Card Claim 🧧\",\"description\":\"Collect your shoob Card to the Deck 🔖\",\"id\":\"-claim\"},{\"header\":\"\",\"title\":\"Sakurajima Menu 🎐\",\"description\":\"Select 2nd option for the main menu 🎯\",\"id\":\"-help\"}]}]}"
+              }
+           ],
+          })
+        })
+    }
+  }
+}, {})
+          
           } catch (err) {
             console.log(err);
             await client.sendMessage(jid , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Mai Sakurajima Dis\n\nCommand no error wa:\n${err}`});
           }
 
-        cron.schedule('*/5 * * * *', async () => {
+        cron.schedule('*/10 * * * *', async () => {
           await client.cards.delete(`${jid}.card`);
           await client.cards.delete(`${jid}.card_price`);
-          console.log(`Card deleted after 5 minutes`);
+          console.log(`Card deleted after 10 minutes`);
         });
 		        });
       }
@@ -102,4 +144,5 @@ module.exports = CardHandler = async (client, M) => {
     console.log(error);
   }
 };
-		
+
+		  
