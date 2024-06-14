@@ -1,17 +1,11 @@
 const path = require('path');
-const {
-    proto,
-    generateWAMessage,
-    areJidsSameUser,
-    generateWAMessageFromContent
-} = require('@WhiskeySockets/baileys');
 
 module.exports = {
   name: 'spawn',
   aliases: ['event'],
   category: 'dev',
   exp: 5,
-  react: "🚫",
+  react: "🔥",
   description: 'spawns cards',
   async execute(client, arg, M) {
     const cardsPath = path.join(__dirname, '../../Helpers/card.json');
@@ -54,40 +48,6 @@ module.exports = {
       caption: `🎴 ━『 ANIME-CARD 』━ 🎴\n\n💮 Name: ${obj.title}\n\n💠 Tier: ${obj.tier}\n\n🏮 Price: ${price}\n\n📤 Info: These cards are originally owned by https://shoob.gg, and we are using them with all the required permissions.\n\n🔖 [ Use ${process.env.PREFIX}collect to claim the card, ${process.env.PREFIX}collection to see your Cards ]`,
       gifPlayback: true,
     });
-    
-     // Buttons for claim don't touch this part 🚫
-          let msg = generateWAMessageFromContent(M.from, {
-  viewOnceMessage: {
-    message: {
-        "messageContextInfo": {
-          "deviceListMetadata": {},
-          "deviceListMetadataVersion": 2
-        },
-        interactiveMessage: proto.Message.InteractiveMessage.create({
-          body: proto.Message.InteractiveMessage.Body.create({
-            text: `${text}`
-          }),
-          footer: proto.Message.InteractiveMessage.Footer.create({
-            text: "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻"
-          }),
-          header: proto.Message.InteractiveMessage.Header.create({
-            title: "",
-            subtitle: "",
-            hasMediaAttachment: false
-          }),
-          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
-            buttons: [
-              {
-                 "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"Claim 🔖\",\"id\":\"-claim\"}" 
-                
-              }
-           ],
-          })
-        })
-    }
-  }
-}, {})
 
     setTimeout(() => {
       client.cards.delete(`${M.from}.card`);
