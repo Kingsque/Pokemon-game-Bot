@@ -120,7 +120,7 @@ function serialize(msg, client) {
             msg.message?.conversation ||
             msg.message?.[msg.type]?.text ||
             msg.message?.[msg.type]?.caption ||
-            (msg.type === 'InteractiveMessage' && msg.message?.[msg.type]?.interactiveResponseMessage.nativeFlowResponseMessage.paramsJson).id) ||
+            (msg.type === 'InteractiveMessage' && msg.message?.[msg.type]?.interactiveResponseMessage.nativeFlowResponseMessage.paramsJson.id) ||
             (msg.type === 'buttonsResponseMessage' && msg.message?.[msg.type]?.selectedButtonId) ||
             (msg.type === 'templateButtonReplyMessage' && msg.message?.[msg.type]?.selectedId) ||
             ''
