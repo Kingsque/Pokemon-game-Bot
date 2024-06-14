@@ -15,7 +15,7 @@ const downloadMedia = async (message) => {
     /**@type {keyof proto.IMessage} */
     let type = Object.keys(message)[0]
     let msg = message[type]
-    if (type === 'buttonsMessage' || type === 'viewOnceMessageV2') {
+    if (type === 'InteractiveMessage' || type === 'buttonsMessage' || type === 'viewOnceMessageV2') {
         if (type === 'viewOnceMessageV2') {
             msg = message.viewOnceMessageV2?.message
             type = Object.keys(msg || {})[0]
@@ -111,7 +111,7 @@ function serialize(msg, client) {
                 id: msg.quoted.stanzaId,
                 fromMe: msg.quoted.isSelf,
                 remoteJid: msg.from
-            }
+            } 
             msg.quoted.download = () => downloadMedia(msg.quoted.message)
         } catch {
             msg.quoted = null
@@ -120,7 +120,7 @@ function serialize(msg, client) {
             msg.message?.conversation ||
             msg.message?.[msg.type]?.text ||
             msg.message?.[msg.type]?.caption ||
-            (msg.type === 'listResponseMessage' && msg.message?.[msg.type]?.singleSelectReply?.selectedRowId) ||
+            (msg.type === 'InteractiveMessage' && msg.message?.[msg.type]?.interactiveResponseMessage.nativeFlowResponseMessage.paramsJson).id) ||
             (msg.type === 'buttonsResponseMessage' && msg.message?.[msg.type]?.selectedButtonId) ||
             (msg.type === 'templateButtonReplyMessage' && msg.message?.[msg.type]?.selectedId) ||
             ''
