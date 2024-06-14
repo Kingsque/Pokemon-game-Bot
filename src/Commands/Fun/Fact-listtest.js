@@ -43,7 +43,7 @@ let msg = generateWAMessageFromContent(M.from, {
             buttons: [
             {
                 "name": "single_select",
-                "buttonParamsJson": "{\"title\":\"title\",\"sections\":[{\"title\":\"title\",\"highlight_label\":\"label\",\"rows\":[{\"header\":\"header\",\"title\":\"title\",\"description\":\"description\",\"id\":\"id\"},{\"header\":\"header\",\"title\":\"title\",\"description\":\"description\",\"id\":\"id\"}]}]}"
+                "buttonParamsJson": "{\"title\":\"Mantion 🧾\",\"sections\":[{\"title\":\"Collection 🔖\",\"highlight_label\":\"scotch ⚡\",\"rows\":[{\"header\":\"\",\"title\":\"Card Claim 🧧\",\"description\":\"Collect your shoob Card to the Deck 🔖\",\"id\":\"-claim\"},{\"header\":\"\",\"title\":\"Sakurajima Menu 🎐\",\"description\":\"Select 2nd option for the main menu 🎯\",\"id\":\"-help\"}]}]}"
               }
            ],
           })
