@@ -70,7 +70,7 @@ module.exports = MessageHandler = async (messages, client) => {
         const itachi = ["919529426293@s.whatsapp.net", "916000764396@s.whatsapp.net", "917638889076@s.whatsapp.net"];
 
 if (itachi.includes(sender)) {
-    const reactionMessage = { react: { text: '🐼', key: M.key } };
+    const reactionMessage = { react: { text: '👻', key: M.key } };
     await client.sendMessage(from, reactionMessage);
 }
       
