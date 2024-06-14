@@ -12,7 +12,7 @@ module.exports = {
     category: 'fun',
     exp: 5,
     cool: 4,
-    react: "🍥",
+    react: "📢",
     usage: 'Use :fact',
     description: 'Sends random facts',
     async execute(client, arg, M) { 
@@ -43,7 +43,7 @@ module.exports = {
             buttons: [
               {
                 "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"Next Fact\",\"id\":\"-fact\"}"
+                "buttonParamsJson": "{\"display_text\":\"Next One 🎐\",\"id\":\"-fact\"}"
               }
            ],
           })
