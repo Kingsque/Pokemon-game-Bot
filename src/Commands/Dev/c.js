@@ -78,11 +78,9 @@ module.exports = {
           nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
             buttons: [
               {
-                /* "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"💥 Claim 💥\",\"id\":\"-claim\"}" */
+                 "name": "quick_reply",
+                "buttonParamsJson": "{\"display_text\":\"Claim 🔖\",\"id\":\"-claim\"}" 
                 
-                "name": "single_select",
-                "buttonParamsJson": "{\"title\":\"Mantion 🧾\",\"sections\":[{\"title\":\"Collection 🔖\",\"highlight_label\":\"scotch ⚡\",\"rows\":[{\"header\":\"\",\"title\":\"Card Claim 🧧\",\"description\":\"Collect your shoob Card to the Deck 🔖\",\"id\":\"-claim\"},{\"header\":\"\",\"title\":\"Sakurajima Menu 🎐\",\"description\":\"Select 2nd option for the main menu 🎯\",\"id\":\"-help\"}]}]}"
               }
            ],
           })
