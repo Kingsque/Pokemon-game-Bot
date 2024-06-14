@@ -26,7 +26,7 @@ module.exports = CardHandler = async (client, M) => {
         const sOr6Interval = 2;
         const sOr6Limit = 15;
 
-        cron.schedule('*/1 * * * *', async () => {
+        cron.schedule('*/5 * * * *', async () => {
           try {
             const filePath = path.join(__dirname, '../Helpers/card.json');
             const data = require(filePath);
@@ -114,11 +114,11 @@ module.exports = CardHandler = async (client, M) => {
           nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
             buttons: [
               {
-                /* "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"💥 Claim 💥\",\"id\":\"-claim\"}" */
+                "name": "quick_reply",
+                "buttonParamsJson": "{\"display_text\":\"Claim 🔖\",\"id\":\"-claim\"}"
                 
-                "name": "single_select",
-                "buttonParamsJson": "{\"title\":\"Mantion 🧾\",\"sections\":[{\"title\":\"Collection 🔖\",\"highlight_label\":\"scotch ⚡\",\"rows\":[{\"header\":\"\",\"title\":\"Card Claim 🧧\",\"description\":\"Collect your shoob Card to the Deck 🔖\",\"id\":\"-claim\"},{\"header\":\"\",\"title\":\"Sakurajima Menu 🎐\",\"description\":\"Select 2nd option for the main menu 🎯\",\"id\":\"-help\"}]}]}"
+              /*  "name": "single_select",
+                "buttonParamsJson": "{\"title\":\"Mantion 🧾\",\"sections\":[{\"title\":\"Collection 🔖\",\"highlight_label\":\"scotch ⚡\",\"rows\":[{\"header\":\"\",\"title\":\"Card Claim 🧧\",\"description\":\"Collect your shoob Card to the Deck 🔖\",\"id\":\"-claim\"},{\"header\":\"\",\"title\":\"Sakurajima Menu 🎐\",\"description\":\"Select 2nd option for the main menu 🎯\",\"id\":\"-help\"}]}]}" */
               }
            ],
           })
@@ -132,10 +132,10 @@ module.exports = CardHandler = async (client, M) => {
             await client.sendMessage(jid , {image: {url: `${client.utils.errorChan()}`} , caption: `${client.utils.greetings()} Mai Sakurajima Dis\n\nCommand no error wa:\n${err}`});
           }
 
-        cron.schedule('*/1 * * * *', async () => {
+        cron.schedule('*/4 * * * *', async () => {
           await client.cards.delete(`${jid}.card`);
           await client.cards.delete(`${jid}.card_price`);
-          console.log(`Card deleted after 10 minutes`);
+          console.log(`Card deleted after 4 minutes`);
         });
 		        });
       }
