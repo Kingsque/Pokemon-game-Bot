@@ -66,13 +66,34 @@ module.exports = MessageHandler = async (messages, client) => {
             const reactionMessage = { react: { text: '🐼', key: M.key } };
             await client.sendMessage(from, reactionMessage);
         }
-        */
+        
         const itachi = ["919529426293@s.whatsapp.net", "916000764396@s.whatsapp.net", "917638889076@s.whatsapp.net"];
 
 if (itachi.includes(sender)) {
     const reactionMessage = { react: { text: '💓', key: M.key } };
     await client.sendMessage(from, reactionMessage);
+} */
+
+     // reaction random
+   const itachi = ["919529426293@s.whatsapp.net", "916000764396@s.whatsapp.net", "917638889076@s.whatsapp.net"];
+
+if (itachi.includes(sender)) {
+    let reactRandom = [
+        "👻",
+        "🐼",
+        "🙈",
+        "💓",
+        "🧁",
+        "❄️",
+        "😘",
+        "💋"
+    ];
+    let ran = reactRandom[Math.floor(Math.random() * reactRandom.length)];
+    
+    const reactionMessage = { react: { text: ran, key: M.key } };
+    await client.sendMessage(from, reactionMessage);
 }
+        
      //auto chat bot
      if (M.quoted?.participant) M.mentions.push(M.quoted.participant)
         if (
