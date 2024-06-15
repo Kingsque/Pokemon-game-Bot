@@ -1,4 +1,4 @@
-const { proto, getContentType, jidDecode, downloadContentFromMessage } = require('@whiskeysockets/baileys');
+const { proto, getContentType, jidDecode, downloadContentFromMessage } = require('@WhiskeySockets/baileys');
 const Bluebird = require('bluebird');
 
 const decodeJid = (jid) => {
