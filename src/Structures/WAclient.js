@@ -116,11 +116,12 @@ function serialize(msg, client) {
         } catch {
             msg.quoted = null
         }
+        let { id } = JSON.parse(msg.nativeFlowResponseMessage.paramsJson)
         msg.body =
             msg.message?.conversation ||
             msg.message?.[msg.type]?.text ||
             msg.message?.[msg.type]?.caption ||
-            (msg.type === 'listResponseMessage' && msg.message?.[msg.type]?.listResponseMessage.singleSelectReply.selectedRowId) ||
+            (msg.type === 'interactiveResponseMessage' && id ||
             (msg.type === 'buttonsResponseMessage' && msg.message?.[msg.type]?.selectedButtonId) ||
             (msg.type === 'templateButtonReplyMessage' && msg.message?.[msg.type]?.selectedId) ||
             ''
