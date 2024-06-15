@@ -73,6 +73,20 @@ if (itachi.includes(sender)) {
     const reactionMessage = { react: { text: '👻', key: M.key } };
     await client.sendMessage(from, reactionMessage);
 }
+     //auto chat bot
+     if (M.quoted?.participant) M.mentions.push(M.quoted.participant)
+        if (
+            M.mentions.includes(client.user.id.split(':')[0] + '@s.whatsapp.net') &&
+            !isCmd &&
+            isGroup 
+        ) {
+            const text = await axios.get(`https://hercai.onrender.com/beta/hercai?question=${encodeURI(body)}`, {
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+             M.reply(body == 'hi' ? `Hey ${M.pushName} whats up?` : text.data.reply)
+        }
       
         // Link handling code
         if (!isGroup && body.includes('chat.whatsapp.com')) {
