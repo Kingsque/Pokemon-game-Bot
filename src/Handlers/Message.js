@@ -82,11 +82,13 @@ if (itachi.includes(sender)) {
         "👻",
         "🐼",
         "🙈",
-        "💓",
-        "🧁",
-        "❄️",
-        "😘",
-        "💋"
+        "🐨",
+        "🐷",
+        "🐹",
+        "🦄",
+        "🐸",
+        "🐶",
+        "🐦"
     ];
     let ran = reactRandom[Math.floor(Math.random() * reactRandom.length)];
     
