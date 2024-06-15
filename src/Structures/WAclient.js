@@ -1,173 +1,159 @@
-const { proto, getContentType, jidDecode, downloadContentFromMessage } = require('@WhiskeySockets/baileys');
-const Bluebird = require('bluebird');
+const { proto, getContentType, jidDecode, downloadContentFromMessage } = require('@WhiskeySockets/baileys')
+const Bluebird = require('bluebird')
 
 const decodeJid = (jid) => {
-  const { user, server } = jidDecode(jid) || {};
-  return (user && server) ? `${user}@${server}`.trim() : jid;
-};
+  const { user, server } = jidDecode(jid) || {}
+  return (user && server) ? `${user}@${server}`.trim() : jid
+}
 
 /**
  * @param {proto.IMessage} message
  * @returns {Promise<Buffer>}
  */
+
 const downloadMedia = async (message) => {
-  /**@type {keyof proto.IMessage} */
-  let type = Object.keys(message)[0];
-  let msg = message[type];
-  if (type === 'interactiveMessage' || type === 'buttonsMessage' || type === 'viewOnceMessageV2') {
-    if (type === 'viewOnceMessageV2') {
-      msg = message.viewOnceMessageV2?.message;
-      type = Object.keys(msg || {})[0];
-    } else {
-      type = Object.keys(msg || {})[1];
+    /**@type {keyof proto.IMessage} */
+    let type = Object.keys(message)[0]
+    let msg = message[type]
+    if (type === 'InteractiveMessage' || type === 'buttonsMessage' || type === 'viewOnceMessageV2') {
+        if (type === 'viewOnceMessageV2') {
+            msg = message.viewOnceMessageV2?.message
+            type = Object.keys(msg || {})[0]
+        } else type = Object.keys(msg || {})[1]
+        msg = msg[type]
     }
-    msg = msg[type];
-  }
-  const stream = await downloadContentFromMessage(msg, type.replace('Message', ''));
-  let buffer = Buffer.from([]);
-  for await (const chunk of stream) {
-    buffer = Buffer.concat([buffer, chunk]);
-  }
-  return buffer;
-};
+    const stream = await downloadContentFromMessage(msg, type.replace('Message', ''))
+    let buffer = Buffer.from([])
+    for await (const chunk of stream) {
+        buffer = Buffer.concat([buffer, chunk])
+    }
+    return buffer
+}
 
 /**
- * Parse message for easy use
+ * parse message for easy use
  * @param {proto.IWebMessageInfo} msg
  * @param client
  */
 function serialize(msg, client) {
-  if (msg.key) {
-    msg.id = msg.key.id;
-    msg.isSelf = msg.key.fromMe;
-    msg.from = decodeJid(msg.key.remoteJid);
-    msg.isGroup = msg.from.endsWith('@g.us');
-    msg.sender = msg.isGroup ? decodeJid(msg.key.participant) : msg.isSelf ? decodeJid(client.user.id) : msg.from;
-  }
-  if (msg.message) {
-    msg.type = getContentType(msg.message);
-    if (msg.type === 'ephemeralMessage') {
-      msg.message = msg.message[msg.type].message;
-      const tipe = Object.keys(msg.message)[0];
-      msg.type = tipe;
-      if (tipe === 'viewOnceMessageV2') {
-        msg.message = msg.message[msg.type].message;
-        msg.type = getContentType(msg.message);
-      }
+    if (msg.key) {
+        msg.id = msg.key.id
+        msg.isSelf = msg.key.fromMe
+        msg.from = decodeJid(msg.key.remoteJid)
+        msg.isGroup = msg.from.endsWith('@g.us')
+        msg.sender = msg.isGroup ? decodeJid(msg.key.participant) : msg.isSelf ? decodeJid(client.user.id) : msg.from
     }
-    if (msg.type === 'viewOnceMessageV2') {
-      msg.message = msg.message[msg.type].message;
-      msg.type = getContentType(msg.message);
-    }
-
-    msg.mentions = [];
-    const array = msg?.message?.[msg.type]?.contextInfo?.mentionedJid || [];
-    msg.mentions.push(...array.filter(Boolean));
-    try {
-      const quoted = msg.message[msg.type]?.contextInfo;
-      if (quoted && quoted.quotedMessage) {
-        if (quoted.quotedMessage['ephemeralMessage']) {
-          const tipe = Object.keys(quoted.quotedMessage.ephemeralMessage.message)[0];
-          if (tipe === 'viewOnceMessageV2') {
-            msg.quoted = {
-              type: 'view_once',
-              stanzaId: quoted.stanzaId,
-              participant: decodeJid(quoted.participant),
-              message: quoted.quotedMessage.ephemeralMessage.message.viewOnceMessage.message
-            };
-          } else {
-            msg.quoted = {
-              type: 'ephemeral',
-              stanzaId: quoted.stanzaId,
-              participant: decodeJid(quoted.participant),
-              message: quoted.quotedMessage.ephemeralMessage.message
-            };
-          }
-        } else if (quoted.quotedMessage['viewOnceMessageV2']) {
-          msg.quoted = {
-            type: 'view_once',
-            stanzaId: quoted.stanzaId,
-            participant: decodeJid(quoted.participant),
-            message: quoted.quotedMessage.viewOnceMessage.message
-          };
-        } else {
-          msg.quoted = {
-            type: 'normal',
-            stanzaId: quoted.stanzaId,
-            participant: decodeJid(quoted.participant),
-            message: quoted.quotedMessage
-          };
+    if (msg.message) {
+        msg.type = getContentType(msg.message)
+        if (msg.type === 'ephemeralMessage') {
+            msg.message = msg.message[msg.type].message
+            const tipe = Object.keys(msg.message)[0]
+            msg.type = tipe
+            if (tipe === 'viewOnceMessageV2') {
+                msg.message = msg.message[msg.type].message
+                msg.type = getContentType(msg.message)
+            }
         }
-        msg.quoted.isSelf = msg.quoted.participant === decodeJid(client.user.id);
-        msg.quoted.mtype = Object.keys(msg.quoted.message).filter(
-          (v) => v.includes('Message') || v.includes('conversation')
-        )[0];
-        msg.quoted.text =
-          msg.quoted.message[msg.quoted.mtype]?.text ||
-          msg.quoted.message[msg.quoted.mtype]?.description ||
-          msg.quoted.message[msg.quoted.mtype]?.caption ||
-          msg.quoted.message[msg.quoted.mtype]?.hydratedTemplate?.hydratedContentText ||
-          msg.quoted.message[msg.quoted.mtype] ||
-          '';
-        msg.quoted.key = {
-          id: msg.quoted.stanzaId,
-          fromMe: msg.quoted.isSelf,
-          remoteJid: msg.from
-        };
-        msg.quoted.download = () => downloadMedia(msg.quoted.message);
-      } else {
-        msg.quoted = null;
-      }
-    } catch {
-      msg.quoted = null;
-    }
-    msg.body =
-      msg.message?.conversation ||
-      msg.message?.[msg.type]?.text ||
-      msg.message?.[msg.type]?.caption ||
-      (msg.type === 'interactiveResponseMessage' && msg.message?.[msg.type]?.nativeFlowResponseMessage?.paramsJson?.id) ||
-      (msg.type === 'buttonsResponseMessage' && msg.message?.[msg.type]?.selectedButtonId) ||
-      (msg.type === 'templateButtonReplyMessage' && msg.message?.[msg.type]?.selectedId) ||
-      '';
-    msg.reply = (text) =>
-      client.sendMessage(
-        msg.from,
-        {
-          text
-        },
-        {
-          quoted: msg
+        if (msg.type === 'viewOnceMessageV2') {
+            msg.message = msg.message[msg.type].message
+            msg.type = getContentType(msg.message)
         }
-      );
 
-    // msg.replyWithButtons = (text, button, media) => {
-    //     const rest = media ? { [media.type]: media.content } : {};
-    //     const buttons = button.map((displayText) => ({
-    //       type: 1,
-    //       buttonId: 'Ari-Ani-'.concat(Math.random().toString(36).substring(2, 12)),
-    //       buttonText: {
-    //         displayText,
-    //       },
-    //     }));
-    //     return client.sendMessage(
-    //       from,
-    //       {
-    //         text,
-    //         buttons,
-    //         ...rest,
-    //       },
-    //       {
-    //         quoted: M,
-    //       }
-    //     );
-    //   };
-
-    msg.download = () => downloadMedia(msg.message);
-  }
-  return msg;
+        msg.mentions = []
+        const array = msg?.message?.[msg.type]?.contextInfo?.mentionedJid || []
+        msg.mentions.push(...array.filter(Boolean))
+        try {
+            const quoted = msg.message[msg.type]?.contextInfo
+            if (quoted.quotedMessage['ephemeralMessage']) {
+                const tipe = Object.keys(quoted.quotedMessage.ephemeralMessage.message)[0]
+                if (tipe === 'viewOnceMessageV2') {
+                    msg.quoted = {
+                        type: 'view_once',
+                        stanzaId: quoted.stanzaId,
+                        participant: decodeJid(quoted.participant),
+                        message: quoted.quotedMessage.ephemeralMessage.message.viewOnceMessage.message
+                    }
+                } else {
+                    msg.quoted = {
+                        type: 'ephemeral',
+                        stanzaId: quoted.stanzaId,
+                        participant: decodeJid(quoted.participant),
+                        message: quoted.quotedMessage.ephemeralMessage.message
+                    }
+                }
+            } else if (msg.type === 'interactiveResponseMessage') {
+            let msg = m.message[m.mtype]  || m.msg
+            let { id } = JSON.parse(msg.nativeFlowResponseMessage.paramsJson) || {}  
+                if(id){
+             let emit_msg = { 
+                        key : { ...m.key } ,
+                        message:{ extendedTextMessage : { text : id } } ,
+                        pushName : m.pushName,
+                        messageTimestamp  : m.messageTimestamp || 754785898978
+                    }
+                    return client.ev.emit("messages.upsert" , { messages : [ emit_msg ] ,  type : "notify"})
+                 } else {
+                 console.log('Message Detect but Not Command Available')
+                   }
+            } else if (quoted.quotedMessage['viewOnceMessageV2']) {
+                msg.quoted = {
+                    type: 'view_once',
+                    stanzaId: quoted.stanzaId,
+                    participant: decodeJid(quoted.participant),
+                    message: quoted.quotedMessage.viewOnceMessage.message
+                }
+            } else {
+                msg.quoted = {
+                    type: 'normal',
+                    stanzaId: quoted.stanzaId,
+                    participant: decodeJid(quoted.participant),
+                    message: quoted.quotedMessage
+                }
+            }
+            msg.quoted.isSelf = msg.quoted.participant === decodeJid(client.user.id)
+            msg.quoted.mtype = Object.keys(msg.quoted.message).filter(
+                (v) => v.includes('Message') || v.includes('conversation')
+            )[0]
+            msg.quoted.text =
+                msg.quoted.message[msg.quoted.mtype]?.text ||
+                msg.quoted.message[msg.quoted.mtype]?.description ||
+                msg.quoted.message[msg.quoted.mtype]?.caption ||
+                msg.quoted.message[msg.quoted.mtype]?.hydratedTemplate?.hydratedContentText ||
+                msg.quoted.message[msg.quoted.mtype] ||
+                ''
+            msg.quoted.key = {
+                id: msg.quoted.stanzaId,
+                fromMe: msg.quoted.isSelf,
+                remoteJid: msg.from
+            } 
+            msg.quoted.download = () => downloadMedia(msg.quoted.message)
+        } catch {
+            msg.quoted = null
+        }
+        let { id } = JSON.parse(msg.nativeFlowResponseMessage.paramsJson)
+        msg.body =
+            msg.message?.conversation ||
+            msg.message?.[msg.type]?.text ||
+            msg.message?.[msg.type]?.caption ||
+            (msg.type === 'buttonsResponseMessage' && msg.message?.[msg.type]?.selectedButtonId) ||
+            (msg.type === 'templateButtonReplyMessage' && msg.message?.[msg.type]?.selectedId) ||
+            ''
+        msg.reply = (text) =>
+            client.sendMessage(
+                msg.from,
+                {
+                    text
+                },
+                {
+                    quoted: msg
+                }
+            )
+        msg.download = () => downloadMedia(msg.message)
+    }
+    return msg
 }
 
 module.exports = {
-  serialize,
-  decodeJid
-};
+    serialize,
+    decodeJid
+}
