@@ -15,7 +15,7 @@ const downloadMedia = async (message) => {
     /**@type {keyof proto.IMessage} */
     let type = Object.keys(message)[0]
     let msg = message[type]
-    if (type === 'InteractiveMessage' || type === 'buttonsMessage' || type === 'viewOnceMessageV2') {
+    if (type === 'buttonsMessage' || type === 'viewOnceMessageV2') {
         if (type === 'viewOnceMessageV2') {
             msg = message.viewOnceMessageV2?.message
             type = Object.keys(msg || {})[0]
@@ -81,20 +81,6 @@ function serialize(msg, client) {
                         message: quoted.quotedMessage.ephemeralMessage.message
                     }
                 }
-            } else if (msg.type === 'interactiveResponseMessage') {
-            let msg = m.message[m.mtype]  || m.msg
-            let { id } = JSON.parse(msg.nativeFlowResponseMessage.paramsJson) || {}  
-                if(id){
-             let emit_msg = { 
-                        key : { ...m.key } ,
-                        message:{ extendedTextMessage : { text : id } } ,
-                        pushName : m.pushName,
-                        messageTimestamp  : m.messageTimestamp || 754785898978
-                    }
-                    return client.ev.emit("messages.upsert" , { messages : [ emit_msg ] ,  type : "notify"})
-                 } else {
-                 console.log('Message Detect but Not Command Available')
-                   }
             } else if (quoted.quotedMessage['viewOnceMessageV2']) {
                 msg.quoted = {
                     type: 'view_once',
@@ -125,16 +111,16 @@ function serialize(msg, client) {
                 id: msg.quoted.stanzaId,
                 fromMe: msg.quoted.isSelf,
                 remoteJid: msg.from
-            } 
+            }
             msg.quoted.download = () => downloadMedia(msg.quoted.message)
         } catch {
             msg.quoted = null
         }
-        let { id } = JSON.parse(msg.nativeFlowResponseMessage.paramsJson)
         msg.body =
             msg.message?.conversation ||
             msg.message?.[msg.type]?.text ||
             msg.message?.[msg.type]?.caption ||
+            (msg.type === 'listResponseMessage' && msg.message?.[msg.type]?.singleSelectReply?.selectedRowId) ||
             (msg.type === 'buttonsResponseMessage' && msg.message?.[msg.type]?.selectedButtonId) ||
             (msg.type === 'templateButtonReplyMessage' && msg.message?.[msg.type]?.selectedId) ||
             ''
@@ -148,6 +134,29 @@ function serialize(msg, client) {
                     quoted: msg
                 }
             )
+
+            // msg.replyWithButtons = (text, button, media) => {
+            //     const rest = media ? { [media.type]: media.content } : {};
+            //     const buttons = button.map((displayText) => ({
+            //       type: 1,
+            //       buttonId: 'Ari-Ani-'.concat(Math.random().toString(36).substring(2, 12)),
+            //       buttonText: {
+            //         displayText,
+            //       },
+            //     }));
+            //     return client.sendMessage(
+            //       from,
+            //       {
+            //         text,
+            //         buttons,
+            //         ...rest,
+            //       },
+            //       {
+            //         quoted: M,
+            //       }
+            //     );
+            //   };
+              
         msg.download = () => downloadMedia(msg.message)
     }
     return msg
