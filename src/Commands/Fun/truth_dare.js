@@ -62,7 +62,7 @@ await client.relayMessage(msg.key.remoteJid, msg.message, {
         const option = arg.trim().toLowerCase();
 
         if (!availableOptions.includes(option)) {
-            return message.reply(`Invalid option. Please choose from:\n${availableOptions.join(', ')}`);
+            return M.reply(`Invalid option. Please choose from:\n${availableOptions.join(', ')}`);
         }
 
         try {
