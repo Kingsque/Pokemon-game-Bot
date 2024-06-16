@@ -1,3 +1,5 @@
+//Import Or Requiring Module 
+const { shizobtn1, shizobtn1img, shizobtn1gif } = require('./shizofunc.js')
 const cron = require("node-cron");
 const axios = require('axios');
 const path = require('path');
@@ -71,18 +73,11 @@ module.exports = CardHandler = async (client, M) => {
             if (obj.tier.includes('6') || obj.tier.includes('S')) {
               const giif = await client.utils.getBuffer(obj.url);
               const cgif = await client.utils.gifToMp4(giif);
-              return client.sendMessage(jid, {
-                video: cgif,
-                caption: `*┏═─|🔥ᴄᴀʀᴅ ꜱᴘᴀᴡɴ🔥|─═∘⦿ꕹ᛫*\n*╏𓊈 ᴀ ʀᴀʀᴇ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉*\n*╏🏮 ɴᴀᴍᴇ:* ${obj.title}\n*╏🔰 ᴛɪᴇʀ:* ${obj.tier}\n*╏💰 Price:* ${price}\n*╏📤 ɪɴғᴏ: ᴛʜɪꜱ ᴄᴀʀᴅ'ꜱ ᴀʀᴇ*\n*╏ᴏʀɪɢɪɴᴀʟʟʏ ᴏᴡɴᴇᴅ ʙʏ*\n*╏ʜᴛᴛᴘꜱ://ꜱʜᴏᴏʙ.ɢɢ ᴡᴇ ᴀʀᴇ ᴜꜱɪɴɢ*\n*╏ɪᴛ ᴡɪᴛʜ ᴠᴇʀꜱɪᴏɴ 𝟐𝟎𝟐𝟒-𝟐𝟓*\n*╏ᴄᴀʀᴅ.ᴊꜱᴏɴ ғɪʟᴇ ꜱᴜᴘᴘᴏʀᴛᴇᴅ*\n*╏ᴍᴀᴅᴇ ʙʏ ᴏᴜʀ ᴛᴇᴀᴍ*\n*╏ᴛʜᴀɴᴋ ʏᴏᴜ ᴜꜱᴇʀ'ꜱ ᴋɴᴡ ᴇɴᴊᴏʏ.!!*\n*╏━━━━━━•❅•°•❈•°•❅•━━━━━━*\n*╏🔮 ᴜꜱᴇ ${client.prefix}ᴄᴏʟʟᴇᴄᴛ* ᴛᴏ ᴄʟᴀɪᴍ\n*╏ᴛʜᴇ ᴄᴀʀᴅ ʏᴏᴜʀ ᴄᴀʀᴅ ᴡɪʟʟ ʙᴇ*\n*╏ꜱᴛᴏʀᴇᴅ ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ*\n*┗═─|🔥ᴄᴀʀᴅ ꜱᴘᴀᴡɴ🔥|─═∘⦿ꕹ᛫*`,
-                gifPlayback: true,
-              });
+        let shizoshona = `*┏═─|🔥ᴄᴀʀᴅ ꜱᴘᴀᴡɴ🔥|─═∘⦿ꕹ᛫*\n*╏𓊈 ᴀ ʀᴀʀᴇ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉*\n*╏🏮 ɴᴀᴍᴇ:* ${obj.title}\n*╏🔰 ᴛɪᴇʀ:* ${obj.tier}\n*╏💰 Price:* ${price}\n*╏📤 ɪɴғᴏ: ᴛʜɪꜱ ᴄᴀʀᴅ'ꜱ ᴀʀᴇ*\n*╏ᴏʀɪɢɪɴᴀʟʟʏ ᴏᴡɴᴇᴅ ʙʏ*\n*╏ʜᴛᴛᴘꜱ://ꜱʜᴏᴏʙ.ɢɢ ᴡᴇ ᴀʀᴇ ᴜꜱɪɴɢ*\n*╏ɪᴛ ᴡɪᴛʜ ᴠᴇʀꜱɪᴏɴ 𝟐𝟎𝟐𝟒-𝟐𝟓*\n*╏ᴄᴀʀᴅ.ᴊꜱᴏɴ ғɪʟᴇ ꜱᴜᴘᴘᴏʀᴛᴇᴅ*\n*╏ᴍᴀᴅᴇ ʙʏ ᴏᴜʀ ᴛᴇᴀᴍ*\n*╏ᴛʜᴀɴᴋ ʏᴏᴜ ᴜꜱᴇʀ'ꜱ ᴋɴᴡ ᴇɴᴊᴏʏ.!!*\n*╏━━━━━━•❅•°•❈•°•❅•━━━━━━*\n*╏🔮 ᴜꜱᴇ ${client.prefix}ᴄᴏʟʟᴇᴄᴛ* ᴛᴏ ᴄʟᴀɪᴍ\n*╏ᴛʜᴇ ᴄᴀʀᴅ ʏᴏᴜʀ ᴄᴀʀᴅ ᴡɪʟʟ ʙᴇ*\n*╏ꜱᴛᴏʀᴇᴅ ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ*\n*┗═─|🔥ᴄᴀʀᴅ ꜱᴘᴀᴡɴ🔥|─═∘⦿ꕹ᛫*`
+		return shizobtn1gif(client, jid, shizoshona, cgif, 'Collect 🔖', `${client.prefix}collect`, '© RedZeoX')
             } else {
-              return client.sendMessage(jid, {
-                image: {
-                  url: obj.url,
-                },
-                caption: `*┏─━═─|⚡ᴄᴀʀᴅ ꜱᴘᴀᴡɴ⚡|─═━─∘⦿ꕹ᛫*\n*╏𓊈 ᴀ ɴᴇᴡ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉*\n*╏🏮 ɴᴀᴍᴇ:* ${obj.title}\n*╏🔰 ᴛɪᴇʀ:* ${obj.tier}\n*╏💰 Price:* ${price}\n*╏📤 ɪɴғᴏ: ᴛʜɪꜱ ᴄᴀʀᴅ'ꜱ ᴀʀᴇ*\n*╏ᴏʀɪɢɪɴᴀʟʟʏ ᴏᴡɴᴇᴅ ʙʏ*\n*╏ʜᴛᴛᴘꜱ://ꜱʜᴏᴏʙ.ɢɢ ᴡᴇ ᴀʀᴇ ᴜꜱɪɴɢ*\n*╏ɪᴛ ᴡɪᴛʜ ᴠᴇʀꜱɪᴏɴ 𝟐𝟎𝟐𝟒-𝟐𝟓*\n*╏ᴄᴀʀᴅ.ᴊꜱᴏɴ ғɪʟᴇ ꜱᴜᴘᴘᴏʀᴛᴇᴅ*\n*╏ᴍᴀᴅᴇ ʙʏ ᴏᴜʀ ᴛᴇᴀᴍ*\n*╏ᴛʜᴀɴᴋ ʏᴏᴜ ᴜꜱᴇʀ'ꜱ ᴋɴᴡ ᴇɴᴊᴏʏ.!!*\n*╏━━━━━━•❅•°•❈•°•❅•━━━━━━*\n*╏🔮 ᴜꜱᴇ ${client.prefix}ᴄᴏʟʟᴇᴄᴛ* ᴛᴏ ᴄʟᴀɪᴍ\n*╏ᴛʜᴇ ᴄᴀʀᴅ ʏᴏᴜʀ ᴄᴀʀᴅ ᴡɪʟʟ ʙᴇ*\n*╏ꜱᴛᴏʀᴇᴅ ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ*\n*┗─━═─|⚡ᴄᴀʀᴅ ꜱᴘᴀᴡɴ⚡|─═━─∘⦿ꕹ᛫*`,
-              });
+ let shizocutie = `*┏─━═─|⚡ᴄᴀʀᴅ ꜱᴘᴀᴡɴ⚡|─═━─∘⦿ꕹ᛫*\n*╏𓊈 ᴀ ɴᴇᴡ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉*\n*╏🏮 ɴᴀᴍᴇ:* ${obj.title}\n*╏🔰 ᴛɪᴇʀ:* ${obj.tier}\n*╏💰 Price:* ${price}\n*╏📤 ɪɴғᴏ: ᴛʜɪꜱ ᴄᴀʀᴅ'ꜱ ᴀʀᴇ*\n*╏ᴏʀɪɢɪɴᴀʟʟʏ ᴏᴡɴᴇᴅ ʙʏ*\n*╏ʜᴛᴛᴘꜱ://ꜱʜᴏᴏʙ.ɢɢ ᴡᴇ ᴀʀᴇ ᴜꜱɪɴɢ*\n*╏ɪᴛ ᴡɪᴛʜ ᴠᴇʀꜱɪᴏɴ 𝟐𝟎𝟐𝟒-𝟐𝟓*\n*╏ᴄᴀʀᴅ.ᴊꜱᴏɴ ғɪʟᴇ ꜱᴜᴘᴘᴏʀᴛᴇᴅ*\n*╏ᴍᴀᴅᴇ ʙʏ ᴏᴜʀ ᴛᴇᴀᴍ*\n*╏ᴛʜᴀɴᴋ ʏᴏᴜ ᴜꜱᴇʀ'ꜱ ᴋɴᴡ ᴇɴᴊᴏʏ.!!*\n*╏━━━━━━•❅•°•❈•°•❅•━━━━━━*\n*╏🔮 ᴜꜱᴇ ${client.prefix}ᴄᴏʟʟᴇᴄᴛ* ᴛᴏ ᴄʟᴀɪᴍ\n*╏ᴛʜᴇ ᴄᴀʀᴅ ʏᴏᴜʀ ᴄᴀʀᴅ ᴡɪʟʟ ʙᴇ*\n*╏ꜱᴛᴏʀᴇᴅ ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ*\n*┗─━═─|⚡ᴄᴀʀᴅ ꜱᴘᴀᴡɴ⚡|─═━─∘⦿ꕹ᛫*`
+              return shizobtn1img(client, jid, shizocutie, obj.url, 'Collect 🔖', `${client.prefix}collect`, '© RedZeoX')
             }
 
           } catch (err) {
