@@ -67,10 +67,10 @@ await client.relayMessage(msg.key.remoteJid, msg.message, {
 
         try {
             const result = option === 'truth' ? await TD.get_truth() : await TD.get_dare();
-            message.reply(`Here's your ${option}: ${result}`);
+            M.reply(`Here's your ${option}: ${result}`);
         } catch (error) {
             console.error('Error fetching truth or dare:', error);
-            message.reply('Sorry, I couldn\'t fetch a truth or dare at the moment. Please try again later.');
+            M.reply('Sorry, I couldn\'t fetch a truth or dare at the moment. Please try again later.');
         }
     }
 };
