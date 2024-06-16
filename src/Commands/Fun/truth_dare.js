@@ -1,4 +1,10 @@
 const TD = require('better-tord');
+const {
+    proto,
+    generateWAMessage,
+    areJidsSameUser,
+    generateWAMessageFromContent
+} = require('@WhiskeySockets/baileys');
 
 module.exports = {
     name: 'truth_dare',
@@ -10,7 +16,43 @@ module.exports = {
     usage: 'Use :td truth or dare',
     description: 'Gives you truth or dare.',
     async execute(client, arg, message) {
-        if (!arg) return message.reply('Please specify "truth" or "dare"!');
+        if (!arg) {
+        let msg = generateWAMessageFromContent(M.from, {
+  viewOnceMessage: {
+    message: {
+        "messageContextInfo": {
+          "deviceListMetadata": {},
+          "deviceListMetadataVersion": 2
+        },
+        interactiveMessage: proto.Message.InteractiveMessage.create({
+          body: proto.Message.InteractiveMessage.Body.create({
+            text: `choose from the below list:-`
+          }),
+          footer: proto.Message.InteractiveMessage.Footer.create({
+            text: "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻"
+          }),
+          header: proto.Message.InteractiveMessage.Header.create({
+            title: "",
+            subtitle: "",
+            hasMediaAttachment: false
+          }),
+          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+            buttons: [
+              {
+                "name": "quick_reply",
+                "buttonParamsJson": "{\"display_text\":\"Truth\",\"id\":\"-td truth\"}","{\"display_text\":\"Dare\",\"id\":\"-td dare\"}"
+              }
+           ],
+          })
+        })
+    }
+  }
+}, {})
+
+await client.relayMessage(msg.key.remoteJid, msg.message, {
+  messageId: msg.key.id
+})
+        }
         
         const availableOptions = ['truth', 'dare'];
         const option = arg.trim().toLowerCase();
