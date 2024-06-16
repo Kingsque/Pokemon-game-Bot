@@ -15,7 +15,7 @@ module.exports = {
     react: "✅",
     usage: 'Use :td truth or dare',
     description: 'Gives you truth or dare.',
-    async execute(client, arg, message) {
+    async execute(client, arg, M) {
         if (!arg) {
         let msg = generateWAMessageFromContent(M.from, {
   viewOnceMessage: {
