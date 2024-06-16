@@ -74,22 +74,13 @@ if (itachi.includes(sender)) {
     await client.sendMessage(from, reactionMessage);
 } */
 
-     // reaction random
-   const itachi = ["919529426293@s.whatsapp.net", "916000764396@s.whatsapp.net", "917638889076@s.whatsapp.net"];
+// Random reactions made by REDZEOX..!!
+   const itachi = ["919529426293@s.whatsapp.net", "916000764396@s.whatsapp.net", "917638889076@s.whatsapp.net", "917980329866@s.whatsapp.net", "919637987574@s.whatsapp.net"];
 
 if (itachi.includes(sender)) {
     let reactRandom = [
-        "👻",
-        "🐼",
-        "🙈",
-        "🐨",
-        "🐷",
-        "🐹",
-        "🦄",
-        "🐸",
-        "🐶",
-        "🐦"
-    ];
+        "👻","🐼","🙈","🐨","🐷",
+        "🐹","🦄","🐸","🐶","🦊" ];
     let ran = reactRandom[Math.floor(Math.random() * reactRandom.length)];
     
     const reactionMessage = { react: { text: ran, key: M.key } };
