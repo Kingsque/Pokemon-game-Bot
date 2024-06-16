@@ -40,11 +40,11 @@ module.exports = {
             buttons: [
             {
                 "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"Truth\",\"id\":\":td truth\"}"
+                "buttonParamsJson": "{\"display_text\":\"Truth\",\"id\":\"-td truth\"}"
               },
                 {
                 "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"Dare\",\"id\":\":td dare\"}"
+                "buttonParamsJson": "{\"display_text\":\"Dare\",\"id\":\"-td dare\"}"
                 }
            ],
           })
@@ -61,9 +61,7 @@ await client.relayMessage(msg.key.remoteJid, msg.message, {
         const availableOptions = ['truth', 'dare'];
         const option = arg.trim().toLowerCase();
 
-        if (!availableOptions.includes(option)) {
-            return M.reply(`Invalid option. Please choose from:\n${availableOptions.join(', ')}`);
-        }
+        
 
         try {
             const result = option === 'truth' ? await TD.get_truth() : await TD.get_dare();
