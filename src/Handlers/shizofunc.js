@@ -142,8 +142,6 @@ await client.relayMessage(msg.key.remoteJid, msg.message, {
 })
 }
 
-}
-
 
 module.exports = {
   shizobtn1,
