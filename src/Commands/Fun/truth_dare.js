@@ -38,10 +38,14 @@ module.exports = {
           }),
           nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
             buttons: [
-              {
+            {
                 "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"Truth\",\"id\":\"-td truth\"}","{\"display_text\":\"Dare\",\"id\":\"-td dare\"}"
-              }
+                "buttonParamsJson": "{\"display_text\":\"Truth\",\"id\":\":td truth\"}"
+              },
+                {
+                "name": "quick_reply",
+                "buttonParamsJson": "{\"display_text\":\"Dare\",\"id\":\":td dare\"}"
+                }
            ],
           })
         })
