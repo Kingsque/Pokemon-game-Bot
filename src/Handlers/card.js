@@ -76,6 +76,7 @@ module.exports = CardHandler = async (client, M) => {
         let shizoshona = `┌─🄱🄾🅃───────────❀̥˚┐
 └──🄲🄰🅁🄳 🅂🄿🅆🄰🄽───┘
 │▱▱▱▱▱▱▱▱▱▱▱▱▱▱
+│𓊈 ᴀ ʀᴀʀᴇ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉
 │🏮 ɴᴀᴍᴇ: 𓆩 ${obj.title} 𓆪
 │🔰 ᴛɪᴇʀ: 𓆩 ${obj.tier} 𓆪
 │💰 Price: ░░ ${price} ░░
@@ -98,6 +99,7 @@ module.exports = CardHandler = async (client, M) => {
  let shizocutie = `┌─🄱🄾🅃───────────❀̥˚┐
 └──🄲🄰🅁🄳 🅂🄿🅆🄰🄽───┘
 │▱▱▱▱▱▱▱▱▱▱▱▱▱▱
+│𓊈 ᴀ ɴᴇᴡ ᴄᴀʀᴅ ʜᴀꜱ ꜱᴘᴀᴡɴᴇᴅ 𓊉
 │🏮 ɴᴀᴍᴇ: 𓆩 ${obj.title} 𓆪
 │🔰 ᴛɪᴇʀ: 𓆩 ${obj.tier} 𓆪
 │💰 Price: ░░ ${price} ░░
