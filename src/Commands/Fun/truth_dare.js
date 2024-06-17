@@ -7,7 +7,7 @@ module.exports = {
     category: 'fun',
     exp: 9,
     cool: 4,
-    react: "✅",
+    react: "🎯",
     usage: 'Use :td truth or dare',
     description: 'Gives you truth or dare.',
     async execute(client, arg, M) {
@@ -20,6 +20,16 @@ module.exports = {
         } catch (error) {
             console.error('Error fetching truth or dare:', error);
             M.reply('Sorry, I couldn\'t fetch a truth or dare at the moment. Please try again later.');
-        }
+            
+            await client.sendMessage(
+            M.from,
+            {
+                image: { url: "https://i.ibb.co/Ldd8bp7/1057308.jpg" },
+                caption: text
+            },
+            {
+                quoted: M
+            }
+        )
     }
-};
+}};
