@@ -2,13 +2,13 @@ const TD = require('better-tord');
 const { shizobtn1, shizobtn1img, shizobtn1gif, shizobtn2 } = require('../../shizofunc.js')
 
 module.exports = {
-    name: 'truth_dare',
+    name: 'Shinjitsu',
     aliases: ['td'],
     category: 'fun',
     exp: 9,
     cool: 4,
     react: "🎯",
-    usage: 'Use :td truth or dare',
+    usage: 'Use: Shinjitsu for truth or dare',
     description: 'Gives you truth or dare.',
     async execute(client, arg, M) {
         if (!arg) return shizobtn2(client, M.from, 'choose from the below list:-', 'Truth 🎯', '-td truth', 'Dare 🏷️', '-td dare', '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
