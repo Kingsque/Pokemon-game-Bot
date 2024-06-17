@@ -73,8 +73,8 @@ module.exports = CardHandler = async (client, M) => {
             if (obj.tier.includes('6') || obj.tier.includes('S')) {
               const giif = await client.utils.getBuffer(obj.url);
               const cgif = await client.utils.gifToMp4(giif);
-        let shizoshona = `┌─🄱🄾🅃──────────❀̥˚┐
-└──🄲🄰🅁🄳 🅂🄿🅆🄰🄽──┘
+        let shizoshona = `┌─🄱🄾🅃───────────❀̥˚┐
+└──🄲🄰🅁🄳 🅂🄿🅆🄰🄽───┘
 │▱▱▱▱▱▱▱▱▱▱▱▱▱▱
 │🏮 ɴᴀᴍᴇ: 𓆩 ${obj.title} 𓆪
 │🔰 ᴛɪᴇʀ: 𓆩 ${obj.tier} 𓆪
@@ -91,12 +91,12 @@ module.exports = CardHandler = async (client, M) => {
 │ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ... 💾📀
 │- ᴏᴡɴᴇʀ: ʀᴇᴅᴢᴇᴏꭗ 彡
 │▱▱▱▱▱▱▱▱▱▱▱▱▱▱
-┌──🄲🄰🅁🄳 🅂🄿🅆🄰🄽──┐
-└❀̥˚──────────🄱🄾🅃─┘`
+┌──🄲🄰🅁🄳 🅂🄿🅆🄰🄽───┐
+└❀̥˚───────────🄱🄾🅃─┘`
 		return shizobtn1gif(client, jid, shizoshona, cgif, '𒉢 Collect 🔖', `${client.prefix}collect`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
             } else {
- let shizocutie = `┌─🄱🄾🅃──────────❀̥˚┐
-└──🄲🄰🅁🄳 🅂🄿🅆🄰🄽──┘
+ let shizocutie = `┌─🄱🄾🅃───────────❀̥˚┐
+└──🄲🄰🅁🄳 🅂🄿🅆🄰🄽───┘
 │▱▱▱▱▱▱▱▱▱▱▱▱▱▱
 │🏮 ɴᴀᴍᴇ: 𓆩 ${obj.title} 𓆪
 │🔰 ᴛɪᴇʀ: 𓆩 ${obj.tier} 𓆪
@@ -113,8 +113,8 @@ module.exports = CardHandler = async (client, M) => {
 │ɪɴ ʏᴏᴜ ᴅᴇᴄᴋ... 💾📀
 │- ᴏᴡɴᴇʀ: ʀᴇᴅᴢᴇᴏꭗ 彡
 │▱▱▱▱▱▱▱▱▱▱▱▱▱▱
-┌──🄲🄰🅁🄳 🅂🄿🅆🄰🄽──┐
-└❀̥˚──────────🄱🄾🅃─┘`
+┌──🄲🄰🅁🄳 🅂🄿🅆🄰🄽───┐
+└❀̥˚───────────🄱🄾🅃─┘`
               return shizobtn1img(client, jid, shizocutie, obj.url, '𒉢 Collect 🔖', `${client.prefix}collect`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
             }
 
