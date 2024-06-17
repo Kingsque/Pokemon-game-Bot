@@ -101,7 +101,7 @@ if (itachi.includes(sender)) {
         })
              M.reply(body == 'hi' ? `Hey ${M.pushName} whats up?` : text.data.reply)
         }
-      
+
         // Link handling code
         if (!isGroup && body.includes('chat.whatsapp.com')) {
             const senderInfo = M.pushName || sender;
@@ -124,7 +124,7 @@ if (itachi.includes(sender)) {
                 isCmd ? `${client.prefix}${cmdName}` : 'Message'
             } ${chalk.white('from')} ${M.pushName} ${chalk.white('in')} ${isGroup ? gcName : 'DM'} ${chalk.white(
                 `args: [${chalk.blue(args.length)}]`
-           )}`,
+            )}`,
             'yellow'
         );
 
@@ -259,4 +259,5 @@ if (itachi.includes(sender)) {
     } catch (err) {
         client.log(err, 'red');
     }
-            }
+                                     }
+        
