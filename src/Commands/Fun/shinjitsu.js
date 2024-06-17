@@ -2,7 +2,7 @@ const TD = require('better-tord');
 const { shizobtn1, shizobtn1img, shizobtn1gif, shizobtn2 } = require('../../shizofunc.js')
 
 module.exports = {
-    name: 'Shinjitsu',
+    name: 'shinjitsu',
     aliases: ['td'],
     category: 'fun',
     exp: 9,
