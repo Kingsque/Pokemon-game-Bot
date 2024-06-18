@@ -17,9 +17,6 @@ const CardHandler = require('./Handlers/card')
 const PokeHandler = require('./Handlers/pokemon')
 const EventsHandler = require('./Handlers/Events')
 const econ = require("./Database/Models/economy")
-// call the summon function cards game and casino & Pokemon game 
-const jid = "120363182137183972@g.us";
-/////////////////////////////////////////////////
 const cardMap = new Map()
 const contact = require('./Structures/Contact')
 const utils = require('./Structures/Functions')
