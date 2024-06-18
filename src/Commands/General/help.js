@@ -21,7 +21,7 @@ function wish () {
    return wishWishes }
    
 module.exports = {
-  name: 'help',
+  name: 'list',
   aliases: ['shinichi1','shinichi2'],
   category: 'general',
   exp: 100,
