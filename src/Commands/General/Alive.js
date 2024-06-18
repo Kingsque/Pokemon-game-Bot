@@ -98,7 +98,7 @@ module.exports = {
 *│▱▱▱▱▱▱▱▱▱▱▱▱▱▱*
 *┌──🄱🅄🄽🄽🅈 🄶🄸🅁🄻──┈ ⳹*
 *└❀̥˚───────────🄱🄾🅃─┈ ⳹*`;
-                await shizobtn1gif(client, M.from, message, "https://telegra.ph/file/36b09056da6b7b2630345.jpg", "Manual 🎋🎐", "-help", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻");
+                await shizobtn1gif(client, M.from, message, "https://telegra.ph/file/36b09056da6b7b2630345.jpg", "Manual 🎋🎐", "-shinichi1", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻");
             }
         } catch (error) {
             console.error(error);
