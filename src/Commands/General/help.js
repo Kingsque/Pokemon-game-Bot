@@ -1,4 +1,3 @@
-const { shizobtn1, shizobtn1img, shizobtn1gif, shizobtn2 } = require('../../shizofunc.js');
 const fs = require('fs'); 
 const moment = require('moment-timezone')
 function wish () {
@@ -20,92 +19,10 @@ function wish () {
    else { 
     wishWishes = 'Good Night.!!!' }
    return wishWishes }
- 
+   
 module.exports = {
-    name: 'help',
-    aliases: ['list','menu','Alive'],
-    category: 'general',
-    exp: 100,
-    cool: 5,
-    react: "💖",
-    usage: 'Use -help for helplist or -help <command_name> to get command info',
-    description: 'Displays the command list or specific command info',
-    async execute(client, arg, M) {
-        try {
-            const user = await client.DB.get('data');
-            const m = M.sender;
-
-            // If user is not in data, push the user
-            if (!user.includes(m)) {
-                await client.DB.push('data', m);
-            }
-
-            if (!arg) {
-                let pushName = M.pushName.trim();
-                if (pushName.split(' ').length === 1) {
-                    pushName += ' san';
-                }
-
-                const getGroups = await client.groupFetchAllParticipating();
-                const groups = Object.entries(getGroups).map((entry) => entry[1]);
-                const groupCount = groups.length;
-
-                const pad = (s) => (s < 10 ? '0' : '') + s;
-                const formatTime = (seconds) => {
-                    const hours = Math.floor(seconds / (60 * 60));
-                    const minutes = Math.floor((seconds % (60 * 60)) / 60);
-                    const secs = Math.floor(seconds % 60);
-                    return `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
-                };
-
-                const uptime = formatTime(process.uptime());
-                const usersCount = await client.DB.get('data') || [];
-                const usersCounts = usersCount.length;
-                const modCount = client.mods.length;
-                const website = 'coming soon...';
-                const categories = client.cmd.reduce((obj, cmd) => {
-                    const category = cmd.category || 'Uncategorized';
-                    obj[category] = obj[category] || [];
-                    obj[category].push(cmd.name);
-                    return obj;
-                }, {});
-
-                const commandList = Object.keys(categories);
-                let commands = '';
-
-                for (const category of commandList) {
-                    commands += `*𓊈𒆜 ${client.utils.capitalize(category, true)} 𒆜𓊉* \n\`\`\`${categories[category].join(', ')}\`\`\`\n\n`;
-                }
-
-                let message = `┌───────────────────────┈ ⳹
-│✠┌───────🄱🄾🅃───────┈
-│✠│ *『 🄱🅄🄽🄽🅈 🄱🄾🅃 』*
-│✠│ *「 ᴍᴀɪ ꜱᴀᴋᴜʀᴀᴊɪᴍᴀ 」*
-│✠│─┬────────────────┈ ⳹
-│✠│ │✑ *『 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡』*
-│✠│ │✑ *『 桜島 麻衣 スコッチ 』*
-│✠│ │✑ *『 ᴄᴀꜱɪɴᴏ ɢᴀᴍᴇ'ꜱ 』*
-│✠│ │✑ *「 ${client.prefix}Help 」*
-│✠│ └────────────────┈ ⳹
-│✠│🔥 *OWNER: 「 @ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ 」*
-│✠│─┬───────────────┈ ⳹
-│✠│ │✧ *ʀᴀꜱᴄᴀʟ ᴅᴏᴇꜱ ɴᴏᴛ ᴅʀᴇᴀᴍ!!*
-│✠│ │✧ *ꜱᴇɪꜱʜᴜɴ ʙᴜᴛᴀ ʏᴀʀᴏᴜ ᴡᴀ*
-│✠│ │✧ *ʙᴜɴɴʏ ɢɪʀʟ ꜱᴇɴᴘᴀɪ 𖠌*
-│✠│ │✧ *「 ${wish()} 」*
-│✠└───────────────────┈ ⳹
-└───────────────────────┈ ⳹`;
-                await shizobtn1gif(client, M.from, message, "https://telegra.ph/file/179feae8eb90678728ad2.mp4", "Manual 🎋🏷️", "-shinichi1", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻");
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-};
-  
-module.exports = {
-  name: 'shinichi1',
-  aliases: ['shinichi2'],
+  name: 'help',
+  aliases: ['h', 'menu', 'list'],
   category: 'general',
   exp: 100,
   cool: 5,
@@ -207,4 +124,3 @@ module.exports = {
     }
   }
 };
-          
