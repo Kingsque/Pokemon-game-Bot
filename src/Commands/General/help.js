@@ -22,7 +22,7 @@ function wish () {
    
 module.exports = {
   name: 'help',
-  aliases: ['h', 'menu', 'list'],
+  aliases: ['shinichi1','shinichi2'],
   category: 'general',
   exp: 100,
   cool: 5,
