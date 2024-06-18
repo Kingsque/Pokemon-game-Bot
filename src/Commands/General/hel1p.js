@@ -26,7 +26,7 @@ function wish() {
 }
 
 module.exports = {
-    name: 'Alive',
+    name: 'help',
     aliases: ['help','list','bot','Bot'],
     category: 'general',
     exp: 100,
