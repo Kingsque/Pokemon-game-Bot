@@ -1,5 +1,4 @@
 const { shizobtn1, shizobtn1img, shizobtn1gif, shizobtn2 } = require('../../shizofunc.js');
-const TD = require('better-tord');
 const fs = require('fs'); 
 const moment = require('moment-timezone')
 function wish () {
