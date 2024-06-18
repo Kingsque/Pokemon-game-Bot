@@ -29,7 +29,7 @@ module.exports = {
     name: 'help',
     aliases: ['help','list','bot','Bot'],
     category: 'general',
-    exp: 100,
+    exp: 50,
     cool: 5,
     react: "💐",
     usage: 'Use -help for helplist or -help <command_name> to get command info',
@@ -89,7 +89,7 @@ module.exports = {
 *│ᴡʜᴀᴛ's ᴜᴘ ꜱᴇɴᴘᴀɪ!! 👋🎐*
 *│🎯░ ${wish()} ░🎏*
 *│░░░░░░░░░░░░░░░░░░░░*
-*│📤 ɪɴғᴏ: ʙᴏᴛ ᴠᴇʀꜱɪᴏɴ 𝟐𝟎𝟐𝟒-𝟐𝟓 🎯*
+*│📤 ɪɴғᴏ: ʙᴏᴛ ᴠᴇʀꜱɪᴏɴ 𝟐𝟎𝟐𝟒 🎯*
 *│░░░░░░░░░░░░░░░░░░░░*
 *│🚏 ᴜꜱᴇ ᴛʜᴇ ᴍᴀɴᴜᴀʟ ʙᴜᴛᴛᴏɴ!!🚦*
 *│💈ᴄᴀꜱɪɴᴏ ɢᴀᴍᴇ ʙᴏᴛ*
