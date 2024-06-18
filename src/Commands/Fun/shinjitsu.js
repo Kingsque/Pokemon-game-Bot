@@ -11,7 +11,7 @@ module.exports = {
     usage: 'Use: Shinjitsu for truth or dare',
     description: 'Gives you truth or dare.',
     async execute(client, arg, M) {
-        if (!arg) return shizobtn2(client, M.from, 'choose from the below list:-', 'Truth 🎯', '-td truth', 'Dare 🏷️', '-td dare', '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
+        if (!arg) return shizobtn2(client, M.from, 'choose from the below list:-', 'Truth 🎯', '${client.prefix}td truth', 'Dare 🏷️', '${client.prefix}td dare', '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
         const availableOptions = ['truth', 'dare'];
         const option = arg.trim().toLowerCase();
         try {
