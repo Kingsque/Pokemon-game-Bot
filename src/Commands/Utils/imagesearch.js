@@ -1,6 +1,17 @@
-const axios = require('axios');
-const Apikey = 'AIzaSyD8yD-Bx4Pb43lKoOKl-mLOdujQWV_wIAs';
+const searchTerm = 'cats';
+const apiKey = 'AIzaSyD8yD-Bx4Pb43lKoOKl-mLOdujQWV_wIAs';
 const cx = 'e47f554165f6a4137';
+const url = `https://www.googleapis.com/customsearch/v1?q=${searchTerm}&searchType=image&key=${apiKey}&cx=${cx}`;
+
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    const images = data.items.map(item => item.link);
+    console.log(images);
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
 
 module.exports = {
     name: 'getimg',
@@ -10,21 +21,17 @@ module.exports = {
     react: "🎶",
     usage: 'Use :getimg <context>',
     description: 'Searches image from google.com',
-    cool: 4, // Add cooldown time in seconds
+    cool: 4,
     async execute(client, arg, M) {
 
         try {
             if (!arg) return M.reply('Sorry, you did not provide any search term!');
             
-            // Perform a Google Image search
-            const response = await axios.get(`https://www.googleapis.com/customsearch/v1?q=${arg}&searchType=image&key=${Apikey}&cx=${cx}`);
-            
-            // Check if the response is successful
+     // Check if the response is successful
             if (!response.data || !response.data.items || response.data.items.length === 0) {
                 return M.reply('Could not find any images for the searched term.');
             }
-            
-            // Get the URL of the first image
+    // Get the URL of the first image
             const imageUrl = response.data.items[0].link;
 
             M.reply('Searching for the image from the web');
