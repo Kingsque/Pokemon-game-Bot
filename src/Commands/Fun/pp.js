@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const { shizobtn1, shizobtn1img, shizobtn1gif, shizobtn2 } = require('../../shizofunc.js');
 
 module.exports = {
     name: 'couplepfp',
@@ -18,10 +19,11 @@ module.exports = {
             let cowoResponse = await fetch(cita.cowo);
             let cowi = await cowoResponse.buffer();
             await client.sendMessage(M.from, { image: cowi, caption: 'for him' }, { quoted: M });
-
+            
             let ceweResponse = await fetch(cita.cewe);
             let ciwi = await ceweResponse.buffer();
             await client.sendMessage(M.from, { image: ciwi, caption: 'for her' }, { quoted: M });
+            await shizobtn1img(client, M.from, message, "Next Pair 🍂🌼", "-pfp", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻");
         } catch (error) {
             console.error(error);
             await client.sendMessage(M.from, { text: 'An error occurred while fetching images.' }, { quoted: M });
