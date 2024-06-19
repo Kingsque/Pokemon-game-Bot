@@ -17,7 +17,7 @@ module.exports = {
             image: {
                 url: images[0].url
             },
-            caption: 'Here you go'
+            caption: ''
         })
     }
 }
