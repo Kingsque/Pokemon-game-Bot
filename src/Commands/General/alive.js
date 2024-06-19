@@ -79,7 +79,7 @@ module.exports = {
                 let commands = '';
 
                 for (const category of commandList) {
-                    commands += `*⟣─𒂟 ${client.utils.capitalize(category, true)} 𒂟─⟢* \n\`\`\`${categories[category].join(', ')}\`\`\`\n\n`;
+                    commands += `*⟣─𒂟 ${client.utils.capitalize(category, true)} 𒂟─⟢* \n\> ${categories[category].join(', ')}\n`;
                 }
 
                 let message = `*┌─🄱🄾🅃────────❀̥˚─┈ ⳹*
