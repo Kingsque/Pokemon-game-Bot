@@ -23,7 +23,7 @@ module.exports = {
             let ceweResponse = await fetch(cita.cewe);
             let ciwi = await ceweResponse.buffer();
             await client.sendMessage(M.from, { image: ciwi, caption: 'for her' }, { quoted: M });
-            await shizobtn1img(client, M.from, message, "Next Pair 🍂🌼", "-pfp", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻");
+            await shizobtn1img(client, M.from, message, "", "Next Pair 🍂🌼", "-pfp", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻");
         } catch (error) {
             console.error(error);
             await client.sendMessage(M.from, { text: 'An error occurred while fetching images.' }, { quoted: M });
