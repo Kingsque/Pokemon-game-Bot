@@ -21,7 +21,7 @@ function wish() {
     } else if (hour_now >= '19' && hour_now < '23') {
         wishWishes = 'Good Night 🌃';
     } else if (hour_now >= '23' || hour_now < '06') {
-        wishWishes = 'Sweet Dreams 💖 Sleep Well';
+        wishWishes = 'Sweet Dreams 💖';
     } else if (hour_now >= '05' && hour_now < '06') {
         wishWishes = 'Go and sleep 😴';
     } else {
@@ -34,7 +34,7 @@ module.exports = {
     name: 'list',
     aliases: ['shinichi1', 'shinichi2'],
     category: 'general',
-    exp: 100,
+    exp: 50,
     cool: 5,
     react: "💖",
     usage: 'Use -help for helplist or -help <command_name> to get command info',
@@ -79,7 +79,7 @@ module.exports = {
                 let commands = '';
 
                 for (const category of commandList) {
-                    commands += `*⟣─𒂟 ${client.utils.capitalize(category, true)} 𒂟─⟢* \n\> ${categories[category].join('╏')}\n`;
+                    commands += `*⟣─𒂟 ${client.utils.capitalize(category, true)} 𒂟─⟢* \n\> ${categories[category].join(', ')}\n`;
                 }
 
                 let message = `*┌─🄱🄾🅃────────❀̥˚─┈ ⳹*
@@ -102,7 +102,7 @@ module.exports = {
 *▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀*
  *『 ʜᴇʀᴇ ɪꜱ ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ'ꜱ 』*
 *▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄*\n${commands}`;
-                message += `*░░░░░░░░░░░░░░░░░░░░*
+                message += `\n*▱▱▱▱▱▱▱▱▱▱▱▱▱▱*\n*░░░░░░░░░░░░░░░░░░░░*
 *░░░░░░░░░░░░░░░░░░░░*
 *· ┈───── ·॥ॐ॥· ─────┈ ·*`;
 
