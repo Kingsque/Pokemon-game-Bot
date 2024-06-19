@@ -3,10 +3,10 @@ const fetch = require('node-fetch');
 module.exports = {
     name: 'couplepfp',
     aliases: ['pfp'],
-    category: 'economy',
+    category: 'fun',
     exp: 5,
     cool: 20,
-    react: "👍",
+    react: "🌸",
     usage: 'Use: !slot <amount>',
     description: 'Bets the given amount of credits in a slot machine',
     async execute(client, arg, M) {
