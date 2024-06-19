@@ -1,3 +1,10 @@
+const {
+    proto,
+    generateWAMessage,
+    areJidsSameUser,
+    generateWAMessageFromContent,
+    prepareWAMessageMedia
+} = require('@WhiskeySockets/baileys');
 const fs = require('fs'); 
 const moment = require('moment-timezone')
 function wish () {
@@ -98,20 +105,45 @@ module.exports = {
   ✧✧✧✧✧✧✧✧✧✧✧✧✧✧✧✧✧\n${commands}`;
         message +=`✨🕯️· ┈──── ·॥ॐ॥· ────┈ ·🕯️✨`;
         
-        await client.sendMessage(
-          M.from,
-          {
-            video: {url: "https://telegra.ph/file/179feae8eb90678728ad2.mp4"},
-            caption: message,
-            gifPlayback: true
-          },
-          {
-            quoted: M
-          }
-          );
-        return;
-      }
+const imageMessage = await prepareWAMessageMedia({ video: { url: "https://telegra.ph/file/179feae8eb90678728ad2.mp4" }}, { upload: client.waUploadToServer });
 
+        let msg = generateWAMessageFromContent(M.from, {
+            viewOnceMessage: {
+                message: {
+                    "messageContextInfo": {
+                        "deviceListMetadata": {},
+                        "deviceListMetadataVersion": 2
+                    },
+                    interactiveMessage: proto.Message.InteractiveMessage.create({
+                        body: proto.Message.InteractiveMessage.Body.create({
+                            text: `${message}`
+                        }),
+                        footer: proto.Message.InteractiveMessage.Footer.create({
+                            text: "Redzeox"
+                        }),
+                        header: proto.Message.InteractiveMessage.Header.create({
+                            ...imageMessage,
+                            title: "",
+                            subtitle: "",
+                            hasMediaAttachment: false
+                        }),
+                        nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+                            buttons: [
+                                {
+                 "name": "cta_url",
+                 "buttonParamsJson": "{\"display_text\":\"Redzeox\",\"url\":\"https://www.instagram.com/say.scotch\",\"merchant_url\":\"https://www.google.com\"}"
+                                }
+                            ],
+                        })
+                    })
+                }
+            }
+        }, {});
+
+        await client.relayMessage(M.from, msg.message, {
+            messageId: msg.key.id
+        });
+      
       const command = client.cmd.get(arg) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(arg));
 
       if (!command) return M.reply('Command not found');
