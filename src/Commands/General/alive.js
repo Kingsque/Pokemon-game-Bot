@@ -130,9 +130,13 @@ module.exports = {
                                 }),
                                 nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
                                     buttons: [
+                                      {
+                                        name: "quick_reply",
+                                        buttonParamsJson: "{\"display_text\":\"Information 🧾\",\"id\":\"-info\"}"
+                                    },
                                         {
                                             "name": "cta_url",
-                                            "buttonParamsJson": "{\"display_text\":\"ɪɴꜱᴛᴀɢʀᴀᴍ 💝𐇻\",\"url\":\"https://www.instagram.com/say.scotch\",\"merchant_url\":\"https://www.google.com\"}"
+                                            "buttonParamsJson": "{\"display_text\":\"ɪɴꜱᴛᴀɢʀᴀᴍ 💝\",\"url\":\"https://www.instagram.com/say.scotch\",\"merchant_url\":\"https://www.google.com\"}"
                                         }
                                     ],
                                 })
@@ -160,4 +164,4 @@ module.exports = {
         }
     }
 };
-                    
+                            
