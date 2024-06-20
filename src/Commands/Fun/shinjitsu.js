@@ -73,7 +73,7 @@ module.exports = {
 
         try {
             const result = option === 'truth' ? await TD.get_truth() : await TD.get_dare();
-            M.reply(`*🎋Here's Your ${option} :*\n> ${result}`);
+            M.reply(`*𒂟 Here's Your ${option} :*\n> ${result}`);
         } catch (error) {
             console.error('Error fetching truth or dare:', error);
             M.reply('Sorry, I couldn\'t fetch a truth or dare at the moment. Please try again later.');
