@@ -16,7 +16,7 @@ function wish() {
     } else if (hour_now >= '19' && hour_now <= '23') {
         wishWishes = 'Good Night 🌃';
     } else if (hour_now >= '23' || hour_now <= '05') {
-        wishWishes = 'Sweet Dreams 💖 Sleep Well';
+        wishWishes = 'Sweet Dreams 💖';
     } else if (hour_now >= '05' && hour_now <= '06') {
         wishWishes = 'Go and sleep 😴';
     } else {
@@ -98,7 +98,7 @@ module.exports = {
 *│▱▱▱▱▱▱▱▱▱▱▱▱▱▱*
 *┌──🄱🅄🄽🄽🅈 🄶🄸🅁🄻──┈ ⳹*
 *└❀̥˚───────────🄱🄾🅃─┈ ⳹*`;
-                await shizobtn1img(client, M.from, message, "https://telegra.ph/file/a0e22ce7fb29caec51ba2.jpg", "Manual 🎋🎐", "-shinichi1", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻");
+                await shizobtn1img(client, M.from, message, "https://telegra.ph/file/e9b5fa49e5eac946baf4d.jpg", "Manual 🎋🎐", "-shinichi1", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻");
             }
         } catch (error) {
             console.error(error);
