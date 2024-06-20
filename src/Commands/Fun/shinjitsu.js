@@ -1,5 +1,11 @@
 const TD = require('better-tord');
-const { shizobtn1, shizobtn1img, shizobtn1gif, shizobtn2 } = require('../../shizofunc.js')
+const {
+    proto,
+    generateWAMessage,
+    areJidsSameUser,
+    generateWAMessageFromContent,
+    prepareWAMessageMedia
+} = require('@WhiskeySockets/baileys');
 
 module.exports = {
     name: 'shinjitsu',
@@ -11,7 +17,46 @@ module.exports = {
     usage: 'Use: Shinjitsu for truth or dare',
     description: 'Gives you truth or dare.',
     async execute(client, arg, M) {
-        if (!arg) return shizobtn2(client, M.from, 'choose from the below list:-', 'Truth 🎯', '-td truth', 'Dare 🏷️', '-td dare', '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
+        if (!arg) {
+            const imageMessage = await prepareWAMessageMedia({ image: { url: "https://telegra.ph/file/d1eaee5deb630cb4f20f0.jpg" }}, { upload: client.waUploadToServer });
+
+                let msg = generateWAMessageFromContent(M.from, {
+                    viewOnceMessage: {
+                        message: {
+                            "messageContextInfo": {
+                                "deviceListMetadata": {},
+                                "deviceListMetadataVersion": 2
+                            },
+                            interactiveMessage: proto.Message.InteractiveMessage.create({
+                                body: proto.Message.InteractiveMessage.Body.create({
+                                    text: `choose from the below list`
+                                }),
+                                footer: proto.Message.InteractiveMessage.Footer.create({
+                                    text: "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻"
+                                }),
+                                header: proto.Message.InteractiveMessage.Header.create({
+                                    ...imageMessage,
+                                    title: "",
+                                    subtitle: "",
+                                    hasMediaAttachment: false
+                                }),
+                                nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+                                    buttons: [
+                                        {
+                "name": "quick_reply",
+                "buttonParamsJson": "{\"display_text\":\"Truth\",\"id\":\"-td truth\"}"
+              },
+                                       {
+                "name": "quick_reply",
+                "buttonParamsJson": "{\"display_text\":\"Dare\",\"id\":\"-td dare\"}"
+              } 
+                                    ],
+                                })
+                            })
+                        }
+                    }
+                }, {});
+        }
         const availableOptions = ['truth', 'dare'];
         const option = arg.trim().toLowerCase();
         try {
