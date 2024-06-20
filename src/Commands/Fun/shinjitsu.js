@@ -27,7 +27,7 @@ module.exports = {
                         },
                         interactiveMessage: proto.Message.InteractiveMessage.create({
                             body: proto.Message.InteractiveMessage.Body.create({
-                                text: 'Choose from the below list'
+                                text: '*Choose From The Below List Button*'
                             }),
                             footer: proto.Message.InteractiveMessage.Footer.create({
                                 text: "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻"
@@ -42,11 +42,11 @@ module.exports = {
                                 buttons: [
                                     {
                                         name: "quick_reply",
-                                        buttonParamsJson: "{\"display_text\":\"Truth\",\"id\":\"-td truth\"}"
+                                        buttonParamsJson: "{\"display_text\":\"Truth 🏷️🎯\",\"id\":\"-td truth\"}"
                                     },
                                     {
                                         name: "quick_reply",
-                                        buttonParamsJson: "{\"display_text\":\"Dare\",\"id\":\"-td dare\"}"
+                                        buttonParamsJson: "{\"display_text\":\"Dare 🏷️🎯\",\"id\":\"-td dare\"}"
                                     }
                                 ]
                             })
@@ -73,7 +73,7 @@ module.exports = {
 
         try {
             const result = option === 'truth' ? await TD.get_truth() : await TD.get_dare();
-            M.reply(`Here's your ${option}: ${result}`);
+            M.reply(`*Here's Your ${option} :*\n> ${result}`);
         } catch (error) {
             console.error('Error fetching truth or dare:', error);
             M.reply('Sorry, I couldn\'t fetch a truth or dare at the moment. Please try again later.');
