@@ -31,7 +31,7 @@ function wish() {
 }
 
 module.exports = {
-    name: 'list',
+    name: '',
     aliases: ['shinichi1', 'shinichi2'],
     category: 'general',
     exp: 50,
