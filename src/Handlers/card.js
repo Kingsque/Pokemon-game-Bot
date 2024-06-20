@@ -22,7 +22,7 @@ module.exports = CardHandler = async (client, M) => {
         const sOr6Interval = 2;
         const sOr6Limit = 15;
 
-        cron.schedule('*/29 * * * *', async () => {
+        cron.schedule('*/20 * * * *', async () => {
           try {
             const filePath = path.join(__dirname, '../Helpers/card.json');
             const data = require(filePath);
@@ -92,7 +92,7 @@ module.exports = CardHandler = async (client, M) => {
 *│▱▱▱▱▱▱▱▱▱▱▱▱▱▱*
 *┌──🄲🄰🅁🄳 🅂🄿🅆🄰🄽──┈ ⳹*
 *└❀̥˚───────────🄱🄾🅃─┈ ⳹*`
-		return shizobtn1gif(client, jid, shizoshona, cgif, '𒉢 Collect 🔖', `${client.prefix}collect`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
+		return shizobtn1gif(client, jid, shizoshona, cgif, ' Collect 🔖', `${client.prefix}collect`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
             } else {
  let shizocutie = `*┌─🄱🄾🅃────────❀̥˚─┈ ⳹*
 *└──🄲🄰🅁🄳 🅂🄿🅆🄰🄽──┈ ⳹*
@@ -113,7 +113,7 @@ module.exports = CardHandler = async (client, M) => {
 *│▱▱▱▱▱▱▱▱▱▱▱▱▱▱*
 *┌──🄲🄰🅁🄳 🅂🄿🅆🄰🄽──┈ ⳹*
 *└❀̥˚───────────🄱🄾🅃─┈ ⳹*`
-              return shizobtn1img(client, jid, shizocutie, obj.url, '𒉢 Collect 🔖', `${client.prefix}collect`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
+              return shizobtn1img(client, jid, shizocutie, obj.url, ' Collect 🔖', `${client.prefix}collect`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
             }
 
           } catch (err) {
