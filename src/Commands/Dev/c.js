@@ -77,7 +77,7 @@ module.exports = {
             buttons: [
               {
                 "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"Event Card 🎟️\",\"id\":\"-fact\"}"
+                "buttonParamsJson": "{\"display_text\":\"Event Card 🎟️\",\"id\":\"-claim\"}"
               }
            ],
           })
