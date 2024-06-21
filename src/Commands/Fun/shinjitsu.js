@@ -38,6 +38,9 @@ module.exports = {
                             }),
                             nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
                                 buttons: [
+                                  {name: "quick_reply",
+                                        buttonParamsJson: "{\"display_text\":\"Next One 📜🔍\",\"id\":\"-td\"}"
+                                    },
                                     {name: "quick_reply",
                                         buttonParamsJson: "{\"display_text\":\"Truth 🧧🎯\",\"id\":\"-td truth\"}"
                                     },
