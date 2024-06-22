@@ -33,12 +33,7 @@ module.exports = PokeHandler = async (client, m) => {
 
             const message = `*🧧 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 🧧*\n\n *💥 Type:* ${types.join(', ')} \n\n *🀄ʟevel:* 「 ${level} 」 \n\n *ᴛʏᴘᴇ ${client.prefix}ᴄᴀᴛᴄʜ < ᴘᴏᴋᴇᴍᴏɴ_ɴᴀᴍᴇ >, to get it in your dex*`;
 
-            await client.sendMessage(jid, {
-              image: {
-                url: image,
-              },
-              caption: message,
-            });
+              return shizobtn1img(client, jid, message, image, ' Catch 🔖', `-catch`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
           } catch (err) {
             console.log(err);
             await client.sendMessage(jid, {
