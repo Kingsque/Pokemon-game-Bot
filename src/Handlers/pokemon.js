@@ -1,7 +1,7 @@
 const cron = require("node-cron")
 const axios = require('axios')
 const path = require('path')
-const { calculateRequiredExp } = require('../Helpers/pokeStats')
+const { calculatePokeExp } = require('../Helpers/pokeStats')
 require("./Message");
 module.exports = PokeHandler = async (client, m) => {
   try {
