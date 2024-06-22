@@ -2,6 +2,7 @@ const cron = require("node-cron")
 const axios = require('axios')
 const path = require('path')
 const { calculatePokeExp } = require('../Helpers/pokeStats')
+const { shizobtn1, shizobtn1img, shizobtn1gif } = require('./shizofunc.js')
 require("./Message");
 module.exports = PokeHandler = async (client, m) => {
   try {
