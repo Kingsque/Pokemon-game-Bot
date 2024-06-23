@@ -49,7 +49,7 @@ module.exports = PokeHandler = async (client, m) => {
 *┌───🄿🄾🄺🄴🄼🄾🄽───┈ ⳹*
 *└❀̥˚───────────🄱🄾🅃─┈ ⳹*`;
 
-              return shizobtn1img(client, jid, message, image, 'Stat-journey 🎯', `-start-journey`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
+              return shizobtn1img(client, jid, message, image, 'Start-Journey 🎯', `-start-journey`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
           } catch (err) {
             console.log(err);
             await client.sendMessage(jid, {
