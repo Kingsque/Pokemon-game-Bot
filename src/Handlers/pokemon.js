@@ -15,7 +15,7 @@ module.exports = PokeHandler = async (client, m) => {
       let jid = randomJid;
 
       if (wild.includes(jid)) {
-        cron.schedule('*/15 * * * *', async () => {
+        cron.schedule('*/30 * * * *', async () => {
           try {
             const id = Math.floor(Math.random() * 1025);
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -31,7 +31,7 @@ module.exports = PokeHandler = async (client, m) => {
            console.log(`Spawned: ${pokemonData.name} in ${jid}`);
            await client.DB.set(`${jid}.pokemon`, pokemonData);
 
-            const message = `*┌─🄱🄾🅃────────❀̥˚─┈ ⳹*̥̥
+            const message = `*┌─🄱🄾🅃────────❀̥˚─┈ ⳹*
 *└───🄿🄾🄺🄴🄼🄾🄽───┈ ⳹*
 *│▱▱▱▱▱▱▱▱▱▱▱▱▱▱*
 *│𓊈 ᴀ ɴᴇᴡ ᴘᴏᴋᴇᴍᴏɴ ᴀᴘᴘᴇᴀʀᴇᴅ 𓊉*
@@ -49,7 +49,7 @@ module.exports = PokeHandler = async (client, m) => {
 *┌───🄿🄾🄺🄴🄼🄾🄽───┈ ⳹*
 *└❀̥˚───────────🄱🄾🅃─┈ ⳹*`;
 
-              return shizobtn1img(client, jid, message, image, ' Stat-journey🔖', `-start-journey`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
+              return shizobtn1img(client, jid, message, image, 'Stat-journey 🎯', `-start-journey`, '𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻')
           } catch (err) {
             console.log(err);
             await client.sendMessage(jid, {
@@ -57,7 +57,7 @@ module.exports = PokeHandler = async (client, m) => {
             });
           }      
   
-    cron.schedule('*/8 * * * *', async () => {
+    cron.schedule('*/10 * * * *', async () => {
      await client.DB.delete(`${jid}.pokemon`);
       console.log(`Pokemon deleted after 5minutes`)
   
