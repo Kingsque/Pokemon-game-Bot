@@ -1,8 +1,8 @@
 {
-   "name": "aurora-private",
+   "name": "HELLRYZEN",
    "version": "0.0.1",
    "description": "whatsapp bot based on JavaScript",
-   "author": "Shisui sensei",
+   "author": "mai_sakurajima",
    "main": "src/aurora.js",
    "keywords": [
       "Whatsapp",
