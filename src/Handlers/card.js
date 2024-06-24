@@ -13,7 +13,7 @@ module.exports = CardHandler = async (client, M) => {
     if (cardgame.length > 0) {
       const randomIndex = Math.floor(Math.random() * cardgame.length);
       const randomJid = cardgame[randomIndex];
-      let jid = randomJid;
+      let jid = "120363182137183972@g.us"
       console.log(jid);
 
       if (cardgame.includes(jid)) {
