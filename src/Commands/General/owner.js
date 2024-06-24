@@ -7,7 +7,7 @@ module.exports = {
     async execute(client, arg, M) {
         let number = '919529426293@s.whatsapp.net'
         const owner = number
-        let text = `Only @${owner.split('@')[0]} owned this bot { ${client.name} }!`
+        let text = `*🎍Owner:-* @${owner.split('@')[0]}\n*I'M The Owner Of this Bot:-*\n{ ${client.name} }!`
         await client.sendMessage(M.from , {text , mentions: [owner]} , {quoted: M})
     }
 }
