@@ -9,5 +9,15 @@ module.exports = {
         const owner = number
         let text = `*🎍Owner:-* @${owner.split('@')[0]}\n*I'M The Owner Of this Bot:-*\n{ ${client.name} }!`
         await client.sendMessage(M.from , {text , mentions: [owner]} , {quoted: M})
+await client.sendMessage(
+            M.from,
+            {
+                image: { url: "https://i.ibb.co/Ldd8bp7/1057308.jpg" },
+                caption: text
+            },
+            {
+                quoted: M
+            }
+        );
     }
-}
+};
