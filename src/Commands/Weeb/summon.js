@@ -1,12 +1,4 @@
-module.exports.command = {
-    name: 'summon',
-    aliases: ['sg'],
-    category: 'weeb',
-    usage: '',
-    exp: 5,
-    description: 'Summons a random anime character to marry'
-}
-
+const axios = require('axios');
 module.exports.execute = async (client, flag, arg, M) => {
     const result = await client.utils.fetch('https://reina-api.vercel.app/api/mwl/random')
     let text = ''
@@ -27,3 +19,12 @@ module.exports.execute = async (client, flag, arg, M) => {
         caption: text
     })
 }
+module.exports.command = {
+    name: 'summon',
+    aliases: ['sg'],
+    category: 'weeb',
+    usage: '',
+    exp: 5,
+    description: 'Summons a random anime character to marry'
+}
+
