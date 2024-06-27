@@ -19,6 +19,8 @@ module.exports = {
         try {
             const response = await axios.get('https://nekos.life/api/v2/why');
             const text = `📝 *Question:-*\n> ${response.data.why}`;
+            const imageMessage = await prepareWAMessageMedia({ image: { url: "https://telegra.ph/file/d1eaee5deb630cb4f20f0.jpg" } }, { upload: client.waUploadToServer });
+            
             
   let msg = generateWAMessageFromContent(M.from, {
   viewOnceMessage: {
