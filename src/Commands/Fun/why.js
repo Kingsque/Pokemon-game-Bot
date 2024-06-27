@@ -34,8 +34,8 @@ module.exports = {
             text: "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻"
           }),
           header: proto.Message.InteractiveMessage.Header.create({
-            title: "yes 😊",
-            subtitle: "No 🥺",
+            title: "",
+            subtitle: "",
             hasMediaAttachment: false
           }),
           nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
