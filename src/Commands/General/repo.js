@@ -9,15 +9,9 @@ module.exports = {
     description: 'Fool Kid You think 💬 This bot is a public one ⁉️',
     async execute(client, arg, M) {
 
-         const thumbnailUrls = [
+         const image = (
    'https://telegra.ph/file/d9f62603e0c7a7918fae1.jpg'
-];
-
-function getRandomThumbnailUrl() {
-    const randomIndex = Math.floor(Math.random() * thumbnailUrls.length);
-    return thumbnailUrls[randomIndex];
-}
-  const thumbnailUrl = getRandomThumbnailUrl()
+);
 
 try {
                 let repoInfo = await axios.get('https://api.github.com/repos/HELLRYZEN/mai_sakurajima')
