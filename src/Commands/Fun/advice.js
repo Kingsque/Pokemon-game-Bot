@@ -3,23 +3,25 @@ const {
     proto,
     generateWAMessage,
     areJidsSameUser,
-    generateWAMessageFromContent
+    generateWAMessageFromContent,
+    prepareWAMessageMedia
 } = require('@WhiskeySockets/baileys');
 
 module.exports = {
-    name: 'advice',
-    aliases: ['ad'],
+    name: 'Advice',
+    aliases: ['advice','adv'],
     category: 'fun',
     exp: 5,
     cool: 4,
     react: "📢",
-    usage: 'Use :fact',
-    description: 'Sends random facts',
+    usage: 'Use :Advice',
+    description: 'Sends random Advice',
     async execute(client, arg, M) { 
         try {
             const response = await axios.get('https://api.adviceslip.com/advice');
-            const text = `*📚 Advice For You:-*\n> ${response.data.slip.advice}`;
-            
+            const text = `*📚 Advice for you:-*\n> ${response.data.slip.advice}`;
+           const imageMessage = await prepareWAMessageMedia({ image: { url: "https://telegra.ph/file/18697b6f6d1e1b9bb45e9.jpg" }}, { upload: client.waUploadToServer });
+ 
   let msg = generateWAMessageFromContent(M.from, {
   viewOnceMessage: {
     message: {
@@ -35,7 +37,8 @@ module.exports = {
             text: "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻"
           }),
           header: proto.Message.InteractiveMessage.Header.create({
-            title: "",
+             ...imageMessage,
+            title: "Advice From Web 💟",
             subtitle: "",
             hasMediaAttachment: false
           }),
@@ -43,7 +46,7 @@ module.exports = {
             buttons: [
               {
                 "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"Next One 🎐\",\"id\":\"-ad\"}"
+                "buttonParamsJson": "{\"display_text\":\"Next Advice 📚\",\"id\":\"-adv\"}"
               }
            ],
           })
