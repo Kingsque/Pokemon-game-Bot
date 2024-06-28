@@ -19,7 +19,7 @@ module.exports = {
     async execute(client, arg, M) { 
         try {
             const response = await axios.get('https://nekos.life/api/v2/fact');
-            const text = `Fact for you: ${response.data.fact}`;
+            const text = `*🏮 Fact for you:-*\n> ${response.data.fact}`;
            const imageMessage = await prepareWAMessageMedia({ image: { url: "https://telegra.ph/file/18697b6f6d1e1b9bb45e9.jpg" }}, { upload: client.waUploadToServer });
  
   let msg = generateWAMessageFromContent(M.from, {
@@ -38,7 +38,7 @@ module.exports = {
           }),
           header: proto.Message.InteractiveMessage.Header.create({
              ...imageMessage,
-            title: "",
+            title: "Fact's From Web 💟",
             subtitle: "",
             hasMediaAttachment: false
           }),
@@ -46,7 +46,7 @@ module.exports = {
             buttons: [
               {
                 "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"Next One 🎐\",\"id\":\"-fact\"}"
+                "buttonParamsJson": "{\"display_text\":\"Next Fact 🧧\",\"id\":\"-fact\"}"
               }
            ],
           })
