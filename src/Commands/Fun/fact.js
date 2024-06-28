@@ -3,7 +3,8 @@ const {
     proto,
     generateWAMessage,
     areJidsSameUser,
-    generateWAMessageFromContent
+    generateWAMessageFromContent,
+    prepareWAMessageMedia
 } = require('@WhiskeySockets/baileys');
 
 module.exports = {
