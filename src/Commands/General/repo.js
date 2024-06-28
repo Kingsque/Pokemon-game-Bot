@@ -25,7 +25,7 @@ try {
                     return M.reply('Failed to fetch repo information.');
                 }
                 let repo = repoInfo.data
-                let txt = `~*ɪ ᴛ ᴧ ᴄ ʜ ɪ 💬*~\n\n*📜 ʟɪᴄᴇɴꜱᴇ:-* ${repo.license.name}\n*📁 ʀᴇᴘᴏ ꜱɪᴢᴇ:-* ${(repo.size/1024).toFixed(2)} MB\n*📅 ʟᴀꜱᴛ ᴜᴘᴅᴀᴛᴇᴅ:-* ${repo.updated_at}\n*ᴛʜᴀɴᴋ ʏᴏᴜ ᴀʟʟ ғᴏʀ ᴜꜱɪɴɢ ᴍʏ ʙᴏᴛ ᴀɴᴅ ꜱᴜᴘᴘᴏʀᴛɪɴɢ ᴍᴇ...`
+                let txt = `~*ɪ ᴛ ᴧ ᴄ ʜ ɪ 💬*~\n\n*📜 ʟɪᴄᴇɴꜱᴇ:-* Mai_Sakurajima-2024\n*📁 ʀᴇᴘᴏ ꜱɪᴢᴇ:-* • 305MB\n*📅 ʟᴀꜱᴛ ᴜᴘᴅᴀᴛᴇᴅ:-* Last updated June 25TH\n*ᴛʜᴀɴᴋ ʏᴏᴜ ᴀʟʟ ғᴏʀ ᴜꜱɪɴɢ ᴍʏ ʙᴏᴛ ᴀɴᴅ ꜱᴜᴘᴘᴏʀᴛɪɴɢ ᴍᴇ...*`
       
      await client.sendMessage(M.from, { image : { url : thumbnailUrl} , caption: txt , gifPlayback: true} , {quoted: M})
       }catch(err){
