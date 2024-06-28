@@ -20,7 +20,7 @@ function getRandomThumbnailUrl() {
   const thumbnailUrl = getRandomThumbnailUrl()
 
 try {
-                let repoInfo = await axios.get('https://github.com/REDZEOX')
+                let repoInfo = await axios.get('https://api.github.com/repos/HELLRYZEN/mai_sakurajima')
                 if (!repoInfo) {
                     return M.reply('Failed to fetch repo information.');
                 }
