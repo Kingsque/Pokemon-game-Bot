@@ -3,23 +3,26 @@ const {
     proto,
     generateWAMessage,
     areJidsSameUser,
-    generateWAMessageFromContent
+    generateWAMessageFromContent,
+    prepareWAMessageMedia
 } = require('@WhiskeySockets/baileys');
 
 module.exports = {
-    name: 'Why',
-    aliases: ['why'],
+    name: 'Question',
+    aliases: ['why','Why','question'],
     category: 'fun',
     exp: 5,
     cool: 4,
-    react: "⁉️",
-    usage: 'Use :fact',
-    description: 'Sends random facts',
+    react: "📢",
+    usage: 'Use :Advice',
+    description: 'Sends random Advice',
     async execute(client, arg, M) { 
         try {
             const response = await axios.get('https://nekos.life/api/v2/why');
-            const text = `📝 *Question:-*\n> ${response.data.why}`;
-              let msg = generateWAMessageFromContent(M.from, {
+            const text = `*💬 Question for you:-*\n> ${response.data.why}`;
+           const imageMessage = await prepareWAMessageMedia({ image: { url: "https://telegra.ph/file/18697b6f6d1e1b9bb45e9.jpg" }}, { upload: client.waUploadToServer });
+ 
+  let msg = generateWAMessageFromContent(M.from, {
   viewOnceMessage: {
     message: {
         "messageContextInfo": {
@@ -34,7 +37,8 @@ module.exports = {
             text: "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻"
           }),
           header: proto.Message.InteractiveMessage.Header.create({
-            title: "",
+             ...imageMessage,
+            title: "Question's From Web 💟",
             subtitle: "",
             hasMediaAttachment: false
           }),
@@ -55,8 +59,8 @@ await client.relayMessage(msg.key.remoteJid, msg.message, {
   messageId: msg.key.id
 })
         } catch (err) {
-            console.error('Error fetching Why:', err);
-            M.reply('Error fetching Why. Please try again later.');
+            console.error('Error fetching Question:', err);
+            M.reply('Error fetching Question. Please try again later.');
         }
     }
 };
