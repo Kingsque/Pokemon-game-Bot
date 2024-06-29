@@ -26,7 +26,7 @@ module.exports = {
         const modCount = client.mods.length;
         const website = 'coming soon...';
         
-        let text = `*┌─────────────❀̥˚─┈ ⳹*\n`;
+        let text = `*┌──────────────❀̥˚─┈ ⳹*\n`;
         text += `*│🏮 BOT INFO:* ${process.env.NAME}\n`;
         text += `*│🕘 UPTIME:* ${uptime}\n`;
         text += `*│👥 USERS:* ${usersCounts || 0}\n`;
@@ -37,7 +37,7 @@ module.exports = {
         text += `*│🎭 WEBSITE:* ${website}\n`;
         text += `*└❀̥˚───────────────┈ ⳹*`;
 
-        return shizobtn1img(client, M.from, text, "https://telegra.ph/file/33b45c9dfd5c35998e704.jpg", "Creator 💟", "-owner", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻")
+        return shizobtn1img(client, M.from, text, "https://telegra.ph/file/33b45c9dfd5c35998e704.jpg", "Creator 💟 Manual", "-help", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻")
        
     }
 }; 
