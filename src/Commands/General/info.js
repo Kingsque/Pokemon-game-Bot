@@ -1,4 +1,4 @@
-const { shizobtn1, shizobtn1img, shizobtn1gif } = require('./shizofunc.js')
+const { shizobtn1, shizobtn1img, shizobtn1gif } = require('../../shizofunc.js')
 module.exports = {
     name: 'info',
     aliases: ['information'],
