@@ -28,15 +28,15 @@ module.exports = {
         
        let text = `*┌──────────────❀̥˚─┈ ⳹*\n`;
         text += `*│ɪ ᴛ ᴧ ᴄ ʜ ɪ 🧧*\n`;
-        text += `*│🏮 ʀᴇᴘᴏ ꜱɪᴢᴇ:-* • 305MB\n`;
+        text += `*│🏮 ʀᴇᴘᴏ ꜱɪᴢᴇ:-* *• 305MB*\n`;
         text += `*│👥 ᴜꜱᴇʀ:-* ${usersCounts || 0}\n`;
-        text += `*│🗃️ ʟᴀꜱᴛ ᴜᴘᴅᴀᴛᴇᴅ:-* June 29TH\n`;
+        text += `*│🗃️ ʟᴀꜱᴛ ᴜᴘᴅᴀᴛᴇᴅ:-* *June 29TH*\n`;
         text += `*│💽 ᴛʜᴀɴᴋ ʏᴏᴜ ᴀʟʟ ғᴏʀ ᴜꜱɪɴɢ*\n`;
         text += `*│ᴍʏ ʙᴏᴛ ᴀɴᴅ ꜱᴜᴘᴘᴏʀᴛɪɴɢ ᴍᴇ...*\n`;
-        text += `*│❤️ ᴏᴡɴᴇʀ:-* @ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ\n`;
+        text += `*│❤️ ɪɴꜱᴛᴀ:-* *@ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ*\n`;
         text += `*└❀̥˚───────────────┈ ⳹*`;
 
-        return shizobtn1img(client, M.from, text, "https://telegra.ph/file/fe7d26d07ca4a88657159.jpg", "Creator 💟", "-help", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻")
+        return shizobtn1img(client, M.from, text, "https://telegra.ph/file/fe7d26d07ca4a88657159.jpg", "Creator 💟", "-owner", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻")
        
     }
 }; 
