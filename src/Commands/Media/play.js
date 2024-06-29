@@ -2,12 +2,12 @@ const YT = require('../../lib/YT');
 const yts = require('yt-search');
 
 module.exports = {
-    name: 'ytaudio',
-    aliases: ['yta'],
+    name: 'play',
+    aliases: ['ply','Play'],
     category: 'media',
     exp: 5,
     cool: 4,
-    react: "✅",
+    react: "🎧",
     usage: 'Use :ytaudio <song_link>',
     description: 'Downloads given YouTube Video and sends it as Audio',
     async execute(client, arg, M) {
