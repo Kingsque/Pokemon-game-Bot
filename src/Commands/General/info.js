@@ -26,7 +26,7 @@ module.exports = {
         const modCount = client.mods.length;
         const website = 'coming soon...';
         
-        let text = `*┌───────────❀̥˚─┈ ⳹*\n`;
+        let text = `*┌─────────────❀̥˚─┈ ⳹*\n`;
         text += `*│🏮 BOT INFO:* ${process.env.NAME}\n`;
         text += `*│🕘 UPTIME:* ${uptime}\n`;
         text += `*│👥 USERS:* ${usersCounts || 0}\n`;
