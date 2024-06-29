@@ -26,18 +26,18 @@ module.exports = {
         const modCount = client.mods.length;
         const website = 'coming soon...';
         
-        let text = `*┏─━══─| ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ |─══━─∘⦿ꕹ᛫*\n`;
-        text += `*╏🏮 BOT INFO:* ${process.env.NAME}\n`;
-        text += `*╏🕘 UPTIME:* ${uptime}\n`;
-        text += `*╏👥 USERS:* ${usersCounts || 0}\n`;
-        text += `*╏🎟️ COMMANDS:* ${client.cmd.size}\n`;
-        text += `*╏🌐 GROUPS:* ${groupCount}\n`;
-        text += `*╏📢 MODS:* ${modCount}\n`;
-        text += `*╏🔥 OWNER:* @ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ\n`;
-        text += `*╏🎭 WEBSITE:* ${website}\n`;
-        text += `*┗─══─━══─| ✾ |─══━─══─∘⦿ꕹ᛫*`;
+        let text = `*┌───────────❀̥˚─┈ ⳹*\n`;
+        text += `*│🏮 BOT INFO:* ${process.env.NAME}\n`;
+        text += `*│🕘 UPTIME:* ${uptime}\n`;
+        text += `*│👥 USERS:* ${usersCounts || 0}\n`;
+        text += `*│🎟️ COMMANDS:* ${client.cmd.size}\n`;
+        text += `*│🌐 GROUPS:* ${groupCount}\n`;
+        text += `*│📢 MODS:* ${modCount}\n`;
+        text += `*│🔥 OWNER:* @ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ\n`;
+        text += `*│🎭 WEBSITE:* ${website}\n`;
+        text += `*└❀̥˚───────────────┈ ⳹*`;
 
-        return shizobtn1img(client, M.from, text, "https://i.ibb.co/KsmPKys/images-4.jpg", "owner", "-owner", "red")
+        return shizobtn1img(client, M.from, text, "https://telegra.ph/file/33b45c9dfd5c35998e704.jpg", "Creator 💟", "-owner", "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻")
        
     }
 }; 
