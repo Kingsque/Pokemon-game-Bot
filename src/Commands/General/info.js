@@ -1,3 +1,4 @@
+const { shizobtn1, shizobtn1img, shizobtn1gif } = require('./shizofunc.js')
 module.exports = {
     name: 'info',
     aliases: ['information'],
@@ -36,15 +37,7 @@ module.exports = {
         text += `*╏🎭 WEBSITE:* ${website}\n`;
         text += `*┗─══─━══─| ✾ |─══━─══─∘⦿ꕹ᛫*`;
 
-         await client.sendMessage(
-          M.from,
-          {
-            image: { url: "https://i.ibb.co/KsmPKys/images-4.jpg" },
-            caption: text
-          },
-          {
-            quoted: M
-          }
-        );
+        return shizobtn1img(client, M.from, text, "https://i.ibb.co/KsmPKys/images-4.jpg", "owner", "-owner", "red")
+       
     }
 }; 
