@@ -44,7 +44,7 @@ module.exports = {
         text += `*│❤️ ᴏᴡɴᴇʀ:-* @ꜱᴀʏ.ꜱᴄᴏᴛᴄʜ\n`;
         text += `*└❀̥˚───────────────┈ ⳹*`;
 
-        const imageMessage = await prepareWAMessageMedia({ image: { url: "https://telegra.ph/file/18697b6f6d1e1b9bb45e9.jpg" }}, { upload: client.waUploadToServer });
+        const imageMessage = await prepareWAMessageMedia({ image: { url: "https://telegra.ph/file/02c7c97cb00cbc8682a39.jpg" }}, { upload: client.waUploadToServer });
  
   let msg = generateWAMessageFromContent(M.from, {
   viewOnceMessage: {
