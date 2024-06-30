@@ -47,18 +47,8 @@ module.exports = MessageHandler = async (messages, client) => {
                 }
             }
         }
-
-        // Link handling code
-        if (!isGroup && body.includes('chat.whatsapp.com')) {
-            const senderInfo = M.pushName || sender;
-            const messageToMods = `WhatsApp link sent by: ${senderInfo}\nLink: ${body}`;
-            await client.sendMessage(from, { text: 'Your request has been sent.' });
-            const modsGroupJid = client.groups.adminsGroup;
-            await client.sendMessage(modsGroupJid, { text: messageToMods, mentions: [M.sender] });
-        }
-        
         // auto reaction owner number 
-        if ( body === 'hello' || body === 'Hlo') return M.reply(`Hellow Dear I'm Sakurajima Mai senpai!! How are you ?? ${M.pushName}`)
+        if ( body === 'Bot' || body === 'bot') return M.reply(`Everything is working fine ${M.pushName}`)
        /*
         const itachi = "919529426293@s.whatsapp.net"
 
@@ -104,17 +94,23 @@ if (itachi.includes(sender)) {
         })
              M.reply(body == 'hi' ? `Hey ${M.pushName} whats up?` : text.data.reply)
         }
-        
-        
-        //group responses
-        if ( body === 'Bot' || body === 'bot') return M.reply(`Everything is working fine ${M.pushName}`)
-        if ( body === 'aurora' || body === 'Aurora') return M.reply('Aurora is an bot which is created for entertainment purpose which contains the anime themed cardgame of shoob.gg and the pokemon adventure game of nintendo')
-        if (isCmd && !cmdName) return M.reply('I am alive user, use -help to get started');
+
+        // Link handling code
+        if (!isGroup && body.includes('chat.whatsapp.com')) {
+            const senderInfo = M.pushName || sender;
+            const messageToMods = `WhatsApp link sent by: ${senderInfo}\nLink: ${body}`;
+            await client.sendMessage(from, { text: 'Your request has been sent.' });
+            const modsGroupJid = client.groups.adminsGroup;
+            await client.sendMessage(modsGroupJid, { text: messageToMods, mentions: [M.sender] });
+        }
+
         if (isCmd && !user.includes(sender) && cmdName !== 'help') {
             return M.reply('You are not registered. Please use -help to get started.');
         }
 
         if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot');
+
+        if (isCmd && !cmdName) return M.reply('I am alive user, use -help to get started');
 
         client.log(
             `${chalk[isCmd ? 'red' : 'green'](`${isCmd ? '~EXEC' : '~RECV'}`)} ${
@@ -127,31 +123,17 @@ if (itachi.includes(sender)) {
 
         if (!isCmd) return;
 
-const bannedUser = banned.find(b => b.user === sender);
-        if (isCmd && bannedUser) {
-            return M.reply(`You are banned from using the bot. Reason: ${bannedUser.reason}`);
-        }
-
-                
         const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName));
 
         if (!command) {
-            // Find similar commands
-const similarCommands = client.cmd.filter(cmd => cmd.name.includes(cmdName) || (cmd.aliases && cmd.aliases.includes(cmdName)));
+            const similarCommands = client.cmd.filter(cmd => cmd.name.includes(cmdName) || (cmd.aliases && cmd.aliases.includes(cmdName)));
 
-// Sort similar commands by name length
-similarCommands.sort((a, b) => a.name.length - b.name.length);
-
-// Get the first (shortest) similar command
-const suggestedCommand = similarCommands.first();
-
-// Check if a similar command was found
-if (suggestedCommand) {
-    return M.reply(`No such command found! Did you mean: ${suggestedCommand.name}?`);
-} else {
-    return M.reply('No such command found! BAKA');
-}
-            
+            if (similarCommands.size > 0) {
+                const similarCommandsList = similarCommands.map(cmd => cmd.name).join(', ');
+                return M.reply(`*No such command found! Did you mean: ${similarCommandsList}?*`);
+            } else {
+                return M.reply('*No such command found! Senpai!! 💟*');
+            }
         }
 
         // Check if the command is disabled
@@ -270,7 +252,7 @@ if (suggestedCommand) {
                 image: {
                     url: ran
                 },
-                caption: `\n\n\nCongratulations you leveled up from *${level} ---> ${level + 1}* 🎊\n\n\n`,
+                caption: `\nCongratulations you leveled up from *${level} ---> ${level + 1}* 🧧💟\n`,
             },
             {
             quoted: M
