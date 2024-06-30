@@ -56,12 +56,65 @@ module.exports = MessageHandler = async (messages, client) => {
             const modsGroupJid = client.groups.adminsGroup;
             await client.sendMessage(modsGroupJid, { text: messageToMods, mentions: [M.sender] });
         }
+        
+        // auto reaction owner number 
+        if ( body === 'hello' || body === 'Hlo') return M.reply(`Hellow Dear I'm Sakurajima Mai senpai!! How are you ?? ${M.pushName}`)
+       /*
+        const itachi = "919529426293@s.whatsapp.net"
 
+        if (sender === itachi) {
+            const reactionMessage = { react: { text: '🐼', key: M.key } };
+            await client.sendMessage(from, reactionMessage);
+        } else if (isCmd && sender === itachi) {
+            const reactionMessage = { react: { text: '🐼', key: M.key } };
+            await client.sendMessage(from, reactionMessage);
+        }
+        
+        const itachi = ["919529426293@s.whatsapp.net", "916000764396@s.whatsapp.net", "917638889076@s.whatsapp.net"];
+
+if (itachi.includes(sender)) {
+    const reactionMessage = { react: { text: '💓', key: M.key } };
+    await client.sendMessage(from, reactionMessage);
+} */
+
+// Random reactions made by REDZEOX..!!
+   const itachi = ["919529426293@s.whatsapp.net", "917758924068@s.whatsapp.net", "917638889076@s.whatsapp.net", "917980329866@s.whatsapp.net", "916000764396@s.whatsapp.net"];
+
+if (itachi.includes(sender)) {
+    let reactRandom = [
+        "👻","🐼","🙈","🐨","🐷",
+        "🐹","🦄","🐸","🐶","🦊" ];
+    let ran = reactRandom[Math.floor(Math.random() * reactRandom.length)];
+    
+    const reactionMessage = { react: { text: ran, key: M.key } };
+    await client.sendMessage(from, reactionMessage);
+}
+        
+     //auto chat bot
+     if (M.quoted?.participant) M.mentions.push(M.quoted.participant)
+        if (
+            M.mentions.includes(client.user.id.split(':')[0] + '@s.whatsapp.net') &&
+            !isCmd &&
+            isGroup 
+        ) {
+            const text = await axios.get(`https://hercai.onrender.com/beta/hercai?question=${encodeURI(body)}`, {
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+             M.reply(body == 'hi' ? `Hey ${M.pushName} whats up?` : text.data.reply)
+        }
+        
         
         //group responses
-        if ( body === 'test' || body === 'Test') return M.reply(`Everything is working fine ${M.pushName}`)
+        if ( body === 'Bot' || body === 'bot') return M.reply(`Everything is working fine ${M.pushName}`)
         if ( body === 'aurora' || body === 'Aurora') return M.reply('Aurora is an bot which is created for entertainment purpose which contains the anime themed cardgame of shoob.gg and the pokemon adventure game of nintendo')
-        if (isCmd && !cmdName) return M.reply('I am alive user, use :help to get started');
+        if (isCmd && !cmdName) return M.reply('I am alive user, use -help to get started');
+        if (isCmd && !user.includes(sender) && cmdName !== 'help') {
+            return M.reply('You are not registered. Please use -help to get started.');
+        }
+
+        if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot');
 
         client.log(
             `${chalk[isCmd ? 'red' : 'green'](`${isCmd ? '~EXEC' : '~RECV'}`)} ${
