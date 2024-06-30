@@ -1,6 +1,5 @@
 const { getBinaryNodeChild } = require('@WhiskeySockets/baileys');
 const { serialize } = require('../Structures/WAclient');
-const { requirePokeExpToLevelUp, levelUpPokemon, canItEvolve, pokemonEvolve } = require('../Helpers/pokeStats');
 const { getStats, ranks } = require('../Helpers/Stats');
 const chalk = require('chalk');
 const emojiStrip = require('emoji-strip');
@@ -30,21 +29,16 @@ module.exports = MessageHandler = async (messages, client) => {
         const ActivateMod = (await client.DB.get('mod')) || [];
         const ActivateChatBot = (await client.DB.get('chatbot')) || [];
         const banned = (await client.DB.get('banned')) || [];
-        const user = (await client.DB.get(`data`)) || [];
+        // const user = (await client.DB.get(`data`)) || [];
         const companion = await client.pkmn.get(`${sender}_Companion`);
-        const economy = await client.econ.findOne({ userId: sender }); // Fixed the economy condition
-        
+        const economy = await client.econ.findOne({ userId: sender });
+
         // Antilink system
-        if (
-            isGroup &&
-            ActivateMod.includes(from) &&
-            groupAdmins.includes(client.user.id.split(':')[0] + '@s.whatsapp.net') &&
-            body
-        ) {
-            const groupCodeRegex = body.match(/chat.whatsapp.com\/(?:invite\/)?([\w\d]*)/)
+        if (isGroup && ActivateMod.includes(from) && groupAdmins.includes(client.user.id.split(':')[0] + '@s.whatsapp.net') && body) {
+            const groupCodeRegex = body.match(/chat.whatsapp.com\/(?:invite\/)?([\w\d]*)/);
             if (groupCodeRegex && groupCodeRegex.length === 2 && !groupAdmins.includes(sender)) {
-                const groupCode = groupCodeRegex[1]
-                const groupNow = await client.groupInviteCode(from)
+                const groupCode = groupCodeRegex[1];
+                const groupNow = await client.groupInviteCode(from);
 
                 if (groupCode !== groupNow) {
                     await client.sendMessage(from, { delete: M.key });
@@ -52,54 +46,6 @@ module.exports = MessageHandler = async (messages, client) => {
                     return M.reply('Successfully removed an intruder!!!!');
                 }
             }
-        }
-
-        // auto reaction owner number 
-        if ( body === 'Bot' || body === 'bot') return M.reply(`Everything is working fine ${M.pushName}`)
-       /*
-        const itachi = "919529426293@s.whatsapp.net"
-
-        if (sender === itachi) {
-            const reactionMessage = { react: { text: '🐼', key: M.key } };
-            await client.sendMessage(from, reactionMessage);
-        } else if (isCmd && sender === itachi) {
-            const reactionMessage = { react: { text: '🐼', key: M.key } };
-            await client.sendMessage(from, reactionMessage);
-        }
-        
-        const itachi = ["919529426293@s.whatsapp.net", "916000764396@s.whatsapp.net", "917638889076@s.whatsapp.net"];
-
-if (itachi.includes(sender)) {
-    const reactionMessage = { react: { text: '💓', key: M.key } };
-    await client.sendMessage(from, reactionMessage);
-} */
-
-// Random reactions made by REDZEOX..!!
-   const itachi = ["919529426293@s.whatsapp.net", "917758924068@s.whatsapp.net", "917638889076@s.whatsapp.net", "917980329866@s.whatsapp.net", "916000764396@s.whatsapp.net"];
-
-if (itachi.includes(sender)) {
-    let reactRandom = [
-        "👻","🐼","🙈","🐨","🐷",
-        "🐹","🦄","🐸","🐶","🦊" ];
-    let ran = reactRandom[Math.floor(Math.random() * reactRandom.length)];
-    
-    const reactionMessage = { react: { text: ran, key: M.key } };
-    await client.sendMessage(from, reactionMessage);
-}
-        
-     //auto chat bot
-     if (M.quoted?.participant) M.mentions.push(M.quoted.participant)
-        if (
-            M.mentions.includes(client.user.id.split(':')[0] + '@s.whatsapp.net') &&
-            !isCmd &&
-            isGroup 
-        ) {
-            const text = await axios.get(`https://hercai.onrender.com/beta/hercai?question=${encodeURI(body)}`, {
-            headers: {
-                'content-type': 'application/json'
-            }
-        })
-             M.reply(body == 'hi' ? `Hey ${M.pushName} whats up?` : text.data.reply)
         }
 
         // Link handling code
@@ -111,13 +57,11 @@ if (itachi.includes(sender)) {
             await client.sendMessage(modsGroupJid, { text: messageToMods, mentions: [M.sender] });
         }
 
-        if (isCmd && !user.includes(sender) && cmdName !== 'help') {
-            return M.reply('You are not registered. Please use -help to get started.');
-        }
-
-        if (isCmd && banned.includes(sender)) return M.reply('You are banned from using the bot');
-
-        if (isCmd && !cmdName) return M.reply('I am alive user, use -help to get started');
+        
+        //group responses
+        if ( body === 'test' || body === 'Test') return M.reply(`Everything is working fine ${M.pushName}`)
+        if ( body === 'aurora' || body === 'Aurora') return M.reply('Aurora is an bot which is created for entertainment purpose which contains the anime themed cardgame of shoob.gg and the pokemon adventure game of nintendo')
+        if (isCmd && !cmdName) return M.reply('I am alive user, use :help to get started');
 
         client.log(
             `${chalk[isCmd ? 'red' : 'green'](`${isCmd ? '~EXEC' : '~RECV'}`)} ${
@@ -130,19 +74,34 @@ if (itachi.includes(sender)) {
 
         if (!isCmd) return;
 
+const bannedUser = banned.find(b => b.user === sender);
+        if (isCmd && bannedUser) {
+            return M.reply(`You are banned from using the bot. Reason: ${bannedUser.reason}`);
+        }
+
+                
         const command = client.cmd.get(cmdName) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(cmdName));
 
         if (!command) {
-            const similarCommands = client.cmd.filter(cmd => cmd.name.includes(cmdName) || (cmd.aliases && cmd.aliases.includes(cmdName)));
+            // Find similar commands
+const similarCommands = client.cmd.filter(cmd => cmd.name.includes(cmdName) || (cmd.aliases && cmd.aliases.includes(cmdName)));
 
-            if (similarCommands.size > 0) {
-                const similarCommandsList = similarCommands.map(cmd => cmd.name).join(', ');
-                return M.reply(`*No such command found! Did you mean: ${similarCommandsList}?*`);
-            } else {
-                return M.reply('No such command found! BAKA');
-            }
+// Sort similar commands by name length
+similarCommands.sort((a, b) => a.name.length - b.name.length);
+
+// Get the first (shortest) similar command
+const suggestedCommand = similarCommands.first();
+
+// Check if a similar command was found
+if (suggestedCommand) {
+    return M.reply(`No such command found! Did you mean: ${suggestedCommand.name}?`);
+} else {
+    return M.reply('No such command found! BAKA');
+}
+            
         }
 
+        // Check if the command is disabled
         const disabledCommands = await client.DB.get('disable-commands') || [];
         const disabledCmd = disabledCommands.find(
             (cmd) => cmd.command === cmdName || (command.aliases && command.aliases.includes(cmd.command))
@@ -150,9 +109,10 @@ if (itachi.includes(sender)) {
         if (disabledCmd) {
             const disabledAt = new Date(disabledCmd.disabledAt).toLocaleString();
             const reason = disabledCmd.reason || 'No reason provided.';
-            const disabledBy = client.contact.getContact(disabledCmd.disabledBy, client).username;
+            const disabledBy = disabledCmd.disabledBy;
             return M.reply(`This command is currently disabled by ${disabledBy}. Reason: ${reason}. Disabled at: ${disabledAt}`);
         }
+        
 
         const cooldownAmount = (command.cool ?? 5) * 1000;
         const time = cooldownAmount + Date.now();
@@ -184,13 +144,20 @@ if (itachi.includes(sender)) {
         if (!groupAdmins.includes(client.user.id.split(':')[0] + '@s.whatsapp.net') && command.category == 'moderation')
             return M.reply('This command can only be used when bot is admin');
         if (!isGroup && command.category == 'moderation') return M.reply('This command is meant to be used in groups');
-        if (!isGroup && !client.mods.includes(sender.split('@')[0])) return M.reply("Bot can only be accessed in groups")
+        if (!isGroup && !client.mods.includes(sender.split('@')[0])) return M.reply("Bot can only be accessed in groups");
+        if (isGroup && (command.name === 'slot' || command.name === 'gamble') && from !== client.groups.casinoGroup) {
+            return M.reply(`The slot and gamble commands can only be used in the casino group.`);
+        }
         if (isGroup && (command.name === 'auction' || command.name === 'bid') && from !== client.groups.auctionGroup) {
-            return M.reply(`The auction commands can only be used in the casino group.`);
+            return M.reply(`The auction commands can only be used in the auction group.`);
+        }
+        if (isGroup && (command.name === 'hangman' || command.name === 'tictactoe') && from !== client.groups.gamesGroup) {
+            return M.reply(`The game commands can only be used in the games group.`);
         }
         if (!client.mods.includes(sender.split('@')[0]) && command.category == 'dev')
             return M.reply('This command only can be accessed by the mods');
-         if (command.category === 'economy' && !economy && command.name !== 'bonus') return M.reply('Use :bonus to get started')
+        if (command.category === 'pokemon' && !companion && command.name !== 'start-journey') return M.reply('You didn\'t start your journey yet');
+        if (command.category === 'economy' && !economy && command.name !== 'bonus') return M.reply('Use :bonus to get started');
         
         command.execute(client, arg, M);
        
