@@ -47,7 +47,8 @@ module.exports = MessageHandler = async (messages, client) => {
                 }
             }
         }
-        // auto reaction owner number 
+
+         // auto reaction owner number 
         if ( body === 'Bot' || body === 'bot') return M.reply(`Everything is working fine ${M.pushName}`)
        /*
         const itachi = "919529426293@s.whatsapp.net"
@@ -95,8 +96,9 @@ if (itachi.includes(sender)) {
              M.reply(body == 'hi' ? `Hey ${M.pushName} whats up?` : text.data.reply)
         }
 
-        // Link handling code
-        if (!isGroup && body.includes('chat.whatsapp.com')) {
+        
+     // Link handling code
+     if (!isGroup && body.includes('chat.whatsapp.com')) {
             const senderInfo = M.pushName || sender;
             const messageToMods = `WhatsApp link sent by: ${senderInfo}\nLink: ${body}`;
             await client.sendMessage(from, { text: 'Your request has been sent.' });
@@ -252,7 +254,7 @@ if (itachi.includes(sender)) {
                 image: {
                     url: ran
                 },
-                caption: `\nCongratulations you leveled up from *${level} ---> ${level + 1}* 🧧💟\n`,
+                caption: `\n\n\nCongratulations you leveled up from *${level} ---> ${level + 1}* 🎊\n\n\n`,
             },
             {
             quoted: M
