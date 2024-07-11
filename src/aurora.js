@@ -52,7 +52,7 @@ const start = async () => {
     //Config
     client.name = process.env.NAME || 'Mai_Sakurajima'
     client.prefix = process.env.PREFIX || '-'
-    client.mods = ('919529426293').split(',')
+    client.mods = ('919529426293','233277114944','917638889076').split(',')
 
     //Database
     client.DB = new QuickDB({
