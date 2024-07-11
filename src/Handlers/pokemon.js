@@ -12,7 +12,7 @@ module.exports = PokeHandler = async (client, m) => {
     if (wild.length > 0) {
       const randomIndex = Math.floor(Math.random() * wild.length);
       const randomJid = wild[randomIndex];
-      let jid = "120363298596351383@g.us"
+      let jid = "120363313839059564@g.us"
 
       if (wild.includes(jid)) {
         cron.schedule('*/30 * * * *', async () => {
