@@ -173,15 +173,6 @@ if (suggestedCommand) {
             return M.reply('This command can only be used when bot is admin');
         if (!isGroup && command.category == 'moderation') return M.reply('This command is meant to be used in groups');
         if (!isGroup && !client.mods.includes(sender.split('@')[0])) return M.reply("Bot can only be accessed in groups");
-        if (isGroup && (command.name === 'slot' || command.name === 'gamble') && from !== client.groups.casinoGroup) {
-            return M.reply(`The slot and gamble commands can only be used in the casino group.`);
-        }
-        if (isGroup && (command.name === 'auction' || command.name === 'bid') && from !== client.groups.auctionGroup) {
-            return M.reply(`The auction commands can only be used in the auction group.`);
-        }
-        if (isGroup && (command.name === 'hangman' || command.name === 'tictactoe') && from !== client.groups.gamesGroup) {
-            return M.reply(`The game commands can only be used in the games group.`);
-        }
         if (!client.mods.includes(sender.split('@')[0]) && command.category == 'dev')
             return M.reply('This command only can be accessed by the mods');
         if (command.category === 'pokemon' && !companion && command.name !== 'start-journey') return M.reply('You didn\'t start your journey yet');
