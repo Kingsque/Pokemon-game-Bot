@@ -483,7 +483,7 @@ const gifToPng = async (gif) => {
     return buffer;
 };
 
-
+  /**
      * @param {string | number} pokemon - The name or ID of the Pokémon.
      * @param {number} level - The level of the Pokémon.
      * @returns {Promise<object>} An object containing the stats of the Pokémon.
