@@ -34,6 +34,14 @@ const port = process.env.PORT || 3000
 const driver = new MongoDriver(process.env.URL)
 const chalk = require('chalk')
 
+const cardResponse = new Map();
+const auctionResponse = new Map();
+const pokemonMap = new Map();
+const sellResponse = new Map();
+const pokemonMoveLearningMap = new Map();
+const evoMap = new Map();
+const m1 = new Map();
+const m2 = new Map();
 const start = async () => {
     await mongoose.connect(process.env.URL);
 
@@ -90,6 +98,14 @@ const start = async () => {
     
     //groups
     client.getAllGroups = async () => Object.keys(await client.groupFetchAllParticipating())
+      client.cardMap = cardResponse;
+    client.aucMap = auctionResponse;
+    client.sellMap = sellResponse;
+    client.pokemonResponse = pokemonMap;
+    client.pokemonMoveLearningResponse = pokemonMoveLearningMap;
+    client.pokemonEvolutionResponse = evoMap;
+    client.pokemonBattleResponse = m1
+    client.pokemonBattlePlayerMap = m2
 
     //user
     client.getAllUsers = async () => {
