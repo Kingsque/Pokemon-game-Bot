@@ -12,7 +12,6 @@ const { removeBackgroundFromImageBase64 } = require('remove.bg')
 const cheerio = require("cheerio");
 const baseUrl = 'https://www.myinstants.com';
 const searchUrl = 'https://www.myinstants.com/search/?name=';
-const puppeteer = require('puppeteer');
 const { MoveClient } = require('pokenode-ts')
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const maxLevel = 100; // Maximum level for a Pokémon
