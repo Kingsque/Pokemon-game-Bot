@@ -85,7 +85,7 @@ const start = async () => {
     client.bg = client.DB.table('bg')
 
     //evets
-    client.pkmn = client.DB.table('pkmn')
+    client.poke = client.DB.table('poke')
     
     //Commands
     client.cmd = new Collection()
