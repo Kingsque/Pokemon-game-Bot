@@ -9,8 +9,8 @@ module.exports = {
     description: "View your total Pokémon caught by you",
     async execute(client, arg, M) {
         try {
-            const pc = await client.pkmn.get(`${M.sender}_PSS`) || [];
-            const party = await client.pkmn.get(`${M.sender}_Party`) || [];
+            const pc = await client.poke.get(`${M.sender}_PSS`) || [];
+            const party = await client.poke.get(`${M.sender}_Party`) || [];
 
             if (pc.length === 0 && party.length === 0) {
                 return M.reply("📭 Your Pokémon collection is empty!");
