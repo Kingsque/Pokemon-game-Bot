@@ -79,9 +79,10 @@ module.exports = {
             await client.sendMessage(
                 M.from,
                 {
-                    image: { url: "https://i.ibb.co/v3S5zFg/Aurora-dex.jpg" },
-                    caption: response
-                },
+            video: {url: "https://telegra.ph/file/91567ae516ca4223403c6.mp4"},
+            caption: response,
+            gifPlayback: true
+          },
                 {
                     quoted: M
                 }
@@ -94,3 +95,4 @@ module.exports = {
         }
     },
 };
+                    
