@@ -63,11 +63,11 @@ module.exports = {
                     datA.turn = datA.turn === 'player1' ? 'player2' : 'player1';
                     client.pokemonBattleResponse.set(M.from, datA);
 
-                    const party = await client.pkmn.get(`${M.sender}_Party`) || [];
+                    const party = await client.poke.get(`${M.sender}_Party`) || [];
                     const index = party.findIndex(x => x.tag === pkmn.activePokemon.tag);
                     if (index >= 0) {
                         party[index].moves[number].pp -= 1;
-                        await client.pkmn.set(`${M.sender}_Party`, party);
+                        await client.poke.set(`${M.sender}_Party`, party);
                     }
 
                     if (datA.turn === 'player2') {
@@ -115,7 +115,7 @@ module.exports = {
             if (!turn) return M.reply('Not your turn');
 
             const index = number;
-            const Party = await client.pkmn.get(`${M.sender}_Party`) || [];
+            const Party = await client.poke.get(`${M.sender}_Party`) || [];
 
             if (index < 0 || index >= Party.length || Party[index].hp <= 0) {
                 return M.reply("You can't send out a fainted Pokémon to battle.");
@@ -163,7 +163,7 @@ const handlePokemonSelection = async (client, M) => {
         const isTurn = M.sender === ch[ch.turn].user;
         if (!isTurn) return M.reply('Not your turn');
 
-        const party = await client.pkmn.get(`${M.sender}_Party`) || [];
+        const party = await client.poke.get(`${M.sender}_Party`) || [];
         let text = '';
 
         for (let i = 0; i < party.length; i++) {
@@ -216,7 +216,7 @@ const handleBattles = async (client, M) => {
             if (['sleeping', 'paralysis'].includes(current.activePokemon.state.status)) {
                 if (current.activePokemon.state.movesUsed > 0) {
                     const trainerKey = current.user === player1.user ? 'player1' : 'player2';
-                    const trainerParty = await client.pkmn.get(`${data[trainerKey].user}_Party`) || [];
+                    const trainerParty = await client.poke.get(`${data[trainerKey].user}_Party`) || [];
                     current.activePokemon.state.movesUsed -= 1;
 
                     if (current.activePokemon.state.movesUsed < 1) {
@@ -230,7 +230,7 @@ const handleBattles = async (client, M) => {
 
                         const partyIndex = trainerParty.findIndex(pokemon => pokemon.tag === current.activePokemon.tag);
                         trainerParty[partyIndex] = current.activePokemon;
-                        await client.pkmn.set(`${current.user}_Party`, trainerParty);
+                        await client.poke.set(`${current.user}_Party`, trainerParty);
                     } else {
                         const statusMessage = current.activePokemon.state.status === 'sleeping'
                             ? `*@${current.user.split('@')[0]}*'s *${client.utils.capitalize(current.activePokemon.name)}* is fast asleep`
@@ -249,11 +249,12 @@ const handleBattles = async (client, M) => {
                 text: `*@${current.user.split('@')[0]}*'s *${client.utils.capitalize(current.activePokemon.name)}* used *${client.utils.capitalize(move.name.replace(/-/g, ' '))}* at *${client.utils.capitalize(opponent.activePokemon.name)}*`,
                 mentions: [current.user]
             });
+            
             await delay(5000);
 
             if (moveLanded) {
-                const party1 = await client.pkmn.get(`${current.user}_Party`) || [];
-                const party2 = await client.pkmn.get(`${opponent.user}_Party`) || [];
+                const party1 = await client.poke.get(`${current.user}_Party`) || [];
+                const party2 = await client.poke.get(`${opponent.user}_Party`) || [];
                 const pokemon = current.activePokemon;
                 const pkmn = opponent.activePokemon;
                 const party1Index = party1.findIndex(poke => poke.tag === pokemon.tag);
@@ -277,8 +278,8 @@ const handleBattles = async (client, M) => {
 
                         party1[party1Index] = pokemon;
                         party2[party2Index] = pkmn;
-                        await client.pkmn.set(`${current.user}_Party`, party1);
-                        await client.pkmn.set(`${opponent.user}_Party`, party2);
+                        await client.poke.set(`${current.user}_Party`, party1);
+                        await client.poke.set(`${opponent.user}_Party`, party2);
                         client.pokemonBattleResponse.set(M.from, data);
                     }
                     if (move.power <= 0) continue;
@@ -305,8 +306,8 @@ const handleBattles = async (client, M) => {
                     await delay(3000);
                     party1[party1Index] = pokemon;
                     party2[party2Index] = pkmn;
-                    await client.pkmn.set(`${current.user}_Party`, party1);
-                    await client.pkmn.set(`${opponent.user}_Party`, party2);
+                    await client.poke.set(`${current.user}_Party`, party1);
+                    await client.poke.set(`${opponent.user}_Party`, party2);
                     client.pokemonBattleResponse.set(M.from, data);
                 }
 
@@ -323,7 +324,7 @@ const handleBattles = async (client, M) => {
                         pkmn.state.status = move.effect === 'sleep' ? 'sleeping' : move.effect === 'poison' ? 'poisoned' : 'paralyzed';
                         pkmn.state.movesUsed = 5;
                         party2[party2Index] = pkmn;
-                        await client.pkmn.set(`${opponent.user}_Party`, party2);
+                        await client.poke.set(`${opponent.user}_Party`, party2);
                         client.pokemonBattleResponse.set(M.from, data);
                     }
                 }
@@ -366,8 +367,8 @@ const handleBattles = async (client, M) => {
 
                 party1[party1Index] = pokemon;
                 party2[party2Index] = pkmn;
-                await client.pkmn.set(`${current.user}_Party`, party1);
-                await client.pkmn.set(`${opponent.user}_Party`, party2);
+                await client.poke.set(`${current.user}_Party`, party1);
+                await client.poke.set(`${opponent.user}_Party`, party2);
 
                 if (pkmn.hp <= 0) {
                     pkmn.hp = 0;
@@ -377,7 +378,7 @@ const handleBattles = async (client, M) => {
                     });
                     await delay(5000);
                     data.turn = current.user === player1.user ? 'player2' : 'player1';
-                    await client.pkmn.set(`${opponent.user}_Party`, party2);
+                    await client.poke.set(`${opponent.user}_Party`, party2);
                     client.pokemonBattleResponse.set(M.from, data);
 
                     if (pokemon.level < 100) {
@@ -409,8 +410,8 @@ const continueSelection = async (client, M) => {
     try {
         const data = client.pokemonBattleResponse.get(M.from);
         if (data) {
-            const player1Party = await client.pkmn.get(`${data.player1.user}_Party`) || [];
-            const player2Party = await client.pkmn.get(`${data.player2.user}_Party`) || [];
+            const player1Party = await client.poke.get(`${data.player1.user}_Party`) || [];
+            const player2Party = await client.poke.get(`${data.player2.user}_Party`) || [];
 
             const image = await client.utils.drawPokemonBattle({
                 player1: { activePokemon: data.player1.activePokemon, party: player1Party },
@@ -431,10 +432,10 @@ const continueSelection = async (client, M) => {
                         mentions: [userKey]
                     });
                     client.pokemonBattleResponse.set(M.from, data);
-                    const partyData = await client.pkmn.get(`${userKey}_Party`) || [];
+                    const partyData = await client.poke.get(`${userKey}_Party`) || [];
                     const index = partyData.findIndex(p => p.tag === pokemon.tag);
                     partyData[index] = pokemon;
-                    await client.pkmn.set(`${userKey}_Party`, partyData);
+                    await client.poke.set(`${userKey}_Party`, partyData);
                 }
             };
 
@@ -442,7 +443,7 @@ const continueSelection = async (client, M) => {
             await applyPoisonDamage(opponentPokemon, opponent.user);
 
             if (userPokemon.hp <= 0) {
-                const playerData = await client.pkmn.get(`${currentUser.user}_Party`) || [];
+                const playerData = await client.poke.get(`${currentUser.user}_Party`) || [];
                 const alivePokemon = playerData.filter(pokemon => pokemon.hp > 0);
 
                 if (alivePokemon.length === 0) {
@@ -463,7 +464,7 @@ const continueSelection = async (client, M) => {
             }
 
             if (opponentPokemon.hp <= 0) {
-                const opponentData = await client.pkmn.get(`${opponent.user}_Party`) || [];
+                const opponentData = await client.poke.get(`${opponent.user}_Party`) || [];
                 const alivePokemon = opponentData.filter(pokemon => pokemon.hp > 0);
 
                 if (alivePokemon.length === 0) {
@@ -504,8 +505,8 @@ const endBattle = async (client, M, winner, loser) => {
         const data = client.pokemonBattleResponse.get(M.from);
         if (!data) return;
 
-        const player1Party = await client.pkmn.get(`${data.player1.user}_Party`) || [];
-        const player2Party = await client.pkmn.get(`${data.player2.user}_Party`) || [];
+        const player1Party = await client.poke.get(`${data.player1.user}_Party`) || [];
+        const player2Party = await client.poke.get(`${data.player2.user}_Party`) || [];
 
         const image = await client.utils.drawPokemonBattle({
             player1: { activePokemon: data.player1.activePokemon, party: player1Party },
@@ -597,11 +598,11 @@ const handleStats = async (client, M, exp, user, pkmn, player) => {
         }
 
         // Update party data
-        const party = await client.pkmn.get(`${user}_Party`) || [];
+        const party = await client.poke.get(`${user}_Party`) || [];
         const i = party.findIndex(x => x.tag === pkmn.tag);
         if (i >= 0) {
             party[i] = pkmn;
-            await client.pkmn.set(`${user}_Party`, party);
+            await client.poke.set(`${user}_Party`, party);
         }
     } catch (error) {
         console.error('Error in handleStats:', error);

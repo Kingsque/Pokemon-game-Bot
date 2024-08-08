@@ -11,8 +11,8 @@ module.exports = {
   description: 'Swap or transfer Pokémon between party and PC',
   async execute(client, arg, M) {
     try {
-      let party = await client.pkmn.get(`${M.sender}_Party`) || [];
-      let pc = await client.pkmn.get(`${M.sender}_Pss`) || [];
+      let party = await client.poke.get(`${M.sender}_Party`) || [];
+      let pc = await client.poke.get(`${M.sender}_Pss`) || [];
 
       const args = arg.split(' ');
 
@@ -31,8 +31,8 @@ module.exports = {
           const pokemon = party[index];
           party.splice(index, 1);
           pc.push(pokemon);
-          await client.pkmn.set(`${M.sender}_Party`, party);
-          await client.pkmn.set(`${M.sender}_Pss`, pc);
+          await client.poke.set(`${M.sender}_Party`, party);
+          await client.poke.set(`${M.sender}_Pss`, pc);
           M.reply(`✔ Pokémon *(${pokemon.name})* has been transferred from party to PC.`);
         } else if (prefix === 'pc') {
           // Transfer from PC to party
@@ -42,8 +42,8 @@ module.exports = {
           const pokemon = pc[index];
           pc.splice(index, 1);
           party.push(pokemon);
-          await client.pkmn.set(`${M.sender}_Party`, party);
-          await client.pkmn.set(`${M.sender}_Pss`, pc);
+          await client.poke.set(`${M.sender}_Party`, party);
+          await client.poke.set(`${M.sender}_Pss`, pc);
           M.reply(`✔ Pokémon *(${pokemon.name})* has been transferred from PC to party.`);
         } else {
           return M.reply('❌ Invalid prefix. Use "p" for party and "pc" for PC.');
@@ -63,7 +63,7 @@ module.exports = {
             return M.reply('❌ One or both indices are out of range.');
           }
           [party[index1], party[index2]] = [party[index2], party[index1]];
-          await client.pkmn.set(`${M.sender}_Party`, party);
+          await client.poke.set(`${M.sender}_Party`, party);
           const pokemonName1 = party[index1].name;
           const pokemonName2 = party[index2].name;
           M.reply(`✔ Pokémon at index ${index1 + 1} *(${pokemonName1})* and ${index2 + 1} *(${pokemonName2})* have been swapped.`);
@@ -73,7 +73,7 @@ module.exports = {
             return M.reply('❌ One or both indices are out of range.');
           }
           [pc[index1], pc[index2]] = [pc[index2], pc[index1]];
-          await client.pkmn.set(`${M.sender}_Pss`, pc);
+          await client.poke.set(`${M.sender}_Pss`, pc);
           const pokemonName1 = pc[index1].name;
           const pokemonName2 = pc[index2].name;
           M.reply(`✔ Pokémon at index ${index1 + 1} *(${pokemonName1})* and ${index2 + 1} *(${pokemonName2})* have been swapped.`);
@@ -83,8 +83,8 @@ module.exports = {
             return M.reply('❌ One or both indices are out of range.');
           }
           [party[index1], pc[index2]] = [pc[index2], party[index1]];
-          await client.pkmn.set(`${M.sender}_Party`, party);
-          await client.pkmn.set(`${M.sender}_Pss`, pc);
+          await client.poke.set(`${M.sender}_Party`, party);
+          await client.poke.set(`${M.sender}_Pss`, pc);
           const pokemonNameParty = party[index1].name;
           const pokemonNamePc = pc[index2].name;
           M.reply(`✔ Pokémon *(${pokemonNameParty})* from party and Pokémon *(${pokemonNamePc})* from PC have been swapped.`);
@@ -94,8 +94,8 @@ module.exports = {
             return M.reply('❌ One or both indices are out of range.');
           }
           [pc[index1], party[index2]] = [party[index2], pc[index1]];
-          await client.pkmn.set(`${M.sender}_Party`, party);
-          await client.pkmn.set(`${M.sender}_Pss`, pc);
+          await client.poke.set(`${M.sender}_Party`, party);
+          await client.poke.set(`${M.sender}_Pss`, pc);
           const pokemonNamePc = pc[index1].name;
           const pokemonNameParty = party[index2].name;
           M.reply(`✔ Pokémon *(${pokemonNamePc})* from PC and Pokémon *(${pokemonNameParty})* from party have been swapped.`);

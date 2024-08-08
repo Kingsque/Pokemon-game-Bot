@@ -8,7 +8,7 @@ module.exports = {
     description: "Start your Pokémon journey by choosing a starter Pokémon.",
     async execute(client, arg, M) {
         try {
-            const companion = await client.pkmn.get(`${M.sender}_Companion`);
+            const companion = await client.poke.get(`${M.sender}_Companion`);
 
             if (companion) {
                 return M.reply(`You have already started your journey with ${companion}.`);
@@ -70,7 +70,7 @@ module.exports = {
                     return M.reply("❌ You can only choose a Pokémon from the starters list. Please choose a valid starter Pokémon.");
                 }
 
-                await client.pkmn.set(`${M.sender}_Companion`, pokemonName);
+                await client.poke.set(`${M.sender}_Companion`, pokemonName);
 
                 const data = pokemonData;
                 const image = data.sprites.other['official-artwork'].front_default;
@@ -91,7 +91,7 @@ module.exports = {
                 const expArr = pokemonLevelCharts.filter((x) => x.level <= 5);
                 const { expRequired: exp } = expArr[expArr.length - 1];
 
-                const party = await client.pkmn.get(`${M.sender}_Party`) || [];
+                const party = await client.poke.get(`${M.sender}_Party`) || [];
 
                 party.push({
                     name: data.name,
@@ -119,7 +119,7 @@ module.exports = {
                     tag: '0'
                 });
 
-                await client.pkmn.set(`${M.sender}_Party`, party);
+                await client.poke.set(`${M.sender}_Party`, party);
 
                 return M.reply(
                     `🎉 *Congrats!* You have just started your journey as a Pokémon trainer with your companion *${client.utils.capitalize(

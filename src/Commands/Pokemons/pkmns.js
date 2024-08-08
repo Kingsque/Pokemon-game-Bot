@@ -16,8 +16,8 @@ module.exports = {
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${term}`);
             const res = response.data;
 
-            const party = await client.pkmn.get(`${M.sender}_Party`) || [];
-            const pc = await client.pkmn.get(`${M.sender}_Pss`) || [];
+            const party = await client.poke.get(`${M.sender}_Party`) || [];
+            const pc = await client.poke.get(`${M.sender}_Pss`) || [];
             const pokemons = [...pc, ...party];
             const ownedAtParty = party.flatMap((x, y) => (x.name === res.name ? y : []));
             const ownedAtPc = pc.flatMap((x, y) => (x.name === res.name ? y : []));

@@ -13,7 +13,7 @@ module.exports = {
     description: "View your caught Pokémon in your party",
     async execute(client, arg, M) {
         try {
-            const party = await client.pkmn.get(`${M.sender}_Party`) || [];
+            const party = await client.poke.get(`${M.sender}_Party`) || [];
             if (party.length === 0) {
                 return M.reply("📭 Your Pokémon party is empty!");
             }

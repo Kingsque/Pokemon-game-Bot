@@ -16,7 +16,7 @@ module.exports = {
         }
 
         if (!arg.length) {
-            const rawPartyData = await client.pkmn.get(`${M.sender}_Party`);
+            const rawPartyData = await client.poke.get(`${M.sender}_Party`);
             const rawParty = rawPartyData ? rawPartyData : [];
             if (!rawParty || rawParty.length === 0) {
                 return M.reply("You don't have any Pokemon in your party.");
@@ -48,7 +48,7 @@ module.exports = {
                 );
             }
 
-            const opponentPartyData = await client.pkmn.get(`${jid}_Party`);
+            const opponentPartyData = await client.poke.get(`${jid}_Party`);
             const opponentPartyRaw = opponentPartyData ? opponentPartyData : [];
             if (!opponentPartyRaw || opponentPartyRaw.length === 0) {
                 return M.reply("The trainer you challenged doesn't have any active Pokemon.");
@@ -87,7 +87,7 @@ module.exports = {
 
                 pokemonChallengeResponse.delete(M.from);
 
-                const acceptorPartyData = await client.pkmn.get(`${M.sender}_Party`);
+                const acceptorPartyData = await client.poke.get(`${M.sender}_Party`);
                 const acceptorPartyRaw = acceptorPartyData ? acceptorPartyData : [];
                 if (!acceptorPartyRaw || acceptorPartyRaw.length === 0) {
                     return M.reply("🟥 *Pokemon challenge cancelled as you don't have any Pokemon capable of battling right now as all of them have fainted.*");
@@ -98,7 +98,7 @@ module.exports = {
                     return M.reply("🟥 *Pokemon challenge cancelled as you don't have any Pokemon capable of battling right now as all of them have fainted.*");
                 }
 
-                const challengerPartyData = await client.pkmn.get(`${data.challenger}_Party`);
+                const challengerPartyData = await client.poke.get(`${data.challenger}_Party`);
                 const challengerPartyRaw = challengerPartyData ? challengerPartyData : [];
                 const challengerParty = (challengerPartyRaw || []).filter((pkmn) => pkmn.hp > 0);
 

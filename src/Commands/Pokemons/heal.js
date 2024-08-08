@@ -19,7 +19,7 @@ module.exports = {
             }
 
             // Retrieve and update the party
-            let party = await client.pkmn.get(`${M.sender}_Party`) || [];
+            let party = await client.poke.get(`${M.sender}_Party`) || [];
             if (!party.length) {
                 return M.reply("You don't have any Pokémon in your party.");
             }

@@ -25,8 +25,8 @@ module.exports = {
             client.pokemonResponse.delete(M.from);
 
             let flag = false;
-            let party = await client.pkmn.get(`${M.sender}_Party`) || [];
-            let pc = await client.pkmn.get(`${M.sender}_PSS`) || [];
+            let party = await client.poke.get(`${M.sender}_Party`) || [];
+            let pc = await client.poke.get(`${M.sender}_PSS`) || [];
             const Text = `Well Done. You caught a Level ${data.level} ${client.utils.capitalize(data.name)}. ${
                 party.length >= 6 ? 'It has been transferred to your PC' : ''
             }`;
@@ -36,8 +36,8 @@ module.exports = {
 
             party.length >= 6 ? pc.push(data) : party.push(data);
 
-            await client.pkmn.set(`${M.sender}_Party`, party);
-            await client.pkmn.set(`${M.sender}_PSS`, pc);
+            await client.poke.set(`${M.sender}_Party`, party);
+            await client.poke.set(`${M.sender}_PSS`, pc);
 
             await M.reply(Text);
 
@@ -68,7 +68,7 @@ module.exports = {
                 M.sender // user ID from M object
             );
 
-            await client.pkmn.set(`${M.sender}_Party`, party);
+            await client.poke.set(`${M.sender}_Party`, party);
 
         } catch (err) {
             console.error(err);

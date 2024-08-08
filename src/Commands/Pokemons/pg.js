@@ -22,7 +22,7 @@ module.exports = {
 };
 
 async function handleConfirmationOrRejection(client, action, M) {
-    const confirmationMap = await client.pkmn.get(`${M.sender}_Confirm`);
+    const confirmationMap = await client.poke.get(`${M.sender}_Confirm`);
     if (!confirmationMap) {
         return M.reply('You have no pending Pokémon give operations.');
     }
@@ -30,8 +30,8 @@ async function handleConfirmationOrRejection(client, action, M) {
     try {
         const { pokemonIndex, mentionedUser, from } = confirmationMap;
         const sender = M.sender;
-        const senderParty = await client.pkmn.get(`${sender}_Party`) || [];
-        const targetParty = await client.pkmn.get(`${mentionedUser}_Party`) || [];
+        const senderParty = await client.poke.get(`${sender}_Party`) || [];
+        const targetParty = await client.poke.get(`${mentionedUser}_Party`) || [];
 
         if (action === 'confirm') {
             if (pokemonIndex < 0 || pokemonIndex >= senderParty.length) {
@@ -47,11 +47,11 @@ async function handleConfirmationOrRejection(client, action, M) {
 
             // Remove the Pokémon from sender's party
             senderParty.splice(pokemonIndex, 1);
-            await client.pkmn.set(`${sender}_Party`, senderParty);
+            await client.poke.set(`${sender}_Party`, senderParty);
 
             // Add the Pokémon to the target user's party
             targetParty.push(pokemon);
-            await client.pkmn.set(`${mentionedUser}_Party`, targetParty);
+            await client.poke.set(`${mentionedUser}_Party`, targetParty);
 
             const text = `✔ @${sender.split('@')[0]} has transferred *${pokemon.name}* (Level: ${pokemon.level}) to @${mentionedUser.split('@')[0]}.`;
             await client.sendMessage(from, { text: text, mentions: [sender, mentionedUser] });
@@ -74,7 +74,7 @@ async function handleConfirmationOrRejection(client, action, M) {
 }
 
 async function initiatePokemonGive(client, args, M) {
-    const pendingGive = await client.pkmn.get(`${M.sender}_Confirm`);
+    const pendingGive = await client.poke.get(`${M.sender}_Confirm`);
     if (pendingGive) {
         return M.reply('You already have a pending Pokémon give operation. Please confirm or reject it first.');
     }
@@ -83,13 +83,13 @@ async function initiatePokemonGive(client, args, M) {
         const index = parseInt(args[0]);
         const mentionedUser = M.mentions[0];
         const sender = M.sender;
-        const senderParty = await client.pkmn.get(`${sender}_Party`) || [];
+        const senderParty = await client.poke.get(`${sender}_Party`) || [];
 
         if (!mentionedUser) {
             return M.reply("Please mention a user to give the Pokémon to.");
         }
 
-        const targetParty = await client.pkmn.get(`${mentionedUser}_Party`) || [];
+        const targetParty = await client.poke.get(`${mentionedUser}_Party`) || [];
 
         if (senderParty.length === 0) {
             return M.reply("Your Pokémon party is empty!");
@@ -109,7 +109,7 @@ async function initiatePokemonGive(client, args, M) {
         await client.sendMessage(M.from, { text: confirmText, mentions: [sender, mentionedUser] });
 
         // Save the Pokémon give operation details for confirmation
-        await client.pkmn.set(`${M.sender}_Confirm`, {
+        await client.poke.set(`${M.sender}_Confirm`, {
             pokemonIndex: index - 1,
             mentionedUser,
             from: M.from

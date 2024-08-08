@@ -79,7 +79,7 @@ module.exports = {
             await client.sendMessage(
                 M.from,
                 {
-            video: {url: "https://telegra.ph/file/91567ae516ca4223403c6.mp4"},
+            video: {url: "https://telegra.ph/file/035c732771833423cd79d.mp4"},
             caption: response,
             gifPlayback: true
           },

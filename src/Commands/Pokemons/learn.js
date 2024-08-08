@@ -16,7 +16,7 @@ module.exports = {
                 return M.reply(!Data ? `You can't use this command yet.` : 'Invalid usage');
             }
             
-            let party = await client.pkmn.get(`${M.sender}_Party`) || [];
+            let party = await client.poke.get(`${M.sender}_Party`) || [];
             const { data, move } = Data;
             await client.pokemonMoveLearningResponse.delete(`${M.from}${M.sender}`);
             
@@ -25,7 +25,7 @@ module.exports = {
             
             if (flags.includes('--cancel')) {
                 party[i].rejectedMoves.push(move.name);
-                await client.pkmn.set(`${M.sender}_Party`, party);
+                await client.poke.set(`${M.sender}_Party`, party);
                 return M.reply(`Cancelled learning *${Move}*`);
             }
             
@@ -40,7 +40,7 @@ module.exports = {
             const deletedMove = party[i].moves[index].name.split('-').map(client.utils.capitalize).join(' ');
             party[i].rejectedMoves.push(party[i].moves[index].name);
             party[i].moves[index] = move;
-            await client.pkmn.set(`${M.sender}_Party`, party);
+            await client.poke.set(`${M.sender}_Party`, party);
 
             // Optional: If you have battle logic, uncomment and adjust accordingly
             const c = client.pokemonBattlePlayerMap.get(M.from);

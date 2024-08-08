@@ -9,7 +9,7 @@ module.exports = {
     description: "View your caught Pokémon in your PSS",
     async execute(client, arg, M) {
         try {
-            const pc = await client.pkmn.get(`${M.sender}_PSS`) || [];
+            const pc = await client.poke.get(`${M.sender}_PSS`) || [];
             if (pc.length === 0) {
                 return M.reply("📭 Your Pokémon storage is empty!");
             }
