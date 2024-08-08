@@ -182,8 +182,8 @@ if (suggestedCommand) {
        
 
                 await client.DB.set(`${sender}_Party`, party);
-            }
-        }
+            
+       
         
 
         await client.exp.add(sender, command.exp);
