@@ -180,34 +180,6 @@ if (suggestedCommand) {
         
         command.execute(client, arg, M);
        
-        if (isCmd && command.category === 'pokemon') {
-            const party = await client.DB.get(`${sender}_Party`) || [];
-            if (party.length > 0) {
-                const firstPokemon = party[0];
-                const randomExp = Math.floor(Math.random() * (50 - 25 + 1)) + 25;
-                firstPokemon.exp += randomExp;
-
-                // Level up logic
-                const requiredExpToLevelUp = requirePokeExpToLevelUp(firstPokemon.exp, firstPokemon.level);
-                if (requiredExpToLevelUp <= 0) {
-                    const currentLevel = firstPokemon.level;
-                    levelUpPokemon(firstPokemon);
-                    if (firstPokemon.level > currentLevel) {
-                        const levelUpMessage = `Congratulations! Your Pokémon has leveled up to level ${firstPokemon.level}!`;
-                        client.sendMessage(from, { text: levelUpMessage });
-
-                        // Check if the Pokemon can evolve
-                        const canEvolveResult = await canItEvolve(firstPokemon.name, firstPokemon.level);
-                        if (canEvolveResult) {
-                            // Get evolution details
-                            const evolutionDetails = await pokemonEvolve(firstPokemon.name);
-                            if (evolutionDetails) {
-                                const evolveMessage = `Your Pokémon is ready to evolve into ${evolutionDetails.name}! Use :evolve 1 to evolve it.`;
-                                client.sendMessage(from, { text: evolveMessage });
-                            }
-                        }
-                    }
-                }
 
                 await client.DB.set(`${sender}_Party`, party);
             }
