@@ -28,7 +28,7 @@ module.exports = MessageHandler = async (messages, client) => {
         const ActivateMod = (await client.DB.get('mod')) || [];
         const ActivateChatBot = (await client.DB.get('chatbot')) || [];
         const banned = (await client.DB.get('banned')) || [];
-        const companion = await client.pkmn.get(`${sender}_Companion`);
+        const companion = await client.poke.get(`${sender}_Companion`);
         const economy = await client.econ.findOne({ userId: sender });
 
         // Antilink system
