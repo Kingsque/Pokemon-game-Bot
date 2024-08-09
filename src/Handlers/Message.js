@@ -179,12 +179,6 @@ if (suggestedCommand) {
         if (command.category === 'economy' && !economy && command.name !== 'bonus') return M.reply('Use :bonus to get started');
         
         command.execute(client, arg, M);
-       
-
-                await client.DB.set(`${sender}_Party`, party);
-            
-       
-        
 
         await client.exp.add(sender, command.exp);
 
