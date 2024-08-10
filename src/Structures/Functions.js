@@ -850,7 +850,7 @@ const handlePokemonStats = async (client, M, pkmn, inBattle, player, user) => {
     });
     await delay(2500);
     if (!learnableMove) return await handlePokemonEvolution(client, M, pkmn, inBattle, player, user);
-    const party = await client.pkmn.get(`${jid}_Party`) || [];
+    const party = await client.poke.get(`${jid}_Party`) || [];
     const i = party.findIndex((x) => x.tag === pkmn.tag);
     const { hp, speed, defense, attack } = await client.utils.getPokemonStats(pkmn.id, pkmn.level);
     pkmn.hp += hp - pkmn.maxHp;
@@ -862,7 +862,7 @@ const handlePokemonStats = async (client, M, pkmn, inBattle, player, user) => {
     pkmn.maxHp = hp;
     pkmn.maxDefense = defense;
     party[i] = pkmn;
-    await client.pkmn.set(`${M.sender}_Party`, party);
+    await client.poke.set(`${M.sender}_Party`, party);
     if (inBattle) {
         const data = client.pokemonBattleResponse.get(M.from);
         if (data && data[player].activePokemon.tag === pkmn.tag) {
@@ -884,7 +884,7 @@ const handlePokemonStats = async (client, M, pkmn, inBattle, player, user) => {
                 client.pokemonBattleResponse.set(M.from, data);
             }
         }
-        await client.pkmn.set(`${M.sender}_Party`, party);
+        await client.poke.set(`${M.sender}_Party`, party);
         await client.sendMessage(M.from, {
             text: `*@${jid.split('@')[0]}*'s *${client.utils.capitalize(pkmn.name)}* learnt *${move}*`,
             mentions: [jid]
@@ -932,7 +932,7 @@ const handlePokemonStats = async (client, M, pkmn, inBattle, player, user) => {
             if (client.pokemonMoveLearningResponse.has(`${M.from}${jid}`)) {
                 client.pokemonMoveLearningResponse.delete(`${M.from}${jid}`);
                 party[i].rejectedMoves.push(learnableMove.name);
-                await client.pkmn.set(`${M.sender}_Party`, party);
+                await client.poke.set(`${M.sender}_Party`, party);
                 await client.sendMessage(M.from, {
                     text: `*@${jid.split('@')[0]}*'s *${client.utils.capitalize(
                         pkmn.name
@@ -987,7 +987,7 @@ const handlePokemonEvolution = async (client, M, pkmn, inBattle, player, user) =
             client.prefix
         }cancel-evolution* to cancel this evolution (within 60s)`;
  
-        let party = await client.pkmn.get(`${M.sender}_Party`) || [];
+        let party = await client.poke.get(`${M.sender}_Party`) || [];
         const i = party.findIndex((x) => x.tag === pkmn.tag);
  
         await client.sendMessage(M.from, { text });
@@ -1017,7 +1017,7 @@ const handlePokemonEvolution = async (client, M, pkmn, inBattle, player, user) =
             pkmn.maxHp = hp;
             pkmn.maxDefense = defense;
  
-            if (pkmn.tag === '0') await client.pkmn.set(`${M.sender}_Companion`, pData.name);
+            if (pkmn.tag === '0') await client.poke.set(`${M.sender}_Companion`, pData.name);
             party[i] = pkmn;
  
             if (inBattle) {
@@ -1028,7 +1028,7 @@ const handlePokemonEvolution = async (client, M, pkmn, inBattle, player, user) =
                 }
             }
  
-            await client.pkmn.set(`${M.sender}_Party`, party);
+            await client.poke.set(`${M.sender}_Party`, party);
  
             const buffer = await client.utils.getBuffer(pkmn.image);
             await client.sendMessage(M.from, {
