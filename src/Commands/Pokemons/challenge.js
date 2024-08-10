@@ -15,7 +15,7 @@ module.exports = {
             return M.reply('A battle in this group is ongoing at the moment');
         }
 
-        if (!arg.length) {
+        if (arg.length === 0) {
             const rawPartyData = await client.poke.get(`${M.sender}_Party`);
             const rawParty = rawPartyData ? rawPartyData : [];
             if (!rawParty || rawParty.length === 0) {
@@ -29,7 +29,7 @@ module.exports = {
 
             const users = M.mentions[0] || (M.quoted && M.quoted.participant);
             if (!users || users === M.sender) {
-                return M.reply('Tag or quote a person to challenge for a match.');
+                return M.reply('Tag or quote a user to challenge for a match.');
             }
 
             const jid = users[0];
@@ -73,8 +73,9 @@ module.exports = {
                 return M.reply("Challenge cancelled as the challenged user didn't respond.");
             }, 6 * 1000 * 60);
         } else {
-          
-            if (arg == '--accept' || arg == '--a') {
+            const command = arg.trim().toLowerCase();
+
+            if (command === '--accept' || command === '--a') {
                 const data = pokemonChallengeResponse.get(M.from);
                 if (!data || data.challengee !== M.sender) {
                     return M.reply('No one challenged you for a Pokemon battle.');
@@ -134,7 +135,7 @@ module.exports = {
                     mentions: [data.challenger]
                 });
 
-            } else if (arg == '--reject' || arg == '--r') {
+            } else if (command === '--reject' || command === '--r') {
                 const rejectData = pokemonChallengeResponse.get(M.from);
                 if (!rejectData || rejectData.challengee !== M.sender) {
                     return M.reply('No one challenged you for a Pokemon battle.');
@@ -150,7 +151,7 @@ module.exports = {
                     [rejectData.challenger]
                 );
 
-            } else if (arg == '--cancel' || arg == '--c') {
+            } else if (command === '--cancel' || command === '--c') {
                 const cancelData = pokemonChallengeResponse.get(M.from);
                 if (!cancelData || cancelData.challenger !== M.sender) {
                     return M.reply("You didn't challenge anyone.");
@@ -160,7 +161,7 @@ module.exports = {
                 return M.reply('You cancelled your own challenge.');
 
             } else {
-                return M.reply('Invalid Usage');
+                return M.reply('Invalid command. Please use *--accept*, *--reject*, or *--cancel*.');
             }
         }
     }
