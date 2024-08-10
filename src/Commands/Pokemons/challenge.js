@@ -28,7 +28,7 @@ module.exports = {
             }
 
             const users = M.mentions[0] || (M.quoted && M.quoted.participant);
-            if (users.length === 0 || users[0] === M.sender) {
+            if (!users || users === M.sender) {
                 return M.reply('Tag or quote a person to challenge for a match.');
             }
 
