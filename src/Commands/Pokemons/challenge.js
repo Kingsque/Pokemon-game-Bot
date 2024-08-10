@@ -22,13 +22,15 @@ module.exports = {
                 return M.reply("You don't have any Pokemon in your party.");
             }
 
-            const party = rawParty.filter((pkmn) => pkmn.hp > 0);
+            const party = rawParty.filter((poke) => poke.hp > 0);
             if (party.length === 0) {
                 return M.reply("You don't have any Pokemon capable of battling right now as all of them have fainted.");
             }
 
-            const users = M.mentions[0] || (M.quoted && M.quoted.participant);
-           
+            const users = M.mentions ? [...M.mentions] : [];
+            if (M.quoted && M.quoted.participant && !users.includes(M.quoted.participant)) {
+                users.push(M.quoted.participant);
+            }
 
             if (users.length === 0 || users[0] === M.sender) {
                 return M.reply('Tag or quote a person to challenge for a match.');
@@ -52,7 +54,7 @@ module.exports = {
                 return M.reply("The trainer you challenged doesn't have any active Pokemon.");
             }
 
-            const opponentParty = opponentPartyRaw.filter((pkmn) => pkmn.hp > 0);
+            const opponentParty = opponentPartyRaw.filter((poke) => poke.hp > 0);
             if (opponentParty.length === 0) {
                 return M.reply("The trainer you challenged doesn't have any active Pokemon capable of battling.");
             }
@@ -76,7 +78,6 @@ module.exports = {
             }, 6 * 1000 * 60);
         } else {
           
-
             if (arg == '--accept' || arg == '--a') {
                 const data = pokemonChallengeResponse.get(M.from);
                 if (!data || data.challengee !== M.sender) {
@@ -91,14 +92,14 @@ module.exports = {
                     return M.reply("🟥 *Pokemon challenge cancelled as you don't have any Pokemon capable of battling right now as all of them have fainted.*");
                 }
 
-                const acceptorParty = acceptorPartyRaw.filter((pkmn) => pkmn.hp > 0);
+                const acceptorParty = acceptorPartyRaw.filter((poke) => poke.hp > 0);
                 if (acceptorParty.length === 0) {
                     return M.reply("🟥 *Pokemon challenge cancelled as you don't have any Pokemon capable of battling right now as all of them have fainted.*");
                 }
 
                 const challengerPartyData = await client.poke.get(`${data.challenger}_Party`);
                 const challengerPartyRaw = challengerPartyData ? challengerPartyData : [];
-                const challengerParty = (challengerPartyRaw || []).filter((pkmn) => pkmn.hp > 0);
+                const challengerParty = (challengerPartyRaw || []).filter((poke) => poke.hp > 0);
 
                 client.pokemonBattleResponse.set(M.from, {
                     player1: {
