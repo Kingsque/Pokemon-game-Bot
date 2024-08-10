@@ -15,16 +15,13 @@ module.exports = {
             return M.reply('A battle in this group is ongoing at the moment');
         }
 
-        if (arg.length === 0 || M.mentions.length > 0 || (M.quoted && M.quoted.participant)) {
+        if (!arg.length) {
             const rawPartyData = await client.poke.get(`${M.sender}_Party`);
-            const rawParty = rawPartyData ? rawPartyData : [];
-            if (!rawParty || rawParty.length === 0) {
-                return M.reply("You don't have any Pokemon in your party.");
-            }
+            const rawParty = rawPartyData || [];
+            const party = rawParty.filter(poke => poke.hp > 0);
 
-            const party = rawParty.filter((poke) => poke.hp > 0);
             if (party.length === 0) {
-                return M.reply("You don't have any Pokemon capable of battling right now as all of them have fainted.");
+                return M.reply("You don't have any Pokémon capable of battling right now as all of them have fainted.");
             }
 
             const users = M.mentions[0] || (M.quoted && M.quoted.participant);
@@ -45,87 +42,50 @@ module.exports = {
             }
 
             const opponentPartyData = await client.poke.get(`${jid}_Party`);
-            const opponentPartyRaw = opponentPartyData ? opponentPartyData : [];
-            if (!opponentPartyRaw || opponentPartyRaw.length === 0) {
-                return M.reply("The trainer you challenged doesn't have any active Pokemon.");
-            }
+            const opponentPartyRaw = opponentPartyData || [];
+            const opponentParty = opponentPartyRaw.filter(poke => poke.hp > 0);
 
-            const opponentParty = opponentPartyRaw.filter((poke) => poke.hp > 0);
             if (opponentParty.length === 0) {
-                return M.reply("The trainer you challenged doesn't have any active Pokemon capable of battling.");
+                return M.reply("The trainer you challenged doesn't have any active Pokémon capable of battling.");
             }
 
-            // Auto-accept the challenge
             pokemonChallengeResponse.set(M.from, {
                 challenger: M.sender,
                 challengee: jid
             });
 
-            const acceptorPartyData = await client.poke.get(`${jid}_Party`);
-            const acceptorPartyRaw = acceptorPartyData ? acceptorPartyData : [];
-            const acceptorParty = (acceptorPartyRaw || []).filter((poke) => poke.hp > 0);
-
-            client.pokemonBattleResponse.set(M.from, {
-                player1: {
-                    user: M.sender,
-                    ready: false,
-                    move: '',
-                    activePokemon: party[0]
-                },
-                player2: {
-                    user: jid,
-                    ready: false,
-                    move: '',
-                    activePokemon: acceptorParty[0]
-                },
-                turn: 'player1',
-                players: [M.sender, jid]
-            });
-
-            client.pokemonBattlePlayerMap.set(M.sender, M.from);
-            client.pokemonBattlePlayerMap.set(jid, M.from);
-
-            const image = await client.utils.drawPokemonBattle({
-                player1: { activePokemon: party[0], party: party },
-                player2: { activePokemon: acceptorParty[0], party: acceptorParty }
-            });
-
+            const text = `*@${M.sender.split('@')[0]}* has challenged *@${jid.split('@')[0]}* for a Pokémon battle. Use *${client.prefix}challenge --accept* to start this battle. Or you can use *${client.prefix}challenge --reject* to reject this challenge.`;
             await client.sendMessage(M.from, {
-                image: image,
-                caption: `🌀 *Pokemon Battle Started!* 🌀\n\n*@${M.sender.split('@')[0]} - ${client.utils.capitalize(party[0].name)} (HP: ${party[0].hp} / ${party[0].maxHp} | Level: ${party[0].level} | Moves: ${party[0].moves.length} | Type: ${client.utils.capitalize(party[0].types[0])})*\n\n*@${jid.split('@')[0]} - ${client.utils.capitalize(acceptorParty[0].name)} (HP: ${acceptorParty[0].hp} / ${acceptorParty[0].maxHp} | Level: ${acceptorParty[0].level} | Moves: ${acceptorParty[0].moves.length} | Type: ${client.utils.capitalize(acceptorParty[0].types[0])})*`,
-                mentions: [M.sender, jid]
+                text,
+                mentions: [M.sender, jid],
+                quoted: M
             });
 
-            const text = `To fight use *${client.prefix}battle fight*\n\nTo switch pokemon use  *${client.prefix}battle switch*\n\nTo forfeit this battle use *${client.prefix}battle forfeit*`;
-            return await client.sendMessage(M.from, {
-                text: `Use one of the options given below *@${M.sender.split('@')[0]}*\n\n${text}`,
-                mentions: [M.sender, jid]
-            });
+            setTimeout(async () => {
+                if (!pokemonChallengeResponse.has(M.from)) return;
+                pokemonChallengeResponse.delete(M.from);
+                return M.reply("Challenge cancelled as the challenged user didn't respond.");
+            }, 6 * 1000 * 60);
         } else {
-            const command = arg.trim().toLowerCase();
-
-            if (command === '--accept' || command === '--a') {
+            if (arg === '--accept' || arg === '--a') {
                 const data = pokemonChallengeResponse.get(M.from);
                 if (!data || data.challengee !== M.sender) {
-                    return M.reply('No one challenged you for a Pokemon battle.');
+                    return M.reply('No one challenged you for a Pokémon battle.');
                 }
 
                 pokemonChallengeResponse.delete(M.from);
 
                 const acceptorPartyData = await client.poke.get(`${M.sender}_Party`);
-                const acceptorPartyRaw = acceptorPartyData ? acceptorPartyData : [];
-                if (!acceptorPartyRaw || acceptorPartyRaw.length === 0) {
-                    return M.reply("🟥 *Pokemon challenge cancelled as you don't have any Pokemon capable of battling right now as all of them have fainted.*");
-                }
+                const acceptorPartyRaw = acceptorPartyData || [];
+                const acceptorParty = acceptorPartyRaw.filter(poke => poke.hp > 0);
 
-                const acceptorParty = acceptorPartyRaw.filter((poke) => poke.hp > 0);
                 if (acceptorParty.length === 0) {
-                    return M.reply("🟥 *Pokemon challenge cancelled as you don't have any Pokemon capable of battling right now as all of them have fainted.*");
+                    return M.reply("🟥 *Pokémon challenge cancelled as you don't have any Pokémon capable of battling right now as all of them have fainted.*");
                 }
 
                 const challengerPartyData = await client.poke.get(`${data.challenger}_Party`);
-                const challengerPartyRaw = challengerPartyData ? challengerPartyData : [];
-                const challengerParty = (challengerPartyRaw || []).filter((poke) => poke.hp > 0);
+                const challengerPartyRaw = challengerPartyData || [];
+                const challengerParty = challengerPartyRaw.filter(poke => poke.hp > 0);
 
                 client.pokemonBattleResponse.set(M.from, {
                     player1: {
@@ -154,25 +114,25 @@ module.exports = {
 
                 await client.sendMessage(M.from, {
                     image: image,
-                    caption: `🌀 *Pokemon Battle Started!* 🌀\n\n*@${data.challenger.split('@')[0]} - ${client.utils.capitalize(challengerParty[0].name)} (HP: ${challengerParty[0].hp} / ${challengerParty[0].maxHp} | Level: ${challengerParty[0].level} | Moves: ${challengerParty[0].moves.length} | Type: ${client.utils.capitalize(challengerParty[0].types[0])})*\n\n*@${M.sender.split('@')[0]} - ${client.utils.capitalize(acceptorParty[0].name)} (HP: ${acceptorParty[0].hp} / ${acceptorParty[0].maxHp} | Level: ${acceptorParty[0].level} | Moves: ${acceptorParty[0].moves.length} | Type: ${client.utils.capitalize(acceptorParty[0].types[0])})*`,
+                    caption: `🌀 *Pokémon Battle Started!* 🌀\n\n*@${data.challenger.split('@')[0]} - ${client.utils.capitalize(challengerParty[0].name)} (HP: ${challengerParty[0].hp} / ${challengerParty[0].maxHp} | Level: ${challengerParty[0].level} | Moves: ${challengerParty[0].moves.length} | Type: ${client.utils.capitalize(challengerParty[0].types[0])})*\n\n*@${M.sender.split('@')[0]} - ${client.utils.capitalize(acceptorParty[0].name)} (HP: ${acceptorParty[0].hp} / ${acceptorParty[0].maxHp} | Level: ${acceptorParty[0].level} | Moves: ${acceptorParty[0].moves.length} | Type: ${client.utils.capitalize(acceptorParty[0].types[0])})*`,
                     mentions: [M.sender, data.challenger]
                 });
 
-                const text = `To fight use *${client.prefix}battle fight*\n\nTo switch pokemon use  *${client.prefix}battle switch*\n\nTo forfeit this battle use *${client.prefix}battle forfeit*`;
+                const text = `To fight use *${client.prefix}battle fight*\n\nTo switch Pokémon use *${client.prefix}battle switch*\n\nTo forfeit this battle use *${client.prefix}battle forfeit*`;
                 return await client.sendMessage(M.from, {
                     text: `Use one of the options given below *@${data.challenger.split('@')[0]}*\n\n${text}`,
                     mentions: [data.challenger]
                 });
 
-            } else if (command === '--reject' || command === '--r') {
+            } else if (arg === '--reject' || arg === '--r') {
                 const rejectData = pokemonChallengeResponse.get(M.from);
                 if (!rejectData || rejectData.challengee !== M.sender) {
-                    return M.reply('No one challenged you for a Pokemon battle.');
+                    return M.reply('No one challenged you for a Pokémon battle.');
                 }
 
                 pokemonChallengeResponse.delete(M.from);
                 return M.reply(
-                    `You have rejected *@${rejectData.challenger.split('@')[0]}* challenge`,
+                    `You have rejected *@${rejectData.challenger.split('@')[0]}*'s challenge`,
                     'text',
                     undefined,
                     undefined,
@@ -180,7 +140,7 @@ module.exports = {
                     [rejectData.challenger]
                 );
 
-            } else if (command === '--cancel' || command === '--c') {
+            } else if (arg === '--cancel' || arg === '--c') {
                 const cancelData = pokemonChallengeResponse.get(M.from);
                 if (!cancelData || cancelData.challenger !== M.sender) {
                     return M.reply("You didn't challenge anyone.");
