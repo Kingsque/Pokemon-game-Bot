@@ -27,9 +27,7 @@ module.exports = {
                 return M.reply("You don't have any Pokemon capable of battling right now as all of them have fainted.");
             }
 
-            const users = M.mentions[0] || (M.quoted && M.quoted.participant);
-            
-
+            const users = M.mentions.length ? M.mentions : (M.quoted && M.quoted.participant ? [M.quoted.participant] : []);
             if (users.length === 0 || users[0] === M.sender) {
                 return M.reply('Tag or quote a person to challenge for a match.');
             }
