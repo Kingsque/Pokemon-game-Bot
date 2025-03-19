@@ -8,7 +8,7 @@ const {
 } = require('@WhiskeySockets/baileys');
 
 module.exports = {
-    name: 'Advice',
+    name: 'Latency',
     aliases: ['advice','adv'],
     category: 'fun',
     exp: 5,
@@ -18,35 +18,33 @@ module.exports = {
     description: 'Sends random Advice',
     async execute(client, arg, M) { 
         try {
-            const response = await axios.get('https://api.adviceslip.com/advice');
-            const text = `*📚 Advice for you:-*\n> ${response.data.slip.advice}`;
-           const imageMessage = await prepareWAMessageMedia({ image: { url: "https://telegra.ph/file/18697b6f6d1e1b9bb45e9.jpg" }}, { upload: client.waUploadToServer });
- 
-  let msg = generateWAMessageFromContent(M.from, {
-  viewOnceMessage: {
-    message: {
-        "messageContextInfo": {
-          "deviceListMetadata": {},
-          "deviceListMetadataVersion": 2
-        },
-        interactiveMessage: proto.Message.InteractiveMessage.create({
-          body: proto.Message.InteractiveMessage.Body.create({
-            text: `${text}`
-          }),
-          footer: proto.Message.InteractiveMessage.Footer.create({
-            text: "𒉢 ꜱᴀʏ.ꜱᴄ֟፝ᴏᴛᴄʜ ⚡𐇻"
-          }),
-          header: proto.Message.InteractiveMessage.Header.create({
-             ...imageMessage,
-            title: "Advice From Web 💟",
-            subtitle: "",
-            hasMediaAttachment: false
-          }),
-          nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
-            buttons: [
-              {
-                "name": "quick_reply",
-                "buttonParamsJson": "{\"display_text\":\"Next Advice 📚\",\"id\":\"-adv\"}"
+            const puppeteer = require('puppeteer');
+
+(async () => {
+  const browser = await puppeteer.launch({ headless: false });
+  const page = await browser.newPage();
+  
+  // Open WhatsApp Web
+  await page.goto('https://web.whatsapp.com');
+  await page.waitForSelector('._3GlyB', { timeout: 60000 }); // Wait for QR scan
+
+  console.log('Logged in! Monitoring for "ping"...');
+
+  // Listen for new messages
+  setInterval(async () => {
+    // Get the latest message in the active chat
+    const [lastMessage] = await page.$$eval('.message-in', (messages) => {
+      return messages.slice(-1).map(msg => msg.innerText);
+    });
+
+    if (lastMessage?.toLowerCase().trim() === 'ping') {
+      // Type and send "Latency"
+      await page.type('div[title="Type a message"]', 'pong');
+      await page.keyboard.press('Enter');
+      console.log('Replied with "Latency"!');
+    }
+  }, 2000); // Check every 2 seconds
+})();
               }
            ],
           })
