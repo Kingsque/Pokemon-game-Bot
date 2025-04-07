@@ -1,4 +1,4 @@
-<h1 align="center"> 𝔪𝔞𝔦 𝔖𝔞𝔨𝔲𝔯𝔞𝔧𝔦𝔪𝔞
+<h1 align="center"> FIX THIS BOT AND RUN IT POKEMON GAME & CARDS GAME BOT GIVE ME STAR ⭐
 
 </div>
 <p align="center">
