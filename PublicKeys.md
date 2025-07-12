@@ -3,9 +3,9 @@
 - Rename `.env.example` to `.env` and fill in the required details in `.env` file(Mandatory).
 
 ```
-NAME=Aurora
-PREFIX=:
-MODS=91896133xxxx,91790357xxxx
+NAME=madara uchiha
+PREFIX=.
+MODS=+26777097571,+2677820456,+26778615687
 PORT=3000
 WRITE_SONIC= write sonic api key
 BG_API_KEY= remove backgroun api key
@@ -24,7 +24,7 @@ SESSION_URL= same as url
  
 <br>
 
-### 🌚 Prefix: 
+### 🌚 Prefix. 
 
 - You can use any prefix you want like: `#` or `!` or `.` etc.
 - Don't use `@` or any alphabets or numbers as prefix as it will cause issues.
