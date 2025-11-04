@@ -1,6 +1,6 @@
 {
 
-   "name":"𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆",
+   "name":"krugar bot",
 
    "description":"A WhatsApp Bot With Multi Device Supported",
 
@@ -25,7 +25,7 @@
       "NAME":{
 
          "description":"Name of your bot",
-         "value":"𝕹𝖎𝖊𝖗 𝕬𝖚𝖙𝖔𝖒𝖆𝖙𝖆",
+         "value":"krugar bot",
          "required":true
 
       },
@@ -33,7 +33,7 @@
       "PREFIX":{
 
          "description":"Prefix of your bot",
-         "value":"-",
+         "value":".",
          "required":true
 
       },
@@ -41,7 +41,7 @@
       "MODS":{
 
          "description":"The phone numbers of the users who you want to be admin for the bot (should be in international format without + and multiple numbers must be separated by a comma \",\")",
-         "value": "919529426293,918178640193",
+         "value": "26771256815,26771936201",
          "required":true
 
       },
