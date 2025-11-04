@@ -1,7 +1,7 @@
 // Wallet Command
 module.exports = {
-    name: 'gem',
-    aliases: ['ag', 'gems'],
+    name: 'gold',
+    aliases: ['ag', 'gold'],
     category: 'economy',
     exp: 5,
     cool: 4,
@@ -12,13 +12,13 @@ module.exports = {
         const userId = M.sender;
         const economy = await client.econ.findOne({ userId });
 
-        let wallet = economy ? economy.gem : 0;
+        let wallet = economy ? economy.gold : 0;
 
         // Ensure wallet value is an integer
         wallet = Math.round(wallet);
 
-        if (economy && economy.gem !== wallet) {
-            economy.gem = wallet;
+        if (economy && economy.gold !== wallet) {
+            economy.gold = wallet;
             await economy.save();
         }
 
